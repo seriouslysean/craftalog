@@ -3,10 +3,10 @@ import { RouterLink } from 'vue-router';
 </script>
 
 <template>
-  <header class="site-header">
-    <p>Header</p>
+  <header>
+    <p>Craftalog</p>
 
-    <nav class="site-header__nav">
+    <nav class="nav">
       <ul>
         <li>
           <RouterLink to="/">Home</RouterLink>
@@ -20,12 +20,12 @@ import { RouterLink } from 'vue-router';
 </template>
 
 <style scoped>
-.site-header__nav ul,
-.site-header__nav ul li {
+.nav ul,
+.nav ul li {
   display: inline-block;
 }
 
-.site-header__nav ul li {
+.nav ul li {
   margin-right: .5em;
 }
 </style>

@@ -1,0 +1,6 @@
+{
+    "TORCH": 0,
+    "STICK": 1,
+    "COAL": 2,
+    "CHARCOAL": 3
+}
