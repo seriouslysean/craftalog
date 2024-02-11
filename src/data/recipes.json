@@ -1,0 +1,15 @@
+{
+    "TORCH": {
+        "name": "Torch",
+        "recipes": [
+            [
+                ["STICK"],
+                ["CHARCOAL"]
+            ],
+            [
+                ["CHARCOAL"],
+                ["STICK"]
+            ]
+        ]
+    }
+}

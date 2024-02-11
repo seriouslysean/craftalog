@@ -5,13 +5,37 @@ import SiteFooter from './components/SiteFooter.vue';
 </script>
 
 <template>
-  <SiteHeader />
+  <div class="wrapper">
+    <SiteHeader class="header" />
 
-  <main>
-    <RouterView />
-  </main>
+    <main class="main">
+      <RouterView />
+    </main>
 
-  <SiteFooter />
+    <SiteFooter class="footer" />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+/*
+Specific layout styles, but no design
+*/
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header,
+.main,
+.footer {
+  margin: 0 auto;
+  padding: 0 1em;
+  max-width: 800px;
+  width: 100%;
+}
+
+.footer {
+  margin-top: auto;
+}
+</style>
