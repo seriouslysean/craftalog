@@ -11,6 +11,7 @@
     "modern-normalize": "^2.0.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
+    "vue-meta": "^3.0.0-alpha.2",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
