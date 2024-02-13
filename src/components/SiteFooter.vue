@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>Made with &hearts;</p>
+    <p>Made with &hearts; | <a href="https://github.com/seriouslysean/craftalog">GitHub</a></p>
   </footer>
 </template>
 
