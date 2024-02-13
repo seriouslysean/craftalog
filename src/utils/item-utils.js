@@ -1,13 +1,13 @@
 import { itemDetails } from '@/data/item-details';
 import { recipes } from '@/data/item-recipes';
 
-export const formatCraftingTable = (recipeId) => {
+export const getCraftingDataByRecipe = (recipeId) => {
   const recipe = recipes[recipeId];
   const craftingTableState = Array(9).fill(null);
 
   if (!recipe) {
     console.error(`Recipe with identifier "${recipeId}" not found.`);
-    return craftingTableState;
+    return { items: craftingTableState, result: null };
   }
 
   const { pattern, key } = recipe;
@@ -35,5 +35,11 @@ export const formatCraftingTable = (recipeId) => {
     });
   });
 
-  return craftingTableState;
+  // Get the result item details
+  const result = itemDetails[recipeId];
+  if (!result) {
+    console.error(`Result item details not found for "${recipeId}".`);
+  }
+
+  return { items: craftingTableState, result };
 };

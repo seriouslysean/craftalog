@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 
 import { recipes as recipesRaw } from '@/data/item-recipes';
-import { formatCraftingTable } from '@/utils/item-utils';
+import { getCraftingDataByRecipe } from '@/utils/item-utils';
 
 const route = useRoute();
 const recipe = ref('');
@@ -20,8 +20,8 @@ const recipes = computed(() => {
   return Object.keys(recipesRaw);
 });
 
-const craftingTableCells = computed(() => {
-  return formatCraftingTable(recipe.value);
+const craftingData = computed(() => {
+  return getCraftingDataByRecipe(recipe.value);
 });
 </script>
 
@@ -30,10 +30,15 @@ const craftingTableCells = computed(() => {
     <h1>Crafting Grid</h1>
     <h2>Current Recipe: {{ recipe ?? 'none' }}</h2>
 
-    <div class="crafting-table">
-      <div class="crafting-table__inner">
-        <div class="crafting-table__cell" v-for="(cell, index) in craftingTableCells" :key="index">
+    <div class="crafting">
+      <div class="crafting__table">
+        <div class="crafting__cell" v-for="(cell, index) in craftingData.items" :key="index">
           <img v-if="cell" :src="cell.icon" :alt="cell.name" />
+        </div>
+      </div>
+      <div class="crafting__table crafting__table--result">
+        <div class="crafting__cell">
+          <img v-if="craftingData.result" :src="craftingData.result.icon" :alt="craftingData.result.name" />
         </div>
       </div>
     </div>
@@ -52,21 +57,34 @@ const craftingTableCells = computed(() => {
 </template>
 
 <style scoped>
-.crafting-table {
+.crafting {
+  display: flex;
+  gap: 1em;
   background-color: var(--color-gray-light);
   padding: 1em;
+  height: 100%;
 }
-.crafting-table__inner {
+
+.crafting__table {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1em;
-  width: 100%;
-  height: 0;
-  padding-bottom: 100%;
+  width: 70%;
   position: relative;
 }
 
-.crafting-table__cell {
+.crafting__table--result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+}
+
+.crafting__table--result .crafting__cell {
+  width: 80%;
+}
+
+.crafting__cell {
   background-color: var(--color-gray);
   box-shadow: 0.5em 0.5em 0 0 rgba(0,0,0,0.5) inset,
     -0.5em  -0.5em 0 0 rgba(255, 255, 255, .75) inset;
@@ -78,10 +96,9 @@ const craftingTableCells = computed(() => {
   padding: 0.5em;
 }
 
-.crafting-table__cell img {
+.crafting__cell img {
   image-rendering: pixelated;
   width: 100%;
   height: auto;
 }
 </style>
-@/data/item-recipes.js
