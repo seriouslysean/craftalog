@@ -68,6 +68,8 @@ const craftingTableCells = computed(() => {
 
 .crafting-table__cell {
   background-color: var(--color-gray);
+  box-shadow: 0.5em 0.5em 0 0 rgba(0,0,0,0.5) inset,
+    -0.5em  -0.5em 0 0 rgba(255, 255, 255, .75) inset;
   display: flex;
   justify-content: center;
   align-items: center;
