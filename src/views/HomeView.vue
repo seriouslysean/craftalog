@@ -1,21 +1,51 @@
+<script setup lang="js">
+import { computed, ref, watch } from 'vue';
+import { useRoute, RouterLink } from 'vue-router';
+
+import { recipes as recipesRaw } from '@/data/recipes.js';
+import { formatCraftingTable } from '@/utils/item-utils.js';
+
+const route = useRoute();
+const recipe = ref('');
+
+watch(
+  () => route.query.recipe,
+  (newRecipe) => {
+    recipe.value = newRecipe;
+  },
+  { immediate: true },
+);
+
+const recipes = computed(() => {
+  return Object.keys(recipesRaw);
+});
+
+const craftingTableCells = computed(() => {
+  return formatCraftingTable(recipe.value);
+});
+</script>
+
 <template>
   <div class="home">
     <h1>Crafting Grid</h1>
+    <h2>Current Recipe: {{ recipe ?? 'none' }}</h2>
 
     <div class="crafting-table">
-      <div
-        class="crafting-table__cell"
-        v-for="n in 9"
-        :key="n"
-      ></div>
+      <div class="crafting-table__cell" v-for="(cell, index) in craftingTableCells" :key="index">
+        <img v-if="cell" :src="cell.icon" :alt="cell.name" />
+      </div>
     </div>
 
-    <h2>Recipe List</h2>
-    <ul>
-      <li><a href="#">Recipe #1</a></li>
-      <li><a href="#">Recipe #2</a></li>
-      <li><a href="#">Recipe #3</a></li>
-    </ul>
+    <template v-if="recipes.length">
+      <h2>Recipe List</h2>
+      <ul>
+        <li v-for="recipe in recipes" :key="recipe">
+          <RouterLink :to="{ query: { recipe: recipe } }">
+            {{ recipe }}
+          </RouterLink>
+        </li>
+      </ul>
+    </template>
   </div>
 </template>
 
