@@ -93,7 +93,7 @@ const craftingData = computed(() => {
   align-items: center;
   aspect-ratio: 1 / 1;
   position: relative;
-  padding: 0.5em;
+  padding: 1em;
 }
 
 .crafting__cell img {
