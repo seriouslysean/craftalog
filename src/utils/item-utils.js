@@ -1,5 +1,5 @@
-import { itemDetails } from '@/data/items';
-import { recipes } from '@/data/recipes';
+import { itemDetails } from '@/data/item-details';
+import { recipes } from '@/data/item-recipes';
 
 export const formatCraftingTable = (recipeId) => {
   const recipe = recipes[recipeId];

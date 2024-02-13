@@ -1,6 +1,11 @@
 @import 'modern-normalize/modern-normalize.css';
 
 :root {
+  /* minecraft colors */
+  --color-gray: #8b8b8b;
+  --color-gray-light: #c6c6c6;
+  --color-gray-dark: #373737;
+  /* styles */
   line-height: 1.5;
 }
 
