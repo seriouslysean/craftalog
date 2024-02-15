@@ -1,4 +1,4 @@
-import { items } from './items';
+import { items, itemGroups } from './items';
 
 // Loosely based off recipes in https://github.com/Mojang/bedrock-samples/blob/main/behavior_pack/recipes/
 export const recipes = {
@@ -25,12 +25,19 @@ export const recipes = {
       M: [items.melon],
     },
   },
+  [items.planks]: {
+    shaped: true,
+    pattern: ['#'],
+    key: {
+      '#': itemGroups.logs,
+    },
+  },
   [items.torch]: {
     shaped: true,
     pattern: ['X', '#'],
     key: {
       '#': [items.stick],
-      X: [items.charcoal, items.coal],
+      X: itemGroups.coals,
     },
   },
 };

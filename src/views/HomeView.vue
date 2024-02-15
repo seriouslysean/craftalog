@@ -34,19 +34,19 @@ const result = computed(() => resultItemDetails.value);
     <h1>Crafting Grid</h1>
     <h2>Current Recipe: {{ recipe ?? 'none' }}</h2>
 
+    <!--
+    The usage of ItemIcon requires a key to properly update the component
+    when the result changes. Need to look in to how to fix the code to properly
+    mutate the data so Vue is aware of the changes. Until then, this works :(
+    -->
     <div class="crafting">
       <div class="crafting__table">
         <div class="crafting__cell" v-for="(cell, index) in items" :key="index">
-          <ItemIcon v-if="cell" :item="cell" />
+          <ItemIcon v-if="cell" :item="cell" :key="cell" />
         </div>
       </div>
       <div class="crafting__table crafting__table--result">
         <div class="crafting__cell">
-          <!--
-          This usage of ItemIcon requires a key to properly update the component
-          when the result changes. Need to look in to how to fix the code to properly
-          mutate the data so Vue is aware of the changes. Until then, this works :(
-          -->
           <ItemIcon :item="result" :key="recipe" />
         </div>
       </div>

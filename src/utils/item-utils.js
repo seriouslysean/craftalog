@@ -2,11 +2,15 @@ import { itemDetails } from '@/data/item-details';
 import { recipes } from '@/data/item-recipes';
 
 export const getCraftingTableState = (recipeId) => {
-  const recipe = recipes[recipeId];
   const craftingTableState = Array(9).fill(null);
+  if (!recipeId) {
+    console.warn(`Recipe ID not provided.`);
+    return craftingTableState;
+  }
 
+  const recipe = recipes[recipeId];
   if (!recipe) {
-    console.warn(`Recipe not found`, {
+    console.warn('No recipe found', {
       recipeId,
     });
     return craftingTableState;
@@ -41,10 +45,16 @@ export const getCraftingTableState = (recipeId) => {
 };
 
 export const getResultItemDetails = (recipeId) => {
+  if (!recipeId) {
+    console.warn(`Recipe ID not provided.`);
+    return null;
+  }
   // Get the result item details
   const result = itemDetails[recipeId];
   if (!result) {
-    console.error(`Result item details not found for "${recipeId}".`);
+    console.warn('No recipe found', {
+      recipeId,
+    });
     return null;
   }
 
