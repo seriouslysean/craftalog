@@ -3,7 +3,9 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 
 import { recipes as recipesRaw } from '@/data/item-recipes';
-import { getCraftingDataByRecipe } from '@/utils/item-utils';
+import { getCraftingTableState, getResultItemDetails } from '@/utils/item-utils';
+
+import ItemIcon from '@/components/ItemIcon.vue';
 
 const route = useRoute();
 const recipe = ref('');
@@ -13,16 +15,18 @@ watch(
   (newRecipe) => {
     recipe.value = newRecipe;
   },
-  { immediate: true },
+  { immediate: true},
 );
 
 const recipes = computed(() => {
   return Object.keys(recipesRaw);
 });
 
-const craftingData = computed(() => {
-  return getCraftingDataByRecipe(recipe.value);
-});
+const craftingTableState = computed(() => getCraftingTableState(recipe.value));
+const resultItemDetails = computed(() => getResultItemDetails(recipe.value));
+
+const items = computed(() => craftingTableState.value);
+const result = computed(() => resultItemDetails.value);
 </script>
 
 <template>
@@ -32,13 +36,18 @@ const craftingData = computed(() => {
 
     <div class="crafting">
       <div class="crafting__table">
-        <div class="crafting__cell" v-for="(cell, index) in craftingData.items" :key="index">
-          <img v-if="cell" :src="cell.icon" :alt="cell.name" />
+        <div class="crafting__cell" v-for="(cell, index) in items" :key="index">
+          <ItemIcon v-if="cell" :item="cell" />
         </div>
       </div>
       <div class="crafting__table crafting__table--result">
         <div class="crafting__cell">
-          <img v-if="craftingData.result" :src="craftingData.result.icon" :alt="craftingData.result.name" />
+          <!--
+          This usage of ItemIcon requires a key to properly update the component
+          when the result changes. Need to look in to how to fix the code to properly
+          mutate the data so Vue is aware of the changes. Until then, this works :(
+          -->
+          <ItemIcon :item="result" :key="recipe" />
         </div>
       </div>
     </div>
@@ -80,7 +89,7 @@ const craftingData = computed(() => {
   width: 30%;
 }
 
-.crafting__table--result .crafting__cell {
+.crafting__cell {
   width: 80%;
 }
 
@@ -96,7 +105,7 @@ const craftingData = computed(() => {
   padding: 1em;
 }
 
-.crafting__cell img {
+.crafting__icon {
   image-rendering: pixelated;
   width: 100%;
   height: auto;
