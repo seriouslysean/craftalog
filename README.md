@@ -39,6 +39,15 @@ npm run dev
 npm run build
 ```
 
+To deploy the production build under a subdirectory (such as GitHub Pages),
+set the `BASE_PATH` environment variable before building. For example:
+
+```sh
+BASE_PATH=/craftalog/ npm run build
+```
+When using the provided GitHub Pages workflow, set a repository variable named
+`BASE_PATH` so the build automatically uses the correct subdirectory.
+
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
