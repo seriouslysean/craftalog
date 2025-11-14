@@ -71,19 +71,26 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 
 ```css
 /* Block */
-.crafting { }
+.crafting {
+}
 
 /* Element */
-.crafting__grid { }
-.crafting__cell { }
-.crafting__result { }
+.crafting__grid {
+}
+.crafting__cell {
+}
+.crafting__result {
+}
 
 /* Modifier */
-.crafting--loading { }
-.crafting__cell--active { }
+.crafting--loading {
+}
+.crafting__cell--active {
+}
 ```
 
 **Rules:**
+
 - Use double underscores `__` for elements
 - Use double dashes `--` for modifiers
 - Keep CSS organized by block/component
@@ -91,22 +98,31 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 - Mobile-first responsive design with `min-width` media queries
 
 **Example:**
+
 ```css
 /* ✅ Good */
-.recipes__list { }
-.recipes__item { }
-.recipes__link { }
-.recipes__link--active { }
+.recipes__list {
+}
+.recipes__item {
+}
+.recipes__link {
+}
+.recipes__link--active {
+}
 
 /* ❌ Bad */
-.recipesList { }
-.recipe-item { }
-.recipes .link { }
+.recipesList {
+}
+.recipe-item {
+}
+.recipes .link {
+}
 ```
 
 ### TypeScript/JavaScript
 
 **Modern JavaScript:**
+
 ```typescript
 // ✅ Good
 const items = getCraftingTableState(recipe);
@@ -117,10 +133,12 @@ const isBlock = item?.icon?.length === 2;
 var items = getCraftingTableState(recipe);
 let result;
 result = getResultItemDetails(recipe);
-if (item && item.icon && item.icon.length === 2) { }
+if (item && item.icon && item.icon.length === 2) {
+}
 ```
 
 **Type Everything:**
+
 ```typescript
 // ✅ Good
 interface ItemDetails {
@@ -151,6 +169,7 @@ src/
 ```
 
 **Naming Conventions:**
+
 - Components: PascalCase (e.g., `ItemIcon.astro`, `SiteHeader.astro`)
 - Utilities: kebab-case (e.g., `item-utils.ts`, `item-icon-html.ts`)
 - Data files: kebab-case (e.g., `item-details.ts`, `item-recipes.ts`)
@@ -196,6 +215,7 @@ cells.forEach((cell, index) => {
 ```
 
 **When to extract:**
+
 - Code appears in 2+ locations
 - Same logic with minor variations
 - HTML/string generation that's reused
@@ -207,12 +227,12 @@ cells.forEach((cell, index) => {
 ```css
 /* ❌ Bad - Debug colors left in production */
 .left {
-  background: green;  /* Debug color! */
+  background: green; /* Debug color! */
   transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
 }
 
 .right {
-  background: red;  /* Debug color! */
+  background: red; /* Debug color! */
   transform: translateX(50%) rotateY(90deg);
 }
 ```
@@ -231,6 +251,7 @@ cells.forEach((cell, index) => {
 ```
 
 **Common debug code to remove:**
+
 - `console.log()`, `console.warn()`, `console.error()`
 - Debug background colors (green, red, blue, etc.)
 - Test data or mock values
@@ -244,7 +265,7 @@ cells.forEach((cell, index) => {
 ```yaml
 # ❌ Bad - Comment doesn't reflect best practice
 - name: Install dependencies
-  run: npm ci  # Actually using npm ci for reproducible builds
+  run: npm ci # Actually using npm ci for reproducible builds
 ```
 
 **Solution**: Comments should reflect what's actually happening.
@@ -260,11 +281,13 @@ cells.forEach((cell, index) => {
 **Problem**: Not tracking JavaScript bundle size as you make changes.
 
 **Solution**:
+
 - Check bundle size after build: Look for `dist/_astro/*.js` sizes
 - Goal: Keep total JS under 10 kB (gzipped)
 - Recent improvement: Reduced from 5.43 kB to 4.80 kB by fixing DRY violation
 
 **To check:**
+
 ```bash
 npm run build
 # Look for: dist/_astro/hoisted.*.js  X.XX kB │ gzip: X.XX kB
@@ -276,18 +299,24 @@ npm run build
 
 ```css
 /* ❌ Bad */
-.page .header .title { }
-.pageTitle { }
-.page-header__title { }
+.page .header .title {
+}
+.pageTitle {
+}
+.page-header__title {
+}
 ```
 
 **Solution**: Consistent BEM throughout.
 
 ```css
 /* ✅ Good */
-.page__header { }
-.page__title { }
-.page__subtitle { }
+.page__header {
+}
+.page__title {
+}
+.page__subtitle {
+}
 ```
 
 ---
@@ -297,6 +326,7 @@ npm run build
 **Before committing ANY code, verify:**
 
 ### Code Quality
+
 - [ ] **DRY Check**: Is any code duplicated? Extract to functions/utilities
 - [ ] **Debug Code**: Remove all console.logs, debug colors, test data
 - [ ] **Comments**: Ensure comments are accurate and add value
@@ -306,17 +336,20 @@ npm run build
 - [ ] **Formatting**: Run `npm run format` - auto-fix all formatting
 
 ### Architecture
+
 - [ ] **BEM**: All CSS classes follow BEM naming
 - [ ] **Mobile First**: Styles work on mobile, then enhance for desktop
 - [ ] **Accessibility**: Semantic HTML, proper ARIA labels, keyboard nav
 - [ ] **Performance**: Minimal JavaScript, optimized assets
 
 ### Testing
+
 - [ ] **Build**: Run `npm run build` - must complete successfully
 - [ ] **Preview**: Run `npm run preview` - manually test key functionality
 - [ ] **No Console Errors**: Check browser console - must be clean
 
 ### Git
+
 - [ ] **Clear Message**: Commit message clearly describes what and why
 - [ ] **Atomic Commits**: Each commit does one thing
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
@@ -336,6 +369,7 @@ npm run dev
 ```
 
 **Check existing patterns:**
+
 - Look at similar components for patterns
 - Follow existing naming conventions
 - Match the code style you see
@@ -354,6 +388,7 @@ npm run lint
 ```
 
 **Keep these running:**
+
 - Dev server for instant feedback
 - Type-check on save (if your editor supports it)
 
@@ -429,11 +464,7 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 ```astro
 <!-- Server-rendered initial state -->
 <div class="crafting" id="crafting-area">
-  {initialItems.map((cell) => (
-    <div class="crafting__cell">
-      {cell && <ItemIcon item={cell} />}
-    </div>
-  ))}
+  {initialItems.map((cell) => <div class="crafting__cell">{cell && <ItemIcon item={cell} />}</div>)}
 </div>
 
 <!-- Client-side enhancement for SPA-like navigation -->
@@ -453,7 +484,7 @@ export const items = {
   // ...
 } as const;
 
-export type ItemType = typeof items[keyof typeof items];
+export type ItemType = (typeof items)[keyof typeof items];
 
 // Use in interfaces
 export interface ItemDetails {
@@ -476,6 +507,7 @@ export interface ItemDetails {
 5. Test with `npm run build` and `npm run preview`
 
 **Example:**
+
 ```astro
 ---
 import MainLayout from '../layouts/MainLayout.astro';
@@ -514,6 +546,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 5. Export types if needed by other components
 
 **Example:**
+
 ```astro
 ---
 interface Props {
@@ -556,6 +589,7 @@ const { title, description } = Astro.props;
 4. Write tests if it's critical logic
 
 **Example:**
+
 ```typescript
 import type { ItemDetails } from '@/data/item-details';
 
@@ -595,6 +629,7 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 4. Ensure accessibility (contrast, focus states, etc.)
 
 **Available CSS Variables:**
+
 ```css
 /* Colors */
 --color-bg: #fafafa;
@@ -617,7 +652,7 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 --space-12: 3rem;
 
 /* Typography */
---font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, ...;
+--font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, ...;
 --font-mono: ui-monospace, SFMono-Regular, ...;
 ```
 
@@ -635,6 +670,7 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 ## Version History
 
 **v2.0** - 2025-11-14
+
 - Added comprehensive anti-patterns section
 - Added pre-commit checklist for agents
 - Enhanced with specific code examples
@@ -642,6 +678,7 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 - Documented key patterns in this codebase
 
 **v1.0** - 2025-11-14
+
 - Initial version with basic guidelines
 - Code standards and architecture decisions
 
