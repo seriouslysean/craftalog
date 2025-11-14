@@ -1,0 +1,40 @@
+---
+const currentPath = Astro.url.pathname;
+const basePath = import.meta.env.BASE_URL;
+
+// Helper to check if a link is active
+const isActive = (path: string) => {
+  const fullPath = basePath === '/' ? path : `${basePath}${path}`;
+  return currentPath === fullPath || currentPath === `${fullPath}/`;
+};
+---
+
+<header>
+  <p>Craftalog</p>
+
+  <nav class="nav">
+    <ul>
+      <li>
+        <a href={`${basePath}`} class:list={[{ active: isActive('') }]}>Home</a>
+      </li>
+      <li>
+        <a href={`${basePath}about`} class:list={[{ active: isActive('about') }]}>About</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .nav ul,
+  .nav ul li {
+    display: inline-block;
+  }
+
+  .nav ul li {
+    margin-right: 0.5em;
+  }
+
+  .nav a.active {
+    font-weight: bold;
+  }
+</style>

@@ -1,0 +1,232 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ItemIcon from '../components/ItemIcon.astro';
+import { recipes } from '../data/item-recipes';
+import { getCraftingTableState, getResultItemDetails } from '../utils/item-utils';
+
+// Get recipe from URL query parameter
+const url = new URL(Astro.request.url);
+const recipeParam = url.searchParams.get('recipe') || '';
+
+// Get initial state
+const recipeList = Object.keys(recipes);
+const initialItems = getCraftingTableState(recipeParam);
+const initialResult = getResultItemDetails(recipeParam);
+---
+
+<MainLayout title="Craftalog - A Minecraft Recipe Catalog">
+  <div class="home">
+    <h1>Crafting Grid</h1>
+    <h2>Current Recipe: <span id="current-recipe">{recipeParam || 'none'}</span></h2>
+
+    <div class="crafting" id="crafting-area">
+      <div class="crafting__table">
+        {initialItems.map((cell, index) => (
+          <div class="crafting__cell" data-index={index}>
+            {cell && <ItemIcon item={cell} />}
+          </div>
+        ))}
+      </div>
+      <div class="crafting__table crafting__table--result">
+        <div class="crafting__cell">
+          {initialResult && <ItemIcon item={initialResult} />}
+        </div>
+      </div>
+    </div>
+
+    {recipeList.length > 0 && (
+      <>
+        <h2>Recipe List</h2>
+        <ul>
+          {recipeList.map((recipe) => (
+            <li>
+              <a href={`?recipe=${recipe}`}>{recipe}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </div>
+</MainLayout>
+
+<script>
+  import { getCraftingTableState, getResultItemDetails } from '../utils/item-utils';
+
+  // Function to update the crafting grid based on URL
+  function updateCraftingGrid() {
+    const url = new URL(window.location.href);
+    const recipe = url.searchParams.get('recipe') || '';
+
+    // Update recipe display
+    const recipeDisplay = document.getElementById('current-recipe');
+    if (recipeDisplay) {
+      recipeDisplay.textContent = recipe || 'none';
+    }
+
+    // Get the crafting table state
+    const items = getCraftingTableState(recipe);
+    const result = getResultItemDetails(recipe);
+
+    // Update crafting cells
+    const craftingArea = document.getElementById('crafting-area');
+    if (!craftingArea) return;
+
+    const cells = craftingArea.querySelectorAll('.crafting__table:not(.crafting__table--result) .crafting__cell');
+    cells.forEach((cell, index) => {
+      const item = items[index];
+      if (item) {
+        const isBlock = item.icon?.length === 2;
+        const iconHtml = isBlock
+          ? `<div class="item-icon item-icon--block">
+              <ul class="block" title="${item.name}">
+                <li class="top" style="background-image: url(${item.icon[0]})"></li>
+                <li class="left" style="background-image: url(${item.icon[1]})"></li>
+                <li class="right" style="background-image: url(${item.icon[1]})"></li>
+              </ul>
+            </div>`
+          : `<div class="item-icon">
+              <img class="icon" src="${item.icon[0]}" alt="${item.name}" title="${item.name}" />
+            </div>`;
+        cell.innerHTML = iconHtml;
+      } else {
+        cell.innerHTML = '';
+      }
+    });
+
+    // Update result cell
+    const resultCell = craftingArea.querySelector('.crafting__table--result .crafting__cell');
+    if (resultCell && result) {
+      const isBlock = result.icon?.length === 2;
+      const iconHtml = isBlock
+        ? `<div class="item-icon item-icon--block">
+            <ul class="block" title="${result.name}">
+              <li class="top" style="background-image: url(${result.icon[0]})"></li>
+              <li class="left" style="background-image: url(${result.icon[1]})"></li>
+              <li class="right" style="background-image: url(${result.icon[1]})"></li>
+            </ul>
+          </div>`
+        : `<div class="item-icon">
+            <img class="icon" src="${result.icon[0]}" alt="${result.name}" title="${result.name}" />
+          </div>`;
+      resultCell.innerHTML = iconHtml;
+    } else if (resultCell) {
+      resultCell.innerHTML = '';
+    }
+  }
+
+  // Listen for popstate (back/forward navigation)
+  window.addEventListener('popstate', updateCraftingGrid);
+
+  // Listen for link clicks to update without full page reload
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const link = target.closest('a[href^="?recipe="]');
+    if (link && link instanceof HTMLAnchorElement) {
+      e.preventDefault();
+      const url = new URL(link.href);
+      window.history.pushState({}, '', url);
+      updateCraftingGrid();
+    }
+  });
+</script>
+
+<style>
+  .crafting {
+    display: flex;
+    gap: 1em;
+    background-color: var(--color-gray-light);
+    padding: 1em;
+    height: 100%;
+  }
+
+  .crafting__table {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1em;
+    width: 70%;
+    position: relative;
+  }
+
+  .crafting__table--result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+  }
+
+  .crafting__cell {
+    width: 80%;
+  }
+
+  .crafting__cell {
+    background-color: var(--color-gray);
+    box-shadow: 0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset,
+      -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    padding: 1em;
+  }
+
+  .crafting__icon {
+    image-rendering: pixelated;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Need to include ItemIcon styles for client-side rendering */
+  :global(.item-icon) {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 1/1;
+    image-rendering: pixelated;
+  }
+
+  :global(.item-icon--block) {
+    max-width: 60%;
+  }
+
+  :global(.icon) {
+    width: 100%;
+    height: auto;
+  }
+
+  :global(.block) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateX(-35deg) rotateY(-45deg);
+  }
+
+  :global(.block .top),
+  :global(.block .left),
+  :global(.block .right) {
+    background: #fff none no-repeat center / cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+  }
+
+  :global(.left) {
+    background: green;
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
+  }
+
+  :global(.right) {
+    background: red;
+    transform: translateX(50%) rotateY(90deg);
+  }
+
+  :global(.top) {
+    background: blue;
+    transform: translateY(-50%) rotateX(90deg);
+  }
+</style>

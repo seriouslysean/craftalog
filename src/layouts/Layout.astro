@@ -1,0 +1,74 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Craftalog is a Minecraft recipe catalog. Find the recipe you need quickly and easily!" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.craftalog.app" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import 'modern-normalize/modern-normalize.css';
+
+  :root {
+    /* minecraft colors */
+    --color-gray: #8b8b8b;
+    --color-gray-light: #c6c6c6;
+    --color-gray-dark: #373737;
+    /* styles */
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  figure,
+  p,
+  ol,
+  ul {
+    margin: 0;
+  }
+
+  ol,
+  ul {
+    list-style: none;
+    padding-inline: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  img {
+    display: block;
+    max-inline-size: 100%;
+  }
+</style>

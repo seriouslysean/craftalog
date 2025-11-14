@@ -1,25 +1,14 @@
-# craftalog
+# Craftalog
 
-This template should help get you started developing with Vue 3 in Vite.
+A modern Minecraft recipe catalog built with Astro and TypeScript.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- 🚀 Built with [Astro](https://astro.build) for optimal performance
+- 📦 TypeScript for type safety
+- 🎨 Modern CSS with CSS custom properties
+- 📱 Responsive design
+- ⚡ Zero JavaScript by default, enhanced with progressive JavaScript where needed
 
 ## Project Setup
 
@@ -27,13 +16,17 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
+
+Run the development server with hot reload:
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Production Build
+
+Type-check and build for production:
 
 ```sh
 npm run build
@@ -45,33 +38,52 @@ set the `BASE_PATH` environment variable before building. For example:
 ```sh
 BASE_PATH=/craftalog/ npm run build
 ```
+
 When using the provided GitHub Pages workflow, set a repository variable named
 `BASE_PATH` so the build automatically uses the correct subdirectory.
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### Preview Production Build
+
+Preview the production build locally:
 
 ```sh
-npm run test:unit
+npm run preview
 ```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+## GitHub Pages Deployment
 
-```sh
-npm run test:e2e:dev
+This project is configured to deploy to GitHub Pages automatically via GitHub Actions.
+The workflow runs on pushes to the `main` branch.
+
+### Configuration
+
+1. Enable GitHub Pages in your repository settings
+2. Set the source to "GitHub Actions"
+3. (Optional) Set a repository variable named `BASE_PATH` if deploying to a subdirectory
+
+## Project Structure
+
+```
+/
+├── public/             # Static assets (favicon, textures, etc.)
+├── src/
+│   ├── components/     # Astro components
+│   ├── data/          # Data files (items, recipes, etc.)
+│   ├── layouts/       # Page layouts
+│   ├── pages/         # File-based routing
+│   └── utils/         # Utility functions
+├── astro.config.mjs   # Astro configuration
+└── tsconfig.json      # TypeScript configuration
 ```
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+## Tech Stack
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+- **Framework**: [Astro](https://astro.build)
+- **Language**: TypeScript
+- **Styling**: CSS with modern features
+- **Deployment**: GitHub Pages
+- **CI/CD**: GitHub Actions
 
-```sh
-npm run build
-npm run test:e2e
-```
+## License
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+MIT

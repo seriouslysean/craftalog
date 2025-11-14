@@ -1,7 +1,12 @@
 import { items, itemGroups } from './items';
 
-// Loosely based off recipes in https://github.com/Mojang/bedrock-samples/blob/main/behavior_pack/recipes/
-export const recipes = {
+export interface Recipe {
+  shaped: boolean;
+  pattern: string[];
+  key: Record<string, string[]>;
+}
+
+export const recipes: Record<string, Recipe> = {
   [items.arrow]: {
     shaped: true,
     pattern: ['X', '#', 'Y'],
@@ -29,7 +34,7 @@ export const recipes = {
     shaped: true,
     pattern: ['#'],
     key: {
-      '#': itemGroups.logs,
+      '#': [...itemGroups.logs],
     },
   },
   [items.torch]: {
@@ -37,7 +42,7 @@ export const recipes = {
     pattern: ['X', '#'],
     key: {
       '#': [items.stick],
-      X: itemGroups.coals,
+      X: [...itemGroups.coals],
     },
   },
 };

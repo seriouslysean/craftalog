@@ -21,7 +21,7 @@ export const items = {
   stick: 'stick',
   torch: 'torch',
   warped_stem: 'warped_stem',
-};
+} as const;
 
 export const itemGroups = {
   coals: [items.coal, items.charcoal],
@@ -36,4 +36,6 @@ export const itemGroups = {
     items.log_spruce,
     items.warped_stem,
   ],
-};
+} as const;
+
+export type ItemType = typeof items[keyof typeof items];

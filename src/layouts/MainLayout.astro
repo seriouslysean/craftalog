@@ -1,0 +1,48 @@
+---
+import Layout from './Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <div class="wrapper">
+    <SiteHeader class="header" />
+
+    <main class="main">
+      <slot />
+    </main>
+
+    <SiteFooter class="footer" />
+  </div>
+</Layout>
+
+<style>
+  /*
+  Specific layout styles, but no design
+  */
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .header,
+  .main,
+  .footer {
+    margin: 0 auto;
+    padding: 0 1em;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .footer {
+    margin-top: auto;
+  }
+</style>
