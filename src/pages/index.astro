@@ -15,37 +15,47 @@ const initialResult = getResultItemDetails(recipeParam);
 ---
 
 <MainLayout title="Craftalog - A Minecraft Recipe Catalog">
-  <div class="home">
-    <h1>Crafting Grid</h1>
-    <h2>Current Recipe: <span id="current-recipe">{recipeParam || 'none'}</span></h2>
+  <div class="page">
+    <div class="page__header">
+      <h1 class="page__title">Crafting Grid</h1>
+      <p class="page__subtitle">
+        Recipe: <span id="current-recipe" class="page__recipe-name">{recipeParam || 'none'}</span>
+      </p>
+    </div>
 
     <div class="crafting" id="crafting-area">
-      <div class="crafting__table">
-        {initialItems.map((cell, index) => (
-          <div class="crafting__cell" data-index={index}>
-            {cell && <ItemIcon item={cell} />}
-          </div>
-        ))}
+      <div class="crafting__grid">
+        {
+          initialItems.map((cell, index) => (
+            <div class="crafting__cell" data-index={index}>
+              {cell && <ItemIcon item={cell} />}
+            </div>
+          ))
+        }
       </div>
-      <div class="crafting__table crafting__table--result">
+      <div class="crafting__result">
         <div class="crafting__cell">
           {initialResult && <ItemIcon item={initialResult} />}
         </div>
       </div>
     </div>
 
-    {recipeList.length > 0 && (
-      <>
-        <h2>Recipe List</h2>
-        <ul>
-          {recipeList.map((recipe) => (
-            <li>
-              <a href={`?recipe=${recipe}`}>{recipe}</a>
-            </li>
-          ))}
-        </ul>
-      </>
-    )}
+    {
+      recipeList.length > 0 && (
+        <div class="recipes">
+          <h2 class="recipes__title">Recipes</h2>
+          <ul class="recipes__list">
+            {recipeList.map((recipe) => (
+              <li class="recipes__item">
+                <a href={`?recipe=${recipe}`} class="recipes__link">
+                  {recipe}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
   </div>
 </MainLayout>
 
@@ -71,7 +81,7 @@ const initialResult = getResultItemDetails(recipeParam);
     const craftingArea = document.getElementById('crafting-area');
     if (!craftingArea) return;
 
-    const cells = craftingArea.querySelectorAll('.crafting__table:not(.crafting__table--result) .crafting__cell');
+    const cells = craftingArea.querySelectorAll('.crafting__grid .crafting__cell');
     cells.forEach((cell, index) => {
       const item = items[index];
       if (item) {
@@ -94,7 +104,7 @@ const initialResult = getResultItemDetails(recipeParam);
     });
 
     // Update result cell
-    const resultCell = craftingArea.querySelector('.crafting__table--result .crafting__cell');
+    const resultCell = craftingArea.querySelector('.crafting__result .crafting__cell');
     if (resultCell && result) {
       const isBlock = result.icon?.length === 2;
       const iconHtml = isBlock
@@ -131,23 +141,42 @@ const initialResult = getResultItemDetails(recipeParam);
 </script>
 
 <style>
-  .crafting {
-    display: flex;
-    gap: 1em;
-    background-color: var(--color-gray-light);
-    padding: 1em;
-    height: 100%;
+  /* Page Block */
+  .page__header {
+    margin-bottom: var(--space-8);
   }
 
-  .crafting__table {
+  .page__subtitle {
+    margin-top: var(--space-2);
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+  }
+
+  .page__recipe-name {
+    font-family: var(--font-mono);
+    color: var(--color-fg);
+    font-weight: 500;
+  }
+
+  /* Crafting Block */
+  .crafting {
+    display: flex;
+    gap: var(--space-4);
+    background-color: var(--color-gray-light);
+    padding: var(--space-4);
+    border-radius: 0.5rem;
+    margin-bottom: var(--space-12);
+  }
+
+  .crafting__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1em;
+    gap: var(--space-4);
     width: 70%;
     position: relative;
   }
 
-  .crafting__table--result {
+  .crafting__result {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,24 +185,60 @@ const initialResult = getResultItemDetails(recipeParam);
 
   .crafting__cell {
     width: 80%;
-  }
-
-  .crafting__cell {
     background-color: var(--color-gray);
-    box-shadow: 0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset,
+    box-shadow:
+      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset,
       -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
     display: flex;
     justify-content: center;
     align-items: center;
     aspect-ratio: 1 / 1;
     position: relative;
-    padding: 1em;
+    padding: var(--space-4);
   }
 
-  .crafting__icon {
-    image-rendering: pixelated;
-    width: 100%;
-    height: auto;
+  /* Recipes Block */
+  .recipes {
+    margin-top: var(--space-12);
+  }
+
+  .recipes__list {
+    margin-top: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-2);
+  }
+
+  .recipes__link {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    transition: all 0.2s;
+  }
+
+  .recipes__link:hover {
+    border-color: var(--color-fg);
+    background-color: white;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 640px) {
+    .crafting {
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .crafting__grid,
+    .crafting__result {
+      width: 100%;
+    }
+
+    .recipes__list {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* Need to include ItemIcon styles for client-side rendering */

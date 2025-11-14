@@ -13,38 +13,21 @@ const hasIcon = item && typeof item?.icon === 'object';
 const isBlock = item?.icon?.length === 2;
 ---
 
-{hasIcon && (
-  <div
-    class:list={[
-      'item-icon',
-      { 'item-icon--block': isBlock }
-    ]}
-  >
-    {isBlock ? (
-      <ul class="block" title={item.name}>
-        <li
-          class="top"
-          style={`background-image: url(${item.icon[0]})`}
-        />
-        <li
-          class="left"
-          style={`background-image: url(${item.icon[1]})`}
-        />
-        <li
-          class="right"
-          style={`background-image: url(${item.icon[1]})`}
-        />
-      </ul>
-    ) : (
-      <img
-        class="icon"
-        src={item.icon[0]}
-        alt={item.name}
-        title={item.name}
-      />
-    )}
-  </div>
-)}
+{
+  hasIcon && (
+    <div class:list={['item-icon', { 'item-icon--block': isBlock }]}>
+      {isBlock ? (
+        <ul class="block" title={item.name}>
+          <li class="top" style={`background-image: url(${item.icon[0]})`} />
+          <li class="left" style={`background-image: url(${item.icon[1]})`} />
+          <li class="right" style={`background-image: url(${item.icon[1]})`} />
+        </ul>
+      ) : (
+        <img class="icon" src={item.icon[0]} alt={item.name} title={item.name} />
+      )}
+    </div>
+  )
+}
 
 <style>
   .item-icon {

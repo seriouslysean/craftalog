@@ -24,9 +24,6 @@ const { title, description } = Astro.props;
 </Layout>
 
 <style>
-  /*
-  Specific layout styles, but no design
-  */
   .wrapper {
     display: flex;
     flex-direction: column;
@@ -37,12 +34,33 @@ const { title, description } = Astro.props;
   .main,
   .footer {
     margin: 0 auto;
-    padding: 0 1em;
-    max-width: 800px;
+    padding: 0 var(--space-4);
+    max-width: 60rem;
     width: 100%;
+  }
+
+  .header {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+
+  .main {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-12);
   }
 
   .footer {
     margin-top: auto;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .header,
+    .main,
+    .footer {
+      padding-left: var(--space-8);
+      padding-right: var(--space-8);
+    }
   }
 </style>

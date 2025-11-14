@@ -10,31 +10,70 @@ const isActive = (path: string) => {
 ---
 
 <header>
-  <p>Craftalog</p>
+  <div class="header-content">
+    <a href={`${basePath}`} class="logo">Craftalog</a>
 
-  <nav class="nav">
-    <ul>
-      <li>
-        <a href={`${basePath}`} class:list={[{ active: isActive('') }]}>Home</a>
-      </li>
-      <li>
-        <a href={`${basePath}about`} class:list={[{ active: isActive('about') }]}>About</a>
-      </li>
-    </ul>
-  </nav>
+    <nav class="nav">
+      <ul>
+        <li>
+          <a href={`${basePath}`} class:list={[{ active: isActive('') }]}>Home</a>
+        </li>
+        <li>
+          <a href={`${basePath}about`} class:list={[{ active: isActive('about') }]}>About</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </header>
 
 <style>
-  .nav ul,
-  .nav ul li {
-    display: inline-block;
+  header {
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .nav ul li {
-    margin-right: 0.5em;
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    border: none;
+  }
+
+  .logo:hover {
+    border: none;
+    opacity: 0.7;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  .nav li {
+    list-style: none;
+  }
+
+  .nav a {
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    border: none;
+    transition: color 0.2s;
+  }
+
+  .nav a:hover,
+  .nav a.active {
+    color: var(--color-fg);
+    border: none;
   }
 
   .nav a.active {
-    font-weight: bold;
+    font-weight: 500;
   }
 </style>

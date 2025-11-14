@@ -38,4 +38,4 @@ export const itemGroups = {
   ],
 } as const;
 
-export type ItemType = typeof items[keyof typeof items];
+export type ItemType = (typeof items)[keyof typeof items];
