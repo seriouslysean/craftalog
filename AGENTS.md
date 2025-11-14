@@ -16,6 +16,7 @@ This file contains goals and guidelines for AI agents working on this project.
 ### Code Standards
 
 #### CSS Methodology
+
 - **BEM (Block Element Modifier)**: Strictly follow BEM naming conventions
   - Block: `.block`
   - Element: `.block__element`
@@ -25,6 +26,7 @@ This file contains goals and guidelines for AI agents working on this project.
 - Mobile-first responsive design
 
 #### TypeScript/JavaScript
+
 - Use ES6+ syntax and modern features
 - Prefer `const` over `let`, avoid `var`
 - Use arrow functions and destructuring
@@ -32,6 +34,7 @@ This file contains goals and guidelines for AI agents working on this project.
 - Use template literals for string interpolation
 
 #### File Organization
+
 ```
 src/
 ├── components/     # Reusable Astro components
@@ -42,6 +45,7 @@ src/
 ```
 
 #### Git Workflow
+
 - Write clear, descriptive commit messages
 - Use conventional commits format when appropriate
 - Keep commits atomic and focused
@@ -79,18 +83,21 @@ src/
 ## Architecture Decisions
 
 ### Why Astro?
+
 - **Performance**: Ships zero JavaScript by default
 - **Flexibility**: Use components from any framework
 - **DX**: Great developer experience with TypeScript support
 - **SEO**: Static site generation for better SEO
 
 ### Why BEM?
+
 - **Clarity**: Clear naming conventions prevent confusion
 - **Scalability**: Easy to maintain and scale
 - **No Conflicts**: Avoids CSS specificity issues
 - **Readability**: Easy to understand component structure
 
 ### Why TypeScript?
+
 - **Type Safety**: Catch errors at compile time
 - **IntelliSense**: Better IDE support and autocomplete
 - **Documentation**: Types serve as inline documentation
@@ -99,18 +106,21 @@ src/
 ## Common Tasks
 
 ### Adding a New Page
+
 1. Create file in `src/pages/` (e.g., `new-page.astro`)
 2. Use the `MainLayout` layout
 3. Follow BEM for CSS classes
 4. Ensure mobile responsiveness
 
 ### Adding a New Component
+
 1. Create file in `src/components/` (e.g., `NewComponent.astro`)
 2. Use TypeScript for props interface
 3. Follow BEM for CSS classes
 4. Keep components simple and reusable
 
 ### Updating Styles
+
 1. Use CSS custom properties from `:root`
 2. Follow BEM naming
 3. Test mobile-first, then desktop

@@ -5,23 +5,27 @@ Thank you for your interest in contributing to Craftalog! This document provides
 ## Development Setup
 
 ### Prerequisites
+
 - Node.js 20 or higher
 - npm (comes with Node.js)
 
 ### Getting Started
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/seriouslysean/craftalog.git
 cd craftalog
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Start the development server
+
 ```bash
 npm run dev
 ```
@@ -33,6 +37,7 @@ npm run dev
 ### Making Changes
 
 1. Create a new branch for your feature or fix
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
@@ -40,6 +45,7 @@ git checkout -b feature/your-feature-name
 2. Make your changes following our code standards (see AGENTS.md)
 
 3. Test your changes thoroughly
+
 ```bash
 npm run type-check  # TypeScript checking
 npm run lint        # ESLint
@@ -48,11 +54,13 @@ npm run preview     # Preview production build
 ```
 
 4. Format your code
+
 ```bash
 npm run format
 ```
 
 5. Commit your changes with a clear message
+
 ```bash
 git add .
 git commit -m "feat: add new feature"
@@ -61,17 +69,20 @@ git commit -m "feat: add new feature"
 ## Code Standards
 
 ### TypeScript
+
 - Use strict typing - no `any` types
 - Define interfaces for all props and data structures
 - Use type inference where appropriate
 
 ### CSS
+
 - Follow BEM methodology strictly
 - Use CSS custom properties for theming
 - Mobile-first responsive design
 - Test on various screen sizes
 
 ### Code Style
+
 - Use ESLint and Prettier (configured in the project)
 - Follow KISS, DRY, and SOLID principles
 - Keep functions small and focused

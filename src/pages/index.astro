@@ -61,6 +61,7 @@ const initialResult = getResultItemDetails(recipeParam);
 
 <script>
   import { getCraftingTableState, getResultItemDetails } from '../utils/item-utils';
+  import { generateItemIconHTML } from '../utils/item-icon-html';
 
   // Function to update the crafting grid based on URL
   function updateCraftingGrid() {
@@ -84,43 +85,13 @@ const initialResult = getResultItemDetails(recipeParam);
     const cells = craftingArea.querySelectorAll('.crafting__grid .crafting__cell');
     cells.forEach((cell, index) => {
       const item = items[index];
-      if (item) {
-        const isBlock = item.icon?.length === 2;
-        const iconHtml = isBlock
-          ? `<div class="item-icon item-icon--block">
-              <ul class="block" title="${item.name}">
-                <li class="top" style="background-image: url(${item.icon[0]})"></li>
-                <li class="left" style="background-image: url(${item.icon[1]})"></li>
-                <li class="right" style="background-image: url(${item.icon[1]})"></li>
-              </ul>
-            </div>`
-          : `<div class="item-icon">
-              <img class="icon" src="${item.icon[0]}" alt="${item.name}" title="${item.name}" />
-            </div>`;
-        cell.innerHTML = iconHtml;
-      } else {
-        cell.innerHTML = '';
-      }
+      cell.innerHTML = generateItemIconHTML(item);
     });
 
     // Update result cell
     const resultCell = craftingArea.querySelector('.crafting__result .crafting__cell');
-    if (resultCell && result) {
-      const isBlock = result.icon?.length === 2;
-      const iconHtml = isBlock
-        ? `<div class="item-icon item-icon--block">
-            <ul class="block" title="${result.name}">
-              <li class="top" style="background-image: url(${result.icon[0]})"></li>
-              <li class="left" style="background-image: url(${result.icon[1]})"></li>
-              <li class="right" style="background-image: url(${result.icon[1]})"></li>
-            </ul>
-          </div>`
-        : `<div class="item-icon">
-            <img class="icon" src="${result.icon[0]}" alt="${result.name}" title="${result.name}" />
-          </div>`;
-      resultCell.innerHTML = iconHtml;
-    } else if (resultCell) {
-      resultCell.innerHTML = '';
+    if (resultCell) {
+      resultCell.innerHTML = generateItemIconHTML(result);
     }
   }
 
@@ -281,17 +252,14 @@ const initialResult = getResultItemDetails(recipeParam);
   }
 
   :global(.left) {
-    background: green;
     transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
   }
 
   :global(.right) {
-    background: red;
     transform: translateX(50%) rotateY(90deg);
   }
 
   :global(.top) {
-    background: blue;
     transform: translateY(-50%) rotateX(90deg);
   }
 </style>

@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - name: Install dependencies
+      - name: Install dependencies from lockfile
         run: npm ci
       - name: Build with Astro
         run: npm run build
