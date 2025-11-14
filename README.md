@@ -2,6 +2,8 @@
 
 A modern Minecraft recipe catalog built with Astro and TypeScript.
 
+> **For Contributors & AI Agents**: Please read [@AGENTS.md](./AGENTS.md) before making changes. It contains comprehensive guidelines, common pitfalls, and code standards.
+
 ## Features
 
 - 🚀 Built with [Astro](https://astro.build) for optimal performance

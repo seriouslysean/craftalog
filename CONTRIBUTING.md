@@ -2,6 +2,8 @@
 
 Thank you for your interest in contributing to Craftalog! This document provides guidelines and instructions for contributing.
 
+> **Important**: Please read [@AGENTS.md](./AGENTS.md) first for comprehensive code standards, common pitfalls, and project patterns.
+
 ## Development Setup
 
 ### Prerequisites
@@ -67,6 +69,8 @@ git commit -m "feat: add new feature"
 ```
 
 ## Code Standards
+
+See [@AGENTS.md](./AGENTS.md) for complete code standards. Key points:
 
 ### TypeScript
 
