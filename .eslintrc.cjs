@@ -1,30 +1,35 @@
-/* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution');
-
 module.exports = {
   root: true,
-  'extends': [
-    'plugin:vue/vue3-essential',
+  env: {
+    node: true,
+    es2022: true,
+    browser: true,
+  },
+  extends: [
     'eslint:recommended',
-    '@vue/eslint-config-typescript',
-    '@vue/eslint-config-prettier/skip-formatting',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:astro/recommended',
   ],
-  rules: {
-    'semi': ['error', 'always'],
-    'comma-dangle': ['error', 'always-multiline'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
   overrides: [
     {
-      files: [
-        'cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}',
-        'cypress/support/**/*.{js,ts,jsx,tsx}',
-      ],
-      'extends': [
-        'plugin:cypress/recommended',
-      ],
+      files: ['*.astro'],
+      parser: 'astro-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.astro'],
+      },
     },
   ],
-  parserOptions: {
-    ecmaVersion: 'latest',
+  rules: {
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+    ],
+    '@typescript-eslint/no-explicit-any': 'warn',
   },
 };
