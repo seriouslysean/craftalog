@@ -1,0 +1,82 @@
+---
+interface Props {
+  item: {
+    id: string;
+    name: string;
+    icon: string[];
+  } | null;
+}
+
+const { item } = Astro.props;
+
+const hasIcon = item && typeof item?.icon === 'object';
+const isBlock = item?.icon?.length === 2;
+---
+
+{
+  hasIcon && (
+    <div class:list={['item-icon', { 'item-icon--block': isBlock }]}>
+      {isBlock ? (
+        <ul class="block" title={item.name}>
+          <li class="top" style={`background-image: url(${item.icon[0]})`} />
+          <li class="left" style={`background-image: url(${item.icon[1]})`} />
+          <li class="right" style={`background-image: url(${item.icon[1]})`} />
+        </ul>
+      ) : (
+        <img class="icon" src={item.icon[0]} alt={item.name} title={item.name} />
+      )}
+    </div>
+  )
+}
+
+<style>
+  .item-icon {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 1/1;
+    image-rendering: pixelated;
+  }
+
+  .item-icon--block {
+    max-width: 60%;
+  }
+
+  .icon {
+    width: 100%;
+    height: auto;
+  }
+
+  .block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateX(-35deg) rotateY(-45deg);
+  }
+
+  .block .top,
+  .block .left,
+  .block .right {
+    background: #fff none no-repeat center / cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+  }
+
+  .left {
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
+  }
+
+  .right {
+    transform: translateX(50%) rotateY(90deg);
+  }
+
+  .top {
+    transform: translateY(-50%) rotateX(90deg);
+  }
+</style>

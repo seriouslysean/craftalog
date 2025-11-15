@@ -1,17 +1,9 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ],
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "module": "NodeNext"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }

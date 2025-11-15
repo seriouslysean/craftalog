@@ -1,9 +1,12 @@
-import { items } from './items.js';
+import { items } from './items';
 
-// TODO: Maybe add a type key (block vs item) and some helper functions to infer icon instead of
-// adding it direct to the object
+export interface ItemDetails {
+  id: string;
+  name: string;
+  icon: string[];
+}
 
-export const itemDetails = {
+export const itemDetails: Record<string, ItemDetails> = {
   [items.arrow]: {
     id: 'arrow',
     name: 'Arrow',
@@ -79,12 +82,6 @@ export const itemDetails = {
     name: 'Spruce Log',
     icon: ['/textures/blocks/log_spruce_top.png', '/textures/blocks/log_spruce.png'],
   },
-  // There are actually 2 distinct textures for the melon block
-  // Ideally we create a way to show a psuedo 3d block from items that show up
-  // that way in the crafting table, something like this and then we can either
-  // generate an image from this json structure, or show it in css as 3 parts
-  //            / top texture \
-  //    | side texture | side texture |
   [items.melon_block]: {
     id: 'melon_block',
     name: 'Melon',
