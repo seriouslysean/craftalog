@@ -28,3 +28,9 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# Generated data files (created at build time from submodule)
+src/data/generated/
+
+# Generated textures (copied at build time from submodule)
+public/textures/

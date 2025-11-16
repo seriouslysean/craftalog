@@ -1,5 +1,5 @@
-import { itemDetails, type ItemDetails } from '@/data/item-details';
-import { recipes } from '@/data/item-recipes';
+import { itemDetails, type ItemDetails } from '@/data/generated/item-details';
+import { recipes } from '@/data/generated/item-recipes';
 
 export const getCraftingTableState = (recipeId: string): (ItemDetails | null)[] => {
   const craftingTableState: (ItemDetails | null)[] = Array(9).fill(null);
@@ -23,10 +23,10 @@ export const getCraftingTableState = (recipeId: string): (ItemDetails | null)[] 
   const padCols = Math.floor((3 - numCols) / 2);
 
   // Directly map items from the pattern to the crafting grid
-  pattern.forEach((row, rowIndex) => {
-    row.split('').forEach((char, colIndex) => {
+  pattern.forEach((row: string, rowIndex: number) => {
+    row.split('').forEach((char: string, colIndex: number) => {
       const itemOption = key[char];
-      if (itemOption) {
+      if (itemOption && Array.isArray(itemOption)) {
         const item = itemOption[0]; // Use the first item associated with the character
         if (itemDetails[item]) {
           // Calculate the index for this item, considering the padding
