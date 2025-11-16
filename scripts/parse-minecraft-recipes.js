@@ -162,11 +162,29 @@ function copyTexture(sourcePath, destPath) {
 function findAndCopyTexture(itemId, isBlock = false) {
   const sourceDir = isBlock ? TEXTURES_PATH_BLOCKS : TEXTURES_PATH_ITEMS;
   const destDir = path.join(PROJECT_ROOT, 'public', 'textures', isBlock ? 'blocks' : 'items');
-  const sourcePath = path.join(sourceDir, `${itemId}.png`);
-  const destPath = path.join(destDir, `${itemId}.png`);
 
-  if (copyTexture(sourcePath, destPath)) {
-    return `/textures/${isBlock ? 'blocks' : 'items'}/${itemId}.png`;
+  // Try different naming patterns for Minecraft textures
+  const namingPatterns = [
+    itemId, // Try exact match first (e.g., acacia_planks)
+  ];
+
+  // For compound names like "acacia_planks", also try reversed "planks_acacia"
+  if (itemId.includes('_')) {
+    const parts = itemId.split('_');
+    if (parts.length === 2) {
+      const reversed = `${parts[1]}_${parts[0]}`;
+      namingPatterns.push(reversed);
+    }
+  }
+
+  // Try each naming pattern
+  for (const pattern of namingPatterns) {
+    const sourcePath = path.join(sourceDir, `${pattern}.png`);
+    const destPath = path.join(destDir, `${itemId}.png`); // Always save with original itemId
+
+    if (copyTexture(sourcePath, destPath)) {
+      return `/textures/${isBlock ? 'blocks' : 'items'}/${itemId}.png`;
+    }
   }
 
   return null;
