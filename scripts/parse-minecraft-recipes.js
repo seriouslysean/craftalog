@@ -25,6 +25,31 @@ const allItems = new Set();
 const craftingTableRecipes = {};
 const itemGroups = {};
 
+// Minecraft wood types for texture matching
+const WOOD_TYPES = [
+  'acacia', 'birch', 'cherry', 'dark_oak', 'jungle', 'mangrove',
+  'oak', 'spruce', 'bamboo', 'crimson', 'warped', 'pale_oak'
+];
+
+// Derivative blocks that should use their base block texture
+const DERIVATIVE_SUFFIXES = {
+  '_stairs': '',
+  '_slab': '',
+  '_wall': '',
+  '_fence': '',
+  '_fence_gate': '',
+  '_button': '',
+  '_pressure_plate': '',
+  '_carpet': ''
+};
+
+// Items to exclude (non-craftable, debug, or test items)
+const EXCLUDED_ITEMS = new Set([
+  'camera', 'portfolio', 'element', 'compound', 'sparkler',
+  'balloon', 'glow_stick', 'ice_bomb', 'super_fertilizer',
+  'medicine', 'rapid_fertilizer', 'bleach', 'heat_block'
+]);
+
 function updateSubmodule() {
   console.log('Updating bedrock-samples submodule...\n');
 
@@ -77,6 +102,12 @@ function parseShapedRecipe(recipe, recipeId) {
   }
 
   const resultId = result.item.replace(/^minecraft:/, '');
+
+  // Skip excluded items
+  if (EXCLUDED_ITEMS.has(resultId)) {
+    return null;
+  }
+
   allItems.add(resultId);
 
   return {
@@ -134,6 +165,11 @@ function parseShapelessRecipe(recipe, recipeId) {
     pattern = [chars.slice(0, third), chars.slice(third, third * 2), chars.slice(third * 2, numIngredients)];
   }
 
+  // Skip excluded items
+  if (EXCLUDED_ITEMS.has(resultId)) {
+    return null;
+  }
+
   return {
     shaped: false,
     pattern,
@@ -163,24 +199,61 @@ function findAndCopyTexture(itemId, isBlock = false) {
   const sourceDir = isBlock ? TEXTURES_PATH_BLOCKS : TEXTURES_PATH_ITEMS;
   const destDir = path.join(PROJECT_ROOT, 'public', 'textures', isBlock ? 'blocks' : 'items');
 
-  // Try different naming patterns for Minecraft textures
-  const namingPatterns = [
-    itemId, // Try exact match first (e.g., acacia_planks)
-  ];
+  const namingPatterns = [itemId];
 
-  // For compound names like "acacia_planks", also try reversed "planks_acacia"
+  // Try reversed naming (e.g., acacia_planks → planks_acacia)
   if (itemId.includes('_')) {
     const parts = itemId.split('_');
     if (parts.length === 2) {
-      const reversed = `${parts[1]}_${parts[0]}`;
-      namingPatterns.push(reversed);
+      namingPatterns.push(`${parts[1]}_${parts[0]}`);
+    }
+  }
+
+  // Try wood-type prefixed variants (e.g., chest_boat → acacia_chest_boat, birch_chest_boat, etc.)
+  const hasWoodType = WOOD_TYPES.some(wood => itemId.startsWith(wood + '_'));
+  if (!hasWoodType && !itemId.startsWith('stripped_')) {
+    // Try prefixing with each wood type
+    for (const wood of WOOD_TYPES) {
+      namingPatterns.push(`${wood}_${itemId}`);
+      // Also try pattern like boat_acacia for items like "boat"
+      namingPatterns.push(`${itemId}_${wood}`);
+    }
+  }
+
+  // For derivative blocks (stairs, slabs, etc.), try the base block
+  for (const [suffix, replacement] of Object.entries(DERIVATIVE_SUFFIXES)) {
+    if (itemId.endsWith(suffix)) {
+      const baseItem = itemId.replace(suffix, replacement);
+      namingPatterns.push(baseItem);
+      // Also try reversed base
+      if (baseItem.includes('_')) {
+        const parts = baseItem.split('_');
+        if (parts.length === 2) {
+          namingPatterns.push(`${parts[1]}_${parts[0]}`);
+        }
+      }
+    }
+  }
+
+  // For doors and trapdoors, try _upper, _lower, _top variants
+  if (itemId.includes('door') || itemId.includes('trapdoor')) {
+    namingPatterns.push(`${itemId}_upper`);
+    namingPatterns.push(`${itemId}_lower`);
+    namingPatterns.push(`${itemId}_top`);
+    // Also try door_{wood}_upper pattern
+    if (itemId.includes('_')) {
+      const parts = itemId.split('_');
+      if (parts.length === 2) {
+        namingPatterns.push(`door_${parts[0]}_upper`);
+        namingPatterns.push(`door_${parts[0]}_lower`);
+      }
     }
   }
 
   // Try each naming pattern
   for (const pattern of namingPatterns) {
     const sourcePath = path.join(sourceDir, `${pattern}.png`);
-    const destPath = path.join(destDir, `${itemId}.png`); // Always save with original itemId
+    const destPath = path.join(destDir, `${itemId}.png`);
 
     if (copyTexture(sourcePath, destPath)) {
       return `/textures/${isBlock ? 'blocks' : 'items'}/${itemId}.png`;
