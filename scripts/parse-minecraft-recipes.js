@@ -450,6 +450,45 @@ export type ItemType = (typeof items)[keyof typeof items];
 
   const itemDetails = generateItemDetails();
 
+  // Filter recipes to only include craftable ones (all items have proper textures)
+  const hasProperTexture = (itemId) => {
+    return itemDetails[itemId] && itemDetails[itemId].icon[0] !== '/textures/items/stick.png';
+  };
+
+  const isRecipeCraftable = (recipe, resultId) => {
+    // Check if result item has proper texture
+    if (!hasProperTexture(resultId)) {
+      return false;
+    }
+
+    // Check if all ingredients have proper textures
+    for (const value of Object.values(recipe.key)) {
+      if (Array.isArray(value)) {
+        // Check all items in the array
+        for (const itemId of value) {
+          if (!hasProperTexture(itemId)) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  };
+
+  const craftableRecipes = {};
+  let filteredCount = 0;
+  for (const [resultId, recipe] of Object.entries(craftingTableRecipes)) {
+    if (isRecipeCraftable(recipe, resultId)) {
+      craftableRecipes[resultId] = recipe;
+    } else {
+      filteredCount++;
+    }
+  }
+
+  console.log(`Filtered out ${filteredCount} recipes with missing textures`);
+  console.log(`Keeping ${Object.keys(craftableRecipes).length} craftable recipes\n`);
+
   let itemDetailsStr = '{\n';
   const detailEntries = Object.entries(itemDetails);
   for (let i = 0; i < detailEntries.length; i++) {
@@ -484,7 +523,7 @@ export const itemDetails: Record<string, ItemDetails> = ${itemDetailsStr};
   console.log(`Generated item-details.ts (${allItems.size} items)`);
 
   let recipesStr = '{\n';
-  const recipeEntries = Object.entries(craftingTableRecipes);
+  const recipeEntries = Object.entries(craftableRecipes);
   for (let i = 0; i < recipeEntries.length; i++) {
     const [itemId, recipe] = recipeEntries[i];
     const recipeJson = JSON.stringify(recipe, null, 2)
@@ -518,7 +557,7 @@ export const recipes: Record<string, Recipe> = ${recipesStr};
 `;
 
   fs.writeFileSync(path.join(OUTPUT_DIR, 'item-recipes.ts'), recipesContent);
-  console.log(`Generated item-recipes.ts (${Object.keys(craftingTableRecipes).length} recipes)\n`);
+  console.log(`Generated item-recipes.ts (${Object.keys(craftableRecipes).length} recipes)\n`);
 }
 
 try {
