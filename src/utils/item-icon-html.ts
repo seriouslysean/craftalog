@@ -1,4 +1,4 @@
-import type { ItemDetails } from '@/data/item-details';
+import type { ItemDetails } from '@/data/generated/item-details';
 
 /**
  * Generates HTML string for an item icon

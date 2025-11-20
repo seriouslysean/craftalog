@@ -10,10 +10,12 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:prepare": "npm run tool:update && npm run dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "npm run tool:update && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "tool:update": "node scripts/parse-minecraft-recipes.js",
     "lint": "eslint . --ext .js,.ts,.astro",
     "lint:fix": "eslint . --ext .js,.ts,.astro --fix",
     "format": "prettier --write \"**/*.{js,ts,astro,json,md}\"",
