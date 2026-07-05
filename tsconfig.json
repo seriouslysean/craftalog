@@ -5,5 +5,11 @@
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  // scripts/ and tests/ are plain Node (via tsx/vitest), not Astro site code.
+  // They're excluded from `astro check`'s TS surface because Node ambient
+  // types (node:fs/node:path/process/...) require @types/node, which isn't
+  // installed here (no new dependencies). tsx executes them without a type
+  // check; correctness is covered by vitest + running parse/validate for real.
+  "exclude": ["scripts/**", "tests/**"]
 }
