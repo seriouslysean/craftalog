@@ -1,265 +1,204 @@
 ---
+import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import ItemIcon from '../components/ItemIcon.astro';
-import { recipes } from '../data/item-recipes';
-import { getCraftingTableState, getResultItemDetails } from '../utils/item-utils';
+import { withBase } from '../utils/with-base';
+import meta from '../data/generated/meta.json';
 
-// Get recipe from URL query parameter
-const url = new URL(Astro.request.url);
-const recipeParam = url.searchParams.get('recipe') || '';
+const recipeEntries = await getCollection('recipes');
+const itemEntries = await getCollection('items');
+const itemsMap = new Map(itemEntries.map((entry) => [entry.id, entry.data]));
 
-// Get initial state
-const recipeList = Object.keys(recipes);
-const initialItems = getCraftingTableState(recipeParam);
-const initialResult = getResultItemDetails(recipeParam);
+const CATEGORY_ORDER = ['building', 'equipment', 'redstone', 'misc'];
+const CATEGORY_LABELS: Record<string, string> = {
+  building: 'Building Blocks',
+  equipment: 'Tools & Equipment',
+  redstone: 'Redstone',
+  misc: 'Miscellaneous',
+};
+
+const categories = [
+  ...CATEGORY_ORDER,
+  ...new Set(
+    recipeEntries.map((entry) => entry.data.category).filter((c) => !CATEGORY_ORDER.includes(c)),
+  ),
+];
+
+const sections = categories
+  .map((category) => {
+    const entries = recipeEntries
+      .filter((entry) => entry.data.category === category)
+      .map((entry) => {
+        const resultId = entry.data.result?.id;
+        const resultItem = resultId ? itemsMap.get(resultId) : undefined;
+        const name = resultItem?.name ?? entry.data.id.replace(/_/g, ' ');
+        return { id: entry.id, name, item: resultItem ?? null };
+      })
+      .toSorted((a, b) => a.name.localeCompare(b.name));
+
+    return { category, label: CATEGORY_LABELS[category] ?? category, entries };
+  })
+  .filter((section) => section.entries.length > 0);
+
+const totalRecipes = recipeEntries.length;
 ---
 
 <MainLayout title="Craftalog - A Minecraft Recipe Catalog">
-  <div class="page">
-    <div class="page__header">
-      <h1 class="page__title">Crafting Grid</h1>
-      <p class="page__subtitle">
-        Recipe: <span id="current-recipe" class="page__recipe-name">{recipeParam || 'none'}</span>
+  <div class="catalog">
+    <div class="catalog__header">
+      <h1 class="catalog__title">All Crafting Recipes</h1>
+      <p class="catalog__subtitle">
+        {totalRecipes} recipes cataloged from Minecraft {meta.version}
       </p>
     </div>
 
-    <div class="crafting" id="crafting-area">
-      <div class="crafting__grid">
-        {
-          initialItems.map((cell, index) => (
-            <div class="crafting__cell" data-index={index}>
-              {cell && <ItemIcon item={cell} />}
-            </div>
-          ))
-        }
-      </div>
-      <div class="crafting__result">
-        <div class="crafting__cell">
-          {initialResult && <ItemIcon item={initialResult} />}
-        </div>
-      </div>
-    </div>
+    <form class="catalog__filter" role="search">
+      <label for="recipe-filter" class="catalog__filter-label">Filter recipes by name</label>
+      <input
+        type="search"
+        id="recipe-filter"
+        class="catalog__filter-input"
+        placeholder="Search recipes…"
+        autocomplete="off"
+      />
+    </form>
 
     {
-      recipeList.length > 0 && (
-        <div class="recipes">
-          <h2 class="recipes__title">Recipes</h2>
-          <ul class="recipes__list">
-            {recipeList.map((recipe) => (
-              <li class="recipes__item">
-                <a href={`?recipe=${recipe}`} class="recipes__link">
-                  {recipe}
+      sections.map((section) => (
+        <section class="catalog__section" data-category-section>
+          <h2 class="catalog__section-title">
+            {section.label} <span class="catalog__section-count">({section.entries.length})</span>
+          </h2>
+          <ul class="catalog__grid">
+            {section.entries.map((entry) => (
+              <li class="catalog__item" data-search={entry.name.toLowerCase()}>
+                <a href={withBase(`/recipe/${entry.id}/`)} class="catalog__link">
+                  <span class="catalog__icon">
+                    <ItemIcon item={entry.item} />
+                  </span>
+                  <span class="catalog__name">{entry.name}</span>
                 </a>
               </li>
             ))}
           </ul>
-        </div>
-      )
+        </section>
+      ))
     }
   </div>
 </MainLayout>
 
 <script>
-  import { getCraftingTableState, getResultItemDetails } from '../utils/item-utils';
-  import { generateItemIconHTML } from '../utils/item-icon-html';
+  const input = document.getElementById('recipe-filter');
+  const items = document.querySelectorAll<HTMLElement>('.catalog__item');
+  const sections = document.querySelectorAll<HTMLElement>('[data-category-section]');
 
-  // Function to update the crafting grid based on URL
-  function updateCraftingGrid() {
-    const url = new URL(window.location.href);
-    const recipe = url.searchParams.get('recipe') || '';
+  function applyFilter(query: string) {
+    const needle = query.trim().toLowerCase();
 
-    // Update recipe display
-    const recipeDisplay = document.getElementById('current-recipe');
-    if (recipeDisplay) {
-      recipeDisplay.textContent = recipe || 'none';
-    }
-
-    // Get the crafting table state
-    const items = getCraftingTableState(recipe);
-    const result = getResultItemDetails(recipe);
-
-    // Update crafting cells
-    const craftingArea = document.getElementById('crafting-area');
-    if (!craftingArea) return;
-
-    const cells = craftingArea.querySelectorAll('.crafting__grid .crafting__cell');
-    cells.forEach((cell, index) => {
-      const item = items[index];
-      cell.innerHTML = generateItemIconHTML(item);
+    items.forEach((item) => {
+      const matches = !needle || (item.dataset.search ?? '').includes(needle);
+      item.hidden = !matches;
     });
 
-    // Update result cell
-    const resultCell = craftingArea.querySelector('.crafting__result .crafting__cell');
-    if (resultCell) {
-      resultCell.innerHTML = generateItemIconHTML(result);
-    }
+    sections.forEach((section) => {
+      const visibleItems = section.querySelectorAll('.catalog__item:not([hidden])');
+      section.hidden = visibleItems.length === 0;
+    });
   }
 
-  // Listen for popstate (back/forward navigation)
-  window.addEventListener('popstate', updateCraftingGrid);
-
-  // Listen for link clicks to update without full page reload
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    const link = target.closest('a[href^="?recipe="]');
-    if (link && link instanceof HTMLAnchorElement) {
-      e.preventDefault();
-      const url = new URL(link.href);
-      window.history.pushState({}, '', url);
-      updateCraftingGrid();
-    }
-  });
+  if (input instanceof HTMLInputElement) {
+    input.addEventListener('input', () => applyFilter(input.value));
+  }
 </script>
 
 <style>
-  /* Page Block */
-  .page__header {
-    margin-bottom: var(--space-8);
+  .catalog__header {
+    margin-bottom: var(--space-6);
   }
 
-  .page__subtitle {
+  .catalog__subtitle {
     margin-top: var(--space-2);
     font-size: 0.9375rem;
     color: var(--color-muted);
   }
 
-  .page__recipe-name {
-    font-family: var(--font-mono);
-    color: var(--color-fg);
+  .catalog__filter {
+    margin-bottom: var(--space-8);
+  }
+
+  .catalog__filter-label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: 0.875rem;
     font-weight: 500;
   }
 
-  /* Crafting Block */
-  .crafting {
-    display: flex;
-    gap: var(--space-4);
-    background-color: var(--color-gray-light);
-    padding: var(--space-4);
-    border-radius: 0.5rem;
-    margin-bottom: var(--space-12);
+  .catalog__filter-input {
+    width: 100%;
+    max-width: 24rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    font-family: var(--font-sans);
   }
 
-  .crafting__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
-    width: 70%;
-    position: relative;
+  .catalog__filter-input:focus {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 1px;
   }
 
-  .crafting__result {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
+  .catalog__section + .catalog__section {
+    margin-top: var(--space-8);
   }
 
-  .crafting__cell {
-    width: 80%;
-    background-color: var(--color-gray);
-    box-shadow:
-      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset,
-      -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    padding: var(--space-4);
+  .catalog__section-count {
+    color: var(--color-muted);
+    font-weight: 400;
   }
 
-  /* Recipes Block */
-  .recipes {
-    margin-top: var(--space-12);
-  }
-
-  .recipes__list {
+  .catalog__grid {
     margin-top: var(--space-4);
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-2);
   }
 
-  .recipes__link {
-    display: block;
-    padding: var(--space-3) var(--space-4);
+  .catalog__link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: 0.375rem;
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
     transition: all 0.2s;
   }
 
-  .recipes__link:hover {
+  .catalog__link:hover {
     border-color: var(--color-fg);
     background-color: white;
   }
 
-  /* Mobile Responsive */
-  @media (max-width: 640px) {
-    .crafting {
-      flex-direction: column;
-      gap: var(--space-6);
-    }
-
-    .crafting__grid,
-    .crafting__result {
-      width: 100%;
-    }
-
-    .recipes__list {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Need to include ItemIcon styles for client-side rendering */
-  :global(.item-icon) {
-    width: 100%;
-    position: relative;
-    aspect-ratio: 1/1;
+  .catalog__icon {
+    display: block;
+    width: 2rem;
+    flex-shrink: 0;
     image-rendering: pixelated;
   }
 
-  :global(.item-icon--block) {
-    max-width: 60%;
+  .catalog__name {
+    font-size: 0.875rem;
   }
 
-  :global(.icon) {
-    width: 100%;
-    height: auto;
+  @media (min-width: 480px) {
+    .catalog__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
-  :global(.block) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform: rotateX(-35deg) rotateY(-45deg);
-  }
-
-  :global(.block .top),
-  :global(.block .left),
-  :global(.block .right) {
-    background: #fff none no-repeat center / cover;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    display: flex;
-  }
-
-  :global(.left) {
-    transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
-  }
-
-  :global(.right) {
-    transform: translateX(50%) rotateY(90deg);
-  }
-
-  :global(.top) {
-    transform: translateY(-50%) rotateX(90deg);
+  @media (min-width: 768px) {
+    .catalog__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 </style>

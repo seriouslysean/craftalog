@@ -18,6 +18,19 @@ A modern Minecraft recipe catalog built with Astro and TypeScript.
 npm install
 ```
 
+Vanilla Minecraft recipe/item data is generated from vendored
+[misode/mcmeta](https://github.com/misode/mcmeta) submodules and is committed
+to the repo, so `npm install` + `npm run build` work without fetching them.
+Only run the following if you need to regenerate that data:
+
+```sh
+npm run vendor:init   # fetch the pinned submodules
+npm run parse         # regenerate src/data/generated/* and public/textures/*
+npm run validate      # check the regenerated data for consistency
+```
+
+See [AGENTS.md](./AGENTS.md#data-pipeline) for details.
+
 ### Development
 
 Run the development server with hot reload:
@@ -52,6 +65,16 @@ Preview the production build locally:
 npm run preview
 ```
 
+### Testing, Linting, and Formatting
+
+```sh
+npm test              # Vitest unit tests
+npm run lint           # oxlint
+npm run format          # oxfmt + prettier (for .astro files)
+npm run format:check    # check formatting without writing
+npm run type-check      # astro check
+```
+
 ## GitHub Pages Deployment
 
 This project is configured to deploy to GitHub Pages automatically via GitHub Actions.
@@ -67,15 +90,19 @@ The workflow runs on pushes to the `main` branch.
 
 ```
 /
-├── public/             # Static assets (favicon, textures, etc.)
+├── vendor/             # Vendored mcmeta submodules (recipes, textures)
+├── scripts/            # parse.ts / validate.ts — the data pipeline
+├── public/             # Static assets (favicon, generated textures, etc.)
 ├── src/
 │   ├── components/     # Astro components
-│   ├── data/          # Data files (items, recipes, etc.)
-│   ├── layouts/       # Page layouts
-│   ├── pages/         # File-based routing
-│   └── utils/         # Utility functions
-├── astro.config.mjs   # Astro configuration
-└── tsconfig.json      # TypeScript configuration
+│   ├── data/
+│   │   └── generated/  # Committed, machine-generated item/recipe JSON
+│   ├── layouts/        # Page layouts
+│   ├── pages/          # File-based routing
+│   └── utils/          # Utility functions
+├── tests/              # Vitest unit tests
+├── astro.config.mjs    # Astro configuration
+└── tsconfig.json       # TypeScript configuration
 ```
 
 ## Tech Stack
@@ -83,8 +110,10 @@ The workflow runs on pushes to the `main` branch.
 - **Framework**: [Astro](https://astro.build)
 - **Language**: TypeScript
 - **Styling**: CSS with modern features
+- **Linting/Formatting**: oxlint, oxfmt, prettier (for `.astro` files)
+- **Testing**: Vitest
 - **Deployment**: GitHub Pages
-- **CI/CD**: GitHub Actions
+- **CI/CD**: GitHub Actions (`ci.yml` on every PR, `update-data.yml` weekly)
 
 ## License
 

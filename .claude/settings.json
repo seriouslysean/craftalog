@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run format)",
+      "Bash(npm run format:*)",
+      "Bash(npm run type-check)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run test)",
+      "Bash(npm run test:*)",
+      "Bash(npm run build)",
+      "Bash(npm run build:*)",
+      "Bash(npm run parse)",
+      "Bash(npm run parse:*)",
+      "Bash(npm run validate)",
+      "Bash(npm run validate:*)",
+      "Bash(npm ci)",
+      "Bash(npm ci:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff)",
+      "Bash(git diff:*)",
+      "Bash(git log)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(tsx:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -d node_modules ] || npm ci --no-audit --no-fund"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,5 +1,4 @@
-node_modules/
-dist/
-.astro/
-package-lock.json
-*.tsbuildinfo
+dist
+vendor
+node_modules
+.astro

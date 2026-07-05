@@ -1,0 +1,257 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import CraftingGrid from '../../components/CraftingGrid.astro';
+import ItemIcon from '../../components/ItemIcon.astro';
+import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../../utils/crafting-grid';
+import { ingredientLabel } from '../../utils/tag-label';
+import { withBase } from '../../utils/with-base';
+import type { ItemData, RecipeData } from '../../content.config';
+
+interface PageProps {
+  recipe: RecipeData;
+  displayName: string;
+  itemsMap: Map<string, ItemData>;
+  prevId: string;
+  nextId: string;
+}
+
+export async function getStaticPaths() {
+  const recipeEntries = await getCollection('recipes');
+  const itemEntries = await getCollection('items');
+  const itemsMap = new Map(itemEntries.map((entry) => [entry.id, entry.data]));
+
+  const withNames = recipeEntries.map((entry) => {
+    const resultItem = entry.data.result ? itemsMap.get(entry.data.result.id) : undefined;
+    const displayName = resultItem?.name ?? entry.data.id.replace(/_/g, ' ');
+    return { entry, displayName };
+  });
+  withNames.sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+  return withNames.map(({ entry, displayName }, index) => {
+    const prev = withNames[(index - 1 + withNames.length) % withNames.length];
+    const next = withNames[(index + 1) % withNames.length];
+    return {
+      params: { id: entry.id },
+      props: {
+        recipe: entry.data,
+        displayName,
+        itemsMap,
+        prevId: prev.entry.id,
+        nextId: next.entry.id,
+      } satisfies PageProps,
+    };
+  });
+}
+
+const { recipe, displayName, itemsMap, prevId, nextId } = Astro.props as PageProps;
+
+const resultItem = recipe.result ? itemsMap.get(recipe.result.id) : undefined;
+const getItemName = (id: string) => itemsMap.get(id)?.name ?? id;
+
+let cells: GridCell[] = [];
+if (recipe.type === 'shaped' && recipe.pattern && recipe.key) {
+  cells = buildShapedGrid(recipe.pattern, recipe.key);
+} else if ((recipe.type === 'shapeless' || recipe.type === 'transmute') && recipe.ingredients) {
+  cells = buildShapelessGrid(recipe.ingredients);
+}
+
+const hasGrid = recipe.type !== 'special';
+
+interface LegendEntry {
+  symbol?: string;
+  label: string;
+}
+
+const legend: LegendEntry[] = [];
+if (recipe.type === 'shaped' && recipe.key) {
+  for (const [symbol, ingredient] of Object.entries(recipe.key)) {
+    const label = ingredientLabel(ingredient, getItemName);
+    if (label) legend.push({ symbol, label });
+  }
+} else if (recipe.ingredients) {
+  for (const ingredient of recipe.ingredients) {
+    const label = ingredientLabel(ingredient, getItemName);
+    if (label) legend.push({ label });
+  }
+}
+
+const ingredientNames = cells
+  .filter((cell): cell is NonNullable<GridCell> => cell !== null)
+  .map((cell) => getItemName(cell.items[0]));
+
+const ariaLabel = `3 by 3 crafting grid for ${displayName}${
+  ingredientNames.length > 0 ? `, using ${ingredientNames.join(', ')}` : ''
+}`;
+
+const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.slice(1);
+---
+
+<MainLayout
+  title={`${displayName} - Craftalog`}
+  description={`How to craft ${displayName} in Minecraft.`}
+>
+  <div class="recipe">
+    <nav class="recipe__breadcrumb">
+      <a href={withBase('/')}>&larr; All recipes</a>
+    </nav>
+
+    <div class="recipe__header">
+      <h1 class="recipe__title">{displayName}</h1>
+      <div class="recipe__badges">
+        <span class="recipe__badge">{categoryLabel}</span>
+        {
+          recipe.group && (
+            <span class="recipe__badge recipe__badge--group">
+              {recipe.group.replace(/_/g, ' ')}
+            </span>
+          )
+        }
+        {
+          recipe.type === 'shapeless' && (
+            <span class="recipe__badge recipe__badge--type">Shapeless — any arrangement works</span>
+          )
+        }
+        {
+          recipe.type === 'transmute' && (
+            <span class="recipe__badge recipe__badge--type">Transmute</span>
+          )
+        }
+      </div>
+    </div>
+
+    {
+      hasGrid ? (
+        <>
+          <CraftingGrid
+            cells={cells}
+            result={recipe.result}
+            items={itemsMap}
+            ariaLabel={ariaLabel}
+          />
+
+          {recipe.type === 'transmute' && (
+            <p class="recipe__note">The result keeps the input item's contents/appearance.</p>
+          )}
+
+          {legend.length > 0 && (
+            <ul class="recipe__legend">
+              {legend.map((item) => (
+                <li class="recipe__legend-item">
+                  {item.symbol && <span class="recipe__legend-symbol">{item.symbol}</span>}
+                  {item.symbol && ' = '}
+                  {item.label}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      ) : (
+        <div class="recipe__special">
+          {resultItem && (
+            <div class="recipe__special-icon">
+              <ItemIcon item={resultItem} loading="eager" />
+            </div>
+          )}
+          <p class="recipe__note">{recipe.note}</p>
+        </div>
+      )
+    }
+
+    <nav class="recipe__pager">
+      <a href={withBase(`/recipe/${prevId}/`)} class="recipe__pager-link">&larr; Previous</a>
+      <a href={withBase('/')} class="recipe__pager-link recipe__pager-link--home">All recipes</a>
+      <a href={withBase(`/recipe/${nextId}/`)} class="recipe__pager-link">Next &rarr;</a>
+    </nav>
+  </div>
+</MainLayout>
+
+<style>
+  .recipe__breadcrumb {
+    margin-bottom: var(--space-6);
+    font-size: 0.875rem;
+  }
+
+  .recipe__header {
+    margin-bottom: var(--space-6);
+  }
+
+  .recipe__title {
+    text-transform: capitalize;
+  }
+
+  .recipe__badges {
+    margin-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .recipe__badge {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    background-color: var(--color-border);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .recipe__badge--type {
+    background-color: var(--color-gray-light);
+    text-transform: none;
+  }
+
+  .recipe__note {
+    margin-top: var(--space-4);
+    max-width: 40rem;
+    color: var(--color-muted);
+  }
+
+  .recipe__legend {
+    margin-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  .recipe__legend-symbol {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--color-fg);
+  }
+
+  .recipe__special {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    background-color: var(--color-gray-light);
+    padding: var(--space-4);
+    border-radius: 0.5rem;
+  }
+
+  .recipe__special-icon {
+    width: 4rem;
+    flex-shrink: 0;
+  }
+
+  .recipe__special .recipe__note {
+    margin-top: 0;
+  }
+
+  .recipe__pager {
+    margin-top: var(--space-12);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+    font-size: 0.875rem;
+  }
+
+  .recipe__pager-link--home {
+    color: var(--color-muted);
+  }
+</style>

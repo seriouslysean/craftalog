@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  # Needed so update-data.yml can kick CI on its own PR branches:
+  # PRs opened with GITHUB_TOKEN never trigger pull_request workflows.
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Install dependencies from lockfile
+        run: npm ci
+
+      - name: Parse vendored data into generated JSON
+        run: npm run parse
+
+      - name: Check committed generated data matches submodule pin
+        run: git diff --exit-code -- src/data/generated public/textures
+
+      - name: Explain drift failure
+        if: failure()
+        run: |
+          echo "::error::src/data/generated and/or public/textures are out of date with the pinned mcmeta submodules."
+          echo "Run 'npm run parse' locally after updating vendor/mcmeta-summary and vendor/mcmeta-assets, then commit the regenerated files."
+
+      - name: Validate generated data
+        run: npm run validate
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build

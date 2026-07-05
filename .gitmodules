@@ -1,0 +1,10 @@
+[submodule "vendor/mcmeta-summary"]
+	path = vendor/mcmeta-summary
+	url = https://github.com/misode/mcmeta
+	shallow = true
+	branch = summary
+[submodule "vendor/mcmeta-assets"]
+	path = vendor/mcmeta-assets
+	url = https://github.com/misode/mcmeta
+	shallow = true
+	branch = assets

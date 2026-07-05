@@ -1,0 +1,199 @@
+name: Update vanilla data
+
+on:
+  schedule:
+    # Every Monday at 03:17 UTC - a quiet time, off the top of the hour.
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Determine latest stable mcmeta version
+        id: latest
+        run: |
+          latest=$(git ls-remote --tags https://github.com/misode/mcmeta 'refs/tags/*-summary' \
+            | sed -E 's#.*refs/tags/##' \
+            | grep -E '^[0-9]+(\.[0-9]+)+-summary$' \
+            | sed -E 's/-summary$//' \
+            | sort -V | tail -1)
+          if [ -z "$latest" ]; then
+            echo "::error::Could not determine latest stable mcmeta version from remote tags."
+            exit 1
+          fi
+          echo "version=$latest" >> "$GITHUB_OUTPUT"
+          echo "Latest stable version: $latest"
+
+      - name: Compare to current pin
+        id: current
+        run: |
+          current=$(cat vendor/mcmeta-summary/version.txt)
+          echo "version=$current" >> "$GITHUB_OUTPUT"
+          echo "Current pinned version: $current"
+
+      - name: Exit early if already up to date
+        if: steps.latest.outputs.version == steps.current.outputs.version
+        run: echo "Already up to date at ${{ steps.current.outputs.version }}."
+
+      - name: Check for existing update branch
+        if: steps.latest.outputs.version != steps.current.outputs.version
+        id: branch-check
+        run: |
+          branch="data-update/${{ steps.latest.outputs.version }}"
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Branch $branch already exists on origin, nothing to do."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump submodule pins
+        if: steps.latest.outputs.version != steps.current.outputs.version && steps.branch-check.outputs.exists != 'true'
+        run: |
+          ver="${{ steps.latest.outputs.version }}"
+
+          cd vendor/mcmeta-summary
+          git fetch --depth 1 origin tag "${ver}-summary"
+          git checkout "${ver}-summary"
+          cd ../..
+
+          cd vendor/mcmeta-assets
+          git fetch --depth 1 origin tag "${ver}-assets"
+          git checkout "${ver}-assets"
+          cd ../..
+
+      - name: Install dependencies from lockfile
+        if: steps.latest.outputs.version != steps.current.outputs.version && steps.branch-check.outputs.exists != 'true'
+        run: npm ci
+
+      - name: Parse and validate
+        if: steps.latest.outputs.version != steps.current.outputs.version && steps.branch-check.outputs.exists != 'true'
+        id: parse-validate
+        run: |
+          set -o pipefail
+          {
+            npm run parse
+            npm run validate
+          } 2>&1 | tee /tmp/update-data.log
+
+      - name: Report validation failure
+        if: failure() && steps.parse-validate.outcome == 'failure'
+        run: |
+          ver="${{ steps.latest.outputs.version }}"
+          tail_log=$(tail -n 200 /tmp/update-data.log || echo "no log captured")
+          body=$(cat <<EOF
+          Automated update to vanilla data version \`${ver}\` failed during
+          \`npm run parse\` / \`npm run validate\`.
+
+          <details>
+          <summary>Log tail</summary>
+
+          \`\`\`
+          ${tail_log}
+          \`\`\`
+
+          </details>
+
+          This was run by the \`update-data\` scheduled workflow. Fix the
+          parser/validator or investigate the upstream data change, then
+          re-run the workflow manually.
+          EOF
+          )
+          gh issue create \
+            --title "Vanilla data update to ${ver} failed validation" \
+            --body "$body"
+
+      - name: Check for changes
+        if: steps.latest.outputs.version != steps.current.outputs.version && steps.branch-check.outputs.exists != 'true'
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Parse/validate succeeded but produced no changes; nothing to commit."
+          fi
+
+      - name: Commit and open PR
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          ver="${{ steps.latest.outputs.version }}"
+          branch="data-update/${ver}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b "$branch"
+          git add vendor/mcmeta-summary vendor/mcmeta-assets src/data/generated public/textures
+          git commit -m "data: update vanilla data to ${ver}"
+          git push origin "$branch"
+
+          counts=""
+          if [ -f src/data/generated/meta.json ]; then
+            counts=$(cat src/data/generated/meta.json)
+          fi
+
+          body=$(cat <<EOF
+          Bumps vendored mcmeta data from \`${{ steps.current.outputs.version }}\` to \`${ver}\`.
+
+          Regenerated via \`npm run parse\` and checked with \`npm run validate\`.
+
+          <details>
+          <summary>src/data/generated/meta.json</summary>
+
+          \`\`\`json
+          ${counts}
+          \`\`\`
+
+          </details>
+
+          Opened automatically by the \`update-data\` scheduled workflow.
+          EOF
+          )
+
+          gh pr create \
+            --title "data: update vanilla data to ${ver}" \
+            --body "$body" \
+            --base main \
+            --head "$branch"
+
+      - name: Kick CI on the PR branch
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          # PRs created with GITHUB_TOKEN do not trigger pull_request
+          # workflows, so run CI explicitly; its check runs attach to the
+          # head SHA and satisfy the PR's required checks.
+          gh workflow run ci.yml --ref "data-update/${{ steps.latest.outputs.version }}"
+
+      - name: Enable auto-merge
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          ver="${{ steps.latest.outputs.version }}"
+          branch="data-update/${ver}"
+          if gh pr merge "$branch" --auto --squash; then
+            echo "Auto-merge enabled for $branch."
+          else
+            echo "::warning::Could not enable auto-merge for $branch (repo may not have it enabled). Leaving PR open for manual review."
+          fi
