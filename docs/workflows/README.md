@@ -10,10 +10,10 @@ checkout, or via the GitHub web editor):
 ```bash
 git mv docs/workflows/ci.yml docs/workflows/update-data.yml .github/workflows/
 git rm docs/workflows/README.md
-# Astro 7 requires Node >= 22.12; the deploy workflow still pins Node 20
-# and its build will fail until this is bumped.
-sed -i 's/node-version: 20/node-version: 22/' .github/workflows/deploy.yml
-git commit -am "ci: activate staged workflows, bump deploy to Node 22"
+# This project targets Node 24 (Astro 7 needs >= 22.12); the deploy
+# workflow still pins Node 20 and its build will fail until bumped.
+sed -i 's/node-version: 20/node-version: 24/' .github/workflows/deploy.yml
+git commit -am "ci: activate staged workflows, bump deploy to Node 24"
 ```
 
 - `ci.yml` — PR/main verification: parse, drift check against the mcmeta
