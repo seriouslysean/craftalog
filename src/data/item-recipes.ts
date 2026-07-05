@@ -1,4 +1,4 @@
-import { items, itemGroups } from './items';
+import { items, itemGroups } from "./items";
 
 export interface Recipe {
   shaped: boolean;
@@ -9,39 +9,39 @@ export interface Recipe {
 export const recipes: Record<string, Recipe> = {
   [items.arrow]: {
     shaped: true,
-    pattern: ['X', '#', 'Y'],
+    pattern: ["X", "#", "Y"],
     key: {
-      '#': [items.stick],
+      "#": [items.stick],
       X: [items.flint],
       Y: [items.feather],
     },
   },
   [items.melon_block]: {
     shaped: true,
-    pattern: ['MMM', 'MMM', 'MMM'],
+    pattern: ["MMM", "MMM", "MMM"],
     key: {
       M: [items.melon],
     },
   },
   [items.melon_seeds]: {
     shaped: false,
-    pattern: ['M'],
+    pattern: ["M"],
     key: {
       M: [items.melon],
     },
   },
   [items.planks]: {
     shaped: true,
-    pattern: ['#'],
+    pattern: ["#"],
     key: {
-      '#': [...itemGroups.logs],
+      "#": [...itemGroups.logs],
     },
   },
   [items.torch]: {
     shaped: true,
-    pattern: ['X', '#'],
+    pattern: ["X", "#"],
     key: {
-      '#': [items.stick],
+      "#": [items.stick],
       X: [...itemGroups.coals],
     },
   },

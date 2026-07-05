@@ -1,4 +1,4 @@
-import type { ItemDetails } from '@/data/item-details';
+import type { ItemDetails } from "@/data/item-details";
 
 /**
  * Generates HTML string for an item icon
@@ -6,7 +6,7 @@ import type { ItemDetails } from '@/data/item-details';
  */
 export function generateItemIconHTML(item: ItemDetails | null): string {
   if (!item) {
-    return '';
+    return "";
   }
 
   const isBlock = item.icon?.length === 2;

@@ -54,23 +54,23 @@ fails CI if committed data drifts from the submodule pin.
 
 ```ts
 type Ingredient = {
-  items: string[];      // resolved item ids; >1 means "any of these works"
-  tag?: string;         // original tag name (e.g. "planks") for "Any Planks" labels
+  items: string[]; // resolved item ids; >1 means "any of these works"
+  tag?: string; // original tag name (e.g. "planks") for "Any Planks" labels
 };
 
 type Recipe = {
   id: string;
-  type: 'shaped' | 'shapeless' | 'transmute' | 'special';
-  category: string;     // vanilla crafting book category, e.g. "building"
-  group?: string;       // vanilla group, e.g. "planks", "wooden_door"
+  type: "shaped" | "shapeless" | "transmute" | "special";
+  category: string; // vanilla crafting book category, e.g. "building"
+  group?: string; // vanilla group, e.g. "planks", "wooden_door"
   result: { id: string; count: number };
   // shaped only — placement matters:
-  pattern?: string[];   // e.g. ["X", "#"]; keys index into `key`
+  pattern?: string[]; // e.g. ["X", "#"]; keys index into `key`
   key?: Record<string, Ingredient>;
   // shapeless + transmute — any placement:
   ingredients?: Ingredient[];
   // special only:
-  note?: string;        // curated human explanation
+  note?: string; // curated human explanation
 };
 ```
 
@@ -79,10 +79,10 @@ type Recipe = {
 ```ts
 type Item = {
   id: string;
-  name: string;         // from en_us lang (item.minecraft.* / block.minecraft.*)
+  name: string; // from en_us lang (item.minecraft.* / block.minecraft.*)
   icon:
-    | { type: 'flat'; texture: string }                 // /textures/... path
-    | { type: 'block'; top: string; side: string };     // pseudo-3D cube
+    | { type: "flat"; texture: string } // /textures/... path
+    | { type: "block"; top: string; side: string }; // pseudo-3D cube
 };
 ```
 

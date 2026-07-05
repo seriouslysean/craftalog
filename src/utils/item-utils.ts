@@ -1,16 +1,14 @@
-import { itemDetails, type ItemDetails } from '@/data/item-details';
-import { recipes } from '@/data/item-recipes';
+import { itemDetails, type ItemDetails } from "@/data/item-details";
+import { recipes } from "@/data/item-recipes";
 
 export const getCraftingTableState = (recipeId: string): (ItemDetails | null)[] => {
   const craftingTableState: (ItemDetails | null)[] = Array(9).fill(null);
   if (!recipeId) {
-    console.warn('Recipe ID not provided.');
     return craftingTableState;
   }
 
   const recipe = recipes[recipeId];
   if (!recipe) {
-    console.warn('No recipe found', { recipeId });
     return craftingTableState;
   }
 
@@ -24,7 +22,7 @@ export const getCraftingTableState = (recipeId: string): (ItemDetails | null)[] 
 
   // Directly map items from the pattern to the crafting grid
   pattern.forEach((row, rowIndex) => {
-    row.split('').forEach((char, colIndex) => {
+    row.split("").forEach((char, colIndex) => {
       const itemOption = key[char];
       if (itemOption) {
         const item = itemOption[0]; // Use the first item associated with the character
@@ -32,8 +30,6 @@ export const getCraftingTableState = (recipeId: string): (ItemDetails | null)[] 
           // Calculate the index for this item, considering the padding
           const baseIndex = (rowIndex + padRows) * 3 + (colIndex + padCols);
           craftingTableState[baseIndex] = { ...itemDetails[item] };
-        } else {
-          console.error(`Item details not found for "${item}".`);
         }
       }
     });
@@ -44,13 +40,11 @@ export const getCraftingTableState = (recipeId: string): (ItemDetails | null)[] 
 
 export const getResultItemDetails = (recipeId: string): ItemDetails | null => {
   if (!recipeId) {
-    console.warn('Recipe ID not provided.');
     return null;
   }
   // Get the result item details
   const result = itemDetails[recipeId];
   if (!result) {
-    console.warn('No recipe found', { recipeId });
     return null;
   }
 

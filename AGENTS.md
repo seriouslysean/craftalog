@@ -201,7 +201,7 @@ cells.forEach((cell, index) => {
 ```typescript
 // ✅ Good - Single source of truth
 export function generateItemIconHTML(item: ItemDetails | null): string {
-  if (!item) return '';
+  if (!item) return "";
   const isBlock = item.icon?.length === 2;
   return isBlock
     ? `<div class="item-icon item-icon--block">...</div>`
@@ -479,8 +479,8 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 ```typescript
 // Define types
 export const items = {
-  arrow: 'arrow',
-  coal: 'coal',
+  arrow: "arrow",
+  coal: "coal",
   // ...
 } as const;
 
@@ -591,7 +591,7 @@ const { title, description } = Astro.props;
 **Example:**
 
 ```typescript
-import type { ItemDetails } from '@/data/item-details';
+import type { ItemDetails } from "@/data/item-details";
 
 /**
  * Generates HTML string for an item icon
@@ -601,7 +601,7 @@ import type { ItemDetails } from '@/data/item-details';
  * @returns HTML string ready to be set as innerHTML
  */
 export function generateItemIconHTML(item: ItemDetails | null): string {
-  if (!item) return '';
+  if (!item) return "";
 
   const isBlock = item.icon?.length === 2;
 
@@ -652,7 +652,7 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 --space-12: 3rem;
 
 /* Typography */
---font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, ...;
+--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, ...;
 --font-mono: ui-monospace, SFMono-Regular, ...;
 ```
 
