@@ -91,3 +91,59 @@ describe("known vanilla recipes survive conversion intact", () => {
     expect(byType.special).toBeGreaterThan(0);
   });
 });
+
+describe("wood-variant semantics survive conversion intact", () => {
+  const byGroup = Object.values(recipes).reduce<Record<string, GeneratedRecipe[]>>(
+    (acc, recipe) => {
+      if (recipe.group) (acc[recipe.group] ??= []).push(recipe);
+      return acc;
+    },
+    {},
+  );
+
+  it("stick: ONE recipe where any plank type works (tag ingredient), not one per wood", () => {
+    const stick = recipes.stick;
+    expect(stick.pattern).toEqual(["#", "#"]);
+    expect(stick.key?.["#"].tag).toBe("planks");
+    expect(stick.key?.["#"].items.length).toBeGreaterThanOrEqual(11);
+  });
+
+  it("boats: one recipe PER wood, each locked to its own planks", () => {
+    for (const boat of byGroup.boat) {
+      const ingredient = boat.key?.["#"];
+      expect(ingredient?.items).toHaveLength(1);
+      expect(ingredient?.tag).toBeUndefined();
+    }
+    expect(recipes.oak_boat.key?.["#"].items).toEqual(["oak_planks"]);
+    expect(recipes.spruce_boat.key?.["#"].items).toEqual(["spruce_planks"]);
+  });
+
+  it("boats: no crimson or warped boats, matching vanilla (no boats on lava)", () => {
+    const boatIds = byGroup.boat.map((recipe) => recipe.id);
+    expect(boatIds).not.toContain("crimson_boat");
+    expect(boatIds).not.toContain("warped_boat");
+    expect(boatIds).toContain("bamboo_raft");
+  });
+
+  it("per-wood families are complete for every plank type", () => {
+    const woods = recipes.crafting_table.key?.["#"].items.map((plank) =>
+      plank.replace(/_planks$/, ""),
+    );
+    for (const [group, suffix] of [
+      ["wooden_door", "_door"],
+      ["wooden_slab", "_slab"],
+      ["wooden_stairs", "_stairs"],
+      ["wooden_fence", "_fence"],
+    ] as const) {
+      const made = new Set(byGroup[group].map((recipe) => recipe.id));
+      for (const wood of woods ?? []) {
+        expect(made, `${group} missing ${wood}${suffix}`).toContain(`${wood}${suffix}`);
+      }
+    }
+  });
+
+  it("shaped placement is preserved verbatim: doors are a 2x3 column, mirrorable at match time", () => {
+    expect(recipes.oak_door.pattern).toEqual(["##", "##", "##"]);
+    expect(recipes.oak_door.result?.count).toBe(3);
+  });
+});
