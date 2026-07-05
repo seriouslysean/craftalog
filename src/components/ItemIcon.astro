@@ -1,29 +1,38 @@
 ---
+import { withBase } from '../utils/with-base';
+import type { IconData } from '../content.config';
+
 interface Props {
   item: {
     id: string;
     name: string;
-    icon: string[];
+    icon: IconData;
   } | null;
+  /** Native lazy-loading hint for the underlying <img>. Defaults to lazy. */
+  loading?: 'lazy' | 'eager';
 }
 
-const { item } = Astro.props;
-
-const hasIcon = item && typeof item?.icon === 'object';
-const isBlock = item?.icon?.length === 2;
+const { item, loading = 'lazy' } = Astro.props;
+const isBlock = item?.icon.type === 'block';
 ---
 
 {
-  hasIcon && (
+  item && (
     <div class:list={['item-icon', { 'item-icon--block': isBlock }]}>
-      {isBlock ? (
-        <ul class="block" title={item.name}>
-          <li class="top" style={`background-image: url(${item.icon[0]})`} />
-          <li class="left" style={`background-image: url(${item.icon[1]})`} />
-          <li class="right" style={`background-image: url(${item.icon[1]})`} />
+      {item.icon.type === 'block' ? (
+        <ul class="block" role="img" aria-label={item.name} title={item.name}>
+          <li class="top" style={`background-image: url(${withBase(item.icon.top)})`} />
+          <li class="left" style={`background-image: url(${withBase(item.icon.side)})`} />
+          <li class="right" style={`background-image: url(${withBase(item.icon.side)})`} />
         </ul>
       ) : (
-        <img class="icon" src={item.icon[0]} alt={item.name} title={item.name} />
+        <img
+          class="icon"
+          src={withBase(item.icon.texture)}
+          alt={item.name}
+          title={item.name}
+          loading={loading}
+        />
       )}
     </div>
   )
@@ -39,6 +48,7 @@ const isBlock = item?.icon?.length === 2;
 
   .item-icon--block {
     max-width: 60%;
+    margin-inline: auto;
   }
 
   .icon {
