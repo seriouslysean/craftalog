@@ -4,8 +4,19 @@ These workflow files belong in `.github/workflows/` but every credential
 available to the automation that authored this PR lacks the GitHub
 `workflow` scope, so they could not be pushed to that path.
 
-**Do this on the PR branch before merging** (from a normally-credentialed
-checkout, or via the GitHub web editor):
+**Do this on the PR branch before merging**, from a normally-credentialed
+checkout.
+
+Simplest path — the branch already contains the complete activation as a
+reverted commit; reverting the revert re-applies it (moves both files,
+deletes this README, bumps deploy.yml to Node 24):
+
+```bash
+git revert --no-edit 5d97ddc   # Revert "Revert 'ci: activate workflows...'"
+git push
+```
+
+Manual equivalent:
 
 ```bash
 git mv docs/workflows/ci.yml docs/workflows/update-data.yml .github/workflows/
