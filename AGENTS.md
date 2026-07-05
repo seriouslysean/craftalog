@@ -6,11 +6,13 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 
 ## Quick Reference
 
-- **Framework**: Astro (Static Site Generator)
+- **Framework**: Astro 7 (Static Site Generator, Content Layer collections)
 - **Language**: TypeScript (strict mode)
 - **Styling**: BEM methodology + CSS custom properties
-- **Linting**: ESLint + Prettier
-- **Testing**: `npm run type-check`, `npm run lint`, `npm run build`
+- **Linting/Formatting**: oxlint + oxfmt (prettier + prettier-plugin-astro for `.astro` files only)
+- **Testing**: Vitest
+- **Data**: vendored `misode/mcmeta` submodules → `scripts/parse.ts` → committed generated JSON — see [Data Pipeline](#data-pipeline)
+- **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run type-check`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`
 
 ---
 
@@ -18,11 +20,12 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 
 1. [Project Goals](#project-goals)
 2. [Code Standards](#code-standards)
-3. [Common Pitfalls](#common-pitfalls-and-anti-patterns)
-4. [Pre-Commit Checklist](#pre-commit-checklist-for-agents)
-5. [Development Workflow](#development-workflow)
-6. [Architecture Decisions](#architecture-decisions)
-7. [Common Tasks](#common-tasks)
+3. [Data Pipeline](#data-pipeline)
+4. [Common Pitfalls](#common-pitfalls-and-anti-patterns)
+5. [Pre-Commit Checklist](#pre-commit-checklist-for-agents)
+6. [Development Workflow](#development-workflow)
+7. [Architecture Decisions](#architecture-decisions)
+8. [Common Tasks](#common-tasks)
 
 ---
 
@@ -160,12 +163,23 @@ export function generateItemIconHTML(item: any) {
 ### File Organization
 
 ```
-src/
-├── components/     # Reusable Astro components (.astro)
-├── data/          # Data files and constants (.ts)
-├── layouts/       # Page layouts (.astro)
-├── pages/         # File-based routing (.astro)
-└── utils/         # Utility functions (.ts)
+/
+├── vendor/
+│   ├── mcmeta-summary/  # submodule: recipes, tags, item defs, models, lang (pinned tag)
+│   └── mcmeta-assets/   # submodule: textures (pinned tag)
+├── scripts/
+│   ├── parse.ts         # vendor/ → src/data/generated/* + public/textures/*
+│   └── validate.ts      # re-derives + checks committed generated data for drift
+├── src/
+│   ├── components/      # Reusable Astro components (.astro)
+│   ├── data/
+│   │   └── generated/   # committed, machine-generated — NEVER hand-edit (see Data Pipeline)
+│   ├── layouts/         # Page layouts (.astro)
+│   ├── pages/           # File-based routing (.astro)
+│   └── utils/           # Utility functions (.ts)
+├── tests/               # Vitest unit tests + fixtures
+└── public/
+    └── textures/        # generated PNGs, only textures actually referenced by a recipe
 ```
 
 **Naming Conventions:**
@@ -173,6 +187,37 @@ src/
 - Components: PascalCase (e.g., `ItemIcon.astro`, `SiteHeader.astro`)
 - Utilities: kebab-case (e.g., `item-utils.ts`, `item-icon-html.ts`)
 - Data files: kebab-case (e.g., `item-details.ts`, `item-recipes.ts`)
+
+---
+
+## Data Pipeline
+
+Vanilla Minecraft recipe/item data is never hand-authored. It flows:
+
+```
+vendor/mcmeta-summary + vendor/mcmeta-assets   (git submodules, pinned to a stable release tag)
+        │  npm run parse
+        ▼
+src/data/generated/{items,recipes,meta}.json + public/textures/**
+        │  npm run validate
+        ▼
+Astro content collections consume the generated JSON
+```
+
+- **Submodules** are pinned to the latest **stable** `misode/mcmeta` release
+  tag (snapshot/pre/rc tags are excluded). The current pin is readable at
+  `vendor/mcmeta-summary/version.txt`.
+- **Generated data is committed** so the site builds without submodules and
+  data bumps are reviewable as a normal diff. `npm run validate` re-derives
+  everything and fails if committed data has drifted from the pin — CI
+  enforces this on every PR.
+- **Never hand-edit anything under `src/data/generated/` or
+  `public/textures/`.** Edit `scripts/parse.ts` / `scripts/validate.ts`
+  instead and regenerate.
+- A weekly scheduled workflow (`update-data.yml`) checks for a newer stable
+  tag, bumps the pin, regenerates, and opens a PR automatically.
+- Full details, the generated-data type contract, and the update workflow's
+  exact behavior: `docs/PLAN.md` and `.claude/skills/vanilla-data/SKILL.md`.
 
 ---
 
@@ -333,7 +378,8 @@ npm run build
 - [ ] **Bundle Size**: Check if JS bundle size increased (it shouldn't!)
 - [ ] **Type Safety**: Run `npm run type-check` - must be 0 errors
 - [ ] **Linting**: Run `npm run lint` - must be 0 errors/warnings
-- [ ] **Formatting**: Run `npm run format` - auto-fix all formatting
+- [ ] **Formatting**: Run `npm run format` - auto-fix all formatting (oxfmt + prettier for `.astro`)
+- [ ] **Data untouched by hand**: If `src/data/generated/**` changed, it must be the output of `npm run parse` — never edited directly
 
 ### Architecture
 
@@ -344,6 +390,8 @@ npm run build
 
 ### Testing
 
+- [ ] **Unit tests**: Run `npm test` - all Vitest suites pass
+- [ ] **Data pipeline**: If `scripts/`, `vendor/`, or generated data changed, run `npm run parse` then `npm run validate` (or `npm run validate -- --offline`) and commit the regenerated output
 - [ ] **Build**: Run `npm run build` - must complete successfully
 - [ ] **Preview**: Run `npm run preview` - manually test key functionality
 - [ ] **No Console Errors**: Check browser console - must be clean
@@ -363,6 +411,10 @@ npm run build
 ```bash
 # Ensure dependencies are current
 npm install
+
+# First time only: fetch the vendored mcmeta submodules (not needed to build —
+# only needed if you're touching the data pipeline)
+npm run vendor:init
 
 # Start dev server
 npm run dev
@@ -385,6 +437,9 @@ npm run type-check
 
 # Linting (fix issues as you go)
 npm run lint
+
+# Unit tests in watch mode
+npm run test:watch
 ```
 
 **Keep these running:**
@@ -395,7 +450,7 @@ npm run lint
 ### 3. Before Committing
 
 ```bash
-# Format all code
+# Format all code (oxfmt + prettier for .astro)
 npm run format
 
 # Type check
@@ -404,6 +459,13 @@ npm run type-check
 # Lint
 npm run lint
 
+# Unit tests
+npm test
+
+# If vendor/, scripts/, or generated data changed: regenerate + validate
+npm run parse
+npm run validate
+
 # Production build
 npm run build
 
@@ -411,7 +473,9 @@ npm run build
 npm run preview
 ```
 
-**All must pass with 0 errors before committing!**
+**All must pass with 0 errors before committing!** This is the same sequence
+`.github/workflows/ci.yml` runs on every PR — see `.claude/skills/verify/SKILL.md`
+for the full rundown of what "green" looks like and common failure modes.
 
 ---
 
@@ -668,6 +732,20 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 ---
 
 ## Version History
+
+**v3.0** - 2026-07-05
+
+- Toolchain: replaced ESLint/Prettier with oxlint/oxfmt (+ prettier-plugin-astro
+  for `.astro` files only), added Vitest, added the vanilla-data pipeline
+  (`npm run parse` / `npm run validate`)
+- Added the "Data Pipeline" section: `misode/mcmeta` submodules → generated
+  JSON → content collections, and the never-hand-edit rule for
+  `src/data/generated/**`
+- Updated file organization tree to include `scripts/`, `tests/`, `vendor/`
+- Updated Pre-Commit Checklist and Development Workflow commands for the new
+  toolchain
+- Added `.github/workflows/ci.yml` and `.github/workflows/update-data.yml`,
+  plus `.claude/` agent harness (settings, `verify` and `vanilla-data` skills)
 
 **v2.0** - 2025-11-14
 
