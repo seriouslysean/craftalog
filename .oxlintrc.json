@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "no-console": "error"
+  },
+  "ignorePatterns": ["dist", "vendor", "node_modules", ".astro"],
+  "overrides": [
+    {
+      "files": ["scripts/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

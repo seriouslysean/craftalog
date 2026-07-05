@@ -1,25 +1,26 @@
 ---
+import { withBase } from '../utils/with-base';
+
 const currentPath = Astro.url.pathname;
-const basePath = import.meta.env.BASE_URL;
 
 // Helper to check if a link is active
 const isActive = (path: string) => {
-  const fullPath = basePath === '/' ? path : `${basePath}${path}`;
+  const fullPath = withBase(path);
   return currentPath === fullPath || currentPath === `${fullPath}/`;
 };
 ---
 
 <header>
   <div class="header-content">
-    <a href={`${basePath}`} class="logo">Craftalog</a>
+    <a href={withBase('/')} class="logo">Craftalog</a>
 
     <nav class="nav">
       <ul>
         <li>
-          <a href={`${basePath}`} class:list={[{ active: isActive('') }]}>Home</a>
+          <a href={withBase('/')} class:list={[{ active: isActive('/') }]}>Home</a>
         </li>
         <li>
-          <a href={`${basePath}about`} class:list={[{ active: isActive('about') }]}>About</a>
+          <a href={withBase('/about')} class:list={[{ active: isActive('/about') }]}>About</a>
         </li>
       </ul>
     </nav>
