@@ -18,41 +18,41 @@ function buildAtlas(pixels: Map<string, [number, number, number, number]>): Buff
   return PNG.sync.write(png);
 }
 
+function pixelAt(png: PNG, x: number, y: number): [number, number, number, number] {
+  const idx = (png.width * y + x) * 4;
+  return [png.data[idx], png.data[idx + 1], png.data[idx + 2], png.data[idx + 3]];
+}
+
 describe("generateLightningRodIcon", () => {
-  it("crops the top cap and side strip UV regions and upscales each to 16x16", () => {
+  it("places the cap and pole UV crops at the model's own element offsets, leaving the rest transparent", () => {
     const pixels = new Map<string, [number, number, number, number]>();
-    // Top cap region [0,0]-[4,4): solid green.
+    // Cap UV region [0,0]-[4,4): solid green.
     for (let y = 0; y < 4; y += 1) {
       for (let x = 0; x < 4; x += 1) pixels.set(`${x},${y}`, [0, 200, 0, 255]);
     }
-    // Side strip region [0,4]-[2,16): solid blue.
+    // Pole UV region [0,4]-[2,16): solid blue.
     for (let y = 4; y < 16; y += 1) {
       for (let x = 0; x < 2; x += 1) pixels.set(`${x},${y}`, [0, 0, 200, 255]);
     }
-    // Padding outside both regions (e.g. columns 4-15) stays transparent and must be ignored.
+    // Padding outside both regions (e.g. columns 4-15 below row 4) stays transparent and must be ignored.
     const atlas = buildAtlas(pixels);
 
-    const { top, side } = generateLightningRodIcon(atlas);
-    const topPng = PNG.sync.read(top);
-    const sidePng = PNG.sync.read(side);
+    const icon = PNG.sync.read(generateLightningRodIcon(atlas));
 
-    expect(topPng.width).toBe(16);
-    expect(topPng.height).toBe(16);
-    expect(sidePng.width).toBe(16);
-    expect(sidePng.height).toBe(16);
+    expect(icon.width).toBe(16);
+    expect(icon.height).toBe(16);
 
-    for (let i = 0; i < topPng.data.length; i += 4) {
-      expect([topPng.data[i], topPng.data[i + 1], topPng.data[i + 2], topPng.data[i + 3]]).toEqual([
-        0, 200, 0, 255,
-      ]);
+    // Cap lands at columns 6-9, rows 0-3.
+    for (let y = 0; y < 4; y += 1) {
+      for (let x = 6; x < 10; x += 1) expect(pixelAt(icon, x, y)).toEqual([0, 200, 0, 255]);
     }
-    for (let i = 0; i < sidePng.data.length; i += 4) {
-      expect([
-        sidePng.data[i],
-        sidePng.data[i + 1],
-        sidePng.data[i + 2],
-        sidePng.data[i + 3],
-      ]).toEqual([0, 0, 200, 255]);
+    // Pole lands at columns 7-8, rows 4-15.
+    for (let y = 4; y < 16; y += 1) {
+      for (let x = 7; x < 9; x += 1) expect(pixelAt(icon, x, y)).toEqual([0, 0, 200, 255]);
     }
+    // Everywhere else is transparent.
+    expect(pixelAt(icon, 0, 0)).toEqual([0, 0, 0, 0]);
+    expect(pixelAt(icon, 15, 15)).toEqual([0, 0, 0, 0]);
+    expect(pixelAt(icon, 6, 4)).toEqual([0, 0, 0, 0]);
   });
 });

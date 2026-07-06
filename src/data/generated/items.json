@@ -3194,9 +3194,8 @@
   },
   "exposed_lightning_rod": {
     "icon": {
-      "side": "/textures/item/exposed_lightning_rod_side.png",
-      "top": "/textures/item/exposed_lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/exposed_lightning_rod.png",
+      "type": "flat"
     },
     "id": "exposed_lightning_rod",
     "name": "Exposed Lightning Rod"
@@ -4652,9 +4651,8 @@
   },
   "lightning_rod": {
     "icon": {
-      "side": "/textures/item/lightning_rod_side.png",
-      "top": "/textures/item/lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/lightning_rod.png",
+      "type": "flat"
     },
     "id": "lightning_rod",
     "name": "Lightning Rod"
@@ -5846,9 +5844,8 @@
   },
   "oxidized_lightning_rod": {
     "icon": {
-      "side": "/textures/item/oxidized_lightning_rod_side.png",
-      "top": "/textures/item/oxidized_lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/oxidized_lightning_rod.png",
+      "type": "flat"
     },
     "id": "oxidized_lightning_rod",
     "name": "Oxidized Lightning Rod"
@@ -8869,18 +8866,16 @@
   },
   "waxed_exposed_lightning_rod": {
     "icon": {
-      "side": "/textures/item/exposed_lightning_rod_side.png",
-      "top": "/textures/item/exposed_lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/exposed_lightning_rod.png",
+      "type": "flat"
     },
     "id": "waxed_exposed_lightning_rod",
     "name": "Waxed Exposed Lightning Rod"
   },
   "waxed_lightning_rod": {
     "icon": {
-      "side": "/textures/item/lightning_rod_side.png",
-      "top": "/textures/item/lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/lightning_rod.png",
+      "type": "flat"
     },
     "id": "waxed_lightning_rod",
     "name": "Waxed Lightning Rod"
@@ -9006,9 +9001,8 @@
   },
   "waxed_oxidized_lightning_rod": {
     "icon": {
-      "side": "/textures/item/oxidized_lightning_rod_side.png",
-      "top": "/textures/item/oxidized_lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/oxidized_lightning_rod.png",
+      "type": "flat"
     },
     "id": "waxed_oxidized_lightning_rod",
     "name": "Waxed Oxidized Lightning Rod"
@@ -9134,9 +9128,8 @@
   },
   "waxed_weathered_lightning_rod": {
     "icon": {
-      "side": "/textures/item/weathered_lightning_rod_side.png",
-      "top": "/textures/item/weathered_lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/weathered_lightning_rod.png",
+      "type": "flat"
     },
     "id": "waxed_weathered_lightning_rod",
     "name": "Waxed Weathered Lightning Rod"
@@ -9270,9 +9263,8 @@
   },
   "weathered_lightning_rod": {
     "icon": {
-      "side": "/textures/item/weathered_lightning_rod_side.png",
-      "top": "/textures/item/weathered_lightning_rod_top.png",
-      "type": "block"
+      "texture": "/textures/item/weathered_lightning_rod.png",
+      "type": "flat"
     },
     "id": "weathered_lightning_rod",
     "name": "Weathered Lightning Rod"

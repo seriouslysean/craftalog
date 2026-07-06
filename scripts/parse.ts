@@ -108,14 +108,11 @@ function main(): void {
     fs.writeFileSync(destPath, generateBannerIcon(bannerBasePng, fs.readFileSync(woolPath)));
   }
 
-  for (const [textureRef, { topRef, sideRef }] of lightningRodIconsToSynthesize) {
+  for (const [textureRef, ref] of lightningRodIconsToSynthesize) {
     const atlasPath = path.join(VENDOR_TEXTURES_DIR, `${textureRef}.png`);
-    const { top, side } = generateLightningRodIcon(fs.readFileSync(atlasPath));
-    const topDestPath = path.join(PUBLIC_TEXTURES_DIR, `${topRef}.png`);
-    const sideDestPath = path.join(PUBLIC_TEXTURES_DIR, `${sideRef}.png`);
-    fs.mkdirSync(path.dirname(topDestPath), { recursive: true });
-    fs.writeFileSync(topDestPath, top);
-    fs.writeFileSync(sideDestPath, side);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(destPath, generateLightningRodIcon(fs.readFileSync(atlasPath)));
   }
 
   for (const relativePath of HUD_ICON_RELATIVE_PATHS) {

@@ -18,8 +18,9 @@ const FLAT_TERMINALS = new Set(["item/generated", "item/handheld", "builtin/gene
 // surface. Unlike fences (also custom elements via the "unknown" fallback
 // below, but textured with an ordinary repeating block texture that still
 // reads fine as a flat icon from any crop), this atlas can't be shown
-// unclipped as a flat icon. scripts/lib/lightning-rod-icon.ts crops its two
-// real UV regions (top cap + side strip) into a proper cube icon instead.
+// unclipped as a flat icon. scripts/lib/lightning-rod-icon.ts instead places
+// its two real UV crops onto a transparent canvas at the model's own
+// element offsets, reconstructing the rod's actual silhouette.
 const LIGHTNING_ROD_ATLAS_PARENTS = new Set(["block/template_lightning_rod"]);
 
 type ChainCategory =
