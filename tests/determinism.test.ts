@@ -114,6 +114,7 @@ function run() {
     tagsRaw,
     itemDefsRaw,
     modelsRaw,
+    componentsRaw: {},
     enUs,
     textureExists: (ref) => existingRefs.has(ref),
   });

@@ -1,0 +1,81 @@
+---
+import { withBase } from '../utils/with-base';
+import type { ItemStatData } from '../content.config';
+
+interface Props {
+  stat: ItemStatData;
+}
+
+const { stat } = Astro.props;
+
+const ICONS = {
+  food: {
+    fullIcon: '/textures/hud/food_full_hunger.png',
+    halfIcon: '/textures/hud/food_half_hunger.png',
+  },
+  armor: { fullIcon: '/textures/hud/armor_full.png', halfIcon: '/textures/hud/armor_half.png' },
+  weapon: { fullIcon: '/textures/hud/heart/full.png', halfIcon: '/textures/hud/heart/half.png' },
+} as const;
+
+function pipCounts(value: number): { full: number; half: number } {
+  return { full: Math.floor(value / 2), half: value % 2 >= 1 ? 1 : 0 };
+}
+
+interface PipStat {
+  label: string;
+  fullIcon: string;
+  halfIcon: string;
+  full: number;
+  half: number;
+}
+
+let pipStat: PipStat | null = null;
+let textStat: string | null = null;
+
+if (stat.type === 'food') {
+  const { full, half } = pipCounts(stat.nutrition);
+  pipStat = { label: `Nutrition: ${stat.nutrition}`, ...ICONS.food, full, half };
+} else if (stat.type === 'armor') {
+  const { full, half } = pipCounts(stat.points);
+  pipStat = { label: `Armor: ${stat.points} points`, ...ICONS.armor, full, half };
+} else if (stat.type === 'weapon') {
+  const { full, half } = pipCounts(stat.damage);
+  pipStat = { label: `Attack damage: ${stat.damage}`, ...ICONS.weapon, full, half };
+} else {
+  textStat = `Durability: ${stat.durability.toLocaleString()} uses`;
+}
+---
+
+{
+  pipStat && (
+    <div class="item-stat" role="img" aria-label={pipStat.label}>
+      {Array.from({ length: pipStat.full }).map(() => (
+        <img class="item-stat__pip" src={withBase(pipStat.fullIcon)} alt="" aria-hidden="true" />
+      ))}
+      {pipStat.half === 1 && (
+        <img class="item-stat__pip" src={withBase(pipStat.halfIcon)} alt="" aria-hidden="true" />
+      )}
+    </div>
+  )
+}
+{textStat && <p class="item-stat item-stat--text">{textStat}</p>}
+
+<style>
+  .item-stat {
+    margin-top: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+  }
+
+  .item-stat--text {
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+
+  .item-stat__pip {
+    width: 1.125rem;
+    height: 1.125rem;
+    image-rendering: pixelated;
+  }
+</style>

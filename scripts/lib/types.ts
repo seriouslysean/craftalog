@@ -72,6 +72,14 @@ export type RawItemDefinitionsData = Record<string, RawItemDefinition>;
 /** Locale -> translation key -> translated string. */
 export type RawLangFile = Record<string, Record<string, string>>;
 
+/**
+ * Per-item data-driven components (vendor/mcmeta-summary/item_components).
+ * Loosely typed on purpose — we only read a handful of well-known component
+ * keys (see scripts/lib/item-stats.ts) out of the ~40 that exist upstream.
+ */
+export type RawItemComponents = Record<string, unknown>;
+export type RawItemComponentsData = Record<string, RawItemComponents>;
+
 // ---------------------------------------------------------------------------
 // Generated data contract (see docs/PLAN.md "Generated data contract")
 // ---------------------------------------------------------------------------
@@ -111,10 +119,22 @@ export type IconOutput =
   | { type: "flat"; texture: string }
   | { type: "block"; top: string; side: string };
 
+/**
+ * A single defining gameplay stat for an item, shown on its recipe page.
+ * At most one per item, chosen by priority in scripts/lib/item-stats.ts:
+ * food > armor > weapon > tool. Most items (building blocks, etc.) have none.
+ */
+export type ItemStat =
+  | { type: "food"; nutrition: number }
+  | { type: "armor"; points: number }
+  | { type: "weapon"; damage: number }
+  | { type: "tool"; durability: number };
+
 export interface Item {
   id: string;
   name: string;
   icon: IconOutput;
+  stat?: ItemStat;
 }
 
 export type ItemsOutput = Record<string, Item>;
