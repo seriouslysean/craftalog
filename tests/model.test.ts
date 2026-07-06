@@ -190,6 +190,12 @@ describe("resolveIconCandidate", () => {
       },
     },
     "block/stairs": {},
+    "block/oxidized_lightning_rod": {
+      parent: "minecraft:block/template_lightning_rod",
+      textures: { texture: "minecraft:block/oxidized_lightning_rod" },
+    },
+    "block/template_lightning_rod": { parent: "block/block" },
+    "block/block": {},
   };
 
   const itemDefinitions: RawItemDefinitionsData = {
@@ -200,6 +206,9 @@ describe("resolveIconCandidate", () => {
     furnace: { model: { type: "minecraft:model", model: "minecraft:block/furnace" } },
     oak_slab: { model: { type: "minecraft:model", model: "minecraft:block/oak_slab" } },
     oak_stairs: { model: { type: "minecraft:model", model: "minecraft:block/oak_stairs" } },
+    oxidized_lightning_rod: {
+      model: { type: "minecraft:model", model: "minecraft:block/oxidized_lightning_rod" },
+    },
   };
 
   it("resolves a flat icon for an item/generated chain", () => {
@@ -254,6 +263,13 @@ describe("resolveIconCandidate", () => {
       type: "stairs",
       topRef: "block/oak_planks",
       sideRef: "block/oak_planks",
+    });
+  });
+
+  it("resolves a lightning_rod candidate (textureRef) for a template_lightning_rod chain", () => {
+    expect(resolveIconCandidate("oxidized_lightning_rod", itemDefinitions, models)).toEqual({
+      type: "lightning_rod",
+      textureRef: "block/oxidized_lightning_rod",
     });
   });
 
