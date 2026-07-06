@@ -1,3 +1,4 @@
+import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
@@ -5,6 +6,7 @@ import type {
   Item,
   ItemsOutput,
   Meta,
+  RawItemComponentsData,
   RawItemDefinitionsData,
   RawModelsData,
   RawRecipesData,
@@ -18,6 +20,7 @@ export interface GenerateInput {
   tagsRaw: RawTagsData;
   itemDefsRaw: RawItemDefinitionsData;
   modelsRaw: RawModelsData;
+  componentsRaw: RawItemComponentsData;
   enUs: Record<string, string>;
   /** Whether a texture ref (e.g. "block/oak_log_top") exists on disk. Injected so this stays I/O-free. */
   textureExists: (ref: string) => boolean;
@@ -38,7 +41,16 @@ export interface GenerateOutput {
  * own reading input files and writing/copying output.
  */
 export function generate(input: GenerateInput): GenerateOutput {
-  const { version, recipesRaw, tagsRaw, itemDefsRaw, modelsRaw, enUs, textureExists } = input;
+  const {
+    version,
+    recipesRaw,
+    tagsRaw,
+    itemDefsRaw,
+    modelsRaw,
+    componentsRaw,
+    enUs,
+    textureExists,
+  } = input;
 
   const recipes: RecipesOutput = {};
   const counts = { shaped: 0, shapeless: 0, transmute: 0, special: 0 };
@@ -84,7 +96,9 @@ export function generate(input: GenerateInput): GenerateOutput {
       unresolvedIcons.push(itemId);
     }
 
-    items[itemId] = { id: itemId, name, icon };
+    const stat = resolveItemStat(itemId, componentsRaw, tagsRaw);
+
+    items[itemId] = stat ? { id: itemId, name, icon, stat } : { id: itemId, name, icon };
   }
 
   const meta: Meta = {
