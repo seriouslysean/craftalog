@@ -13,6 +13,16 @@ function normalizeTextureValue(value: RawModelTextureValue): string {
 
 const FLAT_TERMINALS = new Set(["item/generated", "item/handheld", "builtin/generated"]);
 
+// Parents whose shared "texture" is a UV atlas for bespoke multi-element
+// geometry (e.g. the lightning rod's thin pole + base), not a paintable
+// surface. Unlike fences (also custom elements via the "unknown" fallback
+// below, but textured with an ordinary repeating block texture that still
+// reads fine as a flat icon from any crop), showing this atlas unclipped
+// renders as a sliver of content in one corner. Treated as unresolvable so
+// callers fall back to the placeholder icon instead of that broken-looking
+// render.
+const UNRESOLVABLE_ATLAS_PARENTS = new Set(["block/template_lightning_rod"]);
+
 type ChainCategory =
   | "flat"
   | "cube_all"
@@ -22,6 +32,7 @@ type ChainCategory =
   | "orientable"
   | "slab"
   | "stairs"
+  | "unresolvable"
   | "unknown";
 
 /**
@@ -34,6 +45,7 @@ type ChainCategory =
 function classifyChain(chainNames: string[]): ChainCategory {
   for (const name of chainNames) {
     if (FLAT_TERMINALS.has(name)) return "flat";
+    if (UNRESOLVABLE_ATLAS_PARENTS.has(name)) return "unresolvable";
     if (name === "block/cube_all") return "cube_all";
     if (name === "block/cube_column" || name === "block/cube_column_horizontal")
       return "cube_column";
@@ -253,6 +265,8 @@ export function resolveIconCandidate(
       const sideRef = resolve("side");
       return topRef && sideRef ? { type: "stairs", topRef, sideRef } : undefined;
     }
+    case "unresolvable":
+      return undefined;
     case "unknown":
     default: {
       const textureRef =

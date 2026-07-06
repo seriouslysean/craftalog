@@ -95,8 +95,14 @@ Texture resolution: item definition → model → parent chain. Heuristics:
 `item/generated`/`item/handheld` → flat `layer0`; `block/cube_all` → block with
 top=side=`all`; `block/cube_column` → top=`end`, side=`side`;
 `block/cube_bottom_top` → `top`/`side`; other block parents → best-effort
-(`particle` or first texture) as flat. Unresolvable → flat placeholder texture
-and a line in the validator report (never a broken build).
+(`particle` or first texture) as flat. A small denylist
+(`UNRESOLVABLE_ATLAS_PARENTS` in `scripts/lib/model.ts`, currently just
+`block/template_lightning_rod`) skips that best-effort fallback for parents
+whose shared texture is a UV atlas for custom geometry rather than a
+paintable surface — showing it unclipped as a flat icon renders as a sliver
+of content in one corner instead of a recognizable icon. Unresolvable → flat
+placeholder texture and a line in the validator report (never a broken
+build).
 
 Items rendered via a bespoke Java renderer (`{ type: "minecraft:special", base,
 model }` — chests, shulker boxes, shields, skulls, conduit, decorated pot,

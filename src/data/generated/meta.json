@@ -4,9 +4,18 @@
     "shaped": 733,
     "shapeless": 323,
     "special": 31,
-    "texturesCopied": 784,
+    "texturesCopied": 780,
     "transmute": 33
   },
-  "unresolvedIcons": [],
+  "unresolvedIcons": [
+    "exposed_lightning_rod",
+    "lightning_rod",
+    "oxidized_lightning_rod",
+    "waxed_exposed_lightning_rod",
+    "waxed_lightning_rod",
+    "waxed_oxidized_lightning_rod",
+    "waxed_weathered_lightning_rod",
+    "weathered_lightning_rod"
+  ],
   "version": "26.2"
 }
