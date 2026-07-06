@@ -1,0 +1,107 @@
+---
+import ItemVariants from './ItemVariants.astro';
+import type { ItemData } from '../content.config';
+import type { IngredientOption } from '../utils/tag-label';
+
+interface Props {
+  entries: IngredientOption[];
+  itemsMap: Map<string, ItemData>;
+  /** Extra recipe-mechanical note (e.g. transmute's contents/appearance rule). */
+  note?: string;
+}
+
+const { entries, itemsMap, note } = Astro.props;
+---
+
+{
+  (entries.length > 0 || note) && (
+    <section class="ingredient-options" aria-label="Ingredient options">
+      {entries.length > 0 && (
+        <>
+          <h2 class="ingredient-options__title">Accepts any of these</h2>
+          <ul class="ingredient-options__list">
+            {entries.map((entry) => (
+              <li class="ingredient-options__row">
+                <span class="ingredient-options__slot">
+                  <ItemVariants items={entry.items} itemsMap={itemsMap} />
+                </span>
+                <span class="ingredient-options__label">{entry.label}</span>
+                <span class="ingredient-options__count">{entry.items.length} options</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {note && <p class="ingredient-options__note">{note}</p>}
+    </section>
+  )
+}
+
+<style>
+  .ingredient-options {
+    margin-top: var(--space-2);
+    background-color: var(--color-panel);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    box-shadow: var(--bevel-raised);
+  }
+
+  .ingredient-options__title {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-panel-fg);
+  }
+
+  .ingredient-options__list {
+    margin-top: var(--space-2);
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .ingredient-options__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .ingredient-options__slot {
+    position: relative;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.7em;
+    background-color: var(--color-slot);
+    box-shadow: var(--bevel-sunken);
+  }
+
+  .ingredient-options__label {
+    font-size: 0.875rem;
+    color: var(--color-panel-fg);
+  }
+
+  .ingredient-options__count {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--color-panel-fg);
+    opacity: 0.75;
+  }
+
+  .ingredient-options__note {
+    margin-top: var(--space-3);
+    font-size: 0.8125rem;
+    color: var(--color-panel-fg);
+  }
+
+  .ingredient-options__note:first-child {
+    margin-top: 0;
+  }
+
+  @media (min-width: 640px) {
+    .ingredient-options__list {
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    }
+  }
+</style>

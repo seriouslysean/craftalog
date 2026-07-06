@@ -1,11 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
+import Badge from '../../components/Badge.astro';
 import CraftingGrid from '../../components/CraftingGrid.astro';
+import IngredientOptions from '../../components/IngredientOptions.astro';
 import ItemIcon from '../../components/ItemIcon.astro';
 import ItemStat from '../../components/ItemStat.astro';
 import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../../utils/crafting-grid';
-import { ingredientLabel } from '../../utils/tag-label';
+import { ingredientOption, type IngredientOption } from '../../utils/tag-label';
 import { withBase } from '../../utils/with-base';
 import type { ItemData, RecipeData } from '../../content.config';
 
@@ -58,24 +60,25 @@ if (recipe.type === 'shaped' && recipe.pattern && recipe.key) {
 }
 
 const hasGrid = recipe.type !== 'special';
+const isShapeless = recipe.type === 'shapeless' || recipe.type === 'transmute';
 
-interface LegendEntry {
-  symbol?: string;
-  label: string;
-}
-
-const legend: LegendEntry[] = [];
+const ingredientOptions: IngredientOption[] = [];
 if (recipe.type === 'shaped' && recipe.key) {
-  for (const [symbol, ingredient] of Object.entries(recipe.key)) {
-    const label = ingredientLabel(ingredient, getItemName);
-    if (label) legend.push({ symbol, label });
+  for (const ingredient of Object.values(recipe.key)) {
+    const option = ingredientOption(ingredient, getItemName);
+    if (option) ingredientOptions.push(option);
   }
 } else if (recipe.ingredients) {
   for (const ingredient of recipe.ingredients) {
-    const label = ingredientLabel(ingredient, getItemName);
-    if (label) legend.push({ label });
+    const option = ingredientOption(ingredient, getItemName);
+    if (option) ingredientOptions.push(option);
   }
 }
+
+const transmuteNote =
+  recipe.type === 'transmute'
+    ? "The result keeps the input item's contents/appearance."
+    : undefined;
 
 const ingredientNames = cells
   .filter((cell): cell is NonNullable<GridCell> => cell !== null)
@@ -120,19 +123,37 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         </button>
       </div>
       <div class="recipe__badges">
-        <span class="recipe__badge">{categoryLabel}</span>
         {
-          recipe.group && (
-            <span class="recipe__badge recipe__badge--group">
-              {recipe.group.replace(/_/g, ' ')}
-            </span>
+          isShapeless && (
+            <Badge variant="gui" title="Ingredient placement in the grid doesn't matter">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M16 3h5v5" />
+                <path d="M4 20 21 3" />
+                <path d="M21 16v5h-5" />
+                <path d="M15 15l6 6" />
+                <path d="M4 4l5 5" />
+              </svg>
+              Shapeless
+              <span class="visually-hidden">
+                {' '}
+                — ingredient placement in the grid doesn't matter
+              </span>
+            </Badge>
           )
         }
-        {
-          recipe.type === 'transmute' && (
-            <span class="recipe__badge recipe__badge--type">Transmute</span>
-          )
-        }
+        <Badge>{categoryLabel}</Badge>
+        {recipe.group && <Badge>{recipe.group.replace(/_/g, ' ')}</Badge>}
+        {recipe.type === 'transmute' && <Badge variant="gui">Transmute</Badge>}
       </div>
     </div>
 
@@ -144,24 +165,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
             result={recipe.result}
             items={itemsMap}
             ariaLabel={ariaLabel}
-            unordered={recipe.type === 'shapeless' || recipe.type === 'transmute'}
           />
 
-          {recipe.type === 'transmute' && (
-            <p class="recipe__note">The result keeps the input item's contents/appearance.</p>
-          )}
-
-          {legend.length > 0 && (
-            <ul class="recipe__legend">
-              {legend.map((item) => (
-                <li class="recipe__legend-item">
-                  {item.symbol && <span class="recipe__legend-symbol">{item.symbol}</span>}
-                  {item.symbol && ' = '}
-                  {item.label}
-                </li>
-              ))}
-            </ul>
-          )}
+          <IngredientOptions entries={ingredientOptions} itemsMap={itemsMap} note={transmuteNote} />
         </>
       ) : (
         <div class="recipe__special">
@@ -236,7 +242,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     gap: var(--space-1);
     padding: var(--space-1) var(--space-3);
     border: 1px solid var(--color-border);
-    border-radius: 0.375rem;
+    border-radius: var(--radius-sm);
     background: none;
     font-family: var(--font-sans);
     font-size: 0.8125rem;
@@ -268,49 +274,20 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     gap: var(--space-2);
   }
 
-  .recipe__badge {
-    display: inline-block;
-    padding: var(--space-1) var(--space-3);
-    border-radius: 999px;
-    background-color: var(--color-border);
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: capitalize;
-  }
-
-  .recipe__badge--type {
-    background-color: var(--color-gray-light);
-    text-transform: none;
-  }
-
   .recipe__note {
     margin-top: var(--space-4);
     max-width: 40rem;
     color: var(--color-muted);
   }
 
-  .recipe__legend {
-    margin-top: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    font-size: 0.875rem;
-    color: var(--color-muted);
-  }
-
-  .recipe__legend-symbol {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    color: var(--color-fg);
-  }
-
   .recipe__special {
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    background-color: var(--color-gray-light);
+    background-color: var(--color-panel);
     padding: var(--space-4);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--bevel-raised);
   }
 
   .recipe__special-icon {
@@ -320,6 +297,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
   .recipe__special .recipe__note {
     margin-top: 0;
+    color: var(--color-panel-fg);
   }
 
   .recipe__pager {

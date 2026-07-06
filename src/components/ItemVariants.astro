@@ -1,0 +1,76 @@
+---
+import ItemIcon from './ItemIcon.astro';
+import type { ItemData } from '../content.config';
+
+interface Props {
+  /** Item ids this slot accepts; cycles between them when there's more than one. */
+  items: string[];
+  itemsMap: Map<string, ItemData>;
+  loading?: 'lazy' | 'eager';
+}
+
+const { items, itemsMap, loading = 'lazy' } = Astro.props;
+---
+
+<span class="item-variants" data-variant-cycle={items.length > 1 ? items.length : undefined}>
+  {
+    items.map((itemId, index) => {
+      const item = itemsMap.get(itemId);
+      return (
+        item && (
+          <span class="item-variants__variant" hidden={index !== 0}>
+            <ItemIcon item={item} loading={loading} />
+          </span>
+        )
+      );
+    })
+  }
+</span>
+
+<style>
+  .item-variants {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .item-variants__variant {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<script>
+  const TICK_MS = 1500;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function cycleVariants() {
+    document
+      .querySelectorAll<HTMLElement>('.item-variants[data-variant-cycle]')
+      .forEach((wrapper) => {
+        const variants = wrapper.querySelectorAll<HTMLElement>('.item-variants__variant');
+        const currentIndex = Array.from(variants).findIndex((variant) => !variant.hidden);
+        const nextIndex = (currentIndex + 1) % variants.length;
+
+        variants.forEach((variant, index) => {
+          variant.hidden = index !== nextIndex;
+        });
+      });
+  }
+
+  // Module scope persists across View Transitions navigations (the script
+  // isn't re-executed, only astro:page-load re-fires below), so the previous
+  // page's interval must be cleared or they'd stack up on every navigation.
+  let intervalId: ReturnType<typeof setInterval> | undefined;
+
+  document.addEventListener('astro:page-load', () => {
+    clearInterval(intervalId);
+    if (!prefersReducedMotion) {
+      intervalId = setInterval(cycleVariants, TICK_MS);
+    }
+  });
+</script>
