@@ -81,6 +81,14 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
       -0.5em -0.5em 0 0 rgba(0, 0, 0, 0.5) inset, 0.5em 0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
     --bevel-button-pressed:
       0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset, -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+    /* Same raised-bevel direction as --bevel-button, but in fixed rem units
+       (not em) and offset by --panel-border-width -- used by large panels
+       (crafting grid, ingredient options, special recipe box) so their
+       "border" is the same stepped-pixel block as the small button/slot
+       bevels, not a mitered border-color trick. */
+    --bevel-panel:
+      -0.5rem -0.5rem 0 0 rgba(0, 0, 0, 0.5) inset,
+      0.5rem 0.5rem 0 0 rgba(255, 255, 255, 0.75) inset;
 
     /* Shape */
     --radius-sm: 0.125rem;
@@ -90,13 +98,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --border-width: 0.125rem;
 
     /* Larger panels (crafting grid, ingredient options, special recipe box):
-       a chunky border as thick as the grid cells' own bevel offset (0.5em,
-       matches --bevel-slot/--bevel-button), white on the top/left and dark
-       on the bottom/right -- the same raised-bevel direction as the cells
-       and buttons, just drawn as a real border instead of a box-shadow --
-       plus a thin darker-gray ring just outside it. */
+       drawn with --bevel-panel (see above) at this thickness -- panels pad
+       their content by this amount extra so the bevel has room to sit
+       inside the padding box -- plus a thin darker-gray ring just outside. */
     --panel-border-width: 0.5rem;
-    --panel-border-color: #fff var(--color-gray-dark) var(--color-gray-dark) #fff;
     --panel-border-outer-width: 0.125rem;
     --panel-border-outer: 0 0 0 var(--panel-border-outer-width) var(--color-gray-dark);
 
@@ -201,6 +206,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
     background-color: var(--color-panel);
     box-shadow: var(--bevel-button);
   }

@@ -41,11 +41,9 @@ const { entries, itemsMap, note } = Astro.props;
   .ingredient-options {
     margin-top: var(--space-2);
     background-color: var(--color-panel);
-    padding: var(--space-3) var(--space-4);
-    border: var(--panel-border-width) solid;
-    border-color: var(--panel-border-color);
-    border-radius: var(--radius-md);
-    box-shadow: var(--panel-border-outer);
+    padding: calc(var(--space-3) + var(--panel-border-width))
+      calc(var(--space-4) + var(--panel-border-width));
+    box-shadow: var(--bevel-panel), var(--panel-border-outer);
   }
 
   .ingredient-options__title {

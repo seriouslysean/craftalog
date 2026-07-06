@@ -27,20 +27,22 @@ const resultItem = result ? items.get(result.id) : undefined;
     }
   </div>
 
-  <div class="crafting__arrow" aria-hidden="true">→</div>
+  <div class="crafting__output">
+    <div class="crafting__arrow" aria-hidden="true">→</div>
 
-  <div class="crafting__result">
-    <div class="crafting__cell">
-      {
-        resultItem && (
-          <>
-            <ItemIcon item={resultItem} loading="eager" />
-            {result && result.count > 1 && <span class="crafting__count">×{result.count}</span>}
-          </>
-        )
-      }
+    <div class="crafting__result">
+      <div class="crafting__cell">
+        {
+          resultItem && (
+            <>
+              <ItemIcon item={resultItem} loading="eager" />
+              {result && result.count > 1 && <span class="crafting__count">×{result.count}</span>}
+            </>
+          )
+        }
+      </div>
+      {resultItem?.stat && <ItemStat stat={resultItem.stat} />}
     </div>
-    {resultItem?.stat && <ItemStat stat={resultItem.stat} />}
   </div>
 </div>
 
@@ -51,11 +53,8 @@ const resultItem = result ? items.get(result.id) : undefined;
     align-items: center;
     gap: var(--space-4);
     background-color: var(--color-panel);
-    padding: var(--space-4);
-    border: var(--panel-border-width) solid;
-    border-color: var(--panel-border-color);
-    border-radius: var(--radius-md);
-    box-shadow: var(--panel-border-outer);
+    padding: calc(var(--space-4) + var(--panel-border-width));
+    box-shadow: var(--bevel-panel), var(--panel-border-outer);
     flex-wrap: wrap;
   }
 
@@ -64,6 +63,13 @@ const resultItem = result ? items.get(result.id) : undefined;
     grid-template-columns: repeat(3, var(--crafting-cell));
     grid-auto-rows: var(--crafting-cell);
     gap: var(--space-4);
+  }
+
+  .crafting__output {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-shrink: 0;
   }
 
   .crafting__arrow {
