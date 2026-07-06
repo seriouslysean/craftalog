@@ -34,6 +34,8 @@ export interface GenerateOutput {
   texturesToCopy: Set<string>;
   /** Dye color id -> destination texture ref, for banner icons the caller must generate (see scripts/lib/banner-icon.ts). */
   bannerIconsToSynthesize: Map<string, string>;
+  /** Source atlas texture ref -> destination texture ref, for lightning rod icons the caller must generate (see scripts/lib/lightning-rod-icon.ts). Keyed by source so oxidation variants sharing one atlas only synthesize once. */
+  lightningRodIconsToSynthesize: Map<string, string>;
 }
 
 /**
@@ -72,6 +74,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const unresolvedIcons: string[] = [];
   const texturesToCopy = new Set<string>();
   const bannerIconsToSynthesize = new Map<string, string>();
+  const lightningRodIconsToSynthesize = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -83,6 +86,11 @@ export function generate(input: GenerateInput): GenerateOutput {
       const ref = `item/${candidate.colorId}_banner`;
       icon = { type: "flat", texture: `/textures/${ref}.png` };
       bannerIconsToSynthesize.set(candidate.colorId, ref);
+    } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
+      const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
+      const ref = `item/${baseName}`;
+      icon = { type: "flat", texture: `/textures/${ref}.png` };
+      lightningRodIconsToSynthesize.set(candidate.textureRef, ref);
     } else if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
@@ -118,5 +126,12 @@ export function generate(input: GenerateInput): GenerateOutput {
     unresolvedIcons: unresolvedIcons.toSorted(),
   };
 
-  return { recipes, items, meta, texturesToCopy, bannerIconsToSynthesize };
+  return {
+    recipes,
+    items,
+    meta,
+    texturesToCopy,
+    bannerIconsToSynthesize,
+    lightningRodIconsToSynthesize,
+  };
 }
