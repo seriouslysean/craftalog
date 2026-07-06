@@ -19,7 +19,7 @@ const recipesRaw: RawRecipesData = {
     type: "minecraft:crafting_shapeless",
     category: "building",
     group: "planks",
-    ingredients: ["#minecraft:oak_logs"],
+    ingredients: ["#minecraft:oak_logs", "minecraft:white_banner"],
     result: { count: 4, id: "minecraft:oak_planks" },
   },
   oak_slab: {
@@ -70,6 +70,13 @@ const itemDefsRaw: RawItemDefinitionsData = {
       model: { type: "minecraft:bundle" },
     },
   },
+  white_banner: {
+    model: {
+      type: "minecraft:special",
+      base: "minecraft:item/template_banner",
+      model: { type: "minecraft:banner", color: "white" },
+    },
+  },
 };
 
 const modelsRaw: RawModelsData = {
@@ -110,6 +117,9 @@ const modelsRaw: RawModelsData = {
   "block/slab": {},
 };
 
+// Deliberately no model entry for "item/template_banner" — resolveIconCandidate short-circuits
+// to a banner candidate before ever reaching the model chain.
+
 const enUs = { "item.minecraft.stick": "Stick", "block.minecraft.oak_log": "Oak Log" };
 
 // Every ref referenced above "exists" except this one, to exercise the unresolved/placeholder path.
@@ -122,6 +132,7 @@ const existingRefs = new Set([
   "block/oak_log",
   "block/oak_planks",
   "item/black_dye",
+  "block/white_wool",
 ]);
 
 function run() {
@@ -174,7 +185,7 @@ describe("generate determinism", () => {
 
   it("includes only items referenced by included recipes (results + resolved ingredients)", () => {
     const result = run();
-    // stick/coal/charcoal/torch (shaped), oak_log/oak_wood/oak_planks (shapeless),
+    // stick/coal/charcoal/torch (shaped), oak_log/oak_wood/oak_planks/white_banner (shapeless),
     // bundle/black_bundle/black_dye (transmute), oak_slab (shaped, ingredient oak_planks).
     // repair_item has no result/ingredients.
     expect(Object.keys(result.items).toSorted()).toEqual([
@@ -189,6 +200,7 @@ describe("generate determinism", () => {
       "oak_wood",
       "stick",
       "torch",
+      "white_banner",
     ]);
   });
 
@@ -221,5 +233,14 @@ describe("generate determinism", () => {
       top: "/textures/block/oak_planks.png",
       side: "/textures/block/oak_planks.png",
     });
+  });
+
+  it("resolves a banner icon to a generated per-color texture and queues it for synthesis", () => {
+    const result = run();
+    expect(result.items.white_banner.icon).toEqual({
+      type: "flat",
+      texture: "/textures/item/white_banner.png",
+    });
+    expect(result.bannerIconsToSynthesize).toEqual(new Map([["white", "item/white_banner"]]));
   });
 });

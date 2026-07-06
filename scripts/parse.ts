@@ -10,6 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { generateBannerIcon } from "./lib/banner-icon.ts";
 import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
@@ -60,7 +61,7 @@ function main(): void {
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
 
-  const { recipes, items, meta, texturesToCopy } = generate({
+  const { recipes, items, meta, texturesToCopy, bannerIconsToSynthesize } = generate({
     version,
     recipesRaw,
     tagsRaw,
@@ -90,6 +91,15 @@ function main(): void {
     fs.copyFileSync(sourcePath, destPath);
   }
 
+  const bannerBasePath = path.join(VENDOR_TEXTURES_DIR, "entity/banner/banner_base.png");
+  const bannerBasePng = fs.readFileSync(bannerBasePath);
+  for (const [colorId, ref] of bannerIconsToSynthesize) {
+    const woolPath = path.join(VENDOR_TEXTURES_DIR, `block/${colorId}_wool.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(destPath, generateBannerIcon(bannerBasePng, fs.readFileSync(woolPath)));
+  }
+
   for (const relativePath of HUD_ICON_RELATIVE_PATHS) {
     const sourcePath = path.join(VENDOR_TEXTURES_DIR, HUD_ICON_VENDOR_BASE, relativePath);
     const destPath = path.join(hudTexturesDir, relativePath);
@@ -111,6 +121,7 @@ function main(): void {
   console.log(`special:          ${meta.counts.special}`);
   console.log(`items:            ${meta.counts.items}`);
   console.log(`textures copied:  ${meta.counts.texturesCopied}`);
+  console.log(`banner icons:     ${bannerIconsToSynthesize.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
