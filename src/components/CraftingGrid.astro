@@ -18,11 +18,7 @@ const resultItem = result ? items.get(result.id) : undefined;
 ---
 
 <div class="crafting">
-  <div
-    class:list={['crafting__grid', { 'crafting__grid--unordered': unordered }]}
-    role="img"
-    aria-label={ariaLabel}
-  >
+  <div class="crafting__grid" role="img" aria-label={ariaLabel}>
     {
       unordered && (
         <svg
@@ -87,11 +83,11 @@ const resultItem = result ? items.get(result.id) : undefined;
   </div>
 </div>
 
-{unordered && <p class="crafting__caption">Place ingredients in any order.</p>}
+{unordered && <p class="crafting__caption">Order doesn&rsquo;t matter.</p>}
 
 <style>
   .crafting {
-    --crafting-cell: 4rem;
+    --crafting-cell: 3.5rem;
     display: flex;
     align-items: center;
     gap: var(--space-4);
@@ -118,11 +114,6 @@ const resultItem = result ? items.get(result.id) : undefined;
     color: var(--color-muted);
     border-radius: 999px;
     box-shadow: 0 0 0 1px var(--color-border);
-  }
-
-  .crafting__grid--unordered .crafting__cell {
-    outline: 2px dashed rgba(0, 0, 0, 0.35);
-    outline-offset: -2px;
   }
 
   .crafting__caption {
