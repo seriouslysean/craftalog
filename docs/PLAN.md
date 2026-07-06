@@ -40,7 +40,7 @@ public/textures/{item,block}/*.png ── only textures actually referenced
         ▼
 Astro content collections (file loaders + zod schemas)
         ▼
-Static pages: / (browse by category), /recipe/[id], /about
+Static pages: / (browse by category), /recipe/[id], 404
 ```
 
 Generated data is **committed** so the site builds without submodules and the

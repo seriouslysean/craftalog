@@ -1,0 +1,12 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ErrorState from '../components/ErrorState.astro';
+---
+
+<MainLayout title="Page Not Found - Craftalog">
+  <ErrorState
+    code="404"
+    title="Page not found"
+    message="That recipe doesn't exist, or the link is broken. Try searching the full catalog instead."
+  />
+</MainLayout>
