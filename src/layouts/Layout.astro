@@ -86,9 +86,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --radius-sm: 0.125rem;
     --radius-md: 0.125rem;
 
-    /* Flat, solid "chunky" border -- panels and the search input that don't
-       use the bevel above all share this exact width. */
+    /* Flat, solid "chunky" border -- the search input uses this alone. */
     --border-width: 0.125rem;
+
+    /* Larger panels (crafting grid, ingredient options, special recipe box):
+       a chunky white border as thick as the grid cells' own bevel offset
+       (0.5em, matches --bevel-slot/--bevel-button), plus a thin darker-gray
+       ring just outside it, matching the real GUI panel edge. */
+    --panel-border-width: 0.5rem;
+    --panel-border-outer-width: 0.125rem;
+    --panel-border-outer: 0 0 0 var(--panel-border-outer-width) var(--color-gray-dark);
 
     /* Spacing */
     --space-1: 0.25rem;

@@ -277,8 +277,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     gap: var(--space-4);
     background-color: var(--color-panel);
     padding: var(--space-4);
-    border: var(--border-width) solid var(--color-gray-dark);
+    border: var(--panel-border-width) solid #fff;
     border-radius: var(--radius-md);
+    box-shadow: var(--panel-border-outer);
   }
 
   .recipe__special-icon {
