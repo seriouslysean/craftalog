@@ -168,16 +168,16 @@ const faces = item ? getFaces(item.icon) : [];
     height: 50%;
   }
 
-  /* Stairs: a low tread (left half) plus a full-height back half, matching vanilla's stair model shape. */
+  /* Stairs: the low tread faces the viewer (near corner), rising to a full-height back half. */
   .block--stairs .top-low {
     width: 50%;
-    left: 0;
+    left: 50%;
     transform: rotateX(90deg);
   }
 
   .block--stairs .top-high {
     width: 50%;
-    left: 50%;
+    left: 0;
     transform: translateY(-50%) rotateX(90deg);
   }
 
@@ -189,6 +189,11 @@ const faces = item ? getFaces(item.icon) : [];
   .block--stairs .left-upper {
     height: 50%;
     top: 0;
-    clip-path: inset(0 0 0 50%);
+    clip-path: inset(0 50% 0 0);
+  }
+
+  .block--stairs .right {
+    top: 50%;
+    height: 50%;
   }
 </style>
