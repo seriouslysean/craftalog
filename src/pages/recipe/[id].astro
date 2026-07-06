@@ -98,7 +98,6 @@ const ariaLabel = `3 by 3 crafting grid for ${displayName}${
   ingredientNames.length > 0 ? `, using ${ingredientNames.join(', ')}` : ''
 }`;
 
-const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.slice(1);
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
@@ -159,8 +158,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
             </Badge>
           )
         }
-        <Badge>{categoryLabel}</Badge>
-        {recipe.group && <Badge>{recipe.group.replace(/_/g, ' ')}</Badge>}
+        <Badge>{recipe.family}</Badge>
         {recipe.type === 'transmute' && <Badge variant="gui">Transmute</Badge>}
       </div>
     </div>
