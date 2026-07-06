@@ -11,20 +11,15 @@ const itemEntries = await getCollection('items');
 const itemsMap = new Map(itemEntries.map((entry) => [entry.id, entry.data]));
 const getItemName = (id: string) => itemsMap.get(id)?.name ?? id;
 
-const CATEGORY_ORDER = ['building', 'equipment', 'redstone', 'misc'];
-const CATEGORY_LABELS: Record<string, string> = {
-  building: 'Building Blocks',
-  equipment: 'Tools & Equipment',
-  redstone: 'Redstone',
-  misc: 'Miscellaneous',
-};
+const familySlug = (family: string) =>
+  family
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 
-const categories = [
-  ...CATEGORY_ORDER,
-  ...new Set(
-    recipeEntries.map((entry) => entry.data.category).filter((c) => !CATEGORY_ORDER.includes(c)),
-  ),
-];
+const families = [...new Set(recipeEntries.map((entry) => entry.data.family))].toSorted((a, b) =>
+  a.localeCompare(b),
+);
 
 const resultCounts = new Map<string, number>();
 for (const entry of recipeEntries) {
@@ -32,10 +27,10 @@ for (const entry of recipeEntries) {
   if (resultId) resultCounts.set(resultId, (resultCounts.get(resultId) ?? 0) + 1);
 }
 
-const sections = categories
-  .map((category) => {
+const sections = families
+  .map((family) => {
     const entries = recipeEntries
-      .filter((entry) => entry.data.category === category)
+      .filter((entry) => entry.data.family === family)
       .map((entry) => {
         const resultId = entry.data.result?.id;
         const resultItem = resultId ? itemsMap.get(resultId) : undefined;
@@ -48,7 +43,7 @@ const sections = categories
       })
       .toSorted((a, b) => a.name.localeCompare(b.name));
 
-    return { category, label: CATEGORY_LABELS[category] ?? category, entries };
+    return { family, slug: familySlug(family), entries };
   })
   .filter((section) => section.entries.length > 0);
 
@@ -78,7 +73,7 @@ const totalRecipes = recipeEntries.length;
           type="button"
           class="catalog__filter-toggle link-chip"
           aria-expanded="true"
-          aria-controls="catalog-categories"
+          aria-controls="catalog-families"
         >
           <svg
             width="16"
@@ -101,40 +96,40 @@ const totalRecipes = recipeEntries.length;
             <line x1="9" y1="8" x2="15" y2="8"></line>
             <line x1="17" y1="16" x2="23" y2="16"></line>
           </svg>
-          <span class="visually-hidden">Show or hide category filters</span>
+          <span class="visually-hidden">Show or hide family filters</span>
         </button>
       </div>
 
       <div
-        class="catalog__categories"
-        id="catalog-categories"
+        class="catalog__families"
+        id="catalog-families"
         role="radiogroup"
-        aria-label="Filter by category"
+        aria-label="Filter by family"
       >
         <input
           type="radio"
-          name="category"
-          id="category-all"
+          name="family"
+          id="family-all"
           value="all"
           checked
-          class="catalog__category-input"
+          class="catalog__family-input"
         />
-        <label for="category-all" class="catalog__category-pill link-chip">
-          All <span class="catalog__category-count">({totalRecipes})</span>
+        <label for="family-all" class="catalog__family-pill link-chip">
+          All <span class="catalog__family-count">({totalRecipes})</span>
         </label>
         {
           sections.map((section) => (
             <>
               <input
                 type="radio"
-                name="category"
-                id={`category-${section.category}`}
-                value={section.category}
-                class="catalog__category-input"
+                name="family"
+                id={`family-${section.slug}`}
+                value={section.slug}
+                class="catalog__family-input"
               />
-              <label for={`category-${section.category}`} class="catalog__category-pill link-chip">
-                {section.label}{' '}
-                <span class="catalog__category-count">({section.entries.length})</span>
+              <label for={`family-${section.slug}`} class="catalog__family-pill link-chip">
+                {section.family}{' '}
+                <span class="catalog__family-count">({section.entries.length})</span>
               </label>
             </>
           ))
@@ -146,16 +141,16 @@ const totalRecipes = recipeEntries.length;
 
     {
       sections.map((section) => (
-        <section class="catalog__section" data-category-section>
+        <section class="catalog__section" data-family-section>
           <h2 class="catalog__section-title">
-            {section.label} <span class="catalog__section-count">({section.entries.length})</span>
+            {section.family} <span class="catalog__section-count">({section.entries.length})</span>
           </h2>
           <ul class="catalog__grid">
             {section.entries.map((entry) => (
               <li
                 class="catalog__item"
                 data-search={entry.name.toLowerCase()}
-                data-category={section.category}
+                data-family={section.slug}
               >
                 <ItemCard
                   href={withBase(`/recipe/${entry.id}/`)}
@@ -180,11 +175,11 @@ const totalRecipes = recipeEntries.length;
   document.addEventListener('astro:page-load', () => {
     const input = document.getElementById('recipe-filter');
     const items = document.querySelectorAll<HTMLElement>('.catalog__item');
-    const sections = document.querySelectorAll<HTMLElement>('[data-category-section]');
-    const categoryInputs = document.querySelectorAll<HTMLInputElement>('input[name="category"]');
+    const sections = document.querySelectorAll<HTMLElement>('[data-family-section]');
+    const familyInputs = document.querySelectorAll<HTMLInputElement>('input[name="family"]');
     const emptyState = document.getElementById('catalog-empty');
 
-    let activeCategory = 'all';
+    let activeFamily = 'all';
 
     function applyFilter(query: string) {
       const needle = query.trim().toLowerCase();
@@ -192,9 +187,8 @@ const totalRecipes = recipeEntries.length;
 
       items.forEach((item) => {
         const matchesText = !needle || (item.dataset.search ?? '').includes(needle);
-        const matchesCategory =
-          activeCategory === 'all' || item.dataset.category === activeCategory;
-        const visible = matchesText && matchesCategory;
+        const matchesFamily = activeFamily === 'all' || item.dataset.family === activeFamily;
+        const visible = matchesText && matchesFamily;
         item.hidden = !visible;
         if (visible) anyVisible = true;
       });
@@ -211,22 +205,22 @@ const totalRecipes = recipeEntries.length;
       input.addEventListener('input', () => applyFilter(input.value));
     }
 
-    categoryInputs.forEach((radio) => {
+    familyInputs.forEach((radio) => {
       radio.addEventListener('change', () => {
         if (radio.checked) {
-          activeCategory = radio.value;
+          activeFamily = radio.value;
           applyFilter(input instanceof HTMLInputElement ? input.value : '');
         }
       });
     });
 
     const filterToggle = document.querySelector<HTMLButtonElement>('.catalog__filter-toggle');
-    const categories = document.getElementById('catalog-categories');
+    const families = document.getElementById('catalog-families');
 
     filterToggle?.addEventListener('click', () => {
       const expanded = filterToggle.getAttribute('aria-expanded') === 'true';
       filterToggle.setAttribute('aria-expanded', String(!expanded));
-      if (categories) categories.hidden = expanded;
+      if (families) families.hidden = expanded;
     });
   });
 </script>
@@ -289,18 +283,18 @@ const totalRecipes = recipeEntries.length;
     box-shadow: var(--bevel-button-pressed);
   }
 
-  .catalog__categories {
+  .catalog__families {
     margin-top: var(--space-3);
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
   }
 
-  .catalog__categories[hidden] {
+  .catalog__families[hidden] {
     display: none;
   }
 
-  .catalog__category-input {
+  .catalog__family-input {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -308,7 +302,7 @@ const totalRecipes = recipeEntries.length;
     opacity: 0;
   }
 
-  .catalog__category-pill {
+  .catalog__family-pill {
     padding: var(--space-2) var(--space-4);
     font-size: 0.8125rem;
     color: var(--color-panel-fg);
@@ -316,16 +310,16 @@ const totalRecipes = recipeEntries.length;
     user-select: none;
   }
 
-  .catalog__category-input:checked + .catalog__category-pill {
+  .catalog__family-input:checked + .catalog__family-pill {
     box-shadow: var(--bevel-button-pressed);
   }
 
-  .catalog__category-input:focus-visible + .catalog__category-pill {
+  .catalog__family-input:focus-visible + .catalog__family-pill {
     outline: 2px solid var(--color-fg);
     outline-offset: 2px;
   }
 
-  .catalog__category-count {
+  .catalog__family-count {
     color: inherit;
     opacity: 0.7;
   }

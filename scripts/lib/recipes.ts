@@ -60,7 +60,7 @@ export function transformRecipe(
   id: string,
   raw: RawRecipeEntry,
   tags: RawTagsData,
-): Recipe | undefined {
+): Omit<Recipe, "family"> | undefined {
   const category = raw.category ?? DEFAULT_CATEGORY;
   const group = raw.group;
 

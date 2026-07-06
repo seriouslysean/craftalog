@@ -21,6 +21,7 @@ const recipeSchema = z.object({
   id: z.string(),
   type: z.enum(["shaped", "shapeless", "transmute", "special"]),
   category: z.string(),
+  family: z.string(),
   group: z.string().optional(),
   // Optional in practice only for crafting_special_repairitem.
   result: recipeResultSchema.optional(),

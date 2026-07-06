@@ -100,6 +100,8 @@ export interface Recipe {
   id: string;
   type: RecipeType;
   category: string;
+  /** Derived taxonomy label for browsing (see scripts/lib/family.ts) — always present. */
+  family: string;
   group?: string;
   // Optional in practice only for crafting_special_repairitem, which has no
   // fixed result in the vendored data (see scripts/lib/recipes.ts).
