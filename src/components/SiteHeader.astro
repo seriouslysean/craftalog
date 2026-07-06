@@ -52,7 +52,7 @@ const isActive = (path: string) => {
   .logo {
     font-family: var(--font-display);
     font-size: 1.375rem;
-    font-weight: 400;
+    font-weight: 700;
     letter-spacing: 0;
     border: none;
   }
@@ -75,6 +75,7 @@ const isActive = (path: string) => {
   .nav a {
     padding: var(--space-1) var(--space-2);
     border: var(--border-width-sm) solid transparent;
+    border-radius: var(--radius-sm);
     font-size: 0.9375rem;
     color: var(--color-muted);
     transition: all 0.15s;
@@ -84,11 +85,12 @@ const isActive = (path: string) => {
   .nav a.active {
     background-color: var(--color-panel);
     color: var(--color-panel-fg);
-    border-color: var(--pixel-border-raised);
+    border-color: var(--color-chrome-border);
+    box-shadow: var(--shadow-chrome);
   }
 
   .nav a:active {
-    border-color: var(--pixel-border-sunken);
+    box-shadow: none;
     transform: translate(1px, 1px);
   }
 

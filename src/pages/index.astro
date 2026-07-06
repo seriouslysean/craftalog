@@ -214,8 +214,7 @@ const totalRecipes = recipeEntries.length;
     width: 100%;
     max-width: 24rem;
     padding: var(--space-2) var(--space-3);
-    border: var(--border-width-sm) solid;
-    border-color: var(--pixel-border-sunken);
+    border: var(--border-width-sm) solid var(--color-chrome-border);
     border-radius: var(--radius-sm);
     background-color: var(--color-slot);
     color: var(--color-fg);
@@ -248,10 +247,10 @@ const totalRecipes = recipeEntries.length;
     align-items: center;
     gap: 0.25em;
     padding: var(--space-1) var(--space-3);
-    border: var(--border-width-sm) solid;
-    border-color: var(--pixel-border-raised);
+    border: var(--border-width-sm) solid var(--color-chrome-border);
     border-radius: var(--radius-sm);
     background-color: var(--color-slot);
+    box-shadow: var(--shadow-chrome);
     font-size: 0.8125rem;
     color: var(--color-fg);
     cursor: pointer;
@@ -265,13 +264,13 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__category-pill:active {
-    border-color: var(--pixel-border-sunken);
+    box-shadow: none;
     transform: translate(1px, 1px);
   }
 
   .catalog__category-input:checked + .catalog__category-pill {
     background-color: var(--color-fg);
-    border-color: var(--pixel-border-sunken);
+    box-shadow: none;
     color: var(--color-bg);
   }
 
@@ -324,11 +323,12 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__link:hover {
-    border-color: var(--pixel-border-raised);
+    border-color: var(--color-chrome-border);
+    box-shadow: var(--shadow-chrome);
   }
 
   .catalog__link:active {
-    border-color: var(--pixel-border-sunken);
+    box-shadow: none;
     transform: translate(1px, 1px);
   }
 
