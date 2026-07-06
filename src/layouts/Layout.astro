@@ -67,28 +67,50 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --color-panel-fg: var(--color-gray-dark);
     --color-slot: var(--color-gray);
 
+    /* Single source of truth for the "chunky pixel border" thickness used by
+       every bevel below -- slots, buttons, and large panels all read this one
+       variable, so dialing it in one place moves the whole site in lockstep.
+       Kept in rem, not em, so it can no longer be silently shrunk by an
+       element setting its own font-size (the previous em-based bevels were,
+       which is why the ingredient-options slot's border used to look
+       thinner than the crafting grid's). */
+    --bevel-width: 0.3125rem;
+
     /* The Minecraft inset/outset bevel: a background color plus two
        translucent box-shadows -- one dark, one light -- offset diagonally so
        each shows up as a solid pip of color in opposite corners. --bevel-slot
        is the recessed look for crafting/ingredient item slots; --bevel-button
        is the exact same colors and offset with the corners flipped, for a
-       raised/clickable look. Both stay off border-radius -- the alpha shadow
-       clipped by a curved corner reads as a smudgy gradient, not a clean
-       stamped edge. */
+       raised/clickable look; --bevel-button-pressed matches --bevel-slot's
+       direction (a pressed button looks recessed, like a slot); --bevel-panel
+       is the same raised direction as --bevel-button, for large panels
+       (crafting grid, ingredient options, special recipe box). All four stay
+       off border-radius -- the alpha shadow clipped by a curved corner reads
+       as a smudgy gradient, not a clean stamped edge. */
     --bevel-slot:
-      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset, -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+      var(--bevel-width) var(--bevel-width) 0 0 rgba(0, 0, 0, 0.5) inset,
+      calc(-1 * var(--bevel-width)) calc(-1 * var(--bevel-width)) 0 0 rgba(255, 255, 255, 0.75)
+        inset;
     --bevel-button:
-      -0.5em -0.5em 0 0 rgba(0, 0, 0, 0.5) inset, 0.5em 0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+      calc(-1 * var(--bevel-width)) calc(-1 * var(--bevel-width)) 0 0 rgba(0, 0, 0, 0.5) inset,
+      var(--bevel-width) var(--bevel-width) 0 0 rgba(255, 255, 255, 0.75) inset;
     --bevel-button-pressed:
-      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset, -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
-    /* Same raised-bevel direction as --bevel-button, but in fixed rem units
-       (not em) and offset by --panel-border-width -- used by large panels
-       (crafting grid, ingredient options, special recipe box) so their
-       "border" is the same stepped-pixel block as the small button/slot
-       bevels, not a mitered border-color trick. */
+      var(--bevel-width) var(--bevel-width) 0 0 rgba(0, 0, 0, 0.5) inset,
+      calc(-1 * var(--bevel-width)) calc(-1 * var(--bevel-width)) 0 0 rgba(255, 255, 255, 0.75)
+        inset;
     --bevel-panel:
-      -0.5rem -0.5rem 0 0 rgba(0, 0, 0, 0.5) inset,
-      0.5rem 0.5rem 0 0 rgba(255, 255, 255, 0.75) inset;
+      calc(-1 * var(--bevel-width)) calc(-1 * var(--bevel-width)) 0 0 rgba(0, 0, 0, 0.5) inset,
+      var(--bevel-width) var(--bevel-width) 0 0 rgba(255, 255, 255, 0.75) inset;
+
+    /* Larger panels (crafting grid, ingredient options, special recipe box)
+       pad their content by --bevel-width extra so --bevel-panel has room to
+       sit inside the padding box -- plus a thin darker-gray ring just
+       outside. --panel-border-width is just --bevel-width under the name
+       panel padding math reaches for; keeping it as an alias (not a second
+       literal) is what keeps it in lockstep with every other bevel above. */
+    --panel-border-width: var(--bevel-width);
+    --panel-border-outer-width: 0.125rem;
+    --panel-border-outer: 0 0 0 var(--panel-border-outer-width) var(--color-gray-dark);
 
     /* Shape */
     --radius-sm: 0.125rem;
@@ -97,13 +119,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     /* Flat, solid "chunky" border -- the search input uses this alone. */
     --border-width: 0.125rem;
 
-    /* Larger panels (crafting grid, ingredient options, special recipe box):
-       drawn with --bevel-panel (see above) at this thickness -- panels pad
-       their content by this amount extra so the bevel has room to sit
-       inside the padding box -- plus a thin darker-gray ring just outside. */
-    --panel-border-width: 0.5rem;
-    --panel-border-outer-width: 0.125rem;
-    --panel-border-outer: 0 0 0 var(--panel-border-outer-width) var(--color-gray-dark);
+    /* Two-tone horizontal divider (site header, footer, recipe pager) -- a
+       dark line plus an inset highlight right next to it, same dark/light
+       pairing as the bevels above, instead of the flat single-tone
+       --color-border rule that reads as out of place next to all the
+       stepped-pixel bevel UI. --divider-border works on either border-top or
+       border-bottom; the highlight shadow direction has to match which edge
+       the border is drawn on, hence the two variants. */
+    --divider-border: 0.0625rem solid var(--color-gray-dark);
+    --divider-shadow-top: inset 0 0.0625rem 0 0 rgba(255, 255, 255, 0.75);
+    --divider-shadow-bottom: inset 0 -0.0625rem 0 0 rgba(255, 255, 255, 0.75);
 
     /* Spacing */
     --space-1: 0.25rem;

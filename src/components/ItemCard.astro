@@ -6,13 +6,18 @@ interface Props {
   href: string;
   item: ItemData | null;
   name: string;
-  /** Small caption under the name -- e.g. a disambiguating recipe subtitle
-      on the catalog, or "Previous"/"Next" on the recipe pager. */
+  /** Small caption -- e.g. a disambiguating recipe subtitle on the catalog,
+      or "Previous"/"Next" on the recipe pager. */
   subtitle?: string | null;
+  /** Render the subtitle above the name instead of below -- the pager's
+      "Previous"/"Next" is a nav label, not a caption describing the item, so
+      it reads better as an eyebrow above the (larger) name for weight
+      distribution. Catalog cards keep the default (subtitle below). */
+  subtitleFirst?: boolean;
   class?: string;
 }
 
-const { href, item, name, subtitle, class: className } = Astro.props;
+const { href, item, name, subtitle, subtitleFirst = false, class: className } = Astro.props;
 ---
 
 <a href={href} class:list={['item-card', 'link-chip', className]}>
@@ -20,8 +25,9 @@ const { href, item, name, subtitle, class: className } = Astro.props;
     <ItemIcon item={item} />
   </span>
   <span class="item-card__text">
+    {subtitleFirst && subtitle && <span class="item-card__subtitle">{subtitle}</span>}
     <span class="item-card__name">{name}</span>
-    {subtitle && <span class="item-card__subtitle">{subtitle}</span>}
+    {!subtitleFirst && subtitle && <span class="item-card__subtitle">{subtitle}</span>}
   </span>
 </a>
 

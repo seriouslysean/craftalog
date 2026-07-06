@@ -22,10 +22,10 @@ describe("ingredientOption", () => {
     expect(ingredientOption({ items: ["stick"] }, itemName)).toBeNull();
   });
 
-  it("labels a tag-based multi-option ingredient with the humanized tag", () => {
+  it("labels a tag-based multi-option ingredient with the title-cased tag, no 'Any' prefix", () => {
     const ingredient = { items: ["oak_planks", "spruce_planks"], tag: "planks" };
     expect(ingredientOption(ingredient, itemName)).toEqual({
-      label: "Any Planks",
+      label: "Planks",
       items: ["oak_planks", "spruce_planks"],
     });
   });

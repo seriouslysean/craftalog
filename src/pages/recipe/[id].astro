@@ -196,6 +196,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         item={prevItem}
         name={prevName}
         subtitle="Previous"
+        subtitleFirst
         class="recipe__pager-link recipe__pager-link--prev"
       />
       <a href={withBase('/')} class="recipe__pager-home link-chip">All recipes</a>
@@ -204,6 +205,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         item={nextItem}
         name={nextName}
         subtitle="Next"
+        subtitleFirst
         class="recipe__pager-link recipe__pager-link--next"
       />
     </nav>
@@ -324,7 +326,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
       'home home';
     align-items: center;
     gap: var(--space-4);
-    border-top: 1px solid var(--color-border);
+    border-top: var(--divider-border);
+    box-shadow: var(--divider-shadow-top);
     padding-top: var(--space-4);
     font-size: 0.875rem;
   }
