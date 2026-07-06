@@ -87,6 +87,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --radius-md: 0.5rem;
     --radius-pill: 999px;
 
+    /* Flat, solid "chunky" border -- panels and the search input that don't
+       use the bevel above all share this exact width. */
+    --border-width: 0.125rem;
+
     /* Spacing */
     --space-1: 0.25rem;
     --space-2: 0.5rem;

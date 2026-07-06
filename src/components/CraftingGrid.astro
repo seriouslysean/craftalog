@@ -46,12 +46,13 @@ const resultItem = result ? items.get(result.id) : undefined;
 
 <style>
   .crafting {
-    --crafting-cell: 3.5rem;
+    --crafting-cell: 4rem;
     display: flex;
     align-items: center;
     gap: var(--space-4);
     background-color: var(--color-panel);
     padding: var(--space-4);
+    border: var(--border-width) solid var(--color-gray-dark);
     border-radius: var(--radius-md);
     flex-wrap: wrap;
   }
@@ -60,7 +61,7 @@ const resultItem = result ? items.get(result.id) : undefined;
     display: grid;
     grid-template-columns: repeat(3, var(--crafting-cell));
     grid-auto-rows: var(--crafting-cell);
-    gap: var(--space-2);
+    gap: var(--space-4);
   }
 
   .crafting__arrow {
@@ -70,6 +71,7 @@ const resultItem = result ? items.get(result.id) : undefined;
   }
 
   .crafting__result {
+    width: var(--crafting-cell);
     flex-shrink: 0;
   }
 
@@ -82,7 +84,7 @@ const resultItem = result ? items.get(result.id) : undefined;
     justify-content: center;
     align-items: center;
     position: relative;
-    padding: var(--space-2);
+    padding: var(--space-4);
   }
 
   .crafting__count {
@@ -101,7 +103,7 @@ const resultItem = result ? items.get(result.id) : undefined;
 
   @media (min-width: 640px) {
     .crafting {
-      --crafting-cell: 5rem;
+      --crafting-cell: 6rem;
       gap: var(--space-6);
     }
   }
