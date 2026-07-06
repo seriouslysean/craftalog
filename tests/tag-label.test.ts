@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { humanizeTagLabel, ingredientLabel } from "../src/utils/tag-label";
+import { humanizeTagLabel, ingredientOption } from "../src/utils/tag-label";
 
 const itemName = (id: string) => id.charAt(0).toUpperCase() + id.slice(1).replace(/_/g, " ");
 
@@ -17,26 +17,34 @@ describe("humanizeTagLabel", () => {
   });
 });
 
-describe("ingredientLabel", () => {
-  it("returns null for a single-item ingredient (nothing to label)", () => {
-    expect(ingredientLabel({ items: ["stick"] }, itemName)).toBeNull();
+describe("ingredientOption", () => {
+  it("returns null for a single-item ingredient (nothing to show)", () => {
+    expect(ingredientOption({ items: ["stick"] }, itemName)).toBeNull();
   });
 
   it("labels a tag-based multi-option ingredient with the humanized tag", () => {
-    expect(
-      ingredientLabel({ items: ["oak_planks", "spruce_planks"], tag: "planks" }, itemName),
-    ).toBe("Any Planks");
+    const ingredient = { items: ["oak_planks", "spruce_planks"], tag: "planks" };
+    expect(ingredientOption(ingredient, itemName)).toEqual({
+      label: "Any Planks",
+      items: ["oak_planks", "spruce_planks"],
+    });
   });
 
-  it('labels a non-tag multi-option ingredient with the first item + "or N more"', () => {
+  it("labels a non-tag multi-option ingredient with the first item's name", () => {
     const ingredient = { items: ["coal", "charcoal"] };
-    expect(ingredientLabel(ingredient, itemName)).toBe("Coal or 1 more");
+    expect(ingredientOption(ingredient, itemName)).toEqual({
+      label: "Coal",
+      items: ["coal", "charcoal"],
+    });
   });
 
-  it('counts "or N more" correctly for many variants', () => {
+  it("keeps every item id for the cycling display, not just the first", () => {
     const ingredient = {
       items: ["white_bed", "orange_bed", "magenta_bed", "light_blue_bed"],
     };
-    expect(ingredientLabel(ingredient, itemName)).toBe("White bed or 3 more");
+    expect(ingredientOption(ingredient, itemName)).toEqual({
+      label: "White bed",
+      items: ["white_bed", "orange_bed", "magenta_bed", "light_blue_bed"],
+    });
   });
 });
