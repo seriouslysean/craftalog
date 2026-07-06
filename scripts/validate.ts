@@ -186,18 +186,7 @@ function checkInternalConsistency(committed: {
 
   for (const [id, item] of Object.entries(items)) {
     const texturePaths =
-      item.icon.type === "flat"
-        ? [item.icon.texture]
-        : item.icon.type === "bed"
-          ? [
-              item.icon.headUp,
-              item.icon.headEast,
-              item.icon.headNorth,
-              item.icon.footUp,
-              item.icon.footEast,
-              item.icon.footSouth,
-            ]
-          : [item.icon.top, item.icon.side];
+      item.icon.type === "flat" ? [item.icon.texture] : [item.icon.top, item.icon.side];
     for (const texturePath of texturePaths) {
       const onDisk = path.join(PUBLIC_DIR, texturePath.replace(/^\//, ""));
       if (!fs.existsSync(onDisk)) {

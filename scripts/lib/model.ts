@@ -23,12 +23,6 @@ const FLAT_TERMINALS = new Set(["item/generated", "item/handheld", "builtin/gene
 // element offsets, reconstructing the rod's actual silhouette.
 const LIGHTNING_ROD_ATLAS_PARENTS = new Set(["block/template_lightning_rod"]);
 
-// Beds are the only `minecraft:composite` items (head + foot sub-models) and
-// the only ones using this bespoke multi-element parent. Used below to tell
-// which of a composite's two model refs is the head (see
-// `findAllModelReferences` + the composite branch in `resolveIconCandidate`).
-const BED_HEAD_PARENTS = new Set(["block/template_bed_head"]);
-
 type ChainCategory =
   | "flat"
   | "cube_all"
@@ -39,7 +33,6 @@ type ChainCategory =
   | "slab"
   | "stairs"
   | "lightning_rod"
-  | "bed_head"
   | "unknown";
 
 /**
@@ -53,7 +46,6 @@ function classifyChain(chainNames: string[]): ChainCategory {
   for (const name of chainNames) {
     if (FLAT_TERMINALS.has(name)) return "flat";
     if (LIGHTNING_ROD_ATLAS_PARENTS.has(name)) return "lightning_rod";
-    if (BED_HEAD_PARENTS.has(name)) return "bed_head";
     if (name === "block/cube_all") return "cube_all";
     if (name === "block/cube_column" || name === "block/cube_column_horizontal")
       return "cube_column";
@@ -156,33 +148,6 @@ export function findModelReference(node: unknown): string | undefined {
   return undefined;
 }
 
-/**
- * Same depth-first search as `findModelReference`, but collects every nested
- * `{ type: "minecraft:model", model: <ref> }` node instead of stopping at the
- * first -- used to pull both sub-model refs out of a bed's `minecraft:composite`
- * item definition (head first, then foot, matching the composite's own
- * `models` array order).
- */
-export function findAllModelReferences(node: unknown): string[] {
-  if (!node || typeof node !== "object") return [];
-
-  const obj = node as Record<string, unknown>;
-  const refs: string[] = [];
-  if (obj.type === "minecraft:model" && typeof obj.model === "string") {
-    refs.push(obj.model);
-  }
-
-  for (const value of Object.values(obj)) {
-    if (Array.isArray(value)) {
-      for (const item of value) refs.push(...findAllModelReferences(item));
-    } else if (value && typeof value === "object") {
-      refs.push(...findAllModelReferences(value));
-    }
-  }
-
-  return refs;
-}
-
 export interface SpecialModel {
   /** The flat/block model this special renderer falls back to for e.g. inventory display. */
   base: string;
@@ -231,17 +196,7 @@ export type IconCandidate =
   /** A colored banner — resolved to a generated icon (see scripts/lib/banner-icon.ts), not a vendored texture. */
   | { type: "banner"; colorId: string }
   /** A lightning rod variant — top/side cropped from `textureRef`'s atlas (see scripts/lib/lightning-rod-icon.ts), not a vendored texture. */
-  | { type: "lightning_rod"; textureRef: string }
-  /** A bed color — head + foot sub-model texture refs, rendered as a compound icon (see ItemIcon.astro), no synthesis. */
-  | {
-      type: "bed";
-      headUp: string;
-      headEast: string;
-      headNorth: string;
-      footUp: string;
-      footEast: string;
-      footSouth: string;
-    };
+  | { type: "lightning_rod"; textureRef: string };
 
 /**
  * Resolves an item's icon down to bare texture refs (e.g. "block/oak_log_top",
@@ -257,23 +212,6 @@ export function resolveIconCandidate(
 ): IconCandidate | undefined {
   const definition = itemDefinitions[itemId];
   if (!definition) return undefined;
-
-  const allModelRefs = findAllModelReferences(definition.model);
-  if (allModelRefs.length === 2) {
-    const headChain = walkModelChain(allModelRefs[0], models);
-    if (classifyChain(headChain.chainNames) === "bed_head") {
-      const footChain = walkModelChain(allModelRefs[1], models);
-      const headUp = resolveTextureRef("up", headChain.mergedTextures);
-      const headEast = resolveTextureRef("east", headChain.mergedTextures);
-      const headNorth = resolveTextureRef("north", headChain.mergedTextures);
-      const footUp = resolveTextureRef("up", footChain.mergedTextures);
-      const footEast = resolveTextureRef("east", footChain.mergedTextures);
-      const footSouth = resolveTextureRef("south", footChain.mergedTextures);
-      return headUp && headEast && headNorth && footUp && footEast && footSouth
-        ? { type: "bed", headUp, headEast, headNorth, footUp, footEast, footSouth }
-        : undefined;
-    }
-  }
 
   const modelRef = findModelReference(definition.model);
   const special = modelRef ? undefined : findSpecialModel(definition.model);
