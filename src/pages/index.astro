@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
-import ItemIcon from '../components/ItemIcon.astro';
+import ItemCard from '../components/ItemCard.astro';
 import { withBase } from '../utils/with-base';
 import { recipeSubtitle } from '../utils/recipe-subtitle';
 import meta from '../data/generated/meta.json';
@@ -157,15 +157,13 @@ const totalRecipes = recipeEntries.length;
                 data-search={entry.name.toLowerCase()}
                 data-category={section.category}
               >
-                <a href={withBase(`/recipe/${entry.id}/`)} class="catalog__link link-chip">
-                  <span class="catalog__icon">
-                    <ItemIcon item={entry.item} />
-                  </span>
-                  <span class="catalog__text">
-                    <span class="catalog__name">{entry.name}</span>
-                    {entry.subtitle && <span class="catalog__item-subtitle">{entry.subtitle}</span>}
-                  </span>
-                </a>
+                <ItemCard
+                  href={withBase(`/recipe/${entry.id}/`)}
+                  item={entry.item}
+                  name={entry.name}
+                  subtitle={entry.subtitle}
+                  class="catalog__link"
+                />
               </li>
             ))}
           </ul>
@@ -358,45 +356,14 @@ const totalRecipes = recipeEntries.length;
     contain-intrinsic-size: auto 4.5rem;
   }
 
-  .catalog__link {
+  /* ItemCard renders its own <a> inside its own scoped style boundary, so a
+     plain selector here would never match it -- :global() escapes that
+     scoping to size/pad the card from the page that lays out its grid. */
+  :global(.catalog__link) {
     width: 100%;
     height: 100%;
     min-height: 3.5rem;
     padding: var(--space-3) var(--space-4);
     gap: var(--space-2);
-    color: var(--color-panel-fg);
-  }
-
-  .catalog__link:focus-visible {
-    outline: 2px solid var(--color-fg);
-    outline-offset: 2px;
-  }
-
-  .catalog__icon {
-    display: block;
-    width: 2rem;
-    flex-shrink: 0;
-    image-rendering: pixelated;
-  }
-
-  .catalog__text {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    gap: 0.125rem;
-  }
-
-  .catalog__name {
-    font-size: 0.875rem;
-    text-wrap: balance;
-  }
-
-  .catalog__item-subtitle {
-    font-size: 0.75rem;
-    color: var(--color-muted);
-    text-transform: capitalize;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 </style>

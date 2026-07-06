@@ -4,6 +4,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import Badge from '../../components/Badge.astro';
 import CraftingGrid from '../../components/CraftingGrid.astro';
 import IngredientOptions from '../../components/IngredientOptions.astro';
+import ItemCard from '../../components/ItemCard.astro';
 import ItemIcon from '../../components/ItemIcon.astro';
 import ItemStat from '../../components/ItemStat.astro';
 import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../../utils/crafting-grid';
@@ -17,8 +18,10 @@ interface PageProps {
   itemsMap: Map<string, ItemData>;
   prevId: string;
   prevName: string;
+  prevItem: ItemData | null;
   nextId: string;
   nextName: string;
+  nextItem: ItemData | null;
 }
 
 export async function getStaticPaths() {
@@ -29,7 +32,7 @@ export async function getStaticPaths() {
   const withNames = recipeEntries.map((entry) => {
     const resultItem = entry.data.result ? itemsMap.get(entry.data.result.id) : undefined;
     const displayName = resultItem?.name ?? entry.data.id.replace(/_/g, ' ');
-    return { entry, displayName };
+    return { entry, displayName, item: resultItem ?? null };
   });
   withNames.sort((a, b) => a.displayName.localeCompare(b.displayName));
 
@@ -44,14 +47,16 @@ export async function getStaticPaths() {
         itemsMap,
         prevId: prev.entry.id,
         prevName: prev.displayName,
+        prevItem: prev.item,
         nextId: next.entry.id,
         nextName: next.displayName,
+        nextItem: next.item,
       } satisfies PageProps,
     };
   });
 }
 
-const { recipe, displayName, itemsMap, prevId, prevName, nextId, nextName } =
+const { recipe, displayName, itemsMap, prevId, prevName, prevItem, nextId, nextName, nextItem } =
   Astro.props as PageProps;
 
 const resultItem = recipe.result ? itemsMap.get(recipe.result.id) : undefined;
@@ -185,19 +190,23 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
       )
     }
 
-    <div class="recipe__pager">
-      <nav class="recipe__pager-nav">
-        <a href={withBase(`/recipe/${prevId}/`)} class="recipe__pager-link link-chip">
-          <span aria-hidden="true">&larr;</span>
-          <span class="recipe__pager-name">{prevName}</span>
-        </a>
-        <a href={withBase(`/recipe/${nextId}/`)} class="recipe__pager-link link-chip">
-          <span class="recipe__pager-name">{nextName}</span>
-          <span aria-hidden="true">&rarr;</span>
-        </a>
-      </nav>
+    <nav class="recipe__pager" aria-label="Recipe navigation">
+      <ItemCard
+        href={withBase(`/recipe/${prevId}/`)}
+        item={prevItem}
+        name={prevName}
+        subtitle="Previous"
+        class="recipe__pager-link recipe__pager-link--prev"
+      />
       <a href={withBase('/')} class="recipe__pager-home link-chip">All recipes</a>
-    </div>
+      <ItemCard
+        href={withBase(`/recipe/${nextId}/`)}
+        item={nextItem}
+        name={nextName}
+        subtitle="Next"
+        class="recipe__pager-link recipe__pager-link--next"
+      />
+    </nav>
   </div>
 </MainLayout>
 
@@ -302,10 +311,17 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     color: var(--color-panel-fg);
   }
 
+  /* Mobile: prev/next share a row, "All recipes" sits centered below on its
+     own row. Desktop (see media query): all three on one row, "All recipes"
+     centered between prev and next. A fixed grid-template-areas switch, not
+     flex-wrap, so this never depends on guessing what fits at a given width. */
   .recipe__pager {
     margin-top: var(--space-12);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'prev next'
+      'home home';
     align-items: center;
     gap: var(--space-4);
     border-top: 1px solid var(--color-border);
@@ -313,30 +329,38 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     font-size: 0.875rem;
   }
 
-  .recipe__pager-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-4);
-    width: 100%;
+  /* ItemCard renders its own <a> inside its own scoped style boundary, so a
+     plain selector here would never match it -- :global() escapes that
+     scoping to size/pad/place the card from the page that lays out the
+     pager grid. */
+  :global(.recipe__pager-link) {
+    min-width: 0;
+    max-width: 14rem;
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
   }
 
-  .recipe__pager-link {
-    min-width: 0;
-    max-width: 48%;
-    padding: var(--space-2) var(--space-4);
-    color: var(--color-panel-fg);
+  :global(.recipe__pager-link--prev) {
+    grid-area: prev;
+    justify-self: start;
   }
 
-  .recipe__pager-name {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-transform: capitalize;
+  :global(.recipe__pager-link--next) {
+    grid-area: next;
+    justify-self: end;
   }
 
   .recipe__pager-home {
+    grid-area: home;
+    justify-self: center;
     padding: var(--space-2) var(--space-4);
     color: var(--color-panel-fg);
+  }
+
+  @media (min-width: 640px) {
+    .recipe__pager {
+      grid-template-columns: 1fr auto 1fr;
+      grid-template-areas: 'prev home next';
+    }
   }
 </style>

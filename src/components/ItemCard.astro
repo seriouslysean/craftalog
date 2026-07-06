@@ -1,0 +1,65 @@
+---
+import ItemIcon from './ItemIcon.astro';
+import type { ItemData } from '../content.config';
+
+interface Props {
+  href: string;
+  item: ItemData | null;
+  name: string;
+  /** Small caption under the name -- e.g. a disambiguating recipe subtitle
+      on the catalog, or "Previous"/"Next" on the recipe pager. */
+  subtitle?: string | null;
+  class?: string;
+}
+
+const { href, item, name, subtitle, class: className } = Astro.props;
+---
+
+<a href={href} class:list={['item-card', 'link-chip', className]}>
+  <span class="item-card__icon">
+    <ItemIcon item={item} />
+  </span>
+  <span class="item-card__text">
+    <span class="item-card__name">{name}</span>
+    {subtitle && <span class="item-card__subtitle">{subtitle}</span>}
+  </span>
+</a>
+
+<style>
+  .item-card {
+    color: var(--color-panel-fg);
+  }
+
+  .item-card:focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
+  }
+
+  .item-card__icon {
+    display: block;
+    width: 2rem;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+  }
+
+  .item-card__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 0.125rem;
+  }
+
+  .item-card__name {
+    font-size: 0.875rem;
+    text-wrap: balance;
+  }
+
+  .item-card__subtitle {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    text-transform: capitalize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

@@ -50,12 +50,16 @@ const resultItem = result ? items.get(result.id) : undefined;
   .crafting {
     --crafting-cell: 4rem;
     display: flex;
+    /* Mobile: grid stacked above the arrow+result, always centered -- a
+       fixed direction switch at the same breakpoint as --crafting-cell,
+       not flex-wrap, so the layout never depends on guessing whether
+       everything happens to fit on one line at a given viewport width. */
+    flex-direction: column;
     align-items: center;
     gap: var(--space-4);
     background-color: var(--color-panel);
     padding: calc(var(--space-4) + var(--panel-border-width));
     box-shadow: var(--bevel-panel), var(--panel-border-outer);
-    flex-wrap: wrap;
   }
 
   .crafting__grid {
@@ -76,6 +80,9 @@ const resultItem = result ? items.get(result.id) : undefined;
     font-size: 1.5rem;
     color: var(--color-muted);
     flex-shrink: 0;
+    /* Points down while the output sits below the grid on mobile; flipped
+       back to pointing right once the layout goes side-by-side. */
+    transform: rotate(90deg);
   }
 
   .crafting__result {
@@ -112,7 +119,12 @@ const resultItem = result ? items.get(result.id) : undefined;
   @media (min-width: 640px) {
     .crafting {
       --crafting-cell: 6rem;
+      flex-direction: row;
       gap: var(--space-6);
+    }
+
+    .crafting__arrow {
+      transform: none;
     }
   }
 </style>
