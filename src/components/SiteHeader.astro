@@ -1,29 +1,10 @@
 ---
 import { withBase } from '../utils/with-base';
-
-const currentPath = Astro.url.pathname;
-
-// Helper to check if a link is active
-const isActive = (path: string) => {
-  const fullPath = withBase(path);
-  return currentPath === fullPath || currentPath === `${fullPath}/`;
-};
 ---
 
 <header>
   <div class="header-content">
     <a href={withBase('/')} class="logo">Craftalog</a>
-
-    <nav class="nav">
-      <ul>
-        <li>
-          <a href={withBase('/')} class:list={[{ active: isActive('/') }]}>Home</a>
-        </li>
-        <li>
-          <a href={withBase('/about')} class:list={[{ active: isActive('/about') }]}>About</a>
-        </li>
-      </ul>
-    </nav>
   </div>
 </header>
 
@@ -39,8 +20,6 @@ const isActive = (path: string) => {
     padding: var(--space-6) var(--space-4);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
   }
 
   @media (min-width: 640px) {
@@ -62,37 +41,5 @@ const isActive = (path: string) => {
   .logo:hover {
     border: none;
     opacity: 0.7;
-  }
-
-  .nav ul {
-    display: flex;
-    gap: var(--space-4);
-    margin: 0;
-  }
-
-  .nav li {
-    list-style: none;
-  }
-
-  .nav a {
-    font-size: 0.9375rem;
-    color: var(--color-muted);
-    border: none;
-    transition: color 0.2s;
-  }
-
-  .nav a:hover,
-  .nav a.active {
-    color: var(--color-fg);
-    border: none;
-  }
-
-  .nav a:focus-visible {
-    outline: 2px solid var(--color-fg);
-    outline-offset: 2px;
-  }
-
-  .nav a.active {
-    font-weight: 500;
   }
 </style>

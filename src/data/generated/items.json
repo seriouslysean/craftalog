@@ -3194,7 +3194,7 @@
   },
   "exposed_lightning_rod": {
     "icon": {
-      "texture": "/textures/block/exposed_lightning_rod.png",
+      "texture": "/textures/item/exposed_lightning_rod.png",
       "type": "flat"
     },
     "id": "exposed_lightning_rod",
@@ -4651,7 +4651,7 @@
   },
   "lightning_rod": {
     "icon": {
-      "texture": "/textures/block/lightning_rod.png",
+      "texture": "/textures/item/lightning_rod.png",
       "type": "flat"
     },
     "id": "lightning_rod",
@@ -5844,7 +5844,7 @@
   },
   "oxidized_lightning_rod": {
     "icon": {
-      "texture": "/textures/block/oxidized_lightning_rod.png",
+      "texture": "/textures/item/oxidized_lightning_rod.png",
       "type": "flat"
     },
     "id": "oxidized_lightning_rod",
@@ -8866,7 +8866,7 @@
   },
   "waxed_exposed_lightning_rod": {
     "icon": {
-      "texture": "/textures/block/exposed_lightning_rod.png",
+      "texture": "/textures/item/exposed_lightning_rod.png",
       "type": "flat"
     },
     "id": "waxed_exposed_lightning_rod",
@@ -8874,7 +8874,7 @@
   },
   "waxed_lightning_rod": {
     "icon": {
-      "texture": "/textures/block/lightning_rod.png",
+      "texture": "/textures/item/lightning_rod.png",
       "type": "flat"
     },
     "id": "waxed_lightning_rod",
@@ -9001,7 +9001,7 @@
   },
   "waxed_oxidized_lightning_rod": {
     "icon": {
-      "texture": "/textures/block/oxidized_lightning_rod.png",
+      "texture": "/textures/item/oxidized_lightning_rod.png",
       "type": "flat"
     },
     "id": "waxed_oxidized_lightning_rod",
@@ -9128,7 +9128,7 @@
   },
   "waxed_weathered_lightning_rod": {
     "icon": {
-      "texture": "/textures/block/weathered_lightning_rod.png",
+      "texture": "/textures/item/weathered_lightning_rod.png",
       "type": "flat"
     },
     "id": "waxed_weathered_lightning_rod",
@@ -9263,7 +9263,7 @@
   },
   "weathered_lightning_rod": {
     "icon": {
-      "texture": "/textures/block/weathered_lightning_rod.png",
+      "texture": "/textures/item/weathered_lightning_rod.png",
       "type": "flat"
     },
     "id": "weathered_lightning_rod",

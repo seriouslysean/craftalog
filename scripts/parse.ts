@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 import { generateBannerIcon } from "./lib/banner-icon.ts";
 import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
+import { generateLightningRodIcon } from "./lib/lightning-rod-icon.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
 import type {
   RawItemComponentsData,
@@ -61,7 +62,14 @@ function main(): void {
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
 
-  const { recipes, items, meta, texturesToCopy, bannerIconsToSynthesize } = generate({
+  const {
+    recipes,
+    items,
+    meta,
+    texturesToCopy,
+    bannerIconsToSynthesize,
+    lightningRodIconsToSynthesize,
+  } = generate({
     version,
     recipesRaw,
     tagsRaw,
@@ -100,6 +108,13 @@ function main(): void {
     fs.writeFileSync(destPath, generateBannerIcon(bannerBasePng, fs.readFileSync(woolPath)));
   }
 
+  for (const [textureRef, ref] of lightningRodIconsToSynthesize) {
+    const atlasPath = path.join(VENDOR_TEXTURES_DIR, `${textureRef}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(destPath, generateLightningRodIcon(fs.readFileSync(atlasPath)));
+  }
+
   for (const relativePath of HUD_ICON_RELATIVE_PATHS) {
     const sourcePath = path.join(VENDOR_TEXTURES_DIR, HUD_ICON_VENDOR_BASE, relativePath);
     const destPath = path.join(hudTexturesDir, relativePath);
@@ -122,6 +137,7 @@ function main(): void {
   console.log(`items:            ${meta.counts.items}`);
   console.log(`textures copied:  ${meta.counts.texturesCopied}`);
   console.log(`banner icons:     ${bannerIconsToSynthesize.size}`);
+  console.log(`lightning rod icons: ${lightningRodIconsToSynthesize.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
