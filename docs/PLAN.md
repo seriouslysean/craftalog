@@ -40,7 +40,7 @@ public/textures/{item,block}/*.png ── only textures actually referenced
         ▼
 Astro content collections (file loaders + zod schemas)
         ▼
-Static pages: / (browse by category), /recipe/[id], /about
+Static pages: / (browse by family), /recipe/[id], /about
 ```
 
 Generated data is **committed** so the site builds without submodules and the
@@ -62,6 +62,7 @@ type Recipe = {
   id: string;
   type: "shaped" | "shapeless" | "transmute" | "special";
   category: string; // vanilla crafting book category, e.g. "building"
+  family: string; // derived browse taxonomy, e.g. "Slabs" — see scripts/lib/family.ts
   group?: string; // vanilla group, e.g. "planks", "wooden_door"
   result: { id: string; count: number };
   // shaped only — placement matters:

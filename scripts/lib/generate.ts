@@ -1,3 +1,4 @@
+import { buildItemTagIndex, deriveFamily } from "./family.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
@@ -56,10 +57,16 @@ export function generate(input: GenerateInput): GenerateOutput {
 
   const recipes: RecipesOutput = {};
   const counts = { shaped: 0, shapeless: 0, transmute: 0, special: 0 };
+  const itemTagIndex = buildItemTagIndex(tagsRaw);
 
   for (const [id, raw] of Object.entries(recipesRaw)) {
-    const recipe = transformRecipe(id, raw, tagsRaw);
-    if (!recipe) continue;
+    const transformed = transformRecipe(id, raw, tagsRaw);
+    if (!transformed) continue;
+    const family = deriveFamily(
+      { itemId: transformed.result?.id, group: transformed.group, category: transformed.category },
+      itemTagIndex,
+    );
+    const recipe = { ...transformed, family };
     recipes[id] = recipe;
     counts[recipe.type] += 1;
   }
