@@ -214,7 +214,8 @@ const totalRecipes = recipeEntries.length;
     width: 100%;
     max-width: 24rem;
     padding: var(--space-2) var(--space-3);
-    border: var(--border-width-sm) solid var(--color-gray-dark);
+    border: var(--border-width-sm) solid;
+    border-color: var(--pixel-border-sunken);
     border-radius: var(--radius-sm);
     background-color: var(--color-bg-elevated);
     font-size: 1rem;
@@ -222,7 +223,7 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__filter-input:focus {
-    outline: 2px solid var(--color-fg);
+    outline: var(--border-width-sm) solid var(--color-fg);
     outline-offset: 1px;
   }
 
@@ -246,10 +247,10 @@ const totalRecipes = recipeEntries.length;
     align-items: center;
     gap: 0.25em;
     padding: var(--space-1) var(--space-3);
-    border: var(--border-width-sm) solid var(--color-gray-dark);
+    border: var(--border-width-sm) solid;
+    border-color: var(--pixel-border-raised);
     border-radius: var(--radius-sm);
     background-color: var(--color-bg-elevated);
-    box-shadow: var(--bevel-raised);
     font-size: 0.8125rem;
     color: var(--color-muted);
     cursor: pointer;
@@ -257,15 +258,24 @@ const totalRecipes = recipeEntries.length;
     transition: all 0.15s;
   }
 
+  .catalog__category-pill:hover {
+    background-color: var(--color-panel);
+    color: var(--color-panel-fg);
+  }
+
+  .catalog__category-pill:active {
+    border-color: var(--pixel-border-sunken);
+    transform: translate(1px, 1px);
+  }
+
   .catalog__category-input:checked + .catalog__category-pill {
     background-color: var(--color-fg);
-    border-color: var(--color-fg);
+    border-color: var(--pixel-border-sunken);
     color: var(--color-bg);
-    box-shadow: var(--bevel-sunken);
   }
 
   .catalog__category-input:focus-visible + .catalog__category-pill {
-    outline: 2px solid var(--color-fg);
+    outline: var(--border-width-sm) solid var(--color-fg);
     outline-offset: 2px;
   }
 
@@ -313,9 +323,18 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__link:hover {
-    border-color: var(--color-gray-dark);
+    border-color: var(--pixel-border-raised);
     background-color: var(--color-bg-elevated);
-    box-shadow: var(--bevel-raised);
+  }
+
+  .catalog__link:active {
+    border-color: var(--pixel-border-sunken);
+    transform: translate(1px, 1px);
+  }
+
+  .catalog__link:focus-visible {
+    outline: var(--border-width-sm) solid var(--color-fg);
+    outline-offset: 2px;
   }
 
   .catalog__icon {

@@ -74,9 +74,9 @@ const isActive = (path: string) => {
 
   .nav a {
     padding: var(--space-1) var(--space-2);
+    border: var(--border-width-sm) solid transparent;
     font-size: 0.9375rem;
     color: var(--color-muted);
-    border: none;
     transition: all 0.15s;
   }
 
@@ -84,8 +84,17 @@ const isActive = (path: string) => {
   .nav a.active {
     background-color: var(--color-panel);
     color: var(--color-panel-fg);
-    box-shadow: var(--bevel-raised);
-    border: none;
+    border-color: var(--pixel-border-raised);
+  }
+
+  .nav a:active {
+    border-color: var(--pixel-border-sunken);
+    transform: translate(1px, 1px);
+  }
+
+  .nav a:focus-visible {
+    outline: var(--border-width-sm) solid var(--color-fg);
+    outline-offset: 2px;
   }
 
   .nav a.active {

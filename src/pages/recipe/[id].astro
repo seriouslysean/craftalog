@@ -241,10 +241,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     flex-shrink: 0;
     gap: var(--space-1);
     padding: var(--space-1) var(--space-3);
-    border: var(--border-width-sm) solid var(--color-gray-dark);
+    border: var(--border-width-sm) solid;
+    border-color: var(--pixel-border-raised);
     border-radius: var(--radius-sm);
     background-color: var(--color-panel);
-    box-shadow: var(--bevel-raised);
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     color: var(--color-panel-fg);
@@ -257,12 +257,17 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   }
 
   .recipe__copy-link:active:not(:disabled) {
-    box-shadow: var(--bevel-sunken);
+    border-color: var(--pixel-border-sunken);
     transform: translate(1px, 1px);
   }
 
+  .recipe__copy-link:focus-visible {
+    outline: var(--border-width-sm) solid var(--color-fg);
+    outline-offset: 2px;
+  }
+
   .recipe__copy-link:disabled {
-    box-shadow: var(--bevel-sunken);
+    border-color: var(--pixel-border-sunken);
     cursor: default;
   }
 
@@ -293,9 +298,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     gap: var(--space-4);
     background-color: var(--color-panel);
     padding: var(--space-4);
-    border: var(--border-width) solid var(--color-gray-dark);
+    border: var(--border-width) solid var(--pixel-dark);
     border-radius: var(--radius-md);
-    box-shadow: var(--bevel-raised);
   }
 
   .recipe__special-icon {
@@ -320,15 +324,24 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
   .recipe__pager-link {
     padding: var(--space-1) var(--space-2);
-    border: none;
+    border: var(--border-width-sm) solid transparent;
     transition: all 0.15s;
   }
 
   .recipe__pager-link:hover {
     background-color: var(--color-panel);
     color: var(--color-panel-fg);
-    box-shadow: var(--bevel-raised);
-    border: none;
+    border-color: var(--pixel-border-raised);
+  }
+
+  .recipe__pager-link:active {
+    border-color: var(--pixel-border-sunken);
+    transform: translate(1px, 1px);
+  }
+
+  .recipe__pager-link:focus-visible {
+    outline: var(--border-width-sm) solid var(--color-fg);
+    outline-offset: 2px;
   }
 
   .recipe__pager-link--home {

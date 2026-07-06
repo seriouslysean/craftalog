@@ -49,25 +49,32 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --color-gray-light: #c6c6c6;
     --color-gray-dark: #373737;
 
-    /* Clean color palette */
-    --color-bg: #f4f4f5;
+    /* Site chrome commits to the same Minecraft GUI-screen gray as the crafting
+       panel, rather than sitting on a separate "clean" white backdrop -- the
+       whole page reads as one workbench, not two competing visual languages. */
+    --color-bg: var(--color-gray-light);
     --color-bg-elevated: #ffffff;
     --color-fg: #09090b;
     --color-border: #e4e4e7;
-    --color-muted: #71717a;
+    --color-muted: #3f3f46;
 
     /* Minecraft GUI system: panels/slots for recipe-mechanical surfaces
-       (crafting grid, ingredient options), kept distinct from the clean
-       neutral chrome (nav, buttons, catalog pills). */
+       (crafting grid, ingredient options). */
     --color-panel: var(--color-gray-light);
     --color-panel-fg: var(--color-gray-dark);
     --color-slot: var(--color-gray);
-    --bevel-highlight: rgba(255, 255, 255, 0.75);
-    --bevel-shadow: rgba(0, 0, 0, 0.5);
-    --bevel-sunken:
-      0.4em 0.4em 0 0 var(--bevel-shadow) inset, -0.4em -0.4em 0 0 var(--bevel-highlight) inset;
-    --bevel-raised:
-      -0.15em -0.15em 0 0 var(--bevel-shadow) inset, 0.15em 0.15em 0 0 var(--bevel-highlight) inset;
+
+    /* Hard, solid two-tone pixel borders -- no alpha, no blur, no curves. Same
+       "no blending" logic as image-rendering: pixelated on the item icons:
+       raised = light top/left + dark bottom/right; sunken (pressed/recessed)
+       reverses it. Consumed via `border-color`, `border-width`/`-style` set
+       per component alongside it. --pixel-light stays visible against every
+       fill in the palette (white, panel gray, slot gray) -- pure white would
+       vanish against --color-bg-elevated/--color-bg. */
+    --pixel-light: var(--color-border);
+    --pixel-dark: var(--color-gray-dark);
+    --pixel-border-raised: var(--pixel-light) var(--pixel-dark) var(--pixel-dark) var(--pixel-light);
+    --pixel-border-sunken: var(--pixel-dark) var(--pixel-light) var(--pixel-light) var(--pixel-dark);
 
     /* Shape: hard, square corners everywhere -- Minecraft's UI has no rounded edges */
     --radius-sm: 0;
