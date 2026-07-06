@@ -29,7 +29,7 @@ const isActive = (path: string) => {
 
 <style>
   header {
-    border-bottom: var(--border-width) solid var(--color-gray-dark);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .header-content {
@@ -64,7 +64,7 @@ const isActive = (path: string) => {
 
   .nav ul {
     display: flex;
-    gap: var(--space-1);
+    gap: var(--space-4);
     margin: 0;
   }
 
@@ -73,28 +73,20 @@ const isActive = (path: string) => {
   }
 
   .nav a {
-    padding: var(--space-1) var(--space-2);
-    border: none;
-    border-radius: var(--radius-sm);
     font-size: 0.9375rem;
     color: var(--color-muted);
-    transition: all 0.15s;
+    border: none;
+    transition: color 0.2s;
   }
 
   .nav a:hover,
   .nav a.active {
-    background-color: var(--color-panel);
-    color: var(--color-panel-fg);
-    box-shadow: var(--bevel-raised);
-  }
-
-  .nav a:active {
-    box-shadow: var(--bevel-sunken);
-    transform: translate(1px, 1px);
+    color: var(--color-fg);
+    border: none;
   }
 
   .nav a:focus-visible {
-    outline: var(--border-width-sm) solid var(--color-fg);
+    outline: 2px solid var(--color-fg);
     outline-offset: 2px;
   }
 

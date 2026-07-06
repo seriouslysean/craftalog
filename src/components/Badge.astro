@@ -19,18 +19,14 @@ const { variant = 'default', title } = Astro.props;
     align-items: center;
     gap: 0.25em;
     padding: var(--space-1) var(--space-3);
-    /* Thin flat border, no bevel: a badge is a static label, never
-       clickable, so it shouldn't borrow the "press me" affordance the
-       raised bevel gives real buttons. */
-    border: var(--border-width-sm) solid var(--color-gray-dark);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-pill);
     font-size: 0.75rem;
     font-weight: 500;
     text-transform: capitalize;
   }
 
   .badge--default {
-    background-color: var(--color-slot);
+    background-color: var(--color-border);
     color: var(--color-fg);
   }
 

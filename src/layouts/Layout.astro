@@ -49,48 +49,38 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --color-gray-light: #c6c6c6;
     --color-gray-dark: #373737;
 
-    /* Site chrome commits to the same Minecraft GUI-screen gray as the crafting
-       panel, rather than sitting on a separate "clean" white backdrop -- the
-       whole page reads as one workbench, not two competing visual languages.
-       No surface in this UI is ever plain white -- every fill comes from this
-       gray trio (light panel / mid slot / dark border-and-text), same as the
-       real game's inventory and settings screens. */
-    --color-bg: var(--color-gray-light);
+    /* Clean color palette */
+    --color-bg: #fafafa;
     --color-fg: #09090b;
     --color-border: #e4e4e7;
-    --color-muted: #3f3f46;
+    --color-muted: #71717a;
 
     /* Minecraft GUI system: panels/slots for recipe-mechanical surfaces
-       (crafting grid, ingredient options). */
+       (crafting grid, ingredient options), kept distinct from the clean
+       neutral chrome (nav, buttons, catalog pills). */
     --color-panel: var(--color-gray-light);
     --color-panel-fg: var(--color-gray-dark);
     --color-slot: var(--color-gray);
 
-    /* Thick, high-contrast diagonal bevel -- the real Minecraft inset/outset
-       slot effect, same size and colors in both directions: only which
-       corner gets which color flips. sunken = dark top-left / light
-       bottom-right (recessed crafting/ingredient slots, inputs); raised =
-       inverted (buttons, embossed). Deliberately NOT paired with
-       border-radius anywhere it's used -- an alpha shadow clipped by a
-       curved corner reads as a smudgy gradient instead of a clean
-       punched/stamped edge, which is why --radius-sm/--radius-md stay at 0
-       site-wide. */
-    --bevel-highlight: rgba(255, 255, 255, 0.75);
-    --bevel-shadow: rgba(0, 0, 0, 0.5);
-    --bevel-sunken:
-      0.5em 0.5em 0 0 var(--bevel-shadow) inset, -0.5em -0.5em 0 0 var(--bevel-highlight) inset;
-    --bevel-raised:
-      -0.5em -0.5em 0 0 var(--bevel-shadow) inset, 0.5em 0.5em 0 0 var(--bevel-highlight) inset;
+    /* The Minecraft inset/outset bevel: a background color plus two
+       translucent box-shadows -- one dark, one light -- offset diagonally so
+       each shows up as a solid pip of color in opposite corners. --bevel-slot
+       is the recessed look for crafting/ingredient item slots; --bevel-button
+       is the exact same colors and offset with the corners flipped, for a
+       raised/clickable look. Both stay off border-radius -- the alpha shadow
+       clipped by a curved corner reads as a smudgy gradient, not a clean
+       stamped edge. */
+    --bevel-slot:
+      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset, -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+    --bevel-button:
+      -0.5em -0.5em 0 0 rgba(0, 0, 0, 0.5) inset, 0.5em 0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+    --bevel-button-pressed:
+      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset, -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
 
-    /* Shape: hard, square corners everywhere -- Minecraft's UI has no rounded edges */
-    --radius-sm: 0;
-    --radius-md: 0;
-
-    /* Flat single-tone borders, for surfaces that don't use the bevel above:
-       -sm is the thin badge/card outline; base is the bolder structural
-       frame (panel edges, header/footer divider). */
-    --border-width-sm: 0.0625rem;
-    --border-width: 0.125rem;
+    /* Shape */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-pill: 999px;
 
     /* Spacing */
     --space-1: 0.25rem;
@@ -180,6 +170,35 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   img {
     display: block;
     max-inline-size: 100%;
+  }
+
+  /* Shared "button" look -- copy-link, pager links, catalog cards, and
+     category pills all use exactly this, so the whole site has one
+     clickable-control style instead of a different one per component. Same
+     raised bevel as the crafting grid's slots, just inverted, and square for
+     the same reason the grid is square (see --bevel-button above). */
+  .link-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    background-color: var(--color-panel);
+    box-shadow: var(--bevel-button);
+    transition: background-color 0.15s;
+  }
+
+  .link-chip:hover {
+    background-color: #fff;
+  }
+
+  .link-chip:active {
+    box-shadow: var(--bevel-button-pressed);
+    transform: translate(1px, 1px);
+  }
+
+  .link-chip--selected {
+    background-color: var(--color-fg);
+    box-shadow: var(--bevel-button-pressed);
+    color: var(--color-bg);
   }
 
   .visually-hidden {

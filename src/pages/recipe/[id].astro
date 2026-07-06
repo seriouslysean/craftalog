@@ -104,7 +104,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     <div class="recipe__header">
       <div class="recipe__title-row">
         <h1 class="recipe__title">{displayName}</h1>
-        <button type="button" class="recipe__copy-link" data-url={canonicalUrl} hidden>
+        <button type="button" class="recipe__copy-link link-chip" data-url={canonicalUrl} hidden>
           <svg
             width="16"
             height="16"
@@ -183,9 +183,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     }
 
     <nav class="recipe__pager">
-      <a href={withBase(`/recipe/${prevId}/`)} class="recipe__pager-link">&larr; Previous</a>
+      <a href={withBase(`/recipe/${prevId}/`)} class="recipe__pager-link link-chip"
+        >&larr; Previous</a
+      >
       <a href={withBase('/')} class="recipe__pager-link recipe__pager-link--home">All recipes</a>
-      <a href={withBase(`/recipe/${nextId}/`)} class="recipe__pager-link">Next &rarr;</a>
+      <a href={withBase(`/recipe/${nextId}/`)} class="recipe__pager-link link-chip">Next &rarr;</a>
     </nav>
   </div>
 </MainLayout>
@@ -236,38 +238,15 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   }
 
   .recipe__copy-link {
-    display: inline-flex;
-    align-items: center;
     flex-shrink: 0;
-    gap: var(--space-1);
     padding: var(--space-1) var(--space-3);
-    border: none;
-    border-radius: var(--radius-sm);
-    background-color: var(--color-panel);
-    box-shadow: var(--bevel-raised);
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     color: var(--color-panel-fg);
     cursor: pointer;
   }
 
-  .recipe__copy-link:hover:not(:disabled) {
-    background-color: var(--color-gray-light);
-    color: var(--color-fg);
-  }
-
-  .recipe__copy-link:active:not(:disabled) {
-    box-shadow: var(--bevel-sunken);
-    transform: translate(1px, 1px);
-  }
-
-  .recipe__copy-link:focus-visible {
-    outline: var(--border-width-sm) solid var(--color-fg);
-    outline-offset: 2px;
-  }
-
   .recipe__copy-link:disabled {
-    box-shadow: var(--bevel-sunken);
     cursor: default;
   }
 
@@ -298,7 +277,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     gap: var(--space-4);
     background-color: var(--color-panel);
     padding: var(--space-4);
-    border: var(--border-width) solid var(--color-gray-dark);
     border-radius: var(--radius-md);
   }
 
@@ -323,26 +301,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   }
 
   .recipe__pager-link {
-    padding: var(--space-1) var(--space-2);
-    border: none;
-    border-radius: var(--radius-sm);
-    transition: all 0.15s;
-  }
-
-  .recipe__pager-link:hover {
-    background-color: var(--color-panel);
+    padding: var(--space-1) var(--space-3);
     color: var(--color-panel-fg);
-    box-shadow: var(--bevel-raised);
-  }
-
-  .recipe__pager-link:active {
-    box-shadow: var(--bevel-sunken);
-    transform: translate(1px, 1px);
-  }
-
-  .recipe__pager-link:focus-visible {
-    outline: var(--border-width-sm) solid var(--color-fg);
-    outline-offset: 2px;
   }
 
   .recipe__pager-link--home {
