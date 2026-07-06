@@ -49,15 +49,20 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --color-gray-light: #c6c6c6;
     --color-gray-dark: #373737;
 
-    /* Clean color palette */
-    --color-bg: #fafafa;
+    /* The whole site sits on the same light gray as the game's own GUI
+       screens (verified against the real Java Edition palette:
+       #ffffff/#c6c6c6/#8b8b8b/#555555/#373737/#000000), not a separate
+       "clean" white backdrop. */
+    --color-bg: var(--color-gray-light);
     --color-fg: #09090b;
     --color-border: #e4e4e7;
-    --color-muted: #71717a;
+    --color-muted: #3f3f46;
+    /* Minecraft hardcodes its container GUI title text (e.g. "Inventory",
+       "Crafting Table") to exactly this dark gray. */
+    --color-heading: #404040;
 
     /* Minecraft GUI system: panels/slots for recipe-mechanical surfaces
-       (crafting grid, ingredient options), kept distinct from the clean
-       neutral chrome (nav, buttons, catalog pills). */
+       (crafting grid, ingredient options). */
     --color-panel: var(--color-gray-light);
     --color-panel-fg: var(--color-gray-dark);
     --color-slot: var(--color-gray);
@@ -136,6 +141,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     font-weight: 700;
     line-height: 1.3;
     letter-spacing: 0;
+    color: var(--color-heading);
   }
 
   h2 {
@@ -144,6 +150,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     line-height: 1.3;
     letter-spacing: -0.01em;
     margin-top: var(--space-8);
+    color: var(--color-heading);
   }
 
   h2:first-child {
@@ -183,22 +190,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     gap: var(--space-1);
     background-color: var(--color-panel);
     box-shadow: var(--bevel-button);
-    transition: background-color 0.15s;
   }
 
-  .link-chip:hover {
-    background-color: #fff;
+  .link-chip:hover,
+  .link-chip:active,
+  .link-chip--selected {
+    box-shadow: var(--bevel-button-pressed);
   }
 
   .link-chip:active {
-    box-shadow: var(--bevel-button-pressed);
     transform: translate(1px, 1px);
-  }
-
-  .link-chip--selected {
-    background-color: var(--color-fg);
-    box-shadow: var(--bevel-button-pressed);
-    color: var(--color-bg);
   }
 
   .visually-hidden {
