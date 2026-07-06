@@ -90,10 +90,13 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --border-width: 0.125rem;
 
     /* Larger panels (crafting grid, ingredient options, special recipe box):
-       a chunky white border as thick as the grid cells' own bevel offset
-       (0.5em, matches --bevel-slot/--bevel-button), plus a thin darker-gray
-       ring just outside it, matching the real GUI panel edge. */
+       a chunky border as thick as the grid cells' own bevel offset (0.5em,
+       matches --bevel-slot/--bevel-button), white on the top/left and dark
+       on the bottom/right -- the same raised-bevel direction as the cells
+       and buttons, just drawn as a real border instead of a box-shadow --
+       plus a thin darker-gray ring just outside it. */
     --panel-border-width: 0.5rem;
+    --panel-border-color: #fff var(--color-gray-dark) var(--color-gray-dark) #fff;
     --panel-border-outer-width: 0.125rem;
     --panel-border-outer: 0 0 0 var(--panel-border-outer-width) var(--color-gray-dark);
 
