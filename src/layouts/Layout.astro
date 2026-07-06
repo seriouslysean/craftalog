@@ -1,6 +1,6 @@
 ---
-import '@fontsource/silkscreen/latin-400.css';
-import '@fontsource/silkscreen/latin-700.css';
+import '@fontsource/pixelify-sans/latin-500.css';
+import '@fontsource/pixelify-sans/latin-700.css';
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -49,16 +49,17 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --color-gray-light: #c6c6c6;
     --color-gray-dark: #373737;
 
-    /* Site chrome commits to the same Minecraft GUI-screen gray as the crafting
-       panel, rather than sitting on a separate "clean" white backdrop -- the
-       whole page reads as one workbench, not two competing visual languages.
-       No surface in this UI is ever plain white -- every fill comes from this
-       gray trio (light panel / mid slot / dark border-and-text), same as the
-       real game's inventory and settings screens. */
+    /* The whole site sits on the same light gray as the game's own GUI
+       screens (verified against the real Java Edition palette:
+       #ffffff/#c6c6c6/#8b8b8b/#555555/#373737/#000000), not a separate
+       "clean" white backdrop. */
     --color-bg: var(--color-gray-light);
     --color-fg: #09090b;
     --color-border: #e4e4e7;
     --color-muted: #3f3f46;
+    /* Minecraft hardcodes its container GUI title text (e.g. "Inventory",
+       "Crafting Table") to exactly this dark gray. */
+    --color-heading: #404040;
 
     /* Minecraft GUI system: panels/slots for recipe-mechanical surfaces
        (crafting grid, ingredient options). */
@@ -66,25 +67,38 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --color-panel-fg: var(--color-gray-dark);
     --color-slot: var(--color-gray);
 
-    /* Hard, solid two-tone pixel borders -- no alpha, no blur, no curves. Same
-       "no blending" logic as image-rendering: pixelated on the item icons:
-       raised = light top/left + dark bottom/right; sunken (pressed/recessed)
-       reverses it. Both tones come straight from the grid's own gray palette
-       (light panel / dark border) rather than white, so buttons read as the
-       same material as the crafting slots. Consumed via `border-color`;
-       `border-width`/`-style` set per component alongside it. */
-    --pixel-light: var(--color-gray-light);
-    --pixel-dark: var(--color-gray-dark);
-    --pixel-border-raised: var(--pixel-light) var(--pixel-dark) var(--pixel-dark) var(--pixel-light);
-    --pixel-border-sunken: var(--pixel-dark) var(--pixel-light) var(--pixel-light) var(--pixel-dark);
+    /* The Minecraft inset/outset bevel: a background color plus two
+       translucent box-shadows -- one dark, one light -- offset diagonally so
+       each shows up as a solid pip of color in opposite corners. --bevel-slot
+       is the recessed look for crafting/ingredient item slots; --bevel-button
+       is the exact same colors and offset with the corners flipped, for a
+       raised/clickable look. Both stay off border-radius -- the alpha shadow
+       clipped by a curved corner reads as a smudgy gradient, not a clean
+       stamped edge. */
+    --bevel-slot:
+      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset, -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+    --bevel-button:
+      -0.5em -0.5em 0 0 rgba(0, 0, 0, 0.5) inset, 0.5em 0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
+    --bevel-button-pressed:
+      0.5em 0.5em 0 0 rgba(0, 0, 0, 0.5) inset, -0.5em -0.5em 0 0 rgba(255, 255, 255, 0.75) inset;
 
-    /* Shape: hard, square corners everywhere -- Minecraft's UI has no rounded edges */
-    --radius-sm: 0;
-    --radius-md: 0;
+    /* Shape */
+    --radius-sm: 0.125rem;
+    --radius-md: 0.125rem;
 
-    /* Chunky pixel-UI borders: -sm for small chips/badges, base for panels/buttons/inputs */
-    --border-width-sm: 0.125rem;
-    --border-width: 0.1875rem;
+    /* Flat, solid "chunky" border -- the search input uses this alone. */
+    --border-width: 0.125rem;
+
+    /* Larger panels (crafting grid, ingredient options, special recipe box):
+       a chunky border as thick as the grid cells' own bevel offset (0.5em,
+       matches --bevel-slot/--bevel-button), white on the top/left and dark
+       on the bottom/right -- the same raised-bevel direction as the cells
+       and buttons, just drawn as a real border instead of a box-shadow --
+       plus a thin darker-gray ring just outside it. */
+    --panel-border-width: 0.5rem;
+    --panel-border-color: #fff var(--color-gray-dark) var(--color-gray-dark) #fff;
+    --panel-border-outer-width: 0.125rem;
+    --panel-border-outer: 0 0 0 var(--panel-border-outer-width) var(--color-gray-dark);
 
     /* Spacing */
     --space-1: 0.25rem;
@@ -99,9 +113,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --font-sans:
       -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-    /* Chunky pixel display font, reserved for headings/wordmark only -- body copy and
-       dense catalog text stay on --font-sans so long/frequent strings stay scannable. */
-    --font-display: 'Silkscreen', var(--font-mono);
+    /* Pixel display font matching the game's own thin-stroke UI font, reserved
+       for headings/wordmark only -- body copy and dense catalog text stay on
+       --font-sans so long/frequent strings stay scannable. */
+    --font-display: 'Pixelify Sans', var(--font-mono);
   }
 
   * {
@@ -136,9 +151,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   h1 {
     font-family: var(--font-display);
     font-size: 1.75rem;
-    font-weight: 400;
+    font-weight: 700;
     line-height: 1.3;
     letter-spacing: 0;
+    color: var(--color-heading);
   }
 
   h2 {
@@ -147,6 +163,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     line-height: 1.3;
     letter-spacing: -0.01em;
     margin-top: var(--space-8);
+    color: var(--color-heading);
   }
 
   h2:first-child {
@@ -173,6 +190,29 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   img {
     display: block;
     max-inline-size: 100%;
+  }
+
+  /* Shared "button" look -- copy-link, pager links, catalog cards, and
+     category pills all use exactly this, so the whole site has one
+     clickable-control style instead of a different one per component. Same
+     raised bevel as the crafting grid's slots, just inverted, and square for
+     the same reason the grid is square (see --bevel-button above). */
+  .link-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    background-color: var(--color-panel);
+    box-shadow: var(--bevel-button);
+  }
+
+  .link-chip:hover,
+  .link-chip:active,
+  .link-chip--selected {
+    box-shadow: var(--bevel-button-pressed);
+  }
+
+  .link-chip:active {
+    transform: translate(1px, 1px);
   }
 
   .visually-hidden {
