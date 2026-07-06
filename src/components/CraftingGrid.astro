@@ -1,6 +1,7 @@
 ---
 import ItemIcon from './ItemIcon.astro';
 import ItemStat from './ItemStat.astro';
+import ItemVariants from './ItemVariants.astro';
 import type { GridCell } from '../utils/crafting-grid';
 import type { ItemData, RecipeResult } from '../content.config';
 
@@ -9,58 +10,18 @@ interface Props {
   result?: RecipeResult;
   items: Map<string, ItemData>;
   ariaLabel: string;
-  /** Shapeless/transmute recipes: ingredient placement in the grid doesn't matter. */
-  unordered?: boolean;
 }
 
-const { cells, result, items, ariaLabel, unordered = false } = Astro.props;
+const { cells, result, items, ariaLabel } = Astro.props;
 const resultItem = result ? items.get(result.id) : undefined;
 ---
 
 <div class="crafting">
   <div class="crafting__grid" role="img" aria-label={ariaLabel}>
     {
-      unordered && (
-        <svg
-          class="crafting__shuffle-icon"
-          viewBox="0 0 24 24"
-          width="16"
-          height="16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M16 3h5v5" />
-          <path d="M4 20 21 3" />
-          <path d="M21 16v5h-5" />
-          <path d="M15 15l6 6" />
-          <path d="M4 4l5 5" />
-        </svg>
-      )
-    }
-    {
       cells.map((cell, index) => (
         <div class="crafting__cell" data-index={index}>
-          {cell && (
-            <div
-              class="crafting__variants"
-              data-variant-count={cell.items.length > 1 ? cell.items.length : undefined}
-            >
-              {cell.items.map((itemId: string, variantIndex: number) => {
-                const variantItem = items.get(itemId);
-                return (
-                  variantItem && (
-                    <div class="crafting__variant" hidden={variantIndex !== 0}>
-                      <ItemIcon item={variantItem} loading="eager" />
-                    </div>
-                  )
-                );
-              })}
-            </div>
-          )}
+          {cell && <ItemVariants items={cell.items} itemsMap={items} loading="eager" />}
         </div>
       ))
     }
@@ -83,43 +44,24 @@ const resultItem = result ? items.get(result.id) : undefined;
   </div>
 </div>
 
-{unordered && <p class="crafting__caption">Order doesn&rsquo;t matter.</p>}
-
 <style>
   .crafting {
     --crafting-cell: 3.5rem;
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    background-color: var(--color-gray-light);
+    background-color: var(--color-panel);
     padding: var(--space-4);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--bevel-raised);
     flex-wrap: wrap;
   }
 
   .crafting__grid {
-    position: relative;
     display: grid;
     grid-template-columns: repeat(3, var(--crafting-cell));
     grid-auto-rows: var(--crafting-cell);
     gap: var(--space-2);
-  }
-
-  .crafting__shuffle-icon {
-    position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
-    padding: 0.2rem;
-    background-color: var(--color-bg);
-    color: var(--color-muted);
-    border-radius: 999px;
-    box-shadow: 0 0 0 1px var(--color-border);
-  }
-
-  .crafting__caption {
-    margin-top: var(--space-3);
-    font-size: 0.8125rem;
-    color: var(--color-muted);
   }
 
   .crafting__arrow {
@@ -135,29 +77,13 @@ const resultItem = result ? items.get(result.id) : undefined;
   .crafting__cell {
     width: var(--crafting-cell);
     height: var(--crafting-cell);
-    background-color: var(--color-gray);
-    box-shadow:
-      0.4em 0.4em 0 0 rgba(0, 0, 0, 0.5) inset,
-      -0.4em -0.4em 0 0 rgba(255, 255, 255, 0.75) inset;
+    background-color: var(--color-slot);
+    box-shadow: var(--bevel-sunken);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     padding: var(--space-2);
-  }
-
-  .crafting__variants {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  .crafting__variant {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .crafting__count {
@@ -181,37 +107,3 @@ const resultItem = result ? items.get(result.id) : undefined;
     }
   }
 </style>
-
-<script>
-  const TICK_MS = 1500;
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function cycleVariants() {
-    document
-      .querySelectorAll<HTMLElement>('.crafting__variants[data-variant-count]')
-      .forEach((wrapper) => {
-        const count = Number(wrapper.dataset.variantCount);
-        if (!count || count < 2) return;
-
-        const variants = wrapper.querySelectorAll<HTMLElement>('.crafting__variant');
-        const currentIndex = Array.from(variants).findIndex((variant) => !variant.hidden);
-        const nextIndex = (currentIndex + 1) % variants.length;
-
-        variants.forEach((variant, index) => {
-          variant.hidden = index !== nextIndex;
-        });
-      });
-  }
-
-  // Module scope persists across View Transitions navigations (the script
-  // isn't re-executed, only astro:page-load re-fires below), so the previous
-  // page's interval must be cleared or they'd stack up on every navigation.
-  let intervalId: ReturnType<typeof setInterval> | undefined;
-
-  document.addEventListener('astro:page-load', () => {
-    clearInterval(intervalId);
-    if (!prefersReducedMotion) {
-      intervalId = setInterval(cycleVariants, TICK_MS);
-    }
-  });
-</script>
