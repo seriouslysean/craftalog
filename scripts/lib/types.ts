@@ -117,7 +117,9 @@ export type RecipesOutput = Record<string, Recipe>;
 
 export type IconOutput =
   | { type: "flat"; texture: string }
-  | { type: "block"; top: string; side: string };
+  | { type: "block"; top: string; side: string }
+  | { type: "slab"; top: string; side: string }
+  | { type: "stairs"; top: string; side: string };
 
 /**
  * A single defining gameplay stat for an item, shown on its recipe page.

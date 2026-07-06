@@ -8,51 +8,48 @@ interface Props {
     name: string;
     icon: IconData;
   } | null;
-  /** Native lazy-loading hint for the underlying <img>. Defaults to lazy. */
+  /** Native lazy-loading hint for the underlying &lt;img&gt;. Defaults to lazy. */
   loading?: 'lazy' | 'eager';
 }
 
+interface Face {
+  className: string;
+  texture: string;
+}
+
+/** Builds the CSS-cube faces for a 3D icon. `block`/`slab` share the 3-face cube; `stairs` adds a stepped tread. */
+function getFaces(icon: IconData): Face[] {
+  if (icon.type === 'stairs') {
+    return [
+      { className: 'top-low', texture: icon.top },
+      { className: 'top-high', texture: icon.top },
+      { className: 'left-lower', texture: icon.side },
+      { className: 'left-upper', texture: icon.side },
+      { className: 'right', texture: icon.side },
+    ];
+  }
+
+  if (icon.type === 'block' || icon.type === 'slab') {
+    return [
+      { className: 'top', texture: icon.top },
+      { className: 'left', texture: icon.side },
+      { className: 'right', texture: icon.side },
+    ];
+  }
+
+  return [];
+}
+
 const { item, loading = 'lazy' } = Astro.props;
-const isBlock = item?.icon.type === 'block';
+const is3d =
+  item?.icon.type === 'block' || item?.icon.type === 'slab' || item?.icon.type === 'stairs';
+const faces = item ? getFaces(item.icon) : [];
 ---
 
 {
   item && (
-    <div class:list={['item-icon', { 'item-icon--block': isBlock }]}>
-      {item.icon.type === 'block' ? (
-        <ul class="block" role="img" aria-label={item.name} title={item.name}>
-          <li class="top">
-            <img
-              src={withBase(item.icon.top)}
-              alt=""
-              width="16"
-              height="16"
-              loading={loading}
-              decoding="async"
-            />
-          </li>
-          <li class="left">
-            <img
-              src={withBase(item.icon.side)}
-              alt=""
-              width="16"
-              height="16"
-              loading={loading}
-              decoding="async"
-            />
-          </li>
-          <li class="right">
-            <img
-              src={withBase(item.icon.side)}
-              alt=""
-              width="16"
-              height="16"
-              loading={loading}
-              decoding="async"
-            />
-          </li>
-        </ul>
-      ) : (
+    <div class:list={['item-icon', { 'item-icon--block': is3d }]}>
+      {item.icon.type === 'flat' ? (
         <img
           class="icon"
           src={withBase(item.icon.texture)}
@@ -63,6 +60,32 @@ const isBlock = item?.icon.type === 'block';
           loading={loading}
           decoding="async"
         />
+      ) : (
+        <ul
+          class:list={[
+            'block',
+            {
+              'block--slab': item.icon.type === 'slab',
+              'block--stairs': item.icon.type === 'stairs',
+            },
+          ]}
+          role="img"
+          aria-label={item.name}
+          title={item.name}
+        >
+          {faces.map((face) => (
+            <li class={face.className}>
+              <img
+                src={withBase(face.texture)}
+                alt=""
+                width="16"
+                height="16"
+                loading={loading}
+                decoding="async"
+              />
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   )
@@ -100,11 +123,17 @@ const isBlock = item?.icon.type === 'block';
 
   .block .top,
   .block .left,
-  .block .right {
+  .block .right,
+  .block .top-low,
+  .block .top-high,
+  .block .left-lower,
+  .block .left-upper {
     background-color: #fff;
     width: 100%;
     height: 100%;
     position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
   }
 
@@ -114,7 +143,9 @@ const isBlock = item?.icon.type === 'block';
     object-fit: cover;
   }
 
-  .left {
+  .left,
+  .left-lower,
+  .left-upper {
     transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
   }
 
@@ -124,5 +155,40 @@ const isBlock = item?.icon.type === 'block';
 
   .top {
     transform: translateY(-50%) rotateX(90deg);
+  }
+
+  /* Slab: half-height box — top face drops to the container's mid-line, sides keep only their bottom half. */
+  .block--slab .top {
+    transform: rotateX(90deg);
+  }
+
+  .block--slab .left,
+  .block--slab .right {
+    top: 50%;
+    height: 50%;
+  }
+
+  /* Stairs: a low tread (left half) plus a full-height back half, matching vanilla's stair model shape. */
+  .block--stairs .top-low {
+    width: 50%;
+    left: 0;
+    transform: rotateX(90deg);
+  }
+
+  .block--stairs .top-high {
+    width: 50%;
+    left: 50%;
+    transform: translateY(-50%) rotateX(90deg);
+  }
+
+  .block--stairs .left-lower {
+    height: 50%;
+    top: 50%;
+  }
+
+  .block--stairs .left-upper {
+    height: 50%;
+    top: 0;
+    clip-path: inset(0 0 0 50%);
   }
 </style>
