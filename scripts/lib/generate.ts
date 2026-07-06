@@ -32,6 +32,8 @@ export interface GenerateOutput {
   meta: Meta;
   /** Every texture ref that should be copied into public/textures/. */
   texturesToCopy: Set<string>;
+  /** Dye color id -> destination texture ref, for banner icons the caller must generate (see scripts/lib/banner-icon.ts). */
+  bannerIconsToSynthesize: Map<string, string>;
 }
 
 /**
@@ -69,6 +71,7 @@ export function generate(input: GenerateInput): GenerateOutput {
 
   const unresolvedIcons: string[] = [];
   const texturesToCopy = new Set<string>();
+  const bannerIconsToSynthesize = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -76,7 +79,11 @@ export function generate(input: GenerateInput): GenerateOutput {
     const candidate = resolveIconCandidate(itemId, itemDefsRaw, modelsRaw);
 
     let icon: Item["icon"];
-    if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
+    if (candidate?.type === "banner" && textureExists(`block/${candidate.colorId}_wool`)) {
+      const ref = `item/${candidate.colorId}_banner`;
+      icon = { type: "flat", texture: `/textures/${ref}.png` };
+      bannerIconsToSynthesize.set(candidate.colorId, ref);
+    } else if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
     } else if (
@@ -111,5 +118,5 @@ export function generate(input: GenerateInput): GenerateOutput {
     unresolvedIcons: unresolvedIcons.toSorted(),
   };
 
-  return { recipes, items, meta, texturesToCopy };
+  return { recipes, items, meta, texturesToCopy, bannerIconsToSynthesize };
 }

@@ -98,6 +98,16 @@ top=side=`all`; `block/cube_column` → top=`end`, side=`side`;
 (`particle` or first texture) as flat. Unresolvable → flat placeholder texture
 and a line in the validator report (never a broken build).
 
+Items rendered via a bespoke Java renderer (`{ type: "minecraft:special", base,
+model }` — chests, shulker boxes, shields, skulls, conduit, decorated pot,
+banners, ...) have no plain model to walk. `base` is resolved through the same
+heuristics above as a best-effort stand-in, **except** banners: dye-colored
+banners all share one `base` (no per-color texture exists upstream), so
+`scripts/lib/banner-icon.ts` instead crops the vanilla banner template
+(`entity/banner/banner_base.png`) to its front-facing region and tints it with
+the corresponding wool texture's average color, generating a per-color icon
+at parse time (written under `public/textures/item/<color>_banner.png`).
+
 `stat` is derived from `vendor/mcmeta-summary/item_components/data.json`
 (scripts/lib/item-stats.ts) — at most one defining stat per item, by priority
 food > armor > weapon > tool, classified via vanilla item tags

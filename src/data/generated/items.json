@@ -617,7 +617,7 @@
   },
   "black_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/black_banner.png",
       "type": "flat"
     },
     "id": "black_banner",
@@ -682,7 +682,7 @@
   },
   "black_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/black_shulker_box.png",
       "type": "flat"
     },
     "id": "black_shulker_box",
@@ -785,7 +785,7 @@
   },
   "blue_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/blue_banner.png",
       "type": "flat"
     },
     "id": "blue_banner",
@@ -875,7 +875,7 @@
   },
   "blue_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/blue_shulker_box.png",
       "type": "flat"
     },
     "id": "blue_shulker_box",
@@ -1063,7 +1063,7 @@
   },
   "brown_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/brown_banner.png",
       "type": "flat"
     },
     "id": "brown_banner",
@@ -1144,7 +1144,7 @@
   },
   "brown_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/brown_shulker_box.png",
       "type": "flat"
     },
     "id": "brown_shulker_box",
@@ -1438,7 +1438,7 @@
   },
   "chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/oak_planks.png",
       "type": "flat"
     },
     "id": "chest",
@@ -1818,7 +1818,7 @@
   },
   "conduit": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/conduit.png",
       "type": "flat"
     },
     "id": "conduit",
@@ -1908,7 +1908,7 @@
   },
   "copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "copper_chest",
@@ -1936,7 +1936,7 @@
   },
   "copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "copper_golem_statue",
@@ -2115,7 +2115,7 @@
   },
   "creeper_head": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/soul_sand.png",
       "type": "flat"
     },
     "id": "creeper_head",
@@ -2320,7 +2320,7 @@
   },
   "cyan_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/cyan_banner.png",
       "type": "flat"
     },
     "id": "cyan_banner",
@@ -2385,7 +2385,7 @@
   },
   "cyan_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/cyan_shulker_box.png",
       "type": "flat"
     },
     "id": "cyan_shulker_box",
@@ -2604,7 +2604,7 @@
   },
   "decorated_pot": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/terracotta.png",
       "type": "flat"
     },
     "id": "decorated_pot",
@@ -3051,7 +3051,7 @@
   },
   "ender_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/obsidian.png",
       "type": "flat"
     },
     "id": "ender_chest",
@@ -3118,7 +3118,7 @@
   },
   "exposed_copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/exposed_copper.png",
       "type": "flat"
     },
     "id": "exposed_copper_chest",
@@ -3134,7 +3134,7 @@
   },
   "exposed_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "exposed_copper_golem_statue",
@@ -3631,7 +3631,7 @@
   },
   "gray_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/gray_banner.png",
       "type": "flat"
     },
     "id": "gray_banner",
@@ -3696,7 +3696,7 @@
   },
   "gray_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/gray_shulker_box.png",
       "type": "flat"
     },
     "id": "gray_shulker_box",
@@ -3739,7 +3739,7 @@
   },
   "green_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/green_banner.png",
       "type": "flat"
     },
     "id": "green_banner",
@@ -3804,7 +3804,7 @@
   },
   "green_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/green_shulker_box.png",
       "type": "flat"
     },
     "id": "green_shulker_box",
@@ -4427,7 +4427,7 @@
   },
   "light_blue_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/light_blue_banner.png",
       "type": "flat"
     },
     "id": "light_blue_banner",
@@ -4492,7 +4492,7 @@
   },
   "light_blue_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/light_blue_shulker_box.png",
       "type": "flat"
     },
     "id": "light_blue_shulker_box",
@@ -4535,7 +4535,7 @@
   },
   "light_gray_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/light_gray_banner.png",
       "type": "flat"
     },
     "id": "light_gray_banner",
@@ -4600,7 +4600,7 @@
   },
   "light_gray_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/light_gray_shulker_box.png",
       "type": "flat"
     },
     "id": "light_gray_shulker_box",
@@ -4675,7 +4675,7 @@
   },
   "lime_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/lime_banner.png",
       "type": "flat"
     },
     "id": "lime_banner",
@@ -4740,7 +4740,7 @@
   },
   "lime_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/lime_shulker_box.png",
       "type": "flat"
     },
     "id": "lime_shulker_box",
@@ -4813,7 +4813,7 @@
   },
   "magenta_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/magenta_banner.png",
       "type": "flat"
     },
     "id": "magenta_banner",
@@ -4878,7 +4878,7 @@
   },
   "magenta_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/magenta_shulker_box.png",
       "type": "flat"
     },
     "id": "magenta_shulker_box",
@@ -5601,7 +5601,7 @@
   },
   "orange_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/orange_banner.png",
       "type": "flat"
     },
     "id": "orange_banner",
@@ -5666,7 +5666,7 @@
   },
   "orange_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/orange_shulker_box.png",
       "type": "flat"
     },
     "id": "orange_shulker_box",
@@ -5768,7 +5768,7 @@
   },
   "oxidized_copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/oxidized_copper.png",
       "type": "flat"
     },
     "id": "oxidized_copper_chest",
@@ -5784,7 +5784,7 @@
   },
   "oxidized_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "oxidized_copper_golem_statue",
@@ -6044,7 +6044,7 @@
   },
   "pink_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/pink_banner.png",
       "type": "flat"
     },
     "id": "pink_banner",
@@ -6117,7 +6117,7 @@
   },
   "pink_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/pink_shulker_box.png",
       "type": "flat"
     },
     "id": "pink_shulker_box",
@@ -6649,7 +6649,7 @@
   },
   "purple_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/purple_banner.png",
       "type": "flat"
     },
     "id": "purple_banner",
@@ -6714,7 +6714,7 @@
   },
   "purple_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/purple_shulker_box.png",
       "type": "flat"
     },
     "id": "purple_shulker_box",
@@ -6941,7 +6941,7 @@
   },
   "red_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/red_banner.png",
       "type": "flat"
     },
     "id": "red_banner",
@@ -7093,7 +7093,7 @@
   },
   "red_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/red_shulker_box.png",
       "type": "flat"
     },
     "id": "red_shulker_box",
@@ -7372,7 +7372,7 @@
   },
   "shield": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/dark_oak_planks.png",
       "type": "flat"
     },
     "id": "shield",
@@ -7380,7 +7380,7 @@
   },
   "shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/shulker_box.png",
       "type": "flat"
     },
     "id": "shulker_box",
@@ -8365,7 +8365,7 @@
   },
   "trapped_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/oak_planks.png",
       "type": "flat"
     },
     "id": "trapped_chest",
@@ -8671,7 +8671,7 @@
   },
   "waxed_copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "waxed_copper_chest",
@@ -8687,7 +8687,7 @@
   },
   "waxed_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "waxed_copper_golem_statue",
@@ -8790,7 +8790,7 @@
   },
   "waxed_exposed_copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/exposed_copper.png",
       "type": "flat"
     },
     "id": "waxed_exposed_copper_chest",
@@ -8806,7 +8806,7 @@
   },
   "waxed_exposed_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "waxed_exposed_copper_golem_statue",
@@ -8925,7 +8925,7 @@
   },
   "waxed_oxidized_copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/oxidized_copper.png",
       "type": "flat"
     },
     "id": "waxed_oxidized_copper_chest",
@@ -8941,7 +8941,7 @@
   },
   "waxed_oxidized_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "waxed_oxidized_copper_golem_statue",
@@ -9052,7 +9052,7 @@
   },
   "waxed_weathered_copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/weathered_copper.png",
       "type": "flat"
     },
     "id": "waxed_weathered_copper_chest",
@@ -9068,7 +9068,7 @@
   },
   "waxed_weathered_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "waxed_weathered_copper_golem_statue",
@@ -9187,7 +9187,7 @@
   },
   "weathered_copper_chest": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/weathered_copper.png",
       "type": "flat"
     },
     "id": "weathered_copper_chest",
@@ -9203,7 +9203,7 @@
   },
   "weathered_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/copper_block.png",
       "type": "flat"
     },
     "id": "weathered_copper_golem_statue",
@@ -9279,7 +9279,7 @@
   },
   "white_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/white_banner.png",
       "type": "flat"
     },
     "id": "white_banner",
@@ -9344,7 +9344,7 @@
   },
   "white_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/white_shulker_box.png",
       "type": "flat"
     },
     "id": "white_shulker_box",
@@ -9427,7 +9427,7 @@
   },
   "wither_skeleton_skull": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/soul_sand.png",
       "type": "flat"
     },
     "id": "wither_skeleton_skull",
@@ -9527,7 +9527,7 @@
   },
   "yellow_banner": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/item/yellow_banner.png",
       "type": "flat"
     },
     "id": "yellow_banner",
@@ -9592,7 +9592,7 @@
   },
   "yellow_shulker_box": {
     "icon": {
-      "texture": "/textures/placeholder.png",
+      "texture": "/textures/block/yellow_shulker_box.png",
       "type": "flat"
     },
     "id": "yellow_shulker_box",
