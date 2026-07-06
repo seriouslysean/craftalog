@@ -66,15 +66,51 @@ const totalRecipes = recipeEntries.length;
 
     <form class="catalog__filter" role="search">
       <label for="recipe-filter" class="catalog__filter-label">Filter recipes by name</label>
-      <input
-        type="search"
-        id="recipe-filter"
-        class="catalog__filter-input"
-        placeholder="Search recipes…"
-        autocomplete="off"
-      />
+      <div class="catalog__search-row">
+        <input
+          type="search"
+          id="recipe-filter"
+          class="catalog__filter-input"
+          placeholder="Search recipes…"
+          autocomplete="off"
+        />
+        <button
+          type="button"
+          class="catalog__filter-toggle link-chip"
+          aria-expanded="true"
+          aria-controls="catalog-categories"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+          <span class="visually-hidden">Show or hide category filters</span>
+        </button>
+      </div>
 
-      <div class="catalog__categories" role="radiogroup" aria-label="Filter by category">
+      <div
+        class="catalog__categories"
+        id="catalog-categories"
+        role="radiogroup"
+        aria-label="Filter by category"
+      >
         <input
           type="radio"
           name="category"
@@ -83,7 +119,7 @@ const totalRecipes = recipeEntries.length;
           checked
           class="catalog__category-input"
         />
-        <label for="category-all" class="catalog__category-pill">
+        <label for="category-all" class="catalog__category-pill link-chip">
           All <span class="catalog__category-count">({totalRecipes})</span>
         </label>
         {
@@ -96,7 +132,7 @@ const totalRecipes = recipeEntries.length;
                 value={section.category}
                 class="catalog__category-input"
               />
-              <label for={`category-${section.category}`} class="catalog__category-pill">
+              <label for={`category-${section.category}`} class="catalog__category-pill link-chip">
                 {section.label}{' '}
                 <span class="catalog__category-count">({section.entries.length})</span>
               </label>
@@ -121,7 +157,7 @@ const totalRecipes = recipeEntries.length;
                 data-search={entry.name.toLowerCase()}
                 data-category={section.category}
               >
-                <a href={withBase(`/recipe/${entry.id}/`)} class="catalog__link">
+                <a href={withBase(`/recipe/${entry.id}/`)} class="catalog__link link-chip">
                   <span class="catalog__icon">
                     <ItemIcon item={entry.item} />
                   </span>
@@ -185,6 +221,15 @@ const totalRecipes = recipeEntries.length;
         }
       });
     });
+
+    const filterToggle = document.querySelector<HTMLButtonElement>('.catalog__filter-toggle');
+    const categories = document.getElementById('catalog-categories');
+
+    filterToggle?.addEventListener('click', () => {
+      const expanded = filterToggle.getAttribute('aria-expanded') === 'true';
+      filterToggle.setAttribute('aria-expanded', String(!expanded));
+      if (categories) categories.hidden = expanded;
+    });
   });
 </script>
 
@@ -210,22 +255,40 @@ const totalRecipes = recipeEntries.length;
     font-weight: 500;
   }
 
-  .catalog__filter-input {
-    width: 100%;
+  .catalog__search-row {
+    display: flex;
+    gap: var(--space-2);
     max-width: 24rem;
-    padding: var(--space-2) var(--space-3);
-    border: var(--border-width-sm) solid;
-    border-color: var(--pixel-border-sunken);
-    border-radius: var(--radius-sm);
-    background-color: var(--color-slot);
-    color: var(--color-fg);
+  }
+
+  .catalog__filter-input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-2) var(--space-4);
+    border: var(--border-width) solid var(--color-gray-dark);
+    background-color: #fff;
     font-size: 1rem;
     font-family: var(--font-sans);
+    color: var(--color-fg);
   }
 
   .catalog__filter-input:focus {
-    outline: var(--border-width-sm) solid var(--color-fg);
+    outline: 2px solid var(--color-fg);
     outline-offset: 1px;
+  }
+
+  .catalog__filter-toggle {
+    flex-shrink: 0;
+    width: 2.5rem;
+    padding: var(--space-2);
+    justify-content: center;
+    font-size: 0.8125rem;
+    color: var(--color-panel-fg);
+    cursor: pointer;
+  }
+
+  .catalog__filter-toggle[aria-expanded='false'] {
+    box-shadow: var(--bevel-button-pressed);
   }
 
   .catalog__categories {
@@ -233,6 +296,10 @@ const totalRecipes = recipeEntries.length;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
+  }
+
+  .catalog__categories[hidden] {
+    display: none;
   }
 
   .catalog__category-input {
@@ -244,39 +311,19 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__category-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25em;
-    padding: var(--space-1) var(--space-3);
-    border: var(--border-width-sm) solid;
-    border-color: var(--pixel-border-raised);
-    border-radius: var(--radius-sm);
-    background-color: var(--color-slot);
+    padding: var(--space-2) var(--space-4);
     font-size: 0.8125rem;
-    color: var(--color-fg);
+    color: var(--color-panel-fg);
     cursor: pointer;
     user-select: none;
-    transition: all 0.15s;
-  }
-
-  .catalog__category-pill:hover {
-    background-color: var(--color-panel);
-    color: var(--color-panel-fg);
-  }
-
-  .catalog__category-pill:active {
-    border-color: var(--pixel-border-sunken);
-    transform: translate(1px, 1px);
   }
 
   .catalog__category-input:checked + .catalog__category-pill {
-    background-color: var(--color-fg);
-    border-color: var(--pixel-border-sunken);
-    color: var(--color-bg);
+    box-shadow: var(--bevel-button-pressed);
   }
 
   .catalog__category-input:focus-visible + .catalog__category-pill {
-    outline: var(--border-width-sm) solid var(--color-fg);
+    outline: 2px solid var(--color-fg);
     outline-offset: 2px;
   }
 
@@ -312,28 +359,16 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__link {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+    width: 100%;
     height: 100%;
     min-height: 3.5rem;
-    padding: var(--space-2) var(--space-3);
-    border: var(--border-width-sm) solid var(--color-gray);
-    border-radius: var(--radius-sm);
-    transition: all 0.2s;
-  }
-
-  .catalog__link:hover {
-    border-color: var(--pixel-border-raised);
-  }
-
-  .catalog__link:active {
-    border-color: var(--pixel-border-sunken);
-    transform: translate(1px, 1px);
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
+    color: var(--color-panel-fg);
   }
 
   .catalog__link:focus-visible {
-    outline: var(--border-width-sm) solid var(--color-fg);
+    outline: 2px solid var(--color-fg);
     outline-offset: 2px;
   }
 
