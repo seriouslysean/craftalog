@@ -241,10 +241,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     flex-shrink: 0;
     gap: var(--space-1);
     padding: var(--space-1) var(--space-3);
-    border: var(--border-width-sm) solid var(--color-chrome-border);
+    border: none;
     border-radius: var(--radius-sm);
     background-color: var(--color-panel);
-    box-shadow: var(--shadow-chrome);
+    box-shadow: var(--bevel-raised);
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     color: var(--color-panel-fg);
@@ -257,7 +257,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   }
 
   .recipe__copy-link:active:not(:disabled) {
-    box-shadow: none;
+    box-shadow: var(--bevel-sunken);
     transform: translate(1px, 1px);
   }
 
@@ -267,7 +267,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   }
 
   .recipe__copy-link:disabled {
-    box-shadow: none;
+    box-shadow: var(--bevel-sunken);
     cursor: default;
   }
 
@@ -298,7 +298,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     gap: var(--space-4);
     background-color: var(--color-panel);
     padding: var(--space-4);
-    border: var(--border-width) solid var(--pixel-dark);
+    border: var(--border-width) solid var(--color-gray-dark);
     border-radius: var(--radius-md);
   }
 
@@ -324,7 +324,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
   .recipe__pager-link {
     padding: var(--space-1) var(--space-2);
-    border: var(--border-width-sm) solid transparent;
+    border: none;
     border-radius: var(--radius-sm);
     transition: all 0.15s;
   }
@@ -332,12 +332,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   .recipe__pager-link:hover {
     background-color: var(--color-panel);
     color: var(--color-panel-fg);
-    border-color: var(--color-chrome-border);
-    box-shadow: var(--shadow-chrome);
+    box-shadow: var(--bevel-raised);
   }
 
   .recipe__pager-link:active {
-    box-shadow: none;
+    box-shadow: var(--bevel-sunken);
     transform: translate(1px, 1px);
   }
 

@@ -29,7 +29,7 @@ const isActive = (path: string) => {
 
 <style>
   header {
-    border-bottom: var(--border-width) solid var(--pixel-dark);
+    border-bottom: var(--border-width) solid var(--color-gray-dark);
   }
 
   .header-content {
@@ -74,7 +74,7 @@ const isActive = (path: string) => {
 
   .nav a {
     padding: var(--space-1) var(--space-2);
-    border: var(--border-width-sm) solid transparent;
+    border: none;
     border-radius: var(--radius-sm);
     font-size: 0.9375rem;
     color: var(--color-muted);
@@ -85,12 +85,11 @@ const isActive = (path: string) => {
   .nav a.active {
     background-color: var(--color-panel);
     color: var(--color-panel-fg);
-    border-color: var(--color-chrome-border);
-    box-shadow: var(--shadow-chrome);
+    box-shadow: var(--bevel-raised);
   }
 
   .nav a:active {
-    box-shadow: none;
+    box-shadow: var(--bevel-sunken);
     transform: translate(1px, 1px);
   }
 

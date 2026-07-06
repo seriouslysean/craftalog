@@ -214,9 +214,10 @@ const totalRecipes = recipeEntries.length;
     width: 100%;
     max-width: 24rem;
     padding: var(--space-2) var(--space-3);
-    border: var(--border-width-sm) solid var(--color-chrome-border);
+    border: none;
     border-radius: var(--radius-sm);
     background-color: var(--color-slot);
+    box-shadow: var(--bevel-sunken);
     color: var(--color-fg);
     font-size: 1rem;
     font-family: var(--font-sans);
@@ -247,10 +248,10 @@ const totalRecipes = recipeEntries.length;
     align-items: center;
     gap: 0.25em;
     padding: var(--space-1) var(--space-3);
-    border: var(--border-width-sm) solid var(--color-chrome-border);
+    border: none;
     border-radius: var(--radius-sm);
     background-color: var(--color-slot);
-    box-shadow: var(--shadow-chrome);
+    box-shadow: var(--bevel-raised);
     font-size: 0.8125rem;
     color: var(--color-fg);
     cursor: pointer;
@@ -264,13 +265,13 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__category-pill:active {
-    box-shadow: none;
+    box-shadow: var(--bevel-sunken);
     transform: translate(1px, 1px);
   }
 
   .catalog__category-input:checked + .catalog__category-pill {
     background-color: var(--color-fg);
-    box-shadow: none;
+    box-shadow: var(--bevel-sunken);
     color: var(--color-bg);
   }
 
@@ -323,13 +324,8 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__link:hover {
-    border-color: var(--color-chrome-border);
-    box-shadow: var(--shadow-chrome);
-  }
-
-  .catalog__link:active {
-    box-shadow: none;
-    transform: translate(1px, 1px);
+    border-color: var(--color-gray-dark);
+    background-color: var(--color-slot);
   }
 
   .catalog__link:focus-visible {

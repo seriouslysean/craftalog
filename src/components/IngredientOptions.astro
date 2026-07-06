@@ -42,7 +42,7 @@ const { entries, itemsMap, note } = Astro.props;
     margin-top: var(--space-2);
     background-color: var(--color-panel);
     padding: var(--space-3) var(--space-4);
-    border: var(--border-width) solid var(--pixel-dark);
+    border: var(--border-width) solid var(--color-gray-dark);
     border-radius: var(--radius-md);
   }
 
@@ -74,8 +74,7 @@ const { entries, itemsMap, note } = Astro.props;
     height: 2.25rem;
     font-size: 0.7em;
     background-color: var(--color-slot);
-    border: var(--border-width-sm) solid;
-    border-color: var(--pixel-border-sunken);
+    box-shadow: var(--bevel-sunken);
   }
 
   .ingredient-options__label {

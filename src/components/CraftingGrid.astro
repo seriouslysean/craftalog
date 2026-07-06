@@ -52,7 +52,7 @@ const resultItem = result ? items.get(result.id) : undefined;
     gap: var(--space-4);
     background-color: var(--color-panel);
     padding: var(--space-4);
-    border: var(--border-width) solid var(--pixel-dark);
+    border: var(--border-width) solid var(--color-gray-dark);
     border-radius: var(--radius-md);
     flex-wrap: wrap;
   }
@@ -78,8 +78,7 @@ const resultItem = result ? items.get(result.id) : undefined;
     width: var(--crafting-cell);
     height: var(--crafting-cell);
     background-color: var(--color-slot);
-    border: var(--border-width-sm) solid;
-    border-color: var(--pixel-border-sunken);
+    box-shadow: var(--bevel-sunken);
     display: flex;
     justify-content: center;
     align-items: center;

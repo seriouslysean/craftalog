@@ -19,10 +19,10 @@ const { variant = 'default', title } = Astro.props;
     align-items: center;
     gap: 0.25em;
     padding: var(--space-1) var(--space-3);
-    /* Thin flat chrome border, no elevation shadow: a badge is a static
-       label, never clickable, so it shouldn't borrow the "press me"
-       affordance real buttons use. */
-    border: var(--border-width-sm) solid var(--color-chrome-border);
+    /* Thin flat border, no bevel: a badge is a static label, never
+       clickable, so it shouldn't borrow the "press me" affordance the
+       raised bevel gives real buttons. */
+    border: var(--border-width-sm) solid var(--color-gray-dark);
     border-radius: var(--radius-sm);
     font-size: 0.75rem;
     font-weight: 500;
