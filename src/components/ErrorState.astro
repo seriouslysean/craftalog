@@ -1,0 +1,54 @@
+---
+import { withBase } from '../utils/with-base';
+
+interface Props {
+  code: string;
+  title: string;
+  message: string;
+}
+
+const { code, title, message } = Astro.props;
+---
+
+<div class="error-state">
+  <p class="error-state__code" aria-hidden="true">{code}</p>
+  <h1 class="error-state__title">{title}</h1>
+  <p class="error-state__message">{message}</p>
+  <p class="error-state__action">
+    <a href={withBase('/')} class="link-chip">Browse all recipes</a>
+  </p>
+</div>
+
+<style>
+  .error-state {
+    padding: var(--space-12) 0;
+    text-align: center;
+  }
+
+  .error-state__code {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-heading);
+    opacity: 0.4;
+  }
+
+  .error-state__title {
+    margin-top: var(--space-2);
+  }
+
+  .error-state__message {
+    margin: var(--space-4) auto 0;
+    max-width: 28rem;
+    color: var(--color-muted);
+  }
+
+  .error-state__action {
+    margin-top: var(--space-8);
+  }
+
+  .error-state__action .link-chip {
+    padding: var(--space-2) var(--space-4);
+  }
+</style>
