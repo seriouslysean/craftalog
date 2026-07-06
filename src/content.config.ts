@@ -36,6 +36,8 @@ const recipeSchema = z.object({
 const iconSchema = z.union([
   z.object({ type: z.literal("flat"), texture: z.string() }),
   z.object({ type: z.literal("block"), top: z.string(), side: z.string() }),
+  z.object({ type: z.literal("slab"), top: z.string(), side: z.string() }),
+  z.object({ type: z.literal("stairs"), top: z.string(), side: z.string() }),
 ]);
 
 const itemStatSchema = z.union([

@@ -20,6 +20,8 @@ type ChainCategory =
   | "cube_bottom_top"
   | "cube"
   | "orientable"
+  | "slab"
+  | "stairs"
   | "unknown";
 
 /**
@@ -38,6 +40,8 @@ function classifyChain(chainNames: string[]): ChainCategory {
     if (name === "block/cube_bottom_top") return "cube_bottom_top";
     if (name === "block/orientable") return "orientable";
     if (name === "block/cube") return "cube";
+    if (name === "block/slab") return "slab";
+    if (name === "block/stairs") return "stairs";
   }
   return "unknown";
 }
@@ -134,7 +138,9 @@ export function findModelReference(node: unknown): string | undefined {
 
 export type IconCandidate =
   | { type: "flat"; textureRef: string }
-  | { type: "block"; topRef: string; sideRef: string };
+  | { type: "block"; topRef: string; sideRef: string }
+  | { type: "slab"; topRef: string; sideRef: string }
+  | { type: "stairs"; topRef: string; sideRef: string };
 
 /**
  * Resolves an item's icon down to bare texture refs (e.g. "block/oak_log_top",
@@ -187,6 +193,16 @@ export function resolveIconCandidate(
       const topRef = resolve("top");
       const sideRef = resolve("front");
       return topRef && sideRef ? { type: "block", topRef, sideRef } : undefined;
+    }
+    case "slab": {
+      const topRef = resolve("top");
+      const sideRef = resolve("side");
+      return topRef && sideRef ? { type: "slab", topRef, sideRef } : undefined;
+    }
+    case "stairs": {
+      const topRef = resolve("top");
+      const sideRef = resolve("side");
+      return topRef && sideRef ? { type: "stairs", topRef, sideRef } : undefined;
     }
     case "unknown":
     default: {
