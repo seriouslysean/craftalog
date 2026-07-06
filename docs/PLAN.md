@@ -95,14 +95,17 @@ Texture resolution: item definition → model → parent chain. Heuristics:
 `item/generated`/`item/handheld` → flat `layer0`; `block/cube_all` → block with
 top=side=`all`; `block/cube_column` → top=`end`, side=`side`;
 `block/cube_bottom_top` → `top`/`side`; other block parents → best-effort
-(`particle` or first texture) as flat. A small denylist
-(`UNRESOLVABLE_ATLAS_PARENTS` in `scripts/lib/model.ts`, currently just
-`block/template_lightning_rod`) skips that best-effort fallback for parents
-whose shared texture is a UV atlas for custom geometry rather than a
-paintable surface — showing it unclipped as a flat icon renders as a sliver
-of content in one corner instead of a recognizable icon. Unresolvable → flat
-placeholder texture and a line in the validator report (never a broken
-build).
+(`particle` or first texture) as flat. Unresolvable → flat placeholder texture
+and a line in the validator report (never a broken build).
+
+`block/template_lightning_rod` (shared by every oxidation variant) is a named
+exception: its "texture" is a UV atlas for its two-element geometry (a 4x4 top
+cap + 2x12 side strip) rather than a paintable surface, so the best-effort
+fallback would show that atlas unclipped — a sliver of content jammed in one
+corner instead of a recognizable icon. `scripts/lib/lightning-rod-icon.ts`
+instead crops those two exact UV regions and upscales each to a full 16x16
+face, generating a proper cube icon at parse time (written under
+`public/textures/item/<name>_top.png` / `_side.png`).
 
 Items rendered via a bespoke Java renderer (`{ type: "minecraft:special", base,
 model }` — chests, shulker boxes, shields, skulls, conduit, decorated pot,

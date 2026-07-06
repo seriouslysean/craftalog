@@ -14,14 +14,13 @@ function normalizeTextureValue(value: RawModelTextureValue): string {
 const FLAT_TERMINALS = new Set(["item/generated", "item/handheld", "builtin/generated"]);
 
 // Parents whose shared "texture" is a UV atlas for bespoke multi-element
-// geometry (e.g. the lightning rod's thin pole + base), not a paintable
+// geometry (the lightning rod's thin pole + base) rather than a paintable
 // surface. Unlike fences (also custom elements via the "unknown" fallback
 // below, but textured with an ordinary repeating block texture that still
-// reads fine as a flat icon from any crop), showing this atlas unclipped
-// renders as a sliver of content in one corner. Treated as unresolvable so
-// callers fall back to the placeholder icon instead of that broken-looking
-// render.
-const UNRESOLVABLE_ATLAS_PARENTS = new Set(["block/template_lightning_rod"]);
+// reads fine as a flat icon from any crop), this atlas can't be shown
+// unclipped as a flat icon. scripts/lib/lightning-rod-icon.ts crops its two
+// real UV regions (top cap + side strip) into a proper cube icon instead.
+const LIGHTNING_ROD_ATLAS_PARENTS = new Set(["block/template_lightning_rod"]);
 
 type ChainCategory =
   | "flat"
@@ -32,7 +31,7 @@ type ChainCategory =
   | "orientable"
   | "slab"
   | "stairs"
-  | "unresolvable"
+  | "lightning_rod"
   | "unknown";
 
 /**
@@ -45,7 +44,7 @@ type ChainCategory =
 function classifyChain(chainNames: string[]): ChainCategory {
   for (const name of chainNames) {
     if (FLAT_TERMINALS.has(name)) return "flat";
-    if (UNRESOLVABLE_ATLAS_PARENTS.has(name)) return "unresolvable";
+    if (LIGHTNING_ROD_ATLAS_PARENTS.has(name)) return "lightning_rod";
     if (name === "block/cube_all") return "cube_all";
     if (name === "block/cube_column" || name === "block/cube_column_horizontal")
       return "cube_column";
@@ -194,7 +193,9 @@ export type IconCandidate =
   | { type: "slab"; topRef: string; sideRef: string }
   | { type: "stairs"; topRef: string; sideRef: string }
   /** A colored banner — resolved to a generated icon (see scripts/lib/banner-icon.ts), not a vendored texture. */
-  | { type: "banner"; colorId: string };
+  | { type: "banner"; colorId: string }
+  /** A lightning rod variant — top/side cropped from `textureRef`'s atlas (see scripts/lib/lightning-rod-icon.ts), not a vendored texture. */
+  | { type: "lightning_rod"; textureRef: string };
 
 /**
  * Resolves an item's icon down to bare texture refs (e.g. "block/oak_log_top",
@@ -265,8 +266,10 @@ export function resolveIconCandidate(
       const sideRef = resolve("side");
       return topRef && sideRef ? { type: "stairs", topRef, sideRef } : undefined;
     }
-    case "unresolvable":
-      return undefined;
+    case "lightning_rod": {
+      const textureRef = resolve("texture");
+      return textureRef ? { type: "lightning_rod", textureRef } : undefined;
+    }
     case "unknown":
     default: {
       const textureRef =
