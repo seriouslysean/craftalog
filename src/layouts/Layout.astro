@@ -1,4 +1,6 @@
 ---
+import '@fontsource/silkscreen/latin-400.css';
+import '@fontsource/silkscreen/latin-700.css';
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -48,7 +50,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --color-gray-dark: #373737;
 
     /* Clean color palette */
-    --color-bg: #fafafa;
+    --color-bg: #f4f4f5;
+    --color-bg-elevated: #ffffff;
     --color-fg: #09090b;
     --color-border: #e4e4e7;
     --color-muted: #71717a;
@@ -66,10 +69,13 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --bevel-raised:
       -0.15em -0.15em 0 0 var(--bevel-shadow) inset, 0.15em 0.15em 0 0 var(--bevel-highlight) inset;
 
-    /* Shape */
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-pill: 999px;
+    /* Shape: hard, square corners everywhere -- Minecraft's UI has no rounded edges */
+    --radius-sm: 0;
+    --radius-md: 0;
+
+    /* Chunky pixel-UI borders: -sm for small chips/badges, base for panels/buttons/inputs */
+    --border-width-sm: 0.125rem;
+    --border-width: 0.1875rem;
 
     /* Spacing */
     --space-1: 0.25rem;
@@ -84,6 +90,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --font-sans:
       -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    /* Chunky pixel display font, reserved for headings/wordmark only -- body copy and
+       dense catalog text stay on --font-sans so long/frequent strings stay scannable. */
+    --font-display: 'Silkscreen', var(--font-mono);
   }
 
   * {
@@ -116,10 +125,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   }
 
   h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0;
   }
 
   h2 {
