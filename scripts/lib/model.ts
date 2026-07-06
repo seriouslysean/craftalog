@@ -136,11 +136,53 @@ export function findModelReference(node: unknown): string | undefined {
   return undefined;
 }
 
+export interface SpecialModel {
+  /** The flat/block model this special renderer falls back to for e.g. inventory display. */
+  base: string;
+  /** The special renderer's kind, e.g. "banner", "shulker_box", "chest" (no "minecraft:" prefix). */
+  specialType: string;
+  /** The special renderer's own config object, e.g. `{ type: "minecraft:banner", color: "white" }`. */
+  specialModel: Record<string, unknown>;
+}
+
+/**
+ * Depth-first search for the first nested `{ type: "minecraft:special", base: <ref>, model: {...} }`
+ * node — the shape used by items rendered via a bespoke Java renderer (banners, shulker boxes,
+ * chests, skulls, shields, ...) rather than a plain block/item model.
+ */
+export function findSpecialModel(node: unknown): SpecialModel | undefined {
+  if (!node || typeof node !== "object") return undefined;
+
+  const obj = node as Record<string, unknown>;
+  if (obj.type === "minecraft:special" && typeof obj.base === "string" && obj.model) {
+    const specialModel = obj.model as Record<string, unknown>;
+    if (typeof specialModel.type === "string") {
+      return { base: obj.base, specialType: stripMcPrefix(specialModel.type), specialModel };
+    }
+  }
+
+  for (const value of Object.values(obj)) {
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const found = findSpecialModel(item);
+        if (found) return found;
+      }
+    } else if (value && typeof value === "object") {
+      const found = findSpecialModel(value);
+      if (found) return found;
+    }
+  }
+
+  return undefined;
+}
+
 export type IconCandidate =
   | { type: "flat"; textureRef: string }
   | { type: "block"; topRef: string; sideRef: string }
   | { type: "slab"; topRef: string; sideRef: string }
-  | { type: "stairs"; topRef: string; sideRef: string };
+  | { type: "stairs"; topRef: string; sideRef: string }
+  /** A colored banner — resolved to a generated icon (see scripts/lib/banner-icon.ts), not a vendored texture. */
+  | { type: "banner"; colorId: string };
 
 /**
  * Resolves an item's icon down to bare texture refs (e.g. "block/oak_log_top",
@@ -158,9 +200,16 @@ export function resolveIconCandidate(
   if (!definition) return undefined;
 
   const modelRef = findModelReference(definition.model);
-  if (!modelRef) return undefined;
+  const special = modelRef ? undefined : findSpecialModel(definition.model);
 
-  const chain = walkModelChain(modelRef, models);
+  if (special?.specialType === "banner" && typeof special.specialModel.color === "string") {
+    return { type: "banner", colorId: special.specialModel.color };
+  }
+
+  const resolvedModelRef = modelRef ?? special?.base;
+  if (!resolvedModelRef) return undefined;
+
+  const chain = walkModelChain(resolvedModelRef, models);
   const category = classifyChain(chain.chainNames);
   const resolve = (key: string): string | undefined => resolveTextureRef(key, chain.mergedTextures);
 

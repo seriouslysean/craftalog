@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { findModelReference, resolveIconCandidate, walkModelChain } from "../scripts/lib/model.ts";
+import {
+  findModelReference,
+  findSpecialModel,
+  resolveIconCandidate,
+  walkModelChain,
+} from "../scripts/lib/model.ts";
 import type { RawItemDefinitionsData, RawModelsData } from "../scripts/lib/types.ts";
 
 describe("walkModelChain", () => {
@@ -95,6 +100,47 @@ describe("findModelReference", () => {
     };
 
     expect(findModelReference(node)).toBeUndefined();
+  });
+});
+
+describe("findSpecialModel", () => {
+  it("returns the base ref, special type, and special model config for a minecraft:special node", () => {
+    const node = {
+      type: "minecraft:special",
+      base: "minecraft:item/template_banner",
+      model: { type: "minecraft:banner", color: "white" },
+    };
+
+    expect(findSpecialModel(node)).toEqual({
+      base: "minecraft:item/template_banner",
+      specialType: "banner",
+      specialModel: { type: "minecraft:banner", color: "white" },
+    });
+  });
+
+  it("depth-first searches nested select/condition trees for the first minecraft:special node", () => {
+    const node = {
+      type: "minecraft:condition",
+      property: "minecraft:using_item",
+      on_false: {
+        type: "minecraft:special",
+        base: "minecraft:item/shield",
+        model: { type: "minecraft:shield" },
+      },
+      on_true: {
+        type: "minecraft:special",
+        base: "minecraft:item/shield_blocking",
+        model: { type: "minecraft:shield" },
+      },
+    };
+
+    expect(findSpecialModel(node)?.base).toBe("minecraft:item/shield");
+  });
+
+  it("returns undefined when no nested minecraft:special node exists", () => {
+    expect(
+      findSpecialModel({ type: "minecraft:model", model: "minecraft:item/stick" }),
+    ).toBeUndefined();
   });
 });
 
@@ -215,17 +261,59 @@ describe("resolveIconCandidate", () => {
     expect(resolveIconCandidate("nonexistent", itemDefinitions, models)).toBeUndefined();
   });
 
-  it("returns undefined when no model reference can be found (e.g. special renderer)", () => {
+  it("resolves a banner candidate (colorId) for a minecraft:special banner renderer", () => {
     const specials: RawItemDefinitionsData = {
       white_banner: {
         model: {
           type: "minecraft:special",
           base: "minecraft:item/template_banner",
-          model: { type: "minecraft:banner" },
+          model: { type: "minecraft:banner", color: "white" },
         },
       },
     };
 
-    expect(resolveIconCandidate("white_banner", specials, models)).toBeUndefined();
+    expect(resolveIconCandidate("white_banner", specials, models)).toEqual({
+      type: "banner",
+      colorId: "white",
+    });
+  });
+
+  it("falls back to the special renderer's base model for non-banner special types (e.g. shulker box)", () => {
+    const specialModels: RawModelsData = {
+      ...models,
+      "item/black_shulker_box": {
+        parent: "minecraft:item/template_shulker_box",
+        textures: { particle: "minecraft:block/black_shulker_box" },
+      },
+      "item/template_shulker_box": {},
+    };
+    const specials: RawItemDefinitionsData = {
+      black_shulker_box: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/black_shulker_box",
+          model: { type: "minecraft:shulker_box", texture: "minecraft:shulker_black" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("black_shulker_box", specials, specialModels)).toEqual({
+      type: "flat",
+      textureRef: "block/black_shulker_box",
+    });
+  });
+
+  it("returns undefined when the special renderer's base has no resolvable texture", () => {
+    const specials: RawItemDefinitionsData = {
+      conduit: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/conduit_with_no_model_entry",
+          model: { type: "minecraft:conduit" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("conduit", specials, models)).toBeUndefined();
   });
 });
