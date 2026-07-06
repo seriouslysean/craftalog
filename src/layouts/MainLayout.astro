@@ -15,7 +15,7 @@ const { title, description } = Astro.props;
   <div class="wrapper">
     <SiteHeader />
 
-    <main class="main">
+    <main class="main" transition:animate="none">
       <slot />
     </main>
 

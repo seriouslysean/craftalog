@@ -22,13 +22,34 @@ const isBlock = item?.icon.type === 'block';
       {item.icon.type === 'block' ? (
         <ul class="block" role="img" aria-label={item.name} title={item.name}>
           <li class="top">
-            <img src={withBase(item.icon.top)} alt="" loading={loading} decoding="async" />
+            <img
+              src={withBase(item.icon.top)}
+              alt=""
+              width="16"
+              height="16"
+              loading={loading}
+              decoding="async"
+            />
           </li>
           <li class="left">
-            <img src={withBase(item.icon.side)} alt="" loading={loading} decoding="async" />
+            <img
+              src={withBase(item.icon.side)}
+              alt=""
+              width="16"
+              height="16"
+              loading={loading}
+              decoding="async"
+            />
           </li>
           <li class="right">
-            <img src={withBase(item.icon.side)} alt="" loading={loading} decoding="async" />
+            <img
+              src={withBase(item.icon.side)}
+              alt=""
+              width="16"
+              height="16"
+              loading={loading}
+              decoding="async"
+            />
           </li>
         </ul>
       ) : (
@@ -37,6 +58,8 @@ const isBlock = item?.icon.type === 'block';
           src={withBase(item.icon.texture)}
           alt={item.name}
           title={item.name}
+          width="16"
+          height="16"
           loading={loading}
           decoding="async"
         />
@@ -61,6 +84,7 @@ const isBlock = item?.icon.type === 'block';
   .icon {
     width: 100%;
     height: auto;
+    background-color: var(--color-slot);
   }
 
   .block {
