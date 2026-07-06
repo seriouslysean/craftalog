@@ -15,10 +15,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { generate } from "./lib/generate.ts";
+import { HUD_ICON_RELATIVE_PATHS } from "./lib/hud-icons.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
 import type {
   ItemsOutput,
   Meta,
+  RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
   RawModelsData,
@@ -108,6 +110,9 @@ function checkDrift(committed: { recipes: RecipesOutput; items: ItemsOutput; met
   const modelsRaw = readJson<RawModelsData>(
     path.join(VENDOR_SUMMARY_DIR, "assets/model/data.json"),
   );
+  const componentsRaw = readJson<RawItemComponentsData>(
+    path.join(VENDOR_SUMMARY_DIR, "item_components/data.json"),
+  );
   const langRaw = readJson<RawLangFile>(path.join(VENDOR_SUMMARY_DIR, "assets/lang/data.json"));
   const enUs = langRaw.en_us ?? {};
 
@@ -120,6 +125,7 @@ function checkDrift(committed: { recipes: RecipesOutput; items: ItemsOutput; met
     tagsRaw,
     itemDefsRaw,
     modelsRaw,
+    componentsRaw,
     enUs,
     textureExists,
   });
@@ -186,6 +192,13 @@ function checkInternalConsistency(committed: {
       if (!fs.existsSync(onDisk)) {
         fail(`item "${id}" icon references missing texture file: ${texturePath}`);
       }
+    }
+  }
+
+  for (const relativePath of HUD_ICON_RELATIVE_PATHS) {
+    const onDisk = path.join(PUBLIC_DIR, "textures/hud", relativePath);
+    if (!fs.existsSync(onDisk)) {
+      fail(`missing HUD icon texture: textures/hud/${relativePath} (run "npm run parse")`);
     }
   }
 

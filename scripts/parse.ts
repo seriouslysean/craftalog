@@ -11,8 +11,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { generate } from "./lib/generate.ts";
+import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
 import type {
+  RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
   RawModelsData,
@@ -49,6 +51,9 @@ function main(): void {
   const modelsRaw = readJson<RawModelsData>(
     path.join(VENDOR_SUMMARY_DIR, "assets/model/data.json"),
   );
+  const componentsRaw = readJson<RawItemComponentsData>(
+    path.join(VENDOR_SUMMARY_DIR, "item_components/data.json"),
+  );
   const langRaw = readJson<RawLangFile>(path.join(VENDOR_SUMMARY_DIR, "assets/lang/data.json"));
   const enUs = langRaw.en_us ?? {};
 
@@ -61,22 +66,33 @@ function main(): void {
     tagsRaw,
     itemDefsRaw,
     modelsRaw,
+    componentsRaw,
     enUs,
     textureExists,
   });
 
-  // Clean + repopulate the two generated texture dirs (leave legacy
+  // Clean + repopulate the generated texture dirs (leave legacy
   // textures/items and textures/blocks alone — a later task removes them).
   const itemTexturesDir = path.join(PUBLIC_TEXTURES_DIR, "item");
   const blockTexturesDir = path.join(PUBLIC_TEXTURES_DIR, "block");
+  const hudTexturesDir = path.join(PUBLIC_TEXTURES_DIR, "hud");
   fs.rmSync(itemTexturesDir, { recursive: true, force: true });
   fs.rmSync(blockTexturesDir, { recursive: true, force: true });
+  fs.rmSync(hudTexturesDir, { recursive: true, force: true });
   fs.mkdirSync(itemTexturesDir, { recursive: true });
   fs.mkdirSync(blockTexturesDir, { recursive: true });
+  fs.mkdirSync(hudTexturesDir, { recursive: true });
 
   for (const ref of texturesToCopy) {
     const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
     const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
+  for (const relativePath of HUD_ICON_RELATIVE_PATHS) {
+    const sourcePath = path.join(VENDOR_TEXTURES_DIR, HUD_ICON_VENDOR_BASE, relativePath);
+    const destPath = path.join(hudTexturesDir, relativePath);
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
     fs.copyFileSync(sourcePath, destPath);
   }

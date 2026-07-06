@@ -83,6 +83,11 @@ type Item = {
   icon:
     | { type: "flat"; texture: string } // /textures/... path
     | { type: "block"; top: string; side: string }; // pseudo-3D cube
+  stat?:
+    | { type: "food"; nutrition: number }
+    | { type: "armor"; points: number }
+    | { type: "weapon"; damage: number }
+    | { type: "tool"; durability: number };
 };
 ```
 
@@ -93,13 +98,27 @@ top=side=`all`; `block/cube_column` → top=`end`, side=`side`;
 (`particle` or first texture) as flat. Unresolvable → flat placeholder texture
 and a line in the validator report (never a broken build).
 
+`stat` is derived from `vendor/mcmeta-summary/item_components/data.json`
+(scripts/lib/item-stats.ts) — at most one defining stat per item, by priority
+food > armor > weapon > tool, classified via vanilla item tags
+(`swords`/`axes`/`pickaxes`/`shovels`/`hoes`, `head_armor`/`chest_armor`/
+`leg_armor`/`foot_armor`) rather than raw attribute presence, so e.g. an axe's
+incidental attack-damage attribute doesn't make it show as a weapon. Most
+items (building blocks, etc.) have no stat at all — deliberately, to avoid
+turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
+(hearts/armor/food, from the fixed set in `public/textures/hud/`, sourced via
+`scripts/lib/hud-icons.ts`) except `tool` durability, which is plain text
+(no existing HUD asset fits it well).
+
 ## Shaped vs shapeless in the UI
 
 - **Shaped**: pattern rendered in-place, centered in the 3×3 grid.
-- **Shapeless**: badge ("Shapeless — any arrangement") + ingredients filled
-  into the grid in reading order, visually distinguished.
-- **Transmute**: rendered like shapeless (input + material), note that the
-  result keeps the input's data.
+- **Shapeless**: ingredients filled into the grid in reading order; the grid
+  itself signals "order doesn't matter" via a shuffle icon + dashed cell
+  outlines, plus a one-line caption below the grid ("Place ingredients in any
+  order") — not a badge above the grid, which is easy to skip past.
+- **Transmute**: rendered like shapeless (input + material) with the same
+  unordered signal, plus a note that the result keeps the input's data.
 - Multi-option ingredients (tag or array): cycle through variants on a timer
   (like the Minecraft wiki), with the tag label shown (e.g. "Any Planks").
   Cycling is progressive enhancement; first variant renders statically.

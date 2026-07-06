@@ -210,7 +210,11 @@
       "type": "flat"
     },
     "id": "apple",
-    "name": "Apple"
+    "name": "Apple",
+    "stat": {
+      "nutrition": 4,
+      "type": "food"
+    }
   },
   "armadillo_scute": {
     "icon": {
@@ -250,7 +254,11 @@
       "type": "flat"
     },
     "id": "baked_potato",
-    "name": "Baked Potato"
+    "name": "Baked Potato",
+    "stat": {
+      "nutrition": 5,
+      "type": "food"
+    }
   },
   "bamboo": {
     "icon": {
@@ -448,7 +456,11 @@
       "type": "flat"
     },
     "id": "beetroot",
-    "name": "Beetroot"
+    "name": "Beetroot",
+    "stat": {
+      "nutrition": 1,
+      "type": "food"
+    }
   },
   "beetroot_soup": {
     "icon": {
@@ -456,7 +468,11 @@
       "type": "flat"
     },
     "id": "beetroot_soup",
-    "name": "Beetroot Soup"
+    "name": "Beetroot Soup",
+    "stat": {
+      "nutrition": 6,
+      "type": "food"
+    }
   },
   "birch_boat": {
     "icon": {
@@ -968,7 +984,11 @@
       "type": "flat"
     },
     "id": "bread",
-    "name": "Bread"
+    "name": "Bread",
+    "stat": {
+      "nutrition": 5,
+      "type": "food"
+    }
   },
   "breeze_rod": {
     "icon": {
@@ -1221,7 +1241,11 @@
       "type": "flat"
     },
     "id": "carrot",
-    "name": "Carrot"
+    "name": "Carrot",
+    "stat": {
+      "nutrition": 3,
+      "type": "food"
+    }
   },
   "carrot_on_a_stick": {
     "icon": {
@@ -1782,7 +1806,11 @@
       "type": "flat"
     },
     "id": "cooked_rabbit",
-    "name": "Cooked Rabbit"
+    "name": "Cooked Rabbit",
+    "stat": {
+      "nutrition": 5,
+      "type": "food"
+    }
   },
   "cookie": {
     "icon": {
@@ -1790,7 +1818,11 @@
       "type": "flat"
     },
     "id": "cookie",
-    "name": "Cookie"
+    "name": "Cookie",
+    "stat": {
+      "nutrition": 2,
+      "type": "food"
+    }
   },
   "copper_axe": {
     "icon": {
@@ -1798,7 +1830,11 @@
       "type": "flat"
     },
     "id": "copper_axe",
-    "name": "Copper Axe"
+    "name": "Copper Axe",
+    "stat": {
+      "durability": 190,
+      "type": "tool"
+    }
   },
   "copper_bars": {
     "icon": {
@@ -1823,7 +1859,11 @@
       "type": "flat"
     },
     "id": "copper_boots",
-    "name": "Copper Boots"
+    "name": "Copper Boots",
+    "stat": {
+      "points": 1,
+      "type": "armor"
+    }
   },
   "copper_bulb": {
     "icon": {
@@ -1856,7 +1896,11 @@
       "type": "flat"
     },
     "id": "copper_chestplate",
-    "name": "Copper Chestplate"
+    "name": "Copper Chestplate",
+    "stat": {
+      "points": 4,
+      "type": "armor"
+    }
   },
   "copper_door": {
     "icon": {
@@ -1889,7 +1933,11 @@
       "type": "flat"
     },
     "id": "copper_helmet",
-    "name": "Copper Helmet"
+    "name": "Copper Helmet",
+    "stat": {
+      "points": 2,
+      "type": "armor"
+    }
   },
   "copper_hoe": {
     "icon": {
@@ -1897,7 +1945,11 @@
       "type": "flat"
     },
     "id": "copper_hoe",
-    "name": "Copper Hoe"
+    "name": "Copper Hoe",
+    "stat": {
+      "durability": 190,
+      "type": "tool"
+    }
   },
   "copper_ingot": {
     "icon": {
@@ -1921,7 +1973,11 @@
       "type": "flat"
     },
     "id": "copper_leggings",
-    "name": "Copper Leggings"
+    "name": "Copper Leggings",
+    "stat": {
+      "points": 3,
+      "type": "armor"
+    }
   },
   "copper_nugget": {
     "icon": {
@@ -1937,7 +1993,11 @@
       "type": "flat"
     },
     "id": "copper_pickaxe",
-    "name": "Copper Pickaxe"
+    "name": "Copper Pickaxe",
+    "stat": {
+      "durability": 190,
+      "type": "tool"
+    }
   },
   "copper_shovel": {
     "icon": {
@@ -1945,7 +2005,11 @@
       "type": "flat"
     },
     "id": "copper_shovel",
-    "name": "Copper Shovel"
+    "name": "Copper Shovel",
+    "stat": {
+      "durability": 190,
+      "type": "tool"
+    }
   },
   "copper_spear": {
     "icon": {
@@ -1961,7 +2025,11 @@
       "type": "flat"
     },
     "id": "copper_sword",
-    "name": "Copper Sword"
+    "name": "Copper Sword",
+    "stat": {
+      "damage": 4,
+      "type": "weapon"
+    }
   },
   "copper_torch": {
     "icon": {
@@ -2596,7 +2664,11 @@
       "type": "flat"
     },
     "id": "diamond_axe",
-    "name": "Diamond Axe"
+    "name": "Diamond Axe",
+    "stat": {
+      "durability": 1561,
+      "type": "tool"
+    }
   },
   "diamond_block": {
     "icon": {
@@ -2613,7 +2685,11 @@
       "type": "flat"
     },
     "id": "diamond_boots",
-    "name": "Diamond Boots"
+    "name": "Diamond Boots",
+    "stat": {
+      "points": 3,
+      "type": "armor"
+    }
   },
   "diamond_chestplate": {
     "icon": {
@@ -2621,7 +2697,11 @@
       "type": "flat"
     },
     "id": "diamond_chestplate",
-    "name": "Diamond Chestplate"
+    "name": "Diamond Chestplate",
+    "stat": {
+      "points": 8,
+      "type": "armor"
+    }
   },
   "diamond_helmet": {
     "icon": {
@@ -2629,7 +2709,11 @@
       "type": "flat"
     },
     "id": "diamond_helmet",
-    "name": "Diamond Helmet"
+    "name": "Diamond Helmet",
+    "stat": {
+      "points": 3,
+      "type": "armor"
+    }
   },
   "diamond_hoe": {
     "icon": {
@@ -2637,7 +2721,11 @@
       "type": "flat"
     },
     "id": "diamond_hoe",
-    "name": "Diamond Hoe"
+    "name": "Diamond Hoe",
+    "stat": {
+      "durability": 1561,
+      "type": "tool"
+    }
   },
   "diamond_leggings": {
     "icon": {
@@ -2645,7 +2733,11 @@
       "type": "flat"
     },
     "id": "diamond_leggings",
-    "name": "Diamond Leggings"
+    "name": "Diamond Leggings",
+    "stat": {
+      "points": 6,
+      "type": "armor"
+    }
   },
   "diamond_pickaxe": {
     "icon": {
@@ -2653,7 +2745,11 @@
       "type": "flat"
     },
     "id": "diamond_pickaxe",
-    "name": "Diamond Pickaxe"
+    "name": "Diamond Pickaxe",
+    "stat": {
+      "durability": 1561,
+      "type": "tool"
+    }
   },
   "diamond_shovel": {
     "icon": {
@@ -2661,7 +2757,11 @@
       "type": "flat"
     },
     "id": "diamond_shovel",
-    "name": "Diamond Shovel"
+    "name": "Diamond Shovel",
+    "stat": {
+      "durability": 1561,
+      "type": "tool"
+    }
   },
   "diamond_spear": {
     "icon": {
@@ -2677,7 +2777,11 @@
       "type": "flat"
     },
     "id": "diamond_sword",
-    "name": "Diamond Sword"
+    "name": "Diamond Sword",
+    "stat": {
+      "damage": 6,
+      "type": "weapon"
+    }
   },
   "diorite": {
     "icon": {
@@ -2752,7 +2856,11 @@
       "type": "flat"
     },
     "id": "dried_kelp",
-    "name": "Dried Kelp"
+    "name": "Dried Kelp",
+    "stat": {
+      "nutrition": 1,
+      "type": "food"
+    }
   },
   "dried_kelp_block": {
     "icon": {
@@ -2827,7 +2935,11 @@
       "type": "flat"
     },
     "id": "enchanted_golden_apple",
-    "name": "Enchanted Golden Apple"
+    "name": "Enchanted Golden Apple",
+    "stat": {
+      "nutrition": 4,
+      "type": "food"
+    }
   },
   "enchanting_table": {
     "icon": {
@@ -3287,7 +3399,11 @@
       "type": "flat"
     },
     "id": "golden_apple",
-    "name": "Golden Apple"
+    "name": "Golden Apple",
+    "stat": {
+      "nutrition": 4,
+      "type": "food"
+    }
   },
   "golden_axe": {
     "icon": {
@@ -3295,7 +3411,11 @@
       "type": "flat"
     },
     "id": "golden_axe",
-    "name": "Golden Axe"
+    "name": "Golden Axe",
+    "stat": {
+      "durability": 32,
+      "type": "tool"
+    }
   },
   "golden_boots": {
     "icon": {
@@ -3303,7 +3423,11 @@
       "type": "flat"
     },
     "id": "golden_boots",
-    "name": "Golden Boots"
+    "name": "Golden Boots",
+    "stat": {
+      "points": 1,
+      "type": "armor"
+    }
   },
   "golden_carrot": {
     "icon": {
@@ -3311,7 +3435,11 @@
       "type": "flat"
     },
     "id": "golden_carrot",
-    "name": "Golden Carrot"
+    "name": "Golden Carrot",
+    "stat": {
+      "nutrition": 6,
+      "type": "food"
+    }
   },
   "golden_chestplate": {
     "icon": {
@@ -3319,7 +3447,11 @@
       "type": "flat"
     },
     "id": "golden_chestplate",
-    "name": "Golden Chestplate"
+    "name": "Golden Chestplate",
+    "stat": {
+      "points": 5,
+      "type": "armor"
+    }
   },
   "golden_dandelion": {
     "icon": {
@@ -3335,7 +3467,11 @@
       "type": "flat"
     },
     "id": "golden_helmet",
-    "name": "Golden Helmet"
+    "name": "Golden Helmet",
+    "stat": {
+      "points": 2,
+      "type": "armor"
+    }
   },
   "golden_hoe": {
     "icon": {
@@ -3343,7 +3479,11 @@
       "type": "flat"
     },
     "id": "golden_hoe",
-    "name": "Golden Hoe"
+    "name": "Golden Hoe",
+    "stat": {
+      "durability": 32,
+      "type": "tool"
+    }
   },
   "golden_leggings": {
     "icon": {
@@ -3351,7 +3491,11 @@
       "type": "flat"
     },
     "id": "golden_leggings",
-    "name": "Golden Leggings"
+    "name": "Golden Leggings",
+    "stat": {
+      "points": 3,
+      "type": "armor"
+    }
   },
   "golden_pickaxe": {
     "icon": {
@@ -3359,7 +3503,11 @@
       "type": "flat"
     },
     "id": "golden_pickaxe",
-    "name": "Golden Pickaxe"
+    "name": "Golden Pickaxe",
+    "stat": {
+      "durability": 32,
+      "type": "tool"
+    }
   },
   "golden_shovel": {
     "icon": {
@@ -3367,7 +3515,11 @@
       "type": "flat"
     },
     "id": "golden_shovel",
-    "name": "Golden Shovel"
+    "name": "Golden Shovel",
+    "stat": {
+      "durability": 32,
+      "type": "tool"
+    }
   },
   "golden_spear": {
     "icon": {
@@ -3383,7 +3535,11 @@
       "type": "flat"
     },
     "id": "golden_sword",
-    "name": "Golden Sword"
+    "name": "Golden Sword",
+    "stat": {
+      "damage": 3,
+      "type": "weapon"
+    }
   },
   "granite": {
     "icon": {
@@ -3706,7 +3862,11 @@
       "type": "flat"
     },
     "id": "honey_bottle",
-    "name": "Honey Bottle"
+    "name": "Honey Bottle",
+    "stat": {
+      "nutrition": 6,
+      "type": "food"
+    }
   },
   "honeycomb": {
     "icon": {
@@ -3772,7 +3932,11 @@
       "type": "flat"
     },
     "id": "iron_axe",
-    "name": "Iron Axe"
+    "name": "Iron Axe",
+    "stat": {
+      "durability": 250,
+      "type": "tool"
+    }
   },
   "iron_bars": {
     "icon": {
@@ -3797,7 +3961,11 @@
       "type": "flat"
     },
     "id": "iron_boots",
-    "name": "Iron Boots"
+    "name": "Iron Boots",
+    "stat": {
+      "points": 2,
+      "type": "armor"
+    }
   },
   "iron_chain": {
     "icon": {
@@ -3813,7 +3981,11 @@
       "type": "flat"
     },
     "id": "iron_chestplate",
-    "name": "Iron Chestplate"
+    "name": "Iron Chestplate",
+    "stat": {
+      "points": 6,
+      "type": "armor"
+    }
   },
   "iron_door": {
     "icon": {
@@ -3829,7 +4001,11 @@
       "type": "flat"
     },
     "id": "iron_helmet",
-    "name": "Iron Helmet"
+    "name": "Iron Helmet",
+    "stat": {
+      "points": 2,
+      "type": "armor"
+    }
   },
   "iron_hoe": {
     "icon": {
@@ -3837,7 +4013,11 @@
       "type": "flat"
     },
     "id": "iron_hoe",
-    "name": "Iron Hoe"
+    "name": "Iron Hoe",
+    "stat": {
+      "durability": 250,
+      "type": "tool"
+    }
   },
   "iron_ingot": {
     "icon": {
@@ -3853,7 +4033,11 @@
       "type": "flat"
     },
     "id": "iron_leggings",
-    "name": "Iron Leggings"
+    "name": "Iron Leggings",
+    "stat": {
+      "points": 5,
+      "type": "armor"
+    }
   },
   "iron_nugget": {
     "icon": {
@@ -3869,7 +4053,11 @@
       "type": "flat"
     },
     "id": "iron_pickaxe",
-    "name": "Iron Pickaxe"
+    "name": "Iron Pickaxe",
+    "stat": {
+      "durability": 250,
+      "type": "tool"
+    }
   },
   "iron_shovel": {
     "icon": {
@@ -3877,7 +4065,11 @@
       "type": "flat"
     },
     "id": "iron_shovel",
-    "name": "Iron Shovel"
+    "name": "Iron Shovel",
+    "stat": {
+      "durability": 250,
+      "type": "tool"
+    }
   },
   "iron_spear": {
     "icon": {
@@ -3893,7 +4085,11 @@
       "type": "flat"
     },
     "id": "iron_sword",
-    "name": "Iron Sword"
+    "name": "Iron Sword",
+    "stat": {
+      "damage": 5,
+      "type": "weapon"
+    }
   },
   "iron_trapdoor": {
     "icon": {
@@ -4115,7 +4311,11 @@
       "type": "flat"
     },
     "id": "leather_boots",
-    "name": "Leather Boots"
+    "name": "Leather Boots",
+    "stat": {
+      "points": 1,
+      "type": "armor"
+    }
   },
   "leather_chestplate": {
     "icon": {
@@ -4123,7 +4323,11 @@
       "type": "flat"
     },
     "id": "leather_chestplate",
-    "name": "Leather Tunic"
+    "name": "Leather Tunic",
+    "stat": {
+      "points": 3,
+      "type": "armor"
+    }
   },
   "leather_helmet": {
     "icon": {
@@ -4131,7 +4335,11 @@
       "type": "flat"
     },
     "id": "leather_helmet",
-    "name": "Leather Cap"
+    "name": "Leather Cap",
+    "stat": {
+      "points": 1,
+      "type": "armor"
+    }
   },
   "leather_horse_armor": {
     "icon": {
@@ -4147,7 +4355,11 @@
       "type": "flat"
     },
     "id": "leather_leggings",
-    "name": "Leather Pants"
+    "name": "Leather Pants",
+    "stat": {
+      "points": 2,
+      "type": "armor"
+    }
   },
   "lectern": {
     "icon": {
@@ -4545,7 +4757,11 @@
       "type": "flat"
     },
     "id": "mace",
-    "name": "Mace"
+    "name": "Mace",
+    "stat": {
+      "damage": 5,
+      "type": "weapon"
+    }
   },
   "magenta_banner": {
     "icon": {
@@ -4842,7 +5058,11 @@
       "type": "flat"
     },
     "id": "melon_slice",
-    "name": "Melon Slice"
+    "name": "Melon Slice",
+    "stat": {
+      "nutrition": 2,
+      "type": "food"
+    }
   },
   "milk_bucket": {
     "icon": {
@@ -5008,7 +5228,11 @@
       "type": "flat"
     },
     "id": "mushroom_stew",
-    "name": "Mushroom Stew"
+    "name": "Mushroom Stew",
+    "stat": {
+      "nutrition": 6,
+      "type": "food"
+    }
   },
   "music_disc_5": {
     "icon": {
@@ -6323,7 +6547,11 @@
       "type": "flat"
     },
     "id": "pumpkin_pie",
-    "name": "Pumpkin Pie"
+    "name": "Pumpkin Pie",
+    "stat": {
+      "nutrition": 8,
+      "type": "food"
+    }
   },
   "pumpkin_seeds": {
     "icon": {
@@ -6540,7 +6768,11 @@
       "type": "flat"
     },
     "id": "rabbit_stew",
-    "name": "Rabbit Stew"
+    "name": "Rabbit Stew",
+    "stat": {
+      "nutrition": 10,
+      "type": "food"
+    }
   },
   "rail": {
     "icon": {
@@ -7295,7 +7527,11 @@
       "type": "flat"
     },
     "id": "spider_eye",
-    "name": "Spider Eye"
+    "name": "Spider Eye",
+    "stat": {
+      "nutrition": 2,
+      "type": "food"
+    }
   },
   "spire_armor_trim_smithing_template": {
     "icon": {
@@ -7476,7 +7712,11 @@
       "type": "flat"
     },
     "id": "stone_axe",
-    "name": "Stone Axe"
+    "name": "Stone Axe",
+    "stat": {
+      "durability": 131,
+      "type": "tool"
+    }
   },
   "stone_brick_slab": {
     "icon": {
@@ -7525,7 +7765,11 @@
       "type": "flat"
     },
     "id": "stone_hoe",
-    "name": "Stone Hoe"
+    "name": "Stone Hoe",
+    "stat": {
+      "durability": 131,
+      "type": "tool"
+    }
   },
   "stone_pickaxe": {
     "icon": {
@@ -7533,7 +7777,11 @@
       "type": "flat"
     },
     "id": "stone_pickaxe",
-    "name": "Stone Pickaxe"
+    "name": "Stone Pickaxe",
+    "stat": {
+      "durability": 131,
+      "type": "tool"
+    }
   },
   "stone_pressure_plate": {
     "icon": {
@@ -7549,7 +7797,11 @@
       "type": "flat"
     },
     "id": "stone_shovel",
-    "name": "Stone Shovel"
+    "name": "Stone Shovel",
+    "stat": {
+      "durability": 131,
+      "type": "tool"
+    }
   },
   "stone_slab": {
     "icon": {
@@ -7581,7 +7833,11 @@
       "type": "flat"
     },
     "id": "stone_sword",
-    "name": "Stone Sword"
+    "name": "Stone Sword",
+    "stat": {
+      "damage": 4,
+      "type": "weapon"
+    }
   },
   "stonecutter": {
     "icon": {
@@ -7910,7 +8166,11 @@
       "type": "flat"
     },
     "id": "suspicious_stew",
-    "name": "Suspicious Stew"
+    "name": "Suspicious Stew",
+    "stat": {
+      "nutrition": 6,
+      "type": "food"
+    }
   },
   "target": {
     "icon": {
@@ -8076,7 +8336,11 @@
       "type": "flat"
     },
     "id": "turtle_helmet",
-    "name": "Turtle Shell"
+    "name": "Turtle Shell",
+    "stat": {
+      "points": 2,
+      "type": "armor"
+    }
   },
   "turtle_scute": {
     "icon": {
@@ -9052,7 +9316,11 @@
       "type": "flat"
     },
     "id": "wooden_axe",
-    "name": "Wooden Axe"
+    "name": "Wooden Axe",
+    "stat": {
+      "durability": 59,
+      "type": "tool"
+    }
   },
   "wooden_hoe": {
     "icon": {
@@ -9060,7 +9328,11 @@
       "type": "flat"
     },
     "id": "wooden_hoe",
-    "name": "Wooden Hoe"
+    "name": "Wooden Hoe",
+    "stat": {
+      "durability": 59,
+      "type": "tool"
+    }
   },
   "wooden_pickaxe": {
     "icon": {
@@ -9068,7 +9340,11 @@
       "type": "flat"
     },
     "id": "wooden_pickaxe",
-    "name": "Wooden Pickaxe"
+    "name": "Wooden Pickaxe",
+    "stat": {
+      "durability": 59,
+      "type": "tool"
+    }
   },
   "wooden_shovel": {
     "icon": {
@@ -9076,7 +9352,11 @@
       "type": "flat"
     },
     "id": "wooden_shovel",
-    "name": "Wooden Shovel"
+    "name": "Wooden Shovel",
+    "stat": {
+      "durability": 59,
+      "type": "tool"
+    }
   },
   "wooden_spear": {
     "icon": {
@@ -9092,7 +9372,11 @@
       "type": "flat"
     },
     "id": "wooden_sword",
-    "name": "Wooden Sword"
+    "name": "Wooden Sword",
+    "stat": {
+      "damage": 3,
+      "type": "weapon"
+    }
   },
   "writable_book": {
     "icon": {

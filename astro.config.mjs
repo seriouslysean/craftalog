@@ -5,6 +5,9 @@ export default defineConfig({
   site: "https://www.craftalog.app",
   base: process.env.BASE_PATH ?? "/",
   outDir: "./dist",
+  prefetch: {
+    prefetchAll: true,
+  },
   build: {
     format: "directory",
   },

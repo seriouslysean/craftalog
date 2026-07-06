@@ -38,10 +38,18 @@ const iconSchema = z.union([
   z.object({ type: z.literal("block"), top: z.string(), side: z.string() }),
 ]);
 
+const itemStatSchema = z.union([
+  z.object({ type: z.literal("food"), nutrition: z.number() }),
+  z.object({ type: z.literal("armor"), points: z.number() }),
+  z.object({ type: z.literal("weapon"), damage: z.number() }),
+  z.object({ type: z.literal("tool"), durability: z.number() }),
+]);
+
 const itemSchema = z.object({
   id: z.string(),
   name: z.string(),
   icon: iconSchema,
+  stat: itemStatSchema.optional(),
 });
 
 const recipes = defineCollection({
@@ -60,4 +68,5 @@ export type Ingredient = z.infer<typeof ingredientSchema>;
 export type RecipeResult = z.infer<typeof recipeResultSchema>;
 export type RecipeData = z.infer<typeof recipeSchema>;
 export type IconData = z.infer<typeof iconSchema>;
+export type ItemStatData = z.infer<typeof itemStatSchema>;
 export type ItemData = z.infer<typeof itemSchema>;

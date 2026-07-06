@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import CraftingGrid from '../../components/CraftingGrid.astro';
 import ItemIcon from '../../components/ItemIcon.astro';
+import ItemStat from '../../components/ItemStat.astro';
 import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../../utils/crafting-grid';
 import { ingredientLabel } from '../../utils/tag-label';
 import { withBase } from '../../utils/with-base';
@@ -85,6 +86,7 @@ const ariaLabel = `3 by 3 crafting grid for ${displayName}${
 }`;
 
 const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.slice(1);
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
 <MainLayout
@@ -97,7 +99,26 @@ const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.
     </nav>
 
     <div class="recipe__header">
-      <h1 class="recipe__title">{displayName}</h1>
+      <div class="recipe__title-row">
+        <h1 class="recipe__title">{displayName}</h1>
+        <button type="button" class="recipe__copy-link" data-url={canonicalUrl} hidden>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+          <span class="recipe__copy-link-label">Copy link</span>
+        </button>
+      </div>
       <div class="recipe__badges">
         <span class="recipe__badge">{categoryLabel}</span>
         {
@@ -105,11 +126,6 @@ const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.
             <span class="recipe__badge recipe__badge--group">
               {recipe.group.replace(/_/g, ' ')}
             </span>
-          )
-        }
-        {
-          recipe.type === 'shapeless' && (
-            <span class="recipe__badge recipe__badge--type">Shapeless — any arrangement works</span>
           )
         }
         {
@@ -128,6 +144,7 @@ const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.
             result={recipe.result}
             items={itemsMap}
             ariaLabel={ariaLabel}
+            unordered={recipe.type === 'shapeless' || recipe.type === 'transmute'}
           />
 
           {recipe.type === 'transmute' && (
@@ -151,6 +168,7 @@ const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.
           {resultItem && (
             <div class="recipe__special-icon">
               <ItemIcon item={resultItem} loading="eager" />
+              {resultItem.stat && <ItemStat stat={resultItem.stat} />}
             </div>
           )}
           <p class="recipe__note">{recipe.note}</p>
@@ -166,10 +184,73 @@ const categoryLabel = recipe.category.charAt(0).toUpperCase() + recipe.category.
   </div>
 </MainLayout>
 
+<script>
+  // astro:page-load fires on the initial load AND every subsequent View
+  // Transitions navigation, so this re-binds correctly when navigating
+  // between recipe pages via the client router.
+  document.addEventListener('astro:page-load', () => {
+    const button = document.querySelector<HTMLButtonElement>('.recipe__copy-link');
+    const label = button?.querySelector<HTMLElement>('.recipe__copy-link-label');
+
+    if (button && label) {
+      const defaultLabel = label.textContent ?? 'Copy link';
+      button.hidden = false;
+
+      button.addEventListener('click', async () => {
+        const url = button.dataset.url;
+        if (!url) return;
+
+        try {
+          await navigator.clipboard.writeText(url);
+          label.textContent = 'Copied';
+          button.disabled = true;
+          setTimeout(() => {
+            label.textContent = defaultLabel;
+            button.disabled = false;
+          }, 1500);
+        } catch {
+          // Clipboard API unavailable or denied — the URL is still visible in the address bar.
+        }
+      });
+    }
+  });
+</script>
+
 <style>
   .recipe__breadcrumb {
     margin-bottom: var(--space-6);
     font-size: 0.875rem;
+  }
+
+  .recipe__title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .recipe__copy-link {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    background: none;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    cursor: pointer;
+  }
+
+  .recipe__copy-link:hover {
+    border-color: var(--color-fg);
+    color: var(--color-fg);
+  }
+
+  .recipe__copy-link:disabled {
+    cursor: default;
   }
 
   .recipe__header {

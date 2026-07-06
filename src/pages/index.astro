@@ -3,11 +3,13 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import ItemIcon from '../components/ItemIcon.astro';
 import { withBase } from '../utils/with-base';
+import { recipeSubtitle } from '../utils/recipe-subtitle';
 import meta from '../data/generated/meta.json';
 
 const recipeEntries = await getCollection('recipes');
 const itemEntries = await getCollection('items');
 const itemsMap = new Map(itemEntries.map((entry) => [entry.id, entry.data]));
+const getItemName = (id: string) => itemsMap.get(id)?.name ?? id;
 
 const CATEGORY_ORDER = ['building', 'equipment', 'redstone', 'misc'];
 const CATEGORY_LABELS: Record<string, string> = {
@@ -24,6 +26,12 @@ const categories = [
   ),
 ];
 
+const resultCounts = new Map<string, number>();
+for (const entry of recipeEntries) {
+  const resultId = entry.data.result?.id;
+  if (resultId) resultCounts.set(resultId, (resultCounts.get(resultId) ?? 0) + 1);
+}
+
 const sections = categories
   .map((category) => {
     const entries = recipeEntries
@@ -32,7 +40,11 @@ const sections = categories
         const resultId = entry.data.result?.id;
         const resultItem = resultId ? itemsMap.get(resultId) : undefined;
         const name = resultItem?.name ?? entry.data.id.replace(/_/g, ' ');
-        return { id: entry.id, name, item: resultItem ?? null };
+        const subtitle =
+          resultId && (resultCounts.get(resultId) ?? 0) > 1
+            ? recipeSubtitle(entry.data, getItemName)
+            : null;
+        return { id: entry.id, name, subtitle, item: resultItem ?? null };
       })
       .toSorted((a, b) => a.name.localeCompare(b.name));
 
@@ -61,7 +73,40 @@ const totalRecipes = recipeEntries.length;
         placeholder="Search recipes…"
         autocomplete="off"
       />
+
+      <div class="catalog__categories" role="radiogroup" aria-label="Filter by category">
+        <input
+          type="radio"
+          name="category"
+          id="category-all"
+          value="all"
+          checked
+          class="catalog__category-input"
+        />
+        <label for="category-all" class="catalog__category-pill">
+          All <span class="catalog__category-count">({totalRecipes})</span>
+        </label>
+        {
+          sections.map((section) => (
+            <>
+              <input
+                type="radio"
+                name="category"
+                id={`category-${section.category}`}
+                value={section.category}
+                class="catalog__category-input"
+              />
+              <label for={`category-${section.category}`} class="catalog__category-pill">
+                {section.label}{' '}
+                <span class="catalog__category-count">({section.entries.length})</span>
+              </label>
+            </>
+          ))
+        }
+      </div>
     </form>
+
+    <p id="catalog-empty" class="catalog__empty" hidden>No recipes match your search.</p>
 
     {
       sections.map((section) => (
@@ -71,12 +116,19 @@ const totalRecipes = recipeEntries.length;
           </h2>
           <ul class="catalog__grid">
             {section.entries.map((entry) => (
-              <li class="catalog__item" data-search={entry.name.toLowerCase()}>
+              <li
+                class="catalog__item"
+                data-search={entry.name.toLowerCase()}
+                data-category={section.category}
+              >
                 <a href={withBase(`/recipe/${entry.id}/`)} class="catalog__link">
                   <span class="catalog__icon">
                     <ItemIcon item={entry.item} />
                   </span>
-                  <span class="catalog__name">{entry.name}</span>
+                  <span class="catalog__text">
+                    <span class="catalog__name">{entry.name}</span>
+                    {entry.subtitle && <span class="catalog__item-subtitle">{entry.subtitle}</span>}
+                  </span>
                 </a>
               </li>
             ))}
@@ -88,32 +140,57 @@ const totalRecipes = recipeEntries.length;
 </MainLayout>
 
 <script>
-  const input = document.getElementById('recipe-filter');
-  const items = document.querySelectorAll<HTMLElement>('.catalog__item');
-  const sections = document.querySelectorAll<HTMLElement>('[data-category-section]');
+  // astro:page-load fires on the initial load AND every subsequent View
+  // Transitions navigation, so re-querying/re-binding here keeps this working
+  // when navigating back to this page via the client router.
+  document.addEventListener('astro:page-load', () => {
+    const input = document.getElementById('recipe-filter');
+    const items = document.querySelectorAll<HTMLElement>('.catalog__item');
+    const sections = document.querySelectorAll<HTMLElement>('[data-category-section]');
+    const categoryInputs = document.querySelectorAll<HTMLInputElement>('input[name="category"]');
+    const emptyState = document.getElementById('catalog-empty');
 
-  function applyFilter(query: string) {
-    const needle = query.trim().toLowerCase();
+    let activeCategory = 'all';
 
-    items.forEach((item) => {
-      const matches = !needle || (item.dataset.search ?? '').includes(needle);
-      item.hidden = !matches;
+    function applyFilter(query: string) {
+      const needle = query.trim().toLowerCase();
+      let anyVisible = false;
+
+      items.forEach((item) => {
+        const matchesText = !needle || (item.dataset.search ?? '').includes(needle);
+        const matchesCategory =
+          activeCategory === 'all' || item.dataset.category === activeCategory;
+        const visible = matchesText && matchesCategory;
+        item.hidden = !visible;
+        if (visible) anyVisible = true;
+      });
+
+      sections.forEach((section) => {
+        const visibleItems = section.querySelectorAll('.catalog__item:not([hidden])');
+        section.hidden = visibleItems.length === 0;
+      });
+
+      if (emptyState) emptyState.hidden = anyVisible;
+    }
+
+    if (input instanceof HTMLInputElement) {
+      input.addEventListener('input', () => applyFilter(input.value));
+    }
+
+    categoryInputs.forEach((radio) => {
+      radio.addEventListener('change', () => {
+        if (radio.checked) {
+          activeCategory = radio.value;
+          applyFilter(input instanceof HTMLInputElement ? input.value : '');
+        }
+      });
     });
-
-    sections.forEach((section) => {
-      const visibleItems = section.querySelectorAll('.catalog__item:not([hidden])');
-      section.hidden = visibleItems.length === 0;
-    });
-  }
-
-  if (input instanceof HTMLInputElement) {
-    input.addEventListener('input', () => applyFilter(input.value));
-  }
+  });
 </script>
 
 <style>
   .catalog__header {
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
   }
 
   .catalog__subtitle {
@@ -148,6 +225,56 @@ const totalRecipes = recipeEntries.length;
     outline-offset: 1px;
   }
 
+  .catalog__categories {
+    margin-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .catalog__category-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+  }
+
+  .catalog__category-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+  }
+
+  .catalog__category-input:checked + .catalog__category-pill {
+    background-color: var(--color-fg);
+    border-color: var(--color-fg);
+    color: var(--color-bg);
+  }
+
+  .catalog__category-input:focus-visible + .catalog__category-pill {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
+  }
+
+  .catalog__category-count {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  .catalog__empty {
+    margin-bottom: var(--space-8);
+    color: var(--color-muted);
+  }
+
   .catalog__section + .catalog__section {
     margin-top: var(--space-8);
   }
@@ -160,7 +287,7 @@ const totalRecipes = recipeEntries.length;
   .catalog__grid {
     margin-top: var(--space-4);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
     gap: var(--space-2);
   }
 
@@ -168,6 +295,7 @@ const totalRecipes = recipeEntries.length;
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    min-height: 3.5rem;
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: 0.375rem;
@@ -186,19 +314,24 @@ const totalRecipes = recipeEntries.length;
     image-rendering: pixelated;
   }
 
+  .catalog__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 0.125rem;
+  }
+
   .catalog__name {
     font-size: 0.875rem;
+    text-wrap: balance;
   }
 
-  @media (min-width: 480px) {
-    .catalog__grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 768px) {
-    .catalog__grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  .catalog__item-subtitle {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    text-transform: capitalize;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
