@@ -99,16 +99,18 @@
   },
   "acacia_slab": {
     "icon": {
-      "texture": "/textures/block/acacia_planks.png",
-      "type": "flat"
+      "side": "/textures/block/acacia_planks.png",
+      "top": "/textures/block/acacia_planks.png",
+      "type": "slab"
     },
     "id": "acacia_slab",
     "name": "Acacia Slab"
   },
   "acacia_stairs": {
     "icon": {
-      "texture": "/textures/block/acacia_planks.png",
-      "type": "flat"
+      "side": "/textures/block/acacia_planks.png",
+      "top": "/textures/block/acacia_planks.png",
+      "type": "stairs"
     },
     "id": "acacia_stairs",
     "name": "Acacia Stairs"
@@ -174,16 +176,18 @@
   },
   "andesite_slab": {
     "icon": {
-      "texture": "/textures/block/andesite.png",
-      "type": "flat"
+      "side": "/textures/block/andesite.png",
+      "top": "/textures/block/andesite.png",
+      "type": "slab"
     },
     "id": "andesite_slab",
     "name": "Andesite Slab"
   },
   "andesite_stairs": {
     "icon": {
-      "texture": "/textures/block/andesite.png",
-      "type": "flat"
+      "side": "/textures/block/andesite.png",
+      "top": "/textures/block/andesite.png",
+      "type": "stairs"
     },
     "id": "andesite_stairs",
     "name": "Andesite Stairs"
@@ -336,16 +340,18 @@
   },
   "bamboo_mosaic_slab": {
     "icon": {
-      "texture": "/textures/block/bamboo_mosaic.png",
-      "type": "flat"
+      "side": "/textures/block/bamboo_mosaic.png",
+      "top": "/textures/block/bamboo_mosaic.png",
+      "type": "slab"
     },
     "id": "bamboo_mosaic_slab",
     "name": "Bamboo Mosaic Slab"
   },
   "bamboo_mosaic_stairs": {
     "icon": {
-      "texture": "/textures/block/bamboo_mosaic.png",
-      "type": "flat"
+      "side": "/textures/block/bamboo_mosaic.png",
+      "top": "/textures/block/bamboo_mosaic.png",
+      "type": "stairs"
     },
     "id": "bamboo_mosaic_stairs",
     "name": "Bamboo Mosaic Stairs"
@@ -393,16 +399,18 @@
   },
   "bamboo_slab": {
     "icon": {
-      "texture": "/textures/block/bamboo_planks.png",
-      "type": "flat"
+      "side": "/textures/block/bamboo_planks.png",
+      "top": "/textures/block/bamboo_planks.png",
+      "type": "slab"
     },
     "id": "bamboo_slab",
     "name": "Bamboo Slab"
   },
   "bamboo_stairs": {
     "icon": {
-      "texture": "/textures/block/bamboo_planks.png",
-      "type": "flat"
+      "side": "/textures/block/bamboo_planks.png",
+      "top": "/textures/block/bamboo_planks.png",
+      "type": "stairs"
     },
     "id": "bamboo_stairs",
     "name": "Bamboo Stairs"
@@ -574,16 +582,18 @@
   },
   "birch_slab": {
     "icon": {
-      "texture": "/textures/block/birch_planks.png",
-      "type": "flat"
+      "side": "/textures/block/birch_planks.png",
+      "top": "/textures/block/birch_planks.png",
+      "type": "slab"
     },
     "id": "birch_slab",
     "name": "Birch Slab"
   },
   "birch_stairs": {
     "icon": {
-      "texture": "/textures/block/birch_planks.png",
-      "type": "flat"
+      "side": "/textures/block/birch_planks.png",
+      "top": "/textures/block/birch_planks.png",
+      "type": "stairs"
     },
     "id": "birch_stairs",
     "name": "Birch Stairs"
@@ -724,16 +734,18 @@
   },
   "blackstone_slab": {
     "icon": {
-      "texture": "/textures/block/blackstone.png",
-      "type": "flat"
+      "side": "/textures/block/blackstone.png",
+      "top": "/textures/block/blackstone_top.png",
+      "type": "slab"
     },
     "id": "blackstone_slab",
     "name": "Blackstone Slab"
   },
   "blackstone_stairs": {
     "icon": {
-      "texture": "/textures/block/blackstone.png",
-      "type": "flat"
+      "side": "/textures/block/blackstone.png",
+      "top": "/textures/block/blackstone_top.png",
+      "type": "stairs"
     },
     "id": "blackstone_stairs",
     "name": "Blackstone Stairs"
@@ -1016,16 +1028,18 @@
   },
   "brick_slab": {
     "icon": {
-      "texture": "/textures/block/bricks.png",
-      "type": "flat"
+      "side": "/textures/block/bricks.png",
+      "top": "/textures/block/bricks.png",
+      "type": "slab"
     },
     "id": "brick_slab",
     "name": "Brick Slab"
   },
   "brick_stairs": {
     "icon": {
-      "texture": "/textures/block/bricks.png",
-      "type": "flat"
+      "side": "/textures/block/bricks.png",
+      "top": "/textures/block/bricks.png",
+      "type": "stairs"
     },
     "id": "brick_stairs",
     "name": "Brick Stairs"
@@ -1389,16 +1403,18 @@
   },
   "cherry_slab": {
     "icon": {
-      "texture": "/textures/block/cherry_planks.png",
-      "type": "flat"
+      "side": "/textures/block/cherry_planks.png",
+      "top": "/textures/block/cherry_planks.png",
+      "type": "slab"
     },
     "id": "cherry_slab",
     "name": "Cherry Slab"
   },
   "cherry_stairs": {
     "icon": {
-      "texture": "/textures/block/cherry_planks.png",
-      "type": "flat"
+      "side": "/textures/block/cherry_planks.png",
+      "top": "/textures/block/cherry_planks.png",
+      "type": "stairs"
     },
     "id": "cherry_stairs",
     "name": "Cherry Stairs"
@@ -1572,16 +1588,18 @@
   },
   "cinnabar_brick_slab": {
     "icon": {
-      "texture": "/textures/block/cinnabar_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/cinnabar_bricks.png",
+      "top": "/textures/block/cinnabar_bricks.png",
+      "type": "slab"
     },
     "id": "cinnabar_brick_slab",
     "name": "Cinnabar Brick Slab"
   },
   "cinnabar_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/cinnabar_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/cinnabar_bricks.png",
+      "top": "/textures/block/cinnabar_bricks.png",
+      "type": "stairs"
     },
     "id": "cinnabar_brick_stairs",
     "name": "Cinnabar Brick Stairs"
@@ -1605,16 +1623,18 @@
   },
   "cinnabar_slab": {
     "icon": {
-      "texture": "/textures/block/cinnabar.png",
-      "type": "flat"
+      "side": "/textures/block/cinnabar.png",
+      "top": "/textures/block/cinnabar.png",
+      "type": "slab"
     },
     "id": "cinnabar_slab",
     "name": "Cinnabar Slab"
   },
   "cinnabar_stairs": {
     "icon": {
-      "texture": "/textures/block/cinnabar.png",
-      "type": "flat"
+      "side": "/textures/block/cinnabar.png",
+      "top": "/textures/block/cinnabar.png",
+      "type": "stairs"
     },
     "id": "cinnabar_stairs",
     "name": "Cinnabar Stairs"
@@ -1705,16 +1725,18 @@
   },
   "cobbled_deepslate_slab": {
     "icon": {
-      "texture": "/textures/block/cobbled_deepslate.png",
-      "type": "flat"
+      "side": "/textures/block/cobbled_deepslate.png",
+      "top": "/textures/block/cobbled_deepslate.png",
+      "type": "slab"
     },
     "id": "cobbled_deepslate_slab",
     "name": "Cobbled Deepslate Slab"
   },
   "cobbled_deepslate_stairs": {
     "icon": {
-      "texture": "/textures/block/cobbled_deepslate.png",
-      "type": "flat"
+      "side": "/textures/block/cobbled_deepslate.png",
+      "top": "/textures/block/cobbled_deepslate.png",
+      "type": "stairs"
     },
     "id": "cobbled_deepslate_stairs",
     "name": "Cobbled Deepslate Stairs"
@@ -1738,16 +1760,18 @@
   },
   "cobblestone_slab": {
     "icon": {
-      "texture": "/textures/block/cobblestone.png",
-      "type": "flat"
+      "side": "/textures/block/cobblestone.png",
+      "top": "/textures/block/cobblestone.png",
+      "type": "slab"
     },
     "id": "cobblestone_slab",
     "name": "Cobblestone Slab"
   },
   "cobblestone_stairs": {
     "icon": {
-      "texture": "/textures/block/cobblestone.png",
-      "type": "flat"
+      "side": "/textures/block/cobblestone.png",
+      "top": "/textures/block/cobblestone.png",
+      "type": "stairs"
     },
     "id": "cobblestone_stairs",
     "name": "Cobblestone Stairs"
@@ -2181,16 +2205,18 @@
   },
   "crimson_slab": {
     "icon": {
-      "texture": "/textures/block/crimson_planks.png",
-      "type": "flat"
+      "side": "/textures/block/crimson_planks.png",
+      "top": "/textures/block/crimson_planks.png",
+      "type": "slab"
     },
     "id": "crimson_slab",
     "name": "Crimson Slab"
   },
   "crimson_stairs": {
     "icon": {
-      "texture": "/textures/block/crimson_planks.png",
-      "type": "flat"
+      "side": "/textures/block/crimson_planks.png",
+      "top": "/textures/block/crimson_planks.png",
+      "type": "stairs"
     },
     "id": "crimson_stairs",
     "name": "Crimson Stairs"
@@ -2240,16 +2266,18 @@
   },
   "cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/cut_copper.png",
+      "top": "/textures/block/cut_copper.png",
+      "type": "slab"
     },
     "id": "cut_copper_slab",
     "name": "Cut Copper Slab"
   },
   "cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/cut_copper.png",
+      "top": "/textures/block/cut_copper.png",
+      "type": "stairs"
     },
     "id": "cut_copper_stairs",
     "name": "Cut Copper Stairs"
@@ -2265,8 +2293,9 @@
   },
   "cut_red_sandstone_slab": {
     "icon": {
-      "texture": "/textures/block/cut_red_sandstone.png",
-      "type": "flat"
+      "side": "/textures/block/cut_red_sandstone.png",
+      "top": "/textures/block/red_sandstone_top.png",
+      "type": "slab"
     },
     "id": "cut_red_sandstone_slab",
     "name": "Cut Red Sandstone Slab"
@@ -2282,8 +2311,9 @@
   },
   "cut_sandstone_slab": {
     "icon": {
-      "texture": "/textures/block/cut_sandstone.png",
-      "type": "flat"
+      "side": "/textures/block/cut_sandstone.png",
+      "top": "/textures/block/sandstone_top.png",
+      "type": "slab"
     },
     "id": "cut_sandstone_slab",
     "name": "Cut Sandstone Slab"
@@ -2504,16 +2534,18 @@
   },
   "dark_oak_slab": {
     "icon": {
-      "texture": "/textures/block/dark_oak_planks.png",
-      "type": "flat"
+      "side": "/textures/block/dark_oak_planks.png",
+      "top": "/textures/block/dark_oak_planks.png",
+      "type": "slab"
     },
     "id": "dark_oak_slab",
     "name": "Dark Oak Slab"
   },
   "dark_oak_stairs": {
     "icon": {
-      "texture": "/textures/block/dark_oak_planks.png",
-      "type": "flat"
+      "side": "/textures/block/dark_oak_planks.png",
+      "top": "/textures/block/dark_oak_planks.png",
+      "type": "stairs"
     },
     "id": "dark_oak_stairs",
     "name": "Dark Oak Stairs"
@@ -2546,16 +2578,18 @@
   },
   "dark_prismarine_slab": {
     "icon": {
-      "texture": "/textures/block/dark_prismarine.png",
-      "type": "flat"
+      "side": "/textures/block/dark_prismarine.png",
+      "top": "/textures/block/dark_prismarine.png",
+      "type": "slab"
     },
     "id": "dark_prismarine_slab",
     "name": "Dark Prismarine Slab"
   },
   "dark_prismarine_stairs": {
     "icon": {
-      "texture": "/textures/block/dark_prismarine.png",
-      "type": "flat"
+      "side": "/textures/block/dark_prismarine.png",
+      "top": "/textures/block/dark_prismarine.png",
+      "type": "stairs"
     },
     "id": "dark_prismarine_stairs",
     "name": "Dark Prismarine Stairs"
@@ -2578,16 +2612,18 @@
   },
   "deepslate_brick_slab": {
     "icon": {
-      "texture": "/textures/block/deepslate_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/deepslate_bricks.png",
+      "top": "/textures/block/deepslate_bricks.png",
+      "type": "slab"
     },
     "id": "deepslate_brick_slab",
     "name": "Deepslate Brick Slab"
   },
   "deepslate_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/deepslate_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/deepslate_bricks.png",
+      "top": "/textures/block/deepslate_bricks.png",
+      "type": "stairs"
     },
     "id": "deepslate_brick_stairs",
     "name": "Deepslate Brick Stairs"
@@ -2611,16 +2647,18 @@
   },
   "deepslate_tile_slab": {
     "icon": {
-      "texture": "/textures/block/deepslate_tiles.png",
-      "type": "flat"
+      "side": "/textures/block/deepslate_tiles.png",
+      "top": "/textures/block/deepslate_tiles.png",
+      "type": "slab"
     },
     "id": "deepslate_tile_slab",
     "name": "Deepslate Tile Slab"
   },
   "deepslate_tile_stairs": {
     "icon": {
-      "texture": "/textures/block/deepslate_tiles.png",
-      "type": "flat"
+      "side": "/textures/block/deepslate_tiles.png",
+      "top": "/textures/block/deepslate_tiles.png",
+      "type": "stairs"
     },
     "id": "deepslate_tile_stairs",
     "name": "Deepslate Tile Stairs"
@@ -2794,16 +2832,18 @@
   },
   "diorite_slab": {
     "icon": {
-      "texture": "/textures/block/diorite.png",
-      "type": "flat"
+      "side": "/textures/block/diorite.png",
+      "top": "/textures/block/diorite.png",
+      "type": "slab"
     },
     "id": "diorite_slab",
     "name": "Diorite Slab"
   },
   "diorite_stairs": {
     "icon": {
-      "texture": "/textures/block/diorite.png",
-      "type": "flat"
+      "side": "/textures/block/diorite.png",
+      "top": "/textures/block/diorite.png",
+      "type": "stairs"
     },
     "id": "diorite_stairs",
     "name": "Diorite Stairs"
@@ -2976,16 +3016,18 @@
   },
   "end_stone_brick_slab": {
     "icon": {
-      "texture": "/textures/block/end_stone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/end_stone_bricks.png",
+      "top": "/textures/block/end_stone_bricks.png",
+      "type": "slab"
     },
     "id": "end_stone_brick_slab",
     "name": "End Stone Brick Slab"
   },
   "end_stone_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/end_stone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/end_stone_bricks.png",
+      "top": "/textures/block/end_stone_bricks.png",
+      "type": "stairs"
     },
     "id": "end_stone_brick_stairs",
     "name": "End Stone Brick Stairs"
@@ -3134,16 +3176,18 @@
   },
   "exposed_cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/exposed_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/exposed_cut_copper.png",
+      "top": "/textures/block/exposed_cut_copper.png",
+      "type": "slab"
     },
     "id": "exposed_cut_copper_slab",
     "name": "Exposed Cut Copper Slab"
   },
   "exposed_cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/exposed_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/exposed_cut_copper.png",
+      "top": "/textures/block/exposed_cut_copper.png",
+      "type": "stairs"
     },
     "id": "exposed_cut_copper_stairs",
     "name": "Exposed Cut Copper Stairs"
@@ -3552,16 +3596,18 @@
   },
   "granite_slab": {
     "icon": {
-      "texture": "/textures/block/granite.png",
-      "type": "flat"
+      "side": "/textures/block/granite.png",
+      "top": "/textures/block/granite.png",
+      "type": "slab"
     },
     "id": "granite_slab",
     "name": "Granite Slab"
   },
   "granite_stairs": {
     "icon": {
-      "texture": "/textures/block/granite.png",
-      "type": "flat"
+      "side": "/textures/block/granite.png",
+      "top": "/textures/block/granite.png",
+      "type": "stairs"
     },
     "id": "granite_stairs",
     "name": "Granite Stairs"
@@ -4225,16 +4271,18 @@
   },
   "jungle_slab": {
     "icon": {
-      "texture": "/textures/block/jungle_planks.png",
-      "type": "flat"
+      "side": "/textures/block/jungle_planks.png",
+      "top": "/textures/block/jungle_planks.png",
+      "type": "slab"
     },
     "id": "jungle_slab",
     "name": "Jungle Slab"
   },
   "jungle_stairs": {
     "icon": {
-      "texture": "/textures/block/jungle_planks.png",
-      "type": "flat"
+      "side": "/textures/block/jungle_planks.png",
+      "top": "/textures/block/jungle_planks.png",
+      "type": "stairs"
     },
     "id": "jungle_stairs",
     "name": "Jungle Stairs"
@@ -4996,16 +5044,18 @@
   },
   "mangrove_slab": {
     "icon": {
-      "texture": "/textures/block/mangrove_planks.png",
-      "type": "flat"
+      "side": "/textures/block/mangrove_planks.png",
+      "top": "/textures/block/mangrove_planks.png",
+      "type": "slab"
     },
     "id": "mangrove_slab",
     "name": "Mangrove Slab"
   },
   "mangrove_stairs": {
     "icon": {
-      "texture": "/textures/block/mangrove_planks.png",
-      "type": "flat"
+      "side": "/textures/block/mangrove_planks.png",
+      "top": "/textures/block/mangrove_planks.png",
+      "type": "stairs"
     },
     "id": "mangrove_stairs",
     "name": "Mangrove Stairs"
@@ -5116,16 +5166,18 @@
   },
   "mossy_cobblestone_slab": {
     "icon": {
-      "texture": "/textures/block/mossy_cobblestone.png",
-      "type": "flat"
+      "side": "/textures/block/mossy_cobblestone.png",
+      "top": "/textures/block/mossy_cobblestone.png",
+      "type": "slab"
     },
     "id": "mossy_cobblestone_slab",
     "name": "Mossy Cobblestone Slab"
   },
   "mossy_cobblestone_stairs": {
     "icon": {
-      "texture": "/textures/block/mossy_cobblestone.png",
-      "type": "flat"
+      "side": "/textures/block/mossy_cobblestone.png",
+      "top": "/textures/block/mossy_cobblestone.png",
+      "type": "stairs"
     },
     "id": "mossy_cobblestone_stairs",
     "name": "Mossy Cobblestone Stairs"
@@ -5140,16 +5192,18 @@
   },
   "mossy_stone_brick_slab": {
     "icon": {
-      "texture": "/textures/block/mossy_stone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/mossy_stone_bricks.png",
+      "top": "/textures/block/mossy_stone_bricks.png",
+      "type": "slab"
     },
     "id": "mossy_stone_brick_slab",
     "name": "Mossy Stone Brick Slab"
   },
   "mossy_stone_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/mossy_stone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/mossy_stone_bricks.png",
+      "top": "/textures/block/mossy_stone_bricks.png",
+      "type": "stairs"
     },
     "id": "mossy_stone_brick_stairs",
     "name": "Mossy Stone Brick Stairs"
@@ -5182,16 +5236,18 @@
   },
   "mud_brick_slab": {
     "icon": {
-      "texture": "/textures/block/mud_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/mud_bricks.png",
+      "top": "/textures/block/mud_bricks.png",
+      "type": "slab"
     },
     "id": "mud_brick_slab",
     "name": "Mud Brick Slab"
   },
   "mud_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/mud_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/mud_bricks.png",
+      "top": "/textures/block/mud_bricks.png",
+      "type": "stairs"
     },
     "id": "mud_brick_stairs",
     "name": "Mud Brick Stairs"
@@ -5276,16 +5332,18 @@
   },
   "nether_brick_slab": {
     "icon": {
-      "texture": "/textures/block/nether_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/nether_bricks.png",
+      "top": "/textures/block/nether_bricks.png",
+      "type": "slab"
     },
     "id": "nether_brick_slab",
     "name": "Nether Brick Slab"
   },
   "nether_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/nether_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/nether_bricks.png",
+      "top": "/textures/block/nether_bricks.png",
+      "type": "stairs"
     },
     "id": "nether_brick_stairs",
     "name": "Nether Brick Stairs"
@@ -5483,16 +5541,18 @@
   },
   "oak_slab": {
     "icon": {
-      "texture": "/textures/block/oak_planks.png",
-      "type": "flat"
+      "side": "/textures/block/oak_planks.png",
+      "top": "/textures/block/oak_planks.png",
+      "type": "slab"
     },
     "id": "oak_slab",
     "name": "Oak Slab"
   },
   "oak_stairs": {
     "icon": {
-      "texture": "/textures/block/oak_planks.png",
-      "type": "flat"
+      "side": "/textures/block/oak_planks.png",
+      "top": "/textures/block/oak_planks.png",
+      "type": "stairs"
     },
     "id": "oak_stairs",
     "name": "Oak Stairs"
@@ -5766,16 +5826,18 @@
   },
   "oxidized_cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/oxidized_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/oxidized_cut_copper.png",
+      "top": "/textures/block/oxidized_cut_copper.png",
+      "type": "slab"
     },
     "id": "oxidized_cut_copper_slab",
     "name": "Oxidized Cut Copper Slab"
   },
   "oxidized_cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/oxidized_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/oxidized_cut_copper.png",
+      "top": "/textures/block/oxidized_cut_copper.png",
+      "type": "stairs"
     },
     "id": "oxidized_cut_copper_stairs",
     "name": "Oxidized Cut Copper Stairs"
@@ -5931,16 +5993,18 @@
   },
   "pale_oak_slab": {
     "icon": {
-      "texture": "/textures/block/pale_oak_planks.png",
-      "type": "flat"
+      "side": "/textures/block/pale_oak_planks.png",
+      "top": "/textures/block/pale_oak_planks.png",
+      "type": "slab"
     },
     "id": "pale_oak_slab",
     "name": "Pale Oak Slab"
   },
   "pale_oak_stairs": {
     "icon": {
-      "texture": "/textures/block/pale_oak_planks.png",
-      "type": "flat"
+      "side": "/textures/block/pale_oak_planks.png",
+      "top": "/textures/block/pale_oak_planks.png",
+      "type": "stairs"
     },
     "id": "pale_oak_stairs",
     "name": "Pale Oak Stairs"
@@ -6138,16 +6202,18 @@
   },
   "polished_andesite_slab": {
     "icon": {
-      "texture": "/textures/block/polished_andesite.png",
-      "type": "flat"
+      "side": "/textures/block/polished_andesite.png",
+      "top": "/textures/block/polished_andesite.png",
+      "type": "slab"
     },
     "id": "polished_andesite_slab",
     "name": "Polished Andesite Slab"
   },
   "polished_andesite_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_andesite.png",
-      "type": "flat"
+      "side": "/textures/block/polished_andesite.png",
+      "top": "/textures/block/polished_andesite.png",
+      "type": "stairs"
     },
     "id": "polished_andesite_stairs",
     "name": "Polished Andesite Stairs"
@@ -6172,16 +6238,18 @@
   },
   "polished_blackstone_brick_slab": {
     "icon": {
-      "texture": "/textures/block/polished_blackstone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/polished_blackstone_bricks.png",
+      "top": "/textures/block/polished_blackstone_bricks.png",
+      "type": "slab"
     },
     "id": "polished_blackstone_brick_slab",
     "name": "Polished Blackstone Brick Slab"
   },
   "polished_blackstone_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_blackstone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/polished_blackstone_bricks.png",
+      "top": "/textures/block/polished_blackstone_bricks.png",
+      "type": "stairs"
     },
     "id": "polished_blackstone_brick_stairs",
     "name": "Polished Blackstone Brick Stairs"
@@ -6221,16 +6289,18 @@
   },
   "polished_blackstone_slab": {
     "icon": {
-      "texture": "/textures/block/polished_blackstone.png",
-      "type": "flat"
+      "side": "/textures/block/polished_blackstone.png",
+      "top": "/textures/block/polished_blackstone.png",
+      "type": "slab"
     },
     "id": "polished_blackstone_slab",
     "name": "Polished Blackstone Slab"
   },
   "polished_blackstone_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_blackstone.png",
-      "type": "flat"
+      "side": "/textures/block/polished_blackstone.png",
+      "top": "/textures/block/polished_blackstone.png",
+      "type": "stairs"
     },
     "id": "polished_blackstone_stairs",
     "name": "Polished Blackstone Stairs"
@@ -6254,16 +6324,18 @@
   },
   "polished_cinnabar_slab": {
     "icon": {
-      "texture": "/textures/block/polished_cinnabar.png",
-      "type": "flat"
+      "side": "/textures/block/polished_cinnabar.png",
+      "top": "/textures/block/polished_cinnabar.png",
+      "type": "slab"
     },
     "id": "polished_cinnabar_slab",
     "name": "Polished Cinnabar Slab"
   },
   "polished_cinnabar_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_cinnabar.png",
-      "type": "flat"
+      "side": "/textures/block/polished_cinnabar.png",
+      "top": "/textures/block/polished_cinnabar.png",
+      "type": "stairs"
     },
     "id": "polished_cinnabar_stairs",
     "name": "Polished Cinnabar Stairs"
@@ -6287,16 +6359,18 @@
   },
   "polished_deepslate_slab": {
     "icon": {
-      "texture": "/textures/block/polished_deepslate.png",
-      "type": "flat"
+      "side": "/textures/block/polished_deepslate.png",
+      "top": "/textures/block/polished_deepslate.png",
+      "type": "slab"
     },
     "id": "polished_deepslate_slab",
     "name": "Polished Deepslate Slab"
   },
   "polished_deepslate_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_deepslate.png",
-      "type": "flat"
+      "side": "/textures/block/polished_deepslate.png",
+      "top": "/textures/block/polished_deepslate.png",
+      "type": "stairs"
     },
     "id": "polished_deepslate_stairs",
     "name": "Polished Deepslate Stairs"
@@ -6320,16 +6394,18 @@
   },
   "polished_diorite_slab": {
     "icon": {
-      "texture": "/textures/block/polished_diorite.png",
-      "type": "flat"
+      "side": "/textures/block/polished_diorite.png",
+      "top": "/textures/block/polished_diorite.png",
+      "type": "slab"
     },
     "id": "polished_diorite_slab",
     "name": "Polished Diorite Slab"
   },
   "polished_diorite_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_diorite.png",
-      "type": "flat"
+      "side": "/textures/block/polished_diorite.png",
+      "top": "/textures/block/polished_diorite.png",
+      "type": "stairs"
     },
     "id": "polished_diorite_stairs",
     "name": "Polished Diorite Stairs"
@@ -6345,16 +6421,18 @@
   },
   "polished_granite_slab": {
     "icon": {
-      "texture": "/textures/block/polished_granite.png",
-      "type": "flat"
+      "side": "/textures/block/polished_granite.png",
+      "top": "/textures/block/polished_granite.png",
+      "type": "slab"
     },
     "id": "polished_granite_slab",
     "name": "Polished Granite Slab"
   },
   "polished_granite_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_granite.png",
-      "type": "flat"
+      "side": "/textures/block/polished_granite.png",
+      "top": "/textures/block/polished_granite.png",
+      "type": "stairs"
     },
     "id": "polished_granite_stairs",
     "name": "Polished Granite Stairs"
@@ -6370,16 +6448,18 @@
   },
   "polished_sulfur_slab": {
     "icon": {
-      "texture": "/textures/block/polished_sulfur.png",
-      "type": "flat"
+      "side": "/textures/block/polished_sulfur.png",
+      "top": "/textures/block/polished_sulfur.png",
+      "type": "slab"
     },
     "id": "polished_sulfur_slab",
     "name": "Polished Sulfur Slab"
   },
   "polished_sulfur_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_sulfur.png",
-      "type": "flat"
+      "side": "/textures/block/polished_sulfur.png",
+      "top": "/textures/block/polished_sulfur.png",
+      "type": "stairs"
     },
     "id": "polished_sulfur_stairs",
     "name": "Polished Sulfur Stairs"
@@ -6403,16 +6483,18 @@
   },
   "polished_tuff_slab": {
     "icon": {
-      "texture": "/textures/block/polished_tuff.png",
-      "type": "flat"
+      "side": "/textures/block/polished_tuff.png",
+      "top": "/textures/block/polished_tuff.png",
+      "type": "slab"
     },
     "id": "polished_tuff_slab",
     "name": "Polished Tuff Slab"
   },
   "polished_tuff_stairs": {
     "icon": {
-      "texture": "/textures/block/polished_tuff.png",
-      "type": "flat"
+      "side": "/textures/block/polished_tuff.png",
+      "top": "/textures/block/polished_tuff.png",
+      "type": "stairs"
     },
     "id": "polished_tuff_stairs",
     "name": "Polished Tuff Stairs"
@@ -6469,16 +6551,18 @@
   },
   "prismarine_brick_slab": {
     "icon": {
-      "texture": "/textures/block/prismarine_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/prismarine_bricks.png",
+      "top": "/textures/block/prismarine_bricks.png",
+      "type": "slab"
     },
     "id": "prismarine_brick_slab",
     "name": "Prismarine Brick Slab"
   },
   "prismarine_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/prismarine_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/prismarine_bricks.png",
+      "top": "/textures/block/prismarine_bricks.png",
+      "type": "stairs"
     },
     "id": "prismarine_brick_stairs",
     "name": "Prismarine Brick Stairs"
@@ -6510,16 +6594,18 @@
   },
   "prismarine_slab": {
     "icon": {
-      "texture": "/textures/block/prismarine.png",
-      "type": "flat"
+      "side": "/textures/block/prismarine.png",
+      "top": "/textures/block/prismarine.png",
+      "type": "slab"
     },
     "id": "prismarine_slab",
     "name": "Prismarine Slab"
   },
   "prismarine_stairs": {
     "icon": {
-      "texture": "/textures/block/prismarine.png",
-      "type": "flat"
+      "side": "/textures/block/prismarine.png",
+      "top": "/textures/block/prismarine.png",
+      "type": "stairs"
     },
     "id": "prismarine_stairs",
     "name": "Prismarine Stairs"
@@ -6689,16 +6775,18 @@
   },
   "purpur_slab": {
     "icon": {
-      "texture": "/textures/block/purpur_block.png",
-      "type": "flat"
+      "side": "/textures/block/purpur_block.png",
+      "top": "/textures/block/purpur_block.png",
+      "type": "slab"
     },
     "id": "purpur_slab",
     "name": "Purpur Slab"
   },
   "purpur_stairs": {
     "icon": {
-      "texture": "/textures/block/purpur_block.png",
-      "type": "flat"
+      "side": "/textures/block/purpur_block.png",
+      "top": "/textures/block/purpur_block.png",
+      "type": "stairs"
     },
     "id": "purpur_stairs",
     "name": "Purpur Stairs"
@@ -6740,16 +6828,18 @@
   },
   "quartz_slab": {
     "icon": {
-      "texture": "/textures/block/quartz_block_side.png",
-      "type": "flat"
+      "side": "/textures/block/quartz_block_side.png",
+      "top": "/textures/block/quartz_block_top.png",
+      "type": "slab"
     },
     "id": "quartz_slab",
     "name": "Quartz Slab"
   },
   "quartz_stairs": {
     "icon": {
-      "texture": "/textures/block/quartz_block_side.png",
-      "type": "flat"
+      "side": "/textures/block/quartz_block_side.png",
+      "top": "/textures/block/quartz_block_top.png",
+      "type": "stairs"
     },
     "id": "quartz_stairs",
     "name": "Quartz Stairs"
@@ -6924,16 +7014,18 @@
   },
   "red_nether_brick_slab": {
     "icon": {
-      "texture": "/textures/block/red_nether_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/red_nether_bricks.png",
+      "top": "/textures/block/red_nether_bricks.png",
+      "type": "slab"
     },
     "id": "red_nether_brick_slab",
     "name": "Red Nether Brick Slab"
   },
   "red_nether_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/red_nether_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/red_nether_bricks.png",
+      "top": "/textures/block/red_nether_bricks.png",
+      "type": "stairs"
     },
     "id": "red_nether_brick_stairs",
     "name": "Red Nether Brick Stairs"
@@ -6975,16 +7067,18 @@
   },
   "red_sandstone_slab": {
     "icon": {
-      "texture": "/textures/block/red_sandstone.png",
-      "type": "flat"
+      "side": "/textures/block/red_sandstone.png",
+      "top": "/textures/block/red_sandstone_top.png",
+      "type": "slab"
     },
     "id": "red_sandstone_slab",
     "name": "Red Sandstone Slab"
   },
   "red_sandstone_stairs": {
     "icon": {
-      "texture": "/textures/block/red_sandstone.png",
-      "type": "flat"
+      "side": "/textures/block/red_sandstone.png",
+      "top": "/textures/block/red_sandstone_top.png",
+      "type": "stairs"
     },
     "id": "red_sandstone_stairs",
     "name": "Red Sandstone Stairs"
@@ -7109,16 +7203,18 @@
   },
   "resin_brick_slab": {
     "icon": {
-      "texture": "/textures/block/resin_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/resin_bricks.png",
+      "top": "/textures/block/resin_bricks.png",
+      "type": "slab"
     },
     "id": "resin_brick_slab",
     "name": "Resin Brick Slab"
   },
   "resin_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/resin_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/resin_bricks.png",
+      "top": "/textures/block/resin_bricks.png",
+      "type": "stairs"
     },
     "id": "resin_brick_stairs",
     "name": "Resin Brick Stairs"
@@ -7201,16 +7297,18 @@
   },
   "sandstone_slab": {
     "icon": {
-      "texture": "/textures/block/sandstone.png",
-      "type": "flat"
+      "side": "/textures/block/sandstone.png",
+      "top": "/textures/block/sandstone_top.png",
+      "type": "slab"
     },
     "id": "sandstone_slab",
     "name": "Sandstone Slab"
   },
   "sandstone_stairs": {
     "icon": {
-      "texture": "/textures/block/sandstone.png",
-      "type": "flat"
+      "side": "/textures/block/sandstone.png",
+      "top": "/textures/block/sandstone_top.png",
+      "type": "stairs"
     },
     "id": "sandstone_stairs",
     "name": "Sandstone Stairs"
@@ -7357,16 +7455,18 @@
   },
   "smooth_quartz_slab": {
     "icon": {
-      "texture": "/textures/block/quartz_block_bottom.png",
-      "type": "flat"
+      "side": "/textures/block/quartz_block_bottom.png",
+      "top": "/textures/block/quartz_block_bottom.png",
+      "type": "slab"
     },
     "id": "smooth_quartz_slab",
     "name": "Smooth Quartz Slab"
   },
   "smooth_quartz_stairs": {
     "icon": {
-      "texture": "/textures/block/quartz_block_bottom.png",
-      "type": "flat"
+      "side": "/textures/block/quartz_block_bottom.png",
+      "top": "/textures/block/quartz_block_bottom.png",
+      "type": "stairs"
     },
     "id": "smooth_quartz_stairs",
     "name": "Smooth Quartz Stairs"
@@ -7382,16 +7482,18 @@
   },
   "smooth_red_sandstone_slab": {
     "icon": {
-      "texture": "/textures/block/red_sandstone_top.png",
-      "type": "flat"
+      "side": "/textures/block/red_sandstone_top.png",
+      "top": "/textures/block/red_sandstone_top.png",
+      "type": "slab"
     },
     "id": "smooth_red_sandstone_slab",
     "name": "Smooth Red Sandstone Slab"
   },
   "smooth_red_sandstone_stairs": {
     "icon": {
-      "texture": "/textures/block/red_sandstone_top.png",
-      "type": "flat"
+      "side": "/textures/block/red_sandstone_top.png",
+      "top": "/textures/block/red_sandstone_top.png",
+      "type": "stairs"
     },
     "id": "smooth_red_sandstone_stairs",
     "name": "Smooth Red Sandstone Stairs"
@@ -7407,16 +7509,18 @@
   },
   "smooth_sandstone_slab": {
     "icon": {
-      "texture": "/textures/block/sandstone_top.png",
-      "type": "flat"
+      "side": "/textures/block/sandstone_top.png",
+      "top": "/textures/block/sandstone_top.png",
+      "type": "slab"
     },
     "id": "smooth_sandstone_slab",
     "name": "Smooth Sandstone Slab"
   },
   "smooth_sandstone_stairs": {
     "icon": {
-      "texture": "/textures/block/sandstone_top.png",
-      "type": "flat"
+      "side": "/textures/block/sandstone_top.png",
+      "top": "/textures/block/sandstone_top.png",
+      "type": "stairs"
     },
     "id": "smooth_sandstone_stairs",
     "name": "Smooth Sandstone Stairs"
@@ -7432,8 +7536,9 @@
   },
   "smooth_stone_slab": {
     "icon": {
-      "texture": "/textures/block/smooth_stone_slab_side.png",
-      "type": "flat"
+      "side": "/textures/block/smooth_stone_slab_side.png",
+      "top": "/textures/block/smooth_stone.png",
+      "type": "slab"
     },
     "id": "smooth_stone_slab",
     "name": "Smooth Stone Slab"
@@ -7641,16 +7746,18 @@
   },
   "spruce_slab": {
     "icon": {
-      "texture": "/textures/block/spruce_planks.png",
-      "type": "flat"
+      "side": "/textures/block/spruce_planks.png",
+      "top": "/textures/block/spruce_planks.png",
+      "type": "slab"
     },
     "id": "spruce_slab",
     "name": "Spruce Slab"
   },
   "spruce_stairs": {
     "icon": {
-      "texture": "/textures/block/spruce_planks.png",
-      "type": "flat"
+      "side": "/textures/block/spruce_planks.png",
+      "top": "/textures/block/spruce_planks.png",
+      "type": "stairs"
     },
     "id": "spruce_stairs",
     "name": "Spruce Stairs"
@@ -7720,16 +7827,18 @@
   },
   "stone_brick_slab": {
     "icon": {
-      "texture": "/textures/block/stone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/stone_bricks.png",
+      "top": "/textures/block/stone_bricks.png",
+      "type": "slab"
     },
     "id": "stone_brick_slab",
     "name": "Stone Brick Slab"
   },
   "stone_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/stone_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/stone_bricks.png",
+      "top": "/textures/block/stone_bricks.png",
+      "type": "stairs"
     },
     "id": "stone_brick_stairs",
     "name": "Stone Brick Stairs"
@@ -7805,8 +7914,9 @@
   },
   "stone_slab": {
     "icon": {
-      "texture": "/textures/block/stone.png",
-      "type": "flat"
+      "side": "/textures/block/stone.png",
+      "top": "/textures/block/stone.png",
+      "type": "slab"
     },
     "id": "stone_slab",
     "name": "Stone Slab"
@@ -7821,8 +7931,9 @@
   },
   "stone_stairs": {
     "icon": {
-      "texture": "/textures/block/stone.png",
-      "type": "flat"
+      "side": "/textures/block/stone.png",
+      "top": "/textures/block/stone.png",
+      "type": "stairs"
     },
     "id": "stone_stairs",
     "name": "Stone Stairs"
@@ -8089,16 +8200,18 @@
   },
   "sulfur_brick_slab": {
     "icon": {
-      "texture": "/textures/block/sulfur_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/sulfur_bricks.png",
+      "top": "/textures/block/sulfur_bricks.png",
+      "type": "slab"
     },
     "id": "sulfur_brick_slab",
     "name": "Sulfur Brick Slab"
   },
   "sulfur_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/sulfur_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/sulfur_bricks.png",
+      "top": "/textures/block/sulfur_bricks.png",
+      "type": "stairs"
     },
     "id": "sulfur_brick_stairs",
     "name": "Sulfur Brick Stairs"
@@ -8122,8 +8235,9 @@
   },
   "sulfur_slab": {
     "icon": {
-      "texture": "/textures/block/sulfur.png",
-      "type": "flat"
+      "side": "/textures/block/sulfur.png",
+      "top": "/textures/block/sulfur.png",
+      "type": "slab"
     },
     "id": "sulfur_slab",
     "name": "Sulfur Slab"
@@ -8138,8 +8252,9 @@
   },
   "sulfur_stairs": {
     "icon": {
-      "texture": "/textures/block/sulfur.png",
-      "type": "flat"
+      "side": "/textures/block/sulfur.png",
+      "top": "/textures/block/sulfur.png",
+      "type": "stairs"
     },
     "id": "sulfur_stairs",
     "name": "Sulfur Stairs"
@@ -8275,16 +8390,18 @@
   },
   "tuff_brick_slab": {
     "icon": {
-      "texture": "/textures/block/tuff_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/tuff_bricks.png",
+      "top": "/textures/block/tuff_bricks.png",
+      "type": "slab"
     },
     "id": "tuff_brick_slab",
     "name": "Tuff Brick Slab"
   },
   "tuff_brick_stairs": {
     "icon": {
-      "texture": "/textures/block/tuff_bricks.png",
-      "type": "flat"
+      "side": "/textures/block/tuff_bricks.png",
+      "top": "/textures/block/tuff_bricks.png",
+      "type": "stairs"
     },
     "id": "tuff_brick_stairs",
     "name": "Tuff Brick Stairs"
@@ -8308,16 +8425,18 @@
   },
   "tuff_slab": {
     "icon": {
-      "texture": "/textures/block/tuff.png",
-      "type": "flat"
+      "side": "/textures/block/tuff.png",
+      "top": "/textures/block/tuff.png",
+      "type": "slab"
     },
     "id": "tuff_slab",
     "name": "Tuff Slab"
   },
   "tuff_stairs": {
     "icon": {
-      "texture": "/textures/block/tuff.png",
-      "type": "flat"
+      "side": "/textures/block/tuff.png",
+      "top": "/textures/block/tuff.png",
+      "type": "stairs"
     },
     "id": "tuff_stairs",
     "name": "Tuff Stairs"
@@ -8474,16 +8593,18 @@
   },
   "warped_slab": {
     "icon": {
-      "texture": "/textures/block/warped_planks.png",
-      "type": "flat"
+      "side": "/textures/block/warped_planks.png",
+      "top": "/textures/block/warped_planks.png",
+      "type": "slab"
     },
     "id": "warped_slab",
     "name": "Warped Slab"
   },
   "warped_stairs": {
     "icon": {
-      "texture": "/textures/block/warped_planks.png",
-      "type": "flat"
+      "side": "/textures/block/warped_planks.png",
+      "top": "/textures/block/warped_planks.png",
+      "type": "stairs"
     },
     "id": "warped_stairs",
     "name": "Warped Stairs"
@@ -8608,16 +8729,18 @@
   },
   "waxed_cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/cut_copper.png",
+      "top": "/textures/block/cut_copper.png",
+      "type": "slab"
     },
     "id": "waxed_cut_copper_slab",
     "name": "Waxed Cut Copper Slab"
   },
   "waxed_cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/cut_copper.png",
+      "top": "/textures/block/cut_copper.png",
+      "type": "stairs"
     },
     "id": "waxed_cut_copper_stairs",
     "name": "Waxed Cut Copper Stairs"
@@ -8725,16 +8848,18 @@
   },
   "waxed_exposed_cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/exposed_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/exposed_cut_copper.png",
+      "top": "/textures/block/exposed_cut_copper.png",
+      "type": "slab"
     },
     "id": "waxed_exposed_cut_copper_slab",
     "name": "Waxed Exposed Cut Copper Slab"
   },
   "waxed_exposed_cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/exposed_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/exposed_cut_copper.png",
+      "top": "/textures/block/exposed_cut_copper.png",
+      "type": "stairs"
     },
     "id": "waxed_exposed_cut_copper_stairs",
     "name": "Waxed Exposed Cut Copper Stairs"
@@ -8858,16 +8983,18 @@
   },
   "waxed_oxidized_cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/oxidized_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/oxidized_cut_copper.png",
+      "top": "/textures/block/oxidized_cut_copper.png",
+      "type": "slab"
     },
     "id": "waxed_oxidized_cut_copper_slab",
     "name": "Waxed Oxidized Cut Copper Slab"
   },
   "waxed_oxidized_cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/oxidized_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/oxidized_cut_copper.png",
+      "top": "/textures/block/oxidized_cut_copper.png",
+      "type": "stairs"
     },
     "id": "waxed_oxidized_cut_copper_stairs",
     "name": "Waxed Oxidized Cut Copper Stairs"
@@ -8983,16 +9110,18 @@
   },
   "waxed_weathered_cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/weathered_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/weathered_cut_copper.png",
+      "top": "/textures/block/weathered_cut_copper.png",
+      "type": "slab"
     },
     "id": "waxed_weathered_cut_copper_slab",
     "name": "Waxed Weathered Cut Copper Slab"
   },
   "waxed_weathered_cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/weathered_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/weathered_cut_copper.png",
+      "top": "/textures/block/weathered_cut_copper.png",
+      "type": "stairs"
     },
     "id": "waxed_weathered_cut_copper_stairs",
     "name": "Waxed Weathered Cut Copper Stairs"
@@ -9116,16 +9245,18 @@
   },
   "weathered_cut_copper_slab": {
     "icon": {
-      "texture": "/textures/block/weathered_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/weathered_cut_copper.png",
+      "top": "/textures/block/weathered_cut_copper.png",
+      "type": "slab"
     },
     "id": "weathered_cut_copper_slab",
     "name": "Weathered Cut Copper Slab"
   },
   "weathered_cut_copper_stairs": {
     "icon": {
-      "texture": "/textures/block/weathered_cut_copper.png",
-      "type": "flat"
+      "side": "/textures/block/weathered_cut_copper.png",
+      "top": "/textures/block/weathered_cut_copper.png",
+      "type": "stairs"
     },
     "id": "weathered_cut_copper_stairs",
     "name": "Weathered Cut Copper Stairs"

@@ -126,6 +126,24 @@ describe("resolveIconCandidate", () => {
       textures: { top: "minecraft:block/furnace_top", front: "minecraft:block/furnace_front" },
     },
     "block/orientable": {},
+    "block/oak_slab": {
+      parent: "minecraft:block/slab",
+      textures: {
+        bottom: "minecraft:block/oak_planks",
+        top: "minecraft:block/oak_planks",
+        side: "minecraft:block/oak_planks",
+      },
+    },
+    "block/slab": {},
+    "block/oak_stairs": {
+      parent: "minecraft:block/stairs",
+      textures: {
+        bottom: "minecraft:block/oak_planks",
+        top: "minecraft:block/oak_planks",
+        side: "minecraft:block/oak_planks",
+      },
+    },
+    "block/stairs": {},
   };
 
   const itemDefinitions: RawItemDefinitionsData = {
@@ -134,6 +152,8 @@ describe("resolveIconCandidate", () => {
     white_wool: { model: { type: "minecraft:model", model: "minecraft:block/white_wool" } },
     melon: { model: { type: "minecraft:model", model: "minecraft:block/melon" } },
     furnace: { model: { type: "minecraft:model", model: "minecraft:block/furnace" } },
+    oak_slab: { model: { type: "minecraft:model", model: "minecraft:block/oak_slab" } },
+    oak_stairs: { model: { type: "minecraft:model", model: "minecraft:block/oak_stairs" } },
   };
 
   it("resolves a flat icon for an item/generated chain", () => {
@@ -172,6 +192,22 @@ describe("resolveIconCandidate", () => {
       type: "block",
       topRef: "block/furnace_top",
       sideRef: "block/furnace_front",
+    });
+  });
+
+  it("resolves a slab icon (top/side) for a block/slab chain", () => {
+    expect(resolveIconCandidate("oak_slab", itemDefinitions, models)).toEqual({
+      type: "slab",
+      topRef: "block/oak_planks",
+      sideRef: "block/oak_planks",
+    });
+  });
+
+  it("resolves a stairs icon (top/side) for a block/stairs chain", () => {
+    expect(resolveIconCandidate("oak_stairs", itemDefinitions, models)).toEqual({
+      type: "stairs",
+      topRef: "block/oak_planks",
+      sideRef: "block/oak_planks",
     });
   });
 

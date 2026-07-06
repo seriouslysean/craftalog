@@ -22,6 +22,13 @@ const recipesRaw: RawRecipesData = {
     ingredients: ["#minecraft:oak_logs"],
     result: { count: 4, id: "minecraft:oak_planks" },
   },
+  oak_slab: {
+    type: "minecraft:crafting_shaped",
+    category: "building",
+    key: { "#": "minecraft:oak_planks" },
+    pattern: ["###"],
+    result: { count: 6, id: "minecraft:oak_slab" },
+  },
   black_bundle: {
     type: "minecraft:crafting_transmute",
     category: "equipment",
@@ -47,6 +54,7 @@ const itemDefsRaw: RawItemDefinitionsData = {
   oak_log: { model: { type: "minecraft:model", model: "minecraft:block/oak_log" } },
   oak_wood: { model: { type: "minecraft:model", model: "minecraft:block/oak_log" } },
   oak_planks: { model: { type: "minecraft:model", model: "minecraft:block/oak_planks" } },
+  oak_slab: { model: { type: "minecraft:model", model: "minecraft:block/oak_slab" } },
   black_dye: { model: { type: "minecraft:model", model: "minecraft:item/black_dye" } },
   black_bundle: {
     model: {
@@ -91,6 +99,15 @@ const modelsRaw: RawModelsData = {
     textures: { all: "minecraft:block/oak_planks" },
   },
   "block/cube_all": {},
+  "block/oak_slab": {
+    parent: "minecraft:block/slab",
+    textures: {
+      bottom: "minecraft:block/oak_planks",
+      top: "minecraft:block/oak_planks",
+      side: "minecraft:block/oak_planks",
+    },
+  },
+  "block/slab": {},
 };
 
 const enUs = { "item.minecraft.stick": "Stick", "block.minecraft.oak_log": "Oak Log" };
@@ -141,11 +158,12 @@ describe("generate determinism", () => {
     expect(Object.keys(result.recipes).toSorted()).toEqual([
       "black_bundle",
       "oak_planks",
+      "oak_slab",
       "repair_item",
       "torch",
     ]);
     expect(result.meta.counts).toEqual({
-      shaped: 1,
+      shaped: 2,
       shapeless: 1,
       transmute: 1,
       special: 1,
@@ -157,7 +175,8 @@ describe("generate determinism", () => {
   it("includes only items referenced by included recipes (results + resolved ingredients)", () => {
     const result = run();
     // stick/coal/charcoal/torch (shaped), oak_log/oak_wood/oak_planks (shapeless),
-    // bundle/black_bundle/black_dye (transmute). repair_item has no result/ingredients.
+    // bundle/black_bundle/black_dye (transmute), oak_slab (shaped, ingredient oak_planks).
+    // repair_item has no result/ingredients.
     expect(Object.keys(result.items).toSorted()).toEqual([
       "black_bundle",
       "black_dye",
@@ -166,6 +185,7 @@ describe("generate determinism", () => {
       "coal",
       "oak_log",
       "oak_planks",
+      "oak_slab",
       "oak_wood",
       "stick",
       "torch",
@@ -192,5 +212,14 @@ describe("generate determinism", () => {
     });
     expect(result.items.stick.name).toBe("Stick");
     expect(result.items.oak_log.name).toBe("Oak Log");
+  });
+
+  it("resolves a slab icon correctly", () => {
+    const result = run();
+    expect(result.items.oak_slab.icon).toEqual({
+      type: "slab",
+      top: "/textures/block/oak_planks.png",
+      side: "/textures/block/oak_planks.png",
+    });
   });
 });

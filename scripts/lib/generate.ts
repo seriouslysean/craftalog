@@ -80,12 +80,12 @@ export function generate(input: GenerateInput): GenerateOutput {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
     } else if (
-      candidate?.type === "block" &&
+      (candidate?.type === "block" || candidate?.type === "slab" || candidate?.type === "stairs") &&
       textureExists(candidate.topRef) &&
       textureExists(candidate.sideRef)
     ) {
       icon = {
-        type: "block",
+        type: candidate.type,
         top: `/textures/${candidate.topRef}.png`,
         side: `/textures/${candidate.sideRef}.png`,
       };
