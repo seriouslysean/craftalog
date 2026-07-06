@@ -196,6 +196,32 @@ describe("resolveIconCandidate", () => {
     },
     "block/template_lightning_rod": { parent: "block/block" },
     "block/block": {},
+    "block/black_bed_head": {
+      parent: "minecraft:block/template_bed_head",
+      textures: {
+        east: "minecraft:block/black_bed_head_east",
+        up: "minecraft:block/black_bed_head_up",
+        west: "minecraft:block/black_bed_head_west",
+      },
+    },
+    "block/template_bed_head": {
+      parent: "block/template_bed",
+      textures: { particle: "minecraft:block/oak_planks", north: "minecraft:block/bed_head_north" },
+    },
+    "block/black_bed_foot": {
+      parent: "minecraft:block/template_bed_foot",
+      textures: {
+        east: "minecraft:block/black_bed_foot_east",
+        south: "minecraft:block/black_bed_foot_south",
+        up: "minecraft:block/black_bed_foot_up",
+        west: "minecraft:block/black_bed_foot_west",
+      },
+    },
+    "block/template_bed_foot": {
+      parent: "block/template_bed",
+      textures: { particle: "minecraft:block/oak_planks" },
+    },
+    "block/template_bed": {},
   };
 
   const itemDefinitions: RawItemDefinitionsData = {
@@ -208,6 +234,15 @@ describe("resolveIconCandidate", () => {
     oak_stairs: { model: { type: "minecraft:model", model: "minecraft:block/oak_stairs" } },
     oxidized_lightning_rod: {
       model: { type: "minecraft:model", model: "minecraft:block/oxidized_lightning_rod" },
+    },
+    black_bed: {
+      model: {
+        type: "minecraft:composite",
+        models: [
+          { type: "minecraft:model", model: "minecraft:block/black_bed_head" },
+          { type: "minecraft:model", model: "minecraft:block/black_bed_foot" },
+        ],
+      },
     },
   };
 
@@ -270,6 +305,23 @@ describe("resolveIconCandidate", () => {
     expect(resolveIconCandidate("oxidized_lightning_rod", itemDefinitions, models)).toEqual({
       type: "lightning_rod",
       textureRef: "block/oxidized_lightning_rod",
+    });
+  });
+
+  it("resolves a bed's composite head+foot models to a 6-ref bed candidate", () => {
+    // Regression test: template_bed_head's `particle` is a shared oak-planks
+    // placeholder present on every color -- the generic "unknown" fallback's
+    // particle-first heuristic would pick that over any genuinely
+    // color-specific texture, so every bed color resolved to the same icon
+    // before the composite head+foot path existed.
+    expect(resolveIconCandidate("black_bed", itemDefinitions, models)).toEqual({
+      type: "bed",
+      headUp: "block/black_bed_head_up",
+      headEast: "block/black_bed_head_east",
+      headNorth: "block/bed_head_north",
+      footUp: "block/black_bed_foot_up",
+      footEast: "block/black_bed_foot_east",
+      footSouth: "block/black_bed_foot_south",
     });
   });
 

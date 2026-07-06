@@ -41,15 +41,42 @@ function getFaces(icon: IconData): Face[] {
   return [];
 }
 
+interface BedGroup {
+  className: string;
+  top: string;
+  /** The raised headboard end-cap — only the head group has one; the foot's
+   * equivalent (south) end-cap is hidden behind the head group, so it's
+   * never rendered. */
+  front?: string;
+  side: string;
+}
+
+/** A bed isn't "one box, different faces" like block/slab/stairs — it's two boxes (head + foot) plus 4 legs. */
+function getBedGroups(icon: Extract<IconData, { type: 'bed' }>): BedGroup[] {
+  return [
+    { className: 'bed__head', top: icon.headUp, front: icon.headNorth, side: icon.headEast },
+    { className: 'bed__foot', top: icon.footUp, side: icon.footEast },
+  ];
+}
+
 const { item, loading = 'lazy' } = Astro.props;
 const is3d =
-  item?.icon.type === 'block' || item?.icon.type === 'slab' || item?.icon.type === 'stairs';
-const faces = item ? getFaces(item.icon) : [];
+  item?.icon.type === 'block' ||
+  item?.icon.type === 'slab' ||
+  item?.icon.type === 'stairs' ||
+  item?.icon.type === 'bed';
+const faces = item && item.icon.type !== 'bed' ? getFaces(item.icon) : [];
+const bedGroups = item && item.icon.type === 'bed' ? getBedGroups(item.icon) : [];
 ---
 
 {
   item && (
-    <div class:list={['item-icon', { 'item-icon--block': is3d }]}>
+    <div
+      class:list={[
+        'item-icon',
+        { 'item-icon--block': is3d, 'item-icon--bed': item.icon.type === 'bed' },
+      ]}
+    >
       {item.icon.type === 'flat' ? (
         <img
           class="icon"
@@ -61,6 +88,39 @@ const faces = item ? getFaces(item.icon) : [];
           loading={loading}
           decoding="async"
         />
+      ) : item.icon.type === 'bed' ? (
+        <div class="bed" role="img" aria-label={item.name} title={item.name}>
+          {bedGroups.map((group) => (
+            <div class={group.className}>
+              <img
+                class="bed__top"
+                src={withBase(group.top)}
+                alt=""
+                width="16"
+                height="16"
+                loading={loading}
+                decoding="async"
+              />
+              {group.front && (
+                <>
+                  <div
+                    class="bed__front"
+                    style={`background-image: url(${withBase(group.front)})`}
+                  />
+                  <div
+                    class="bed__front-legs"
+                    style={`background-image: url(${withBase(group.front)})`}
+                  />
+                </>
+              )}
+              <div class="bed__side" style={`background-image: url(${withBase(group.side)})`} />
+              <div
+                class="bed__side-legs"
+                style={`background-image: url(${withBase(group.side)})`}
+              />
+            </div>
+          ))}
+        </div>
       ) : (
         <ul
           class:list={[
@@ -107,7 +167,8 @@ const faces = item ? getFaces(item.icon) : [];
 
   .icon {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
   }
 
   .block {
@@ -204,5 +265,92 @@ const faces = item ? getFaces(item.icon) : [];
     height: 50%;
     top: 0;
     transform: rotateY(90deg);
+  }
+
+  /* Bed: not one box with different faces, but two (head + foot) plus 4 legs — see ItemIcon.astro's getBedGroups(). */
+  .item-icon--bed {
+    max-width: 90%;
+  }
+
+  .bed {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(-35deg) rotateY(-45deg);
+  }
+
+  /* Each group is a full block-unit cube (the container represents the bed's
+     full 2-block length); the mattress + legs only occupy its bottom ~56%. */
+  .bed__head,
+  .bed__foot {
+    position: absolute;
+    left: 25%;
+    top: 25%;
+    width: 50%;
+    height: 50%;
+    transform-style: preserve-3d;
+  }
+
+  /* Pushes the foot back by exactly one block-length. translateZ() doesn't
+     support percentages, so this reuses the .left face's own rotateY/translateX/
+     rotateY trick at the group level: the two rotations cancel out (leaving
+     the group's own faces unrotated) while the percentage-based translateX
+     resolves to a pure depth shift, keeping the head as the unoccluded near
+     end (its raised headboard face) and the foot receding behind it. */
+  .bed__foot {
+    transform: rotateY(-90deg) translateX(-100%) rotateY(90deg);
+  }
+
+  .bed__top,
+  .bed__front,
+  .bed__side,
+  .bed__front-legs,
+  .bed__side-legs {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-repeat: no-repeat;
+  }
+
+  .bed__top {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translateY(-6.25%) rotateX(90deg);
+  }
+
+  /* The mattress plank is thin and elevated (Minecraft block-space y3-9 of 16)
+     -- both the headboard end-cap and the east side crop the same vertical
+     band out of their texture (see BedGroup's "front"/"side" refs, which are
+     small 16x16 atlases, not full paintable surfaces). */
+  .bed__front,
+  .bed__side {
+    top: 43.75%;
+    height: 37.5%;
+    background-size: 100% 266.667%;
+    background-position: 0 70%;
+  }
+
+  /* The 4 corner legs (y0-3 of 16, directly beneath the mattress). Full-width
+     rows on the exact same plane as .bed__front/.bed__side (same transform),
+     just a lower crop band -- not separate small boxes, whose own narrow
+     width would throw off the translateX(50%) edge-positioning math below. */
+  .bed__front-legs,
+  .bed__side-legs {
+    top: 81.25%;
+    height: 18.75%;
+    background-size: 100% 533.333%;
+    background-position: 0 100%;
+  }
+
+  .bed__front,
+  .bed__front-legs {
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
+  }
+
+  .bed__side,
+  .bed__side-legs {
+    transform: translateX(50%) rotateY(90deg);
   }
 </style>

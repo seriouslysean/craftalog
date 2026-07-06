@@ -2,7 +2,9 @@ import { buildItemTagIndex, deriveFamily } from "./family.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
+import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
+import { slugify } from "../../src/utils/slugify.ts";
 import type {
   Item,
   ItemsOutput,
@@ -60,15 +62,19 @@ export function generate(input: GenerateInput): GenerateOutput {
   const recipes: RecipesOutput = {};
   const counts = { shaped: 0, shapeless: 0, transmute: 0, special: 0 };
   const itemTagIndex = buildItemTagIndex(tagsRaw);
+  const fallbackFamilyItems: string[] = [];
 
   for (const [id, raw] of Object.entries(recipesRaw)) {
     const transformed = transformRecipe(id, raw, tagsRaw);
     if (!transformed) continue;
-    const family = deriveFamily(
+    const { family, usedFallback } = deriveFamily(
       { itemId: transformed.result?.id, group: transformed.group, category: transformed.category },
       itemTagIndex,
     );
-    const recipe = { ...transformed, family };
+    if (usedFallback) fallbackFamilyItems.push(transformed.result?.id ?? id);
+    const resultId = transformed.result?.id ?? id;
+    const slug = slugify(deriveRecipeSlugSource(id, resultId));
+    const recipe = { ...transformed, family, slug };
     recipes[id] = recipe;
     counts[recipe.type] += 1;
   }
@@ -98,6 +104,30 @@ export function generate(input: GenerateInput): GenerateOutput {
       const ref = `item/${baseName}`;
       icon = { type: "flat", texture: `/textures/${ref}.png` };
       lightningRodIconsToSynthesize.set(candidate.textureRef, ref);
+    } else if (
+      candidate?.type === "bed" &&
+      textureExists(candidate.headUp) &&
+      textureExists(candidate.headEast) &&
+      textureExists(candidate.headNorth) &&
+      textureExists(candidate.footUp) &&
+      textureExists(candidate.footEast) &&
+      textureExists(candidate.footSouth)
+    ) {
+      icon = {
+        type: "bed",
+        headUp: `/textures/${candidate.headUp}.png`,
+        headEast: `/textures/${candidate.headEast}.png`,
+        headNorth: `/textures/${candidate.headNorth}.png`,
+        footUp: `/textures/${candidate.footUp}.png`,
+        footEast: `/textures/${candidate.footEast}.png`,
+        footSouth: `/textures/${candidate.footSouth}.png`,
+      };
+      texturesToCopy.add(candidate.headUp);
+      texturesToCopy.add(candidate.headEast);
+      texturesToCopy.add(candidate.headNorth);
+      texturesToCopy.add(candidate.footUp);
+      texturesToCopy.add(candidate.footEast);
+      texturesToCopy.add(candidate.footSouth);
     } else if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
@@ -119,8 +149,14 @@ export function generate(input: GenerateInput): GenerateOutput {
     }
 
     const stat = resolveItemStat(itemId, componentsRaw, tagsRaw);
+    // Derived from `id`, not `name` -- several items share a display name
+    // (every smithing template is just "Smithing Template"), so only the id
+    // guarantees a unique URL segment.
+    const slug = slugify(itemId);
 
-    items[itemId] = stat ? { id: itemId, name, icon, stat } : { id: itemId, name, icon };
+    items[itemId] = stat
+      ? { id: itemId, name, slug, icon, stat }
+      : { id: itemId, name, slug, icon };
   }
 
   const meta: Meta = {
@@ -131,6 +167,7 @@ export function generate(input: GenerateInput): GenerateOutput {
       texturesCopied: texturesToCopy.size,
     },
     unresolvedIcons: unresolvedIcons.toSorted(),
+    fallbackFamilyItems: fallbackFamilyItems.toSorted(),
   };
 
   return {
