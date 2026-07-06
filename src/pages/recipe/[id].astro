@@ -4,6 +4,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import Badge from '../../components/Badge.astro';
 import CraftingGrid from '../../components/CraftingGrid.astro';
 import IngredientOptions from '../../components/IngredientOptions.astro';
+import ItemCard from '../../components/ItemCard.astro';
 import ItemIcon from '../../components/ItemIcon.astro';
 import ItemStat from '../../components/ItemStat.astro';
 import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../../utils/crafting-grid';
@@ -16,7 +17,11 @@ interface PageProps {
   displayName: string;
   itemsMap: Map<string, ItemData>;
   prevId: string;
+  prevName: string;
+  prevItem: ItemData | null;
   nextId: string;
+  nextName: string;
+  nextItem: ItemData | null;
 }
 
 export async function getStaticPaths() {
@@ -27,7 +32,7 @@ export async function getStaticPaths() {
   const withNames = recipeEntries.map((entry) => {
     const resultItem = entry.data.result ? itemsMap.get(entry.data.result.id) : undefined;
     const displayName = resultItem?.name ?? entry.data.id.replace(/_/g, ' ');
-    return { entry, displayName };
+    return { entry, displayName, item: resultItem ?? null };
   });
   withNames.sort((a, b) => a.displayName.localeCompare(b.displayName));
 
@@ -41,13 +46,18 @@ export async function getStaticPaths() {
         displayName,
         itemsMap,
         prevId: prev.entry.id,
+        prevName: prev.displayName,
+        prevItem: prev.item,
         nextId: next.entry.id,
+        nextName: next.displayName,
+        nextItem: next.item,
       } satisfies PageProps,
     };
   });
 }
 
-const { recipe, displayName, itemsMap, prevId, nextId } = Astro.props as PageProps;
+const { recipe, displayName, itemsMap, prevId, prevName, prevItem, nextId, nextName, nextItem } =
+  Astro.props as PageProps;
 
 const resultItem = recipe.result ? itemsMap.get(recipe.result.id) : undefined;
 const getItemName = (id: string) => itemsMap.get(id)?.name ?? id;
@@ -97,31 +107,29 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   description={`How to craft ${displayName} in Minecraft.`}
 >
   <div class="recipe">
-    <nav class="recipe__breadcrumb">
-      <a href={withBase('/')}>&larr; All recipes</a>
-    </nav>
+    <div class="recipe__toolbar">
+      <a href={withBase('/')} class="recipe__back link-chip">&larr; Back to all recipes</a>
+      <button type="button" class="recipe__copy-link link-chip" data-url={canonicalUrl} hidden>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+        <span class="recipe__copy-link-label">Copy link</span>
+      </button>
+    </div>
 
     <div class="recipe__header">
-      <div class="recipe__title-row">
-        <h1 class="recipe__title">{displayName}</h1>
-        <button type="button" class="recipe__copy-link link-chip" data-url={canonicalUrl} hidden>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-          </svg>
-          <span class="recipe__copy-link-label">Copy link</span>
-        </button>
-      </div>
+      <h1 class="recipe__title">{displayName}</h1>
       <div class="recipe__badges">
         {
           isShapeless && (
@@ -182,12 +190,22 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
       )
     }
 
-    <nav class="recipe__pager">
-      <a href={withBase(`/recipe/${prevId}/`)} class="recipe__pager-link link-chip"
-        >&larr; Previous</a
-      >
-      <a href={withBase('/')} class="recipe__pager-link recipe__pager-link--home">All recipes</a>
-      <a href={withBase(`/recipe/${nextId}/`)} class="recipe__pager-link link-chip">Next &rarr;</a>
+    <nav class="recipe__pager" aria-label="Recipe navigation">
+      <ItemCard
+        href={withBase(`/recipe/${prevId}/`)}
+        item={prevItem}
+        name={prevName}
+        subtitle="Previous"
+        class="recipe__pager-link recipe__pager-link--prev"
+      />
+      <a href={withBase('/')} class="recipe__pager-home link-chip">All recipes</a>
+      <ItemCard
+        href={withBase(`/recipe/${nextId}/`)}
+        item={nextItem}
+        name={nextName}
+        subtitle="Next"
+        class="recipe__pager-link recipe__pager-link--next"
+      />
     </nav>
   </div>
 </MainLayout>
@@ -225,16 +243,19 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 </script>
 
 <style>
-  .recipe__breadcrumb {
-    margin-bottom: var(--space-6);
-    font-size: 0.875rem;
-  }
-
-  .recipe__title-row {
+  .recipe__toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    font-size: 0.8125rem;
+  }
+
+  .recipe__back {
+    padding: var(--space-2) var(--space-4);
+    color: var(--color-panel-fg);
   }
 
   .recipe__copy-link {
@@ -276,11 +297,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     align-items: center;
     gap: var(--space-4);
     background-color: var(--color-panel);
-    padding: var(--space-4);
-    border: var(--panel-border-width) solid;
-    border-color: var(--panel-border-color);
-    border-radius: var(--radius-md);
-    box-shadow: var(--panel-border-outer);
+    padding: calc(var(--space-4) + var(--panel-border-width));
+    box-shadow: var(--bevel-panel), var(--panel-border-outer);
   }
 
   .recipe__special-icon {
@@ -293,22 +311,56 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     color: var(--color-panel-fg);
   }
 
+  /* Mobile: prev/next share a row, "All recipes" sits centered below on its
+     own row. Desktop (see media query): all three on one row, "All recipes"
+     centered between prev and next. A fixed grid-template-areas switch, not
+     flex-wrap, so this never depends on guessing what fits at a given width. */
   .recipe__pager {
     margin-top: var(--space-12);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'prev next'
+      'home home';
+    align-items: center;
     gap: var(--space-4);
     border-top: 1px solid var(--color-border);
     padding-top: var(--space-4);
     font-size: 0.875rem;
   }
 
-  .recipe__pager-link {
+  /* ItemCard renders its own <a> inside its own scoped style boundary, so a
+     plain selector here would never match it -- :global() escapes that
+     scoping to size/pad/place the card from the page that lays out the
+     pager grid. */
+  :global(.recipe__pager-link) {
+    min-width: 0;
+    max-width: 14rem;
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
+  }
+
+  :global(.recipe__pager-link--prev) {
+    grid-area: prev;
+    justify-self: start;
+  }
+
+  :global(.recipe__pager-link--next) {
+    grid-area: next;
+    justify-self: end;
+  }
+
+  .recipe__pager-home {
+    grid-area: home;
+    justify-self: center;
     padding: var(--space-2) var(--space-4);
     color: var(--color-panel-fg);
   }
 
-  .recipe__pager-link--home {
-    color: var(--color-muted);
+  @media (min-width: 640px) {
+    .recipe__pager {
+      grid-template-columns: 1fr auto 1fr;
+      grid-template-areas: 'prev home next';
+    }
   }
 </style>
