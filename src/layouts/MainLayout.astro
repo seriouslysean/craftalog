@@ -13,13 +13,13 @@ const { title, description } = Astro.props;
 
 <Layout title={title} description={description}>
   <div class="wrapper">
-    <SiteHeader class="header" />
+    <SiteHeader />
 
     <main class="main">
       <slot />
     </main>
 
-    <SiteFooter class="footer" />
+    <SiteFooter />
   </div>
 </Layout>
 
@@ -30,35 +30,15 @@ const { title, description } = Astro.props;
     min-height: 100vh;
   }
 
-  .header,
-  .main,
-  .footer {
+  .main {
     margin: 0 auto;
-    padding: 0 var(--space-4);
+    padding: var(--space-6) var(--space-4) var(--space-12);
     max-width: 60rem;
     width: 100%;
   }
 
-  .header {
-    padding-top: var(--space-6);
-    padding-bottom: var(--space-6);
-  }
-
-  .main {
-    padding-top: var(--space-6);
-    padding-bottom: var(--space-12);
-  }
-
-  .footer {
-    margin-top: auto;
-    padding-top: var(--space-8);
-    padding-bottom: var(--space-6);
-  }
-
   @media (min-width: 640px) {
-    .header,
-    .main,
-    .footer {
+    .main {
       padding-left: var(--space-8);
       padding-right: var(--space-8);
     }

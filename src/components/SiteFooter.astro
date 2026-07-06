@@ -3,36 +3,51 @@ import meta from '../data/generated/meta.json';
 ---
 
 <footer>
-  <div class="footer-content">
-    <p>
-      Minecraft {meta.version} data | Made with &hearts; |
-      <a href="https://github.com/seriouslysean/craftalog">GitHub</a>
-    </p>
-  </div>
+  <p class="footer__text">
+    <span>Minecraft {meta.version} data</span>
+    <span class="footer__separator" aria-hidden="true">&middot;</span>
+    <span>Made with <span aria-hidden="true">&hearts;</span></span>
+    <span class="footer__separator" aria-hidden="true">&middot;</span>
+    <a href="https://github.com/seriouslysean/craftalog" class="footer__link">GitHub</a>
+  </p>
 </footer>
 
 <style>
   footer {
+    margin-top: auto;
     border-top: 1px solid var(--color-border);
   }
 
-  .footer-content {
+  .footer__text {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-4) var(--space-6);
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-  }
-
-  footer p {
+    gap: var(--space-2);
     font-size: 0.875rem;
     color: var(--color-muted);
   }
 
-  footer a {
+  @media (min-width: 640px) {
+    .footer__text {
+      padding-left: var(--space-8);
+      padding-right: var(--space-8);
+    }
+  }
+
+  .footer__separator {
+    color: var(--color-border);
+  }
+
+  .footer__link {
     color: var(--color-muted);
     border-bottom-color: transparent;
   }
 
-  footer a:hover {
+  .footer__link:hover {
     color: var(--color-fg);
     border-bottom-color: var(--color-fg);
   }
