@@ -6,11 +6,13 @@ import type { IngredientOption } from '../utils/tag-label';
 interface Props {
   entries: IngredientOption[];
   itemsMap: Map<string, ItemData>;
+  /** Maps a craftable item's id to its recipe path -- see buildRecipeHrefMap. */
+  recipeHrefs: Map<string, string>;
   /** Extra recipe-mechanical note (e.g. transmute's contents/appearance rule). */
   note?: string;
 }
 
-const { entries, itemsMap, note } = Astro.props;
+const { entries, itemsMap, recipeHrefs, note } = Astro.props;
 ---
 
 {
@@ -23,7 +25,7 @@ const { entries, itemsMap, note } = Astro.props;
             {entries.map((entry) => (
               <li class="ingredient-options__row">
                 <span class="ingredient-options__slot">
-                  <ItemVariants items={entry.items} itemsMap={itemsMap} />
+                  <ItemVariants items={entry.items} itemsMap={itemsMap} recipeHrefs={recipeHrefs} />
                 </span>
                 <span class="ingredient-options__label">{entry.label}</span>
                 <span class="ingredient-options__count">{entry.items.length} options</span>

@@ -3,7 +3,8 @@ import ItemIcon from './ItemIcon.astro';
 import type { ItemData } from '../content.config';
 
 interface Props {
-  href: string;
+  /** Null renders a non-interactive card (e.g. a tooltip for an item with no recipe of its own). */
+  href: string | null;
   item: ItemData | null;
   name: string;
   /** Small caption -- e.g. a disambiguating recipe subtitle on the catalog,
@@ -14,13 +15,28 @@ interface Props {
       it reads better as an eyebrow above the (larger) name for weight
       distribution. Catalog cards keep the default (subtitle below). */
   subtitleFirst?: boolean;
+  /** 'chip' (default) is the inline pager/catalog look. 'tooltip' adds a
+      hard dropshadow for use inside ItemIconTooltip's floating popup. */
+  variant?: 'chip' | 'tooltip';
   class?: string;
 }
 
-const { href, item, name, subtitle, subtitleFirst = false, class: className } = Astro.props;
+const {
+  href,
+  item,
+  name,
+  subtitle,
+  subtitleFirst = false,
+  variant = 'chip',
+  class: className,
+} = Astro.props;
+const Tag = href ? 'a' : 'span';
 ---
 
-<a href={href} class:list={['item-card', 'link-chip', className]}>
+<Tag
+  href={href ?? undefined}
+  class:list={['item-card', `item-card--${variant}`, variant === 'chip' && 'link-chip', className]}
+>
   <span class="item-card__icon">
     <ItemIcon item={item} />
   </span>
@@ -29,7 +45,7 @@ const { href, item, name, subtitle, subtitleFirst = false, class: className } = 
     <span class="item-card__name">{name}</span>
     {!subtitleFirst && subtitle && <span class="item-card__subtitle">{subtitle}</span>}
   </span>
-</a>
+</Tag>
 
 <style>
   .item-card {
@@ -39,6 +55,76 @@ const { href, item, name, subtitle, subtitleFirst = false, class: className } = 
   .item-card:focus-visible {
     outline: 2px solid var(--color-fg);
     outline-offset: 2px;
+  }
+
+  /* Floating popup look (item-icon hover tooltips) instead of the clickable
+     chip look above -- same panel background and inset bevel as the
+     crafting grid/ingredient-options panels, plus a hard offset shadow since
+     this element floats above the page instead of sitting flush in it.
+     The outer ring is a real `border`, not a --panel-border-outer box-shadow
+     layer: stacking that shadow directly against --bevel-panel's inset edge
+     left a 1px anti-aliasing seam where the two shadow layers met (visible
+     as a thin bright line). A real border paints as part of the box itself,
+     flush against the inset shadow, with no separate layer to seam against. */
+  .item-card--tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--color-panel);
+    border: var(--panel-border-outer-width) solid var(--color-gray-dark);
+    box-shadow: var(--bevel-panel), var(--shadow-sharp);
+  }
+
+  /* Pixel-art arrow pinned to the bottom-center, pointing at the hovered
+     icon -- a 2-step taper built from --bevel-width squares (the site's
+     "pixel" unit): row 1 is 4 squares wide, row 2 is 2, each a full
+     --bevel-width tall so they read as the same size square as the box's
+     own bottom-right inset edge (a bordered rect would eat into that height
+     instead -- --panel-border-outer-width is added on *top* of the square
+     size here, not carved out of it).
+
+     Built entirely from axis-aligned rectangles (layered backgrounds), not
+     clip-path: a clip-path polygon is a vector path, anti-aliased by the
+     rasterizer like an SVG shape, and at this element's few-pixel scale that
+     softening was visible as a band of wrong-looking color between the fill
+     and its outline. Plain rects paint with the same hard pixel edges as
+     `background`/`border` do everywhere else in this file. Two dark rects
+     (row1-outer, row2-outer, listed last so they act as the base/backdrop)
+     form one continuous silhouette with no seam at the row1/row2 join --
+     two separately bordered rects would each get their own border-bottom,
+     bisecting the arrow with an extra line. Two --color-panel-shade rects on
+     top (the flat tone of --bevel-panel's dark inset) show through wherever
+     the dark base isn't covered, inset from it by the border width on every
+     edge but the top, so box+arrow read as one continuous tooltip outline
+     with the arrow "cut from the same material" as the box's own shading.
+
+     top is plain 100%, not "100% + border width" -- that compensation fixes
+     a real gap (this pseudo-element's fill can paint over the box's own
+     border) but reintroduces a separate icon-overlap problem. Unresolved;
+     revisit deliberately rather than flip back and forth blind. */
+  .item-card--tooltip::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: calc(var(--bevel-width) * 4 + var(--panel-border-outer-width) * 2);
+    height: calc(var(--bevel-width) * 2 + var(--panel-border-outer-width));
+    transform: translateX(calc((var(--bevel-width) * 2 + var(--panel-border-outer-width)) * -1));
+    background:
+      linear-gradient(var(--color-panel-shade), var(--color-panel-shade))
+        var(--panel-border-outer-width) 0 / calc(var(--bevel-width) * 4) var(--bevel-width)
+        no-repeat,
+      linear-gradient(var(--color-panel-shade), var(--color-panel-shade))
+        calc(var(--bevel-width) + var(--panel-border-outer-width)) var(--bevel-width) /
+        calc(var(--bevel-width) * 2) var(--bevel-width) no-repeat,
+      linear-gradient(var(--color-gray-dark), var(--color-gray-dark)) 0 0 / 100%
+        calc(var(--bevel-width) + var(--panel-border-outer-width)) no-repeat,
+      linear-gradient(var(--color-gray-dark), var(--color-gray-dark)) var(--bevel-width)
+        calc(var(--bevel-width) + var(--panel-border-outer-width)) /
+        calc(var(--bevel-width) * 2 + var(--panel-border-outer-width) * 2) var(--bevel-width)
+        no-repeat;
   }
 
   .item-card__icon {

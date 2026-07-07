@@ -1,0 +1,58 @@
+---
+import ItemCard from './ItemCard.astro';
+import ItemIcon from './ItemIcon.astro';
+import { withBase } from '../utils/with-base';
+import type { ItemData } from '../content.config';
+
+interface Props {
+  item: ItemData;
+  /** This item's own recipe path (bare, base-agnostic -- see buildRecipeHrefMap), or null if it isn't craftable in this catalog. */
+  recipePath: string | null;
+  loading?: 'lazy' | 'eager';
+}
+
+const { item, recipePath, loading } = Astro.props;
+---
+
+<span class="item-icon-tooltip">
+  <ItemIcon item={item} loading={loading} />
+  <span class="item-icon-tooltip__popup">
+    <ItemCard
+      href={recipePath ? withBase(recipePath) : null}
+      item={item}
+      name={item.name}
+      variant="tooltip"
+    />
+  </span>
+</span>
+
+<style>
+  .item-icon-tooltip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .item-icon-tooltip__popup {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, -0.5rem);
+    z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity 0.1s ease;
+  }
+
+  .item-icon-tooltip:hover .item-icon-tooltip__popup,
+  .item-icon-tooltip:focus-within .item-icon-tooltip__popup {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+</style>

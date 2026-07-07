@@ -197,6 +197,24 @@ export function indexByRecipeId(groups: RecipeGroup[]): Map<string, RecipeGroup>
 }
 
 /**
+ * Maps every craftable item's id to its group's canonical /recipe/{item}/
+ * path -- only items that are some group's result are craftable, so an item
+ * absent from this map has no recipe page. Bare, base-agnostic paths like
+ * canonicalRecipePath/recipePath above; callers still apply withBase().
+ * Powers the "link to its recipe" behavior on item-icon hover tooltips.
+ */
+export function buildRecipeHrefMap(
+  groups: RecipeGroup[],
+  itemsMap: Map<string, ItemData>,
+): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const group of groups) {
+    map.set(group.resultId, canonicalRecipePath(groupItemSlug(group, itemsMap)));
+  }
+  return map;
+}
+
+/**
  * The /recipe/{item}/... URL segment for a group's result item. Reads the
  * item's precomputed slug (see scripts/lib/generate.ts); only falls back to
  * slugifying the group's own canonical recipe id for repair_item, the one

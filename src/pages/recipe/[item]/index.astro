@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import RecipePage from '../../../components/RecipePage.astro';
-import { groupItemSlug, groupRecipes } from '../../../utils/recipe-groups';
+import { buildRecipeHrefMap, groupItemSlug, groupRecipes } from '../../../utils/recipe-groups';
 import { buildPagerSequence, pagerNeighbors } from '../../../utils/recipe-pager';
 
 export async function getStaticPaths() {
@@ -16,6 +16,7 @@ export async function getStaticPaths() {
     getItemName,
   );
   const pagerSequence = buildPagerSequence(groups, itemsMap);
+  const recipeHrefs = buildRecipeHrefMap(groups, itemsMap);
 
   // Every group's canonical recipe is reachable at the bare /recipe/{item}/
   // path -- non-canonical siblings live at /recipe/{item}/{slug}/ instead
@@ -32,6 +33,7 @@ export async function getStaticPaths() {
         recipe,
         displayName,
         itemsMap,
+        recipeHrefs,
         itemSlug,
         canonicalId: group.canonicalId,
         siblings: group.siblings,
