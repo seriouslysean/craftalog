@@ -1,6 +1,6 @@
 ---
 name: vanilla-data
-description: How Craftalog's vanilla Minecraft data pipeline works — mcmeta submodules, the pin/tag scheme, how to bump to a new version manually, how to run parse/validate, where generated files live, what CI's drift check means, and how the weekly update-data workflow behaves. Use this when touching vendor/, src/data/generated/, public/textures/, scripts/parse.ts, scripts/validate.ts, or the update-data.yml workflow.
+description: How Craftalog's vanilla Minecraft data pipeline works — mcmeta + bedrock-samples submodules, the pin/tag scheme for each, how to bump to a new version manually, how to run parse/validate, where generated files live, what CI's drift check means, and how the weekly update-data workflow behaves. Use this when touching vendor/, src/data/generated/, public/textures/, scripts/parse.ts, scripts/validate.ts, or the update-data.yml workflow.
 ---
 
 # Craftalog vanilla data pipeline
@@ -9,29 +9,40 @@ Craftalog shows every vanilla Minecraft crafting recipe with zero manual data
 upkeep. Recipe/item data and textures come from
 [misode/mcmeta](https://github.com/misode/mcmeta), a community-maintained
 mirror of the vanilla game data, vendored as git submodules and parsed into
-this repo's own format. See `docs/PLAN.md` for the full contract.
+this repo's own format — this is the **sole source of truth** for recipes,
+items, tags, and lang. One additional, narrowly-scoped submodule,
+[Mojang/bedrock-samples](https://github.com/Mojang/bedrock-samples), supplies
+exactly one thing: the 16 pre-baked bed icon PNGs (Java has no equivalent —
+beds are the only item rendered as two composited block models rather than a
+single flat/cube icon). See `docs/PLAN.md` for the full contract.
 
 ## Submodules
 
 ```
 vendor/mcmeta-summary   → misode/mcmeta, branch "summary", tag <ver>-summary
 vendor/mcmeta-assets    → misode/mcmeta, branch "assets",  tag <ver>-assets
+vendor/bedrock-samples  → Mojang/bedrock-samples, tag v<ver> (icon-only, see above)
 ```
 
-Both are `shallow = true` in `.gitmodules`, so clones/fetches only pull the
-single pinned tag's history, not the whole mcmeta repo.
+All three are `shallow = true` in `.gitmodules`, so clones/fetches only pull
+the single pinned tag's history, not the whole upstream repo.
 
 - `mcmeta-summary` contains condensed JSON: recipes, item tags, item
   definitions, models, lang files, registries.
 - `mcmeta-assets` contains the PNG textures referenced by item/block models.
+- `bedrock-samples` is Mojang's own official repo (not a community
+  extraction like mcmeta) — only `resource_pack/textures/items/bed_*.png` is
+  used from it.
 
-The current pin is readable at `vendor/mcmeta-summary/version.txt` (currently
-`26.2`) and mirrored into `src/data/generated/meta.json` (key `"version"`)
-after a parse.
+The current mcmeta pin is readable at `vendor/mcmeta-summary/version.txt`
+(currently `26.2`) and mirrored into `src/data/generated/meta.json` (key
+`"version"`) after a parse. `bedrock-samples` has no equivalent version file
+— its pin is just whatever tag its submodule commit is checked out at
+(`git -C vendor/bedrock-samples describe --tags`).
 
 ## Tag scheme
 
-Stable release tags look like `<major>.<minor>-summary` /
+Stable mcmeta release tags look like `<major>.<minor>-summary` /
 `<major>.<minor>-assets` (e.g. `26.2-summary`). The stable-tag regex used
 everywhere in this pipeline (CI checks, the update workflow) is:
 
@@ -42,10 +53,18 @@ everywhere in this pipeline (CI checks, the update workflow) is:
 Snapshot/pre-release/rc tags contain extra words (e.g. `26.2-pre1-summary`)
 and are excluded by that regex — never pin to one.
 
+`bedrock-samples` uses a completely different scheme (Bedrock's own release
+numbering, e.g. `v1.26.30.5`), with `-preview` tags marking non-stable
+builds:
+
+```
+^v[0-9]+(\.[0-9]+)+$
+```
+
 ## Pipeline
 
 ```
-vendor/mcmeta-summary + vendor/mcmeta-assets
+vendor/mcmeta-summary + vendor/mcmeta-assets + vendor/bedrock-samples (icons only)
         │  npm run parse   (scripts/parse.ts)
         ▼
 src/data/generated/items.json      ── committed, diffable
@@ -106,6 +125,28 @@ Only bump to tags matching the stable regex above — check
 `git ls-remote --tags https://github.com/misode/mcmeta 'refs/tags/*-summary'`
 if unsure what's current.
 
+Bumping `bedrock-samples` (rare — its bed icon art almost never changes) is
+the same shape, just a different tag scheme and no separate version file:
+
+```bash
+cd vendor/bedrock-samples
+git fetch --depth 1 origin tag <new-bedrock-version>   # e.g. v1.26.31.2
+git checkout <new-bedrock-version>
+cd ../..
+
+npm ci
+npm run parse
+npm run validate
+
+git add vendor/bedrock-samples src/data/generated public/textures
+git commit -m "data: update bedrock-samples to <new-bedrock-version>"
+```
+
+Only bump to tags matching bedrock-samples' stable regex above (no
+`-preview` suffix) — check
+`git ls-remote --tags https://github.com/Mojang/bedrock-samples 'refs/tags/*'`
+if unsure what's current.
+
 ## What CI's drift check means
 
 `.github/workflows/ci.yml` runs `npm run parse` against the checked-out
@@ -130,22 +171,32 @@ Fix locally with `npm run parse`, review the diff, and commit it.
 `.github/workflows/update-data.yml` runs on a weekly cron (and can be run
 manually via workflow_dispatch). Each run:
 
-1. Resolves the latest stable tag from `misode/mcmeta` via `git ls-remote`,
-   filtered by the stable-tag regex.
-2. Compares it to `vendor/mcmeta-summary/version.txt`. If equal, it exits
-   cleanly — nothing to do.
-3. If newer, it checks a `data-update/<version>` branch doesn't already exist
-   (idempotency guard against re-running mid-flight).
-4. Bumps both submodules to the new tag, runs `npm run parse` and `npm run
-validate`.
-5. On validation/parse failure: opens a GitHub issue titled `Vanilla data
-update to <version> failed validation` with a log tail, and fails the run
-   so it's visible in Actions.
+1. Resolves the latest stable tag from `misode/mcmeta` **and** from
+   `bedrock-samples` independently, each via `git ls-remote` filtered by its
+   own stable-tag regex.
+2. Compares each to its current pin (`vendor/mcmeta-summary/version.txt` for
+   mcmeta; `git describe --tags` on the submodule itself for
+   bedrock-samples). If _both_ are already at latest, it exits cleanly —
+   nothing to do.
+3. If either is newer, it checks a
+   `data-update/mcmeta-<version>_bedrock-<version>` branch (reflecting both
+   target versions) doesn't already exist (idempotency guard against
+   re-running mid-flight).
+4. Bumps all three submodules to their respective latest stable tags (a
+   submodule already at latest is just re-checked-out to the same commit —
+   harmless), runs `npm run parse` and `npm run validate`.
+5. On validation/parse failure: opens a GitHub issue with a log tail, and
+   fails the run so it's visible in Actions.
 6. On success with actual changes: commits the submodule pins + regenerated
-   data + textures on `data-update/<version>`, pushes, opens a PR via `gh pr
-create`, and attempts `gh pr merge --auto --squash`. If the repo doesn't
-   have auto-merge enabled, that step logs a warning and leaves the PR open
-   for manual merge instead of failing the run.
+   data + textures on that branch, pushes, opens a PR via `gh pr create`, and
+   attempts `gh pr merge --auto --squash`. If the repo doesn't have
+   auto-merge enabled, that step logs a warning and leaves the PR open for
+   manual merge instead of failing the run.
+
+In practice `bedrock-samples` almost never actually changes (bed icon art is
+stable), so most runs are a normal mcmeta-only bump — the dual-source check
+just means a bedrock-samples update wouldn't silently go unnoticed if Mojang
+ever did touch it.
 
 CI (`ci.yml`) still has to pass on that PR before it can merge — the workflow
 does not bypass review/CI, it just automates the mechanical bump.

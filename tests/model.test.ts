@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  findAllModelReferences,
   findModelReference,
   findSpecialModel,
   resolveIconCandidate,
@@ -103,6 +104,43 @@ describe("findModelReference", () => {
   });
 });
 
+describe("findAllModelReferences", () => {
+  it("returns a single-element array for a plain minecraft:model node", () => {
+    expect(
+      findAllModelReferences({ type: "minecraft:model", model: "minecraft:item/stick" }),
+    ).toEqual(["minecraft:item/stick"]);
+  });
+
+  it("collects every nested minecraft:model node, not just the first (e.g. a bed's composite)", () => {
+    const node = {
+      type: "minecraft:composite",
+      models: [
+        { type: "minecraft:model", model: "minecraft:block/black_bed_head" },
+        {
+          type: "minecraft:model",
+          model: "minecraft:block/black_bed_foot",
+          transformation: { translation: [0, 0, 1] },
+        },
+      ],
+    };
+
+    expect(findAllModelReferences(node)).toEqual([
+      "minecraft:block/black_bed_head",
+      "minecraft:block/black_bed_foot",
+    ]);
+  });
+
+  it("returns an empty array when no minecraft:model node exists", () => {
+    expect(
+      findAllModelReferences({
+        type: "minecraft:special",
+        base: "minecraft:item/template_banner",
+        model: { type: "minecraft:banner", color: "white" },
+      }),
+    ).toEqual([]);
+  });
+});
+
 describe("findSpecialModel", () => {
   it("returns the base ref, special type, and special model config for a minecraft:special node", () => {
     const node = {
@@ -195,6 +233,47 @@ describe("resolveIconCandidate", () => {
       textures: { texture: "minecraft:block/oxidized_lightning_rod" },
     },
     "block/template_lightning_rod": { parent: "block/block" },
+    "block/black_bed_head": { parent: "minecraft:block/template_bed_head" },
+    "block/template_bed_head": { parent: "block/template_bed" },
+    "block/black_bed_foot": { parent: "minecraft:block/template_bed_foot" },
+    "block/template_bed_foot": { parent: "block/template_bed" },
+    "block/template_bed": {},
+    "block/acacia_pressure_plate": {
+      parent: "minecraft:block/pressure_plate_up",
+      textures: { texture: "minecraft:block/acacia_planks" },
+    },
+    "block/pressure_plate_up": { parent: "block/thin_block" },
+    "block/thin_block": { parent: "block/block" },
+    "block/andesite_wall_inventory": {
+      parent: "minecraft:block/wall_inventory",
+      textures: { wall: "minecraft:block/andesite" },
+    },
+    "block/wall_inventory": { parent: "block/block" },
+    "block/acacia_button_inventory": {
+      parent: "minecraft:block/button_inventory",
+      textures: { texture: "minecraft:block/acacia_planks" },
+    },
+    "block/button_inventory": { parent: "block/block" },
+    "block/acacia_fence_inventory": {
+      parent: "minecraft:block/fence_inventory",
+      textures: { texture: "minecraft:block/acacia_planks" },
+    },
+    "block/fence_inventory": { parent: "block/block" },
+    "block/acacia_fence_gate": {
+      parent: "minecraft:block/template_fence_gate",
+      textures: { texture: "minecraft:block/acacia_planks" },
+    },
+    "block/template_fence_gate": { parent: "block/block" },
+    "block/bamboo_fence_inventory": {
+      parent: "minecraft:block/custom_fence_inventory",
+      textures: { texture: "minecraft:block/bamboo_planks" },
+    },
+    "block/custom_fence_inventory": { parent: "block/block" },
+    "block/bamboo_fence_gate": {
+      parent: "minecraft:block/template_custom_fence_gate",
+      textures: { texture: "minecraft:block/bamboo_planks" },
+    },
+    "block/template_custom_fence_gate": { parent: "block/block" },
     "block/block": {},
   };
 
@@ -208,6 +287,40 @@ describe("resolveIconCandidate", () => {
     oak_stairs: { model: { type: "minecraft:model", model: "minecraft:block/oak_stairs" } },
     oxidized_lightning_rod: {
       model: { type: "minecraft:model", model: "minecraft:block/oxidized_lightning_rod" },
+    },
+    black_bed: {
+      model: {
+        type: "minecraft:composite",
+        models: [
+          { type: "minecraft:model", model: "minecraft:block/black_bed_head" },
+          {
+            type: "minecraft:model",
+            model: "minecraft:block/black_bed_foot",
+            transformation: { translation: [0, 0, 1] },
+          },
+        ],
+      },
+    },
+    acacia_pressure_plate: {
+      model: { type: "minecraft:model", model: "minecraft:block/acacia_pressure_plate" },
+    },
+    andesite_wall: {
+      model: { type: "minecraft:model", model: "minecraft:block/andesite_wall_inventory" },
+    },
+    acacia_button: {
+      model: { type: "minecraft:model", model: "minecraft:block/acacia_button_inventory" },
+    },
+    acacia_fence: {
+      model: { type: "minecraft:model", model: "minecraft:block/acacia_fence_inventory" },
+    },
+    acacia_fence_gate: {
+      model: { type: "minecraft:model", model: "minecraft:block/acacia_fence_gate" },
+    },
+    bamboo_fence: {
+      model: { type: "minecraft:model", model: "minecraft:block/bamboo_fence_inventory" },
+    },
+    bamboo_fence_gate: {
+      model: { type: "minecraft:model", model: "minecraft:block/bamboo_fence_gate" },
     },
   };
 
@@ -270,6 +383,62 @@ describe("resolveIconCandidate", () => {
     expect(resolveIconCandidate("oxidized_lightning_rod", itemDefinitions, models)).toEqual({
       type: "lightning_rod",
       textureRef: "block/oxidized_lightning_rod",
+    });
+  });
+
+  it("resolves a bed's composite head+foot models to just its colorId (no Java texture resolution -- see scripts/lib/bedrock-colors.ts)", () => {
+    expect(resolveIconCandidate("black_bed", itemDefinitions, models)).toEqual({
+      type: "bed",
+      colorId: "black",
+    });
+  });
+
+  it("resolves a pressure_plate candidate (textureRef) for a pressure_plate_up chain", () => {
+    expect(resolveIconCandidate("acacia_pressure_plate", itemDefinitions, models)).toEqual({
+      type: "pressure_plate",
+      textureRef: "block/acacia_planks",
+    });
+  });
+
+  it("resolves a wall candidate (textureRef from the 'wall' var) for a wall_inventory chain", () => {
+    expect(resolveIconCandidate("andesite_wall", itemDefinitions, models)).toEqual({
+      type: "wall",
+      textureRef: "block/andesite",
+    });
+  });
+
+  it("resolves a button candidate (textureRef) for a button_inventory chain", () => {
+    expect(resolveIconCandidate("acacia_button", itemDefinitions, models)).toEqual({
+      type: "button",
+      textureRef: "block/acacia_planks",
+    });
+  });
+
+  it("resolves a fence candidate (textureRef) for a fence_inventory chain", () => {
+    expect(resolveIconCandidate("acacia_fence", itemDefinitions, models)).toEqual({
+      type: "fence",
+      textureRef: "block/acacia_planks",
+    });
+  });
+
+  it("resolves a fence_gate candidate (textureRef) for a template_fence_gate chain", () => {
+    expect(resolveIconCandidate("acacia_fence_gate", itemDefinitions, models)).toEqual({
+      type: "fence_gate",
+      textureRef: "block/acacia_planks",
+    });
+  });
+
+  it("resolves a fence candidate for bamboo's distinct custom_fence_inventory chain", () => {
+    expect(resolveIconCandidate("bamboo_fence", itemDefinitions, models)).toEqual({
+      type: "fence",
+      textureRef: "block/bamboo_planks",
+    });
+  });
+
+  it("resolves a fence_gate candidate for bamboo's distinct template_custom_fence_gate chain", () => {
+    expect(resolveIconCandidate("bamboo_fence_gate", itemDefinitions, models)).toEqual({
+      type: "fence_gate",
+      textureRef: "block/bamboo_planks",
     });
   });
 

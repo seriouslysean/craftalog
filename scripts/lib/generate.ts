@@ -1,8 +1,11 @@
+import { toBedrockColorName } from "./bedrock-colors.ts";
 import { buildItemTagIndex, deriveFamily } from "./family.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
+import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
+import { slugify } from "../../src/utils/slugify.ts";
 import type {
   Item,
   ItemsOutput,
@@ -25,6 +28,8 @@ export interface GenerateInput {
   enUs: Record<string, string>;
   /** Whether a texture ref (e.g. "block/oak_log_top") exists on disk. Injected so this stays I/O-free. */
   textureExists: (ref: string) => boolean;
+  /** Whether vendor/bedrock-samples has a bed icon PNG for this Bedrock color name (see scripts/lib/bedrock-colors.ts). Injected so this stays I/O-free. */
+  bedrockBedIconExists: (bedrockColorName: string) => boolean;
 }
 
 export interface GenerateOutput {
@@ -37,6 +42,8 @@ export interface GenerateOutput {
   bannerIconsToSynthesize: Map<string, string>;
   /** Source atlas texture ref -> destination texture ref, for lightning rod icons the caller must generate (see scripts/lib/lightning-rod-icon.ts). Keyed by source so oxidation variants sharing one atlas only synthesize once. */
   lightningRodIconsToSynthesize: Map<string, string>;
+  /** Java colorId -> Bedrock source filename suffix, for bed icons the caller must copy from vendor/bedrock-samples (see scripts/parse.ts). */
+  bedIconsToCopy: Map<string, string>;
 }
 
 /**
@@ -55,20 +62,25 @@ export function generate(input: GenerateInput): GenerateOutput {
     componentsRaw,
     enUs,
     textureExists,
+    bedrockBedIconExists,
   } = input;
 
   const recipes: RecipesOutput = {};
   const counts = { shaped: 0, shapeless: 0, transmute: 0, special: 0 };
   const itemTagIndex = buildItemTagIndex(tagsRaw);
+  const fallbackFamilyItems: string[] = [];
 
   for (const [id, raw] of Object.entries(recipesRaw)) {
     const transformed = transformRecipe(id, raw, tagsRaw);
     if (!transformed) continue;
-    const family = deriveFamily(
+    const { family, usedFallback } = deriveFamily(
       { itemId: transformed.result?.id, group: transformed.group, category: transformed.category },
       itemTagIndex,
     );
-    const recipe = { ...transformed, family };
+    if (usedFallback) fallbackFamilyItems.push(transformed.result?.id ?? id);
+    const resultId = transformed.result?.id ?? id;
+    const slug = slugify(deriveRecipeSlugSource(id, resultId));
+    const recipe = { ...transformed, family, slug };
     recipes[id] = recipe;
     counts[recipe.type] += 1;
   }
@@ -82,6 +94,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const texturesToCopy = new Set<string>();
   const bannerIconsToSynthesize = new Map<string, string>();
   const lightningRodIconsToSynthesize = new Map<string, string>();
+  const bedIconsToCopy = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -98,6 +111,23 @@ export function generate(input: GenerateInput): GenerateOutput {
       const ref = `item/${baseName}`;
       icon = { type: "flat", texture: `/textures/${ref}.png` };
       lightningRodIconsToSynthesize.set(candidate.textureRef, ref);
+    } else if (
+      candidate?.type === "bed" &&
+      bedrockBedIconExists(toBedrockColorName(candidate.colorId))
+    ) {
+      const ref = `item/bed_${candidate.colorId}`;
+      icon = { type: "flat", texture: `/textures/${ref}.png` };
+      bedIconsToCopy.set(candidate.colorId, toBedrockColorName(candidate.colorId));
+    } else if (
+      (candidate?.type === "pressure_plate" ||
+        candidate?.type === "wall" ||
+        candidate?.type === "button" ||
+        candidate?.type === "fence" ||
+        candidate?.type === "fence_gate") &&
+      textureExists(candidate.textureRef)
+    ) {
+      icon = { type: candidate.type, texture: `/textures/${candidate.textureRef}.png` };
+      texturesToCopy.add(candidate.textureRef);
     } else if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
@@ -119,8 +149,14 @@ export function generate(input: GenerateInput): GenerateOutput {
     }
 
     const stat = resolveItemStat(itemId, componentsRaw, tagsRaw);
+    // Derived from `id`, not `name` -- several items share a display name
+    // (every smithing template is just "Smithing Template"), so only the id
+    // guarantees a unique URL segment.
+    const slug = slugify(itemId);
 
-    items[itemId] = stat ? { id: itemId, name, icon, stat } : { id: itemId, name, icon };
+    items[itemId] = stat
+      ? { id: itemId, name, slug, icon, stat }
+      : { id: itemId, name, slug, icon };
   }
 
   const meta: Meta = {
@@ -131,6 +167,7 @@ export function generate(input: GenerateInput): GenerateOutput {
       texturesCopied: texturesToCopy.size,
     },
     unresolvedIcons: unresolvedIcons.toSorted(),
+    fallbackFamilyItems: fallbackFamilyItems.toSorted(),
   };
 
   return {
@@ -140,5 +177,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     texturesToCopy,
     bannerIconsToSynthesize,
     lightningRodIconsToSynthesize,
+    bedIconsToCopy,
   };
 }

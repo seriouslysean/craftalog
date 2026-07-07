@@ -3,8 +3,23 @@
  *
  * "Raw*" types describe the shape of the vendored mcmeta-summary JSON
  * (loosely typed, since the upstream data isn't ours to guarantee). The
- * remaining types mirror the generated data contract in docs/PLAN.md.
+ * generated-contract types below are derived from the zod schemas in
+ * src/data/generated-schema.ts (the single source of truth for the shape
+ * described in docs/PLAN.md) via `import type` + `z.infer`, so this file
+ * carries zero runtime dependency on `astro`/zod — `tsx` erases type-only
+ * imports entirely, preserving the boundary tsconfig.json's `exclude`
+ * comment protects (no @types/node-shaped dependency creep into the Astro
+ * type-checked surface, and vice versa).
  */
+import type { z } from "astro/zod";
+import type {
+  iconSchema,
+  ingredientSchema,
+  itemSchema,
+  itemStatSchema,
+  recipeResultSchema,
+  recipeSchema,
+} from "../../src/data/generated-schema.ts";
 
 // ---------------------------------------------------------------------------
 // Raw mcmeta input types
@@ -84,62 +99,26 @@ export type RawItemComponentsData = Record<string, RawItemComponents>;
 // Generated data contract (see docs/PLAN.md "Generated data contract")
 // ---------------------------------------------------------------------------
 
-export interface Ingredient {
-  items: string[];
-  tag?: string;
-}
+export type Ingredient = z.infer<typeof ingredientSchema>;
+export type RecipeResult = z.infer<typeof recipeResultSchema>;
 
-export interface RecipeResult {
-  id: string;
-  count: number;
-}
+/** Derived taxonomy label for browsing (see scripts/lib/family.ts) — always present on `Recipe.family`. */
+export type Recipe = z.infer<typeof recipeSchema>;
 
-export type RecipeType = "shaped" | "shapeless" | "transmute" | "special";
-
-export interface Recipe {
-  id: string;
-  type: RecipeType;
-  category: string;
-  /** Derived taxonomy label for browsing (see scripts/lib/family.ts) — always present. */
-  family: string;
-  group?: string;
-  // Optional in practice only for crafting_special_repairitem, which has no
-  // fixed result in the vendored data (see scripts/lib/recipes.ts).
-  result?: RecipeResult;
-  // shaped only
-  pattern?: string[];
-  key?: Record<string, Ingredient>;
-  // shapeless + transmute
-  ingredients?: Ingredient[];
-  // special only
-  note?: string;
-}
+export type RecipeType = Recipe["type"];
 
 export type RecipesOutput = Record<string, Recipe>;
 
-export type IconOutput =
-  | { type: "flat"; texture: string }
-  | { type: "block"; top: string; side: string }
-  | { type: "slab"; top: string; side: string }
-  | { type: "stairs"; top: string; side: string };
+export type IconOutput = z.infer<typeof iconSchema>;
 
 /**
  * A single defining gameplay stat for an item, shown on its recipe page.
  * At most one per item, chosen by priority in scripts/lib/item-stats.ts:
  * food > armor > weapon > tool. Most items (building blocks, etc.) have none.
  */
-export type ItemStat =
-  | { type: "food"; nutrition: number }
-  | { type: "armor"; points: number }
-  | { type: "weapon"; damage: number }
-  | { type: "tool"; durability: number };
+export type ItemStat = z.infer<typeof itemStatSchema>;
 
-export interface Item {
-  id: string;
-  name: string;
-  icon: IconOutput;
-  stat?: ItemStat;
-}
+export type Item = z.infer<typeof itemSchema>;
 
 export type ItemsOutput = Record<string, Item>;
 
@@ -154,4 +133,6 @@ export interface Meta {
     texturesCopied: number;
   };
   unresolvedIcons: string[];
+  /** Result item ids whose family fell through to the category fallback (see scripts/lib/family.ts's `deriveFamily`) -- surfaces taxonomy gaps in a version-bump PR diff instead of silently bucketing them. */
+  fallbackFamilyItems: string[];
 }

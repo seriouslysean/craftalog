@@ -1,18 +1,23 @@
 import { PNG } from "pngjs";
 
 /**
- * Banner colors render in-game via a 3D model: a single grayscale template
- * (`entity/banner/banner_base.png`) tinted per dye color, plus optional
- * pattern layers. Plain colored banners have no patterns, so cropping the
- * template's front-facing region and tinting it with the dye's color
- * reproduces the in-game look as a flat icon.
+ * Banner colors render in-game via a 3D model (`BannerFlagModel`), not a flat
+ * sprite: a 20x40x1 flag cuboid textured from `entity/banner/banner_base.png`
+ * via the standard box UV unwrap (`texOffs(0, 0).addBox(-10, 0, -2, 20, 40, 1)`
+ * in the decompiled model source), tinted per dye color, plus optional pattern
+ * layers. Plain colored banners have no patterns, so cropping just the flag's
+ * front face out of that unwrap and tinting it with the dye's color reproduces
+ * the in-game look as a flat icon.
  *
- * The front-facing flag (plus its bottom fringe) occupies the left portion
- * of the 64x64 template; the remaining width holds the pole/edge faces used
- * for the 3D model and isn't part of the flat icon.
+ * A box's front face sits at the unwrap origin offset by the box's own depth
+ * (1px) on both axes, sized to the box's width x height (20x40) -- the rest of
+ * the 64x64 template holds the flag's other faces plus the crossbar/pole
+ * geometry, none of which belong in a flat icon crop. The true aspect ratio
+ * (1:2, tall) only comes through once the crop stops at the front face; the
+ * previous alpha-bounding-box approach swept up the adjacent back/side faces
+ * too (they're opaque and touch the front face with no gap), which is why the
+ * generated icon used to come out ~square instead of banner-shaped.
  */
-const FRONT_FACE_SEARCH_WIDTH = 44;
-
 interface BoundingBox {
   minX: number;
   minY: number;
@@ -20,25 +25,7 @@ interface BoundingBox {
   height: number;
 }
 
-function opaqueBoundingBox(png: PNG, searchWidth: number): BoundingBox {
-  let minX = Infinity;
-  let maxX = -Infinity;
-  let minY = Infinity;
-  let maxY = -Infinity;
-
-  for (let y = 0; y < png.height; y += 1) {
-    for (let x = 0; x < Math.min(searchWidth, png.width); x += 1) {
-      const alpha = png.data[(png.width * y + x) * 4 + 3];
-      if (alpha === 0) continue;
-      if (x < minX) minX = x;
-      if (x > maxX) maxX = x;
-      if (y < minY) minY = y;
-      if (y > maxY) maxY = y;
-    }
-  }
-
-  return { minX, minY, width: maxX - minX + 1, height: maxY - minY + 1 };
-}
+const FLAG_FRONT_FACE: BoundingBox = { minX: 1, minY: 1, width: 20, height: 40 };
 
 function crop(png: PNG, box: BoundingBox): PNG {
   const cropped = new PNG({ width: box.width, height: box.height });
@@ -77,15 +64,14 @@ function tint(png: PNG, [tintR, tintG, tintB]: [number, number, number]): void {
 
 /**
  * Generates a flat banner icon by cropping the vanilla banner template to
- * its front-facing region and tinting it with the wool texture's average
+ * the flag's front face and tinting it with the wool texture's average
  * color for the same dye color.
  */
 export function generateBannerIcon(bannerBasePng: Buffer, woolPng: Buffer): Buffer {
   const base = PNG.sync.read(bannerBasePng);
   const wool = PNG.sync.read(woolPng);
 
-  const box = opaqueBoundingBox(base, FRONT_FACE_SEARCH_WIDTH);
-  const icon = crop(base, box);
+  const icon = crop(base, FLAG_FRONT_FACE);
   tint(icon, averageOpaqueColor(wool));
 
   return PNG.sync.write(icon);

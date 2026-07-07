@@ -19,6 +19,7 @@
       "count": 1,
       "id": "acacia_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_button": {
@@ -37,6 +38,7 @@
       "count": 1,
       "id": "acacia_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "acacia_chest_boat": {
@@ -60,6 +62,7 @@
       "count": 1,
       "id": "acacia_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "acacia_door": {
@@ -83,6 +86,7 @@
       "count": 3,
       "id": "acacia_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_fence": {
@@ -110,6 +114,7 @@
       "count": 3,
       "id": "acacia_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_fence_gate": {
@@ -137,6 +142,7 @@
       "count": 1,
       "id": "acacia_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_hanging_sign": {
@@ -165,6 +171,7 @@
       "count": 6,
       "id": "acacia_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_planks": {
@@ -187,6 +194,7 @@
       "count": 4,
       "id": "acacia_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "acacia_pressure_plate": {
@@ -208,6 +216,7 @@
       "count": 1,
       "id": "acacia_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_shelf": {
@@ -231,6 +240,7 @@
       "count": 6,
       "id": "acacia_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_sign": {
@@ -259,6 +269,7 @@
       "count": 3,
       "id": "acacia_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_slab": {
@@ -280,6 +291,7 @@
       "count": 6,
       "id": "acacia_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_stairs": {
@@ -303,6 +315,7 @@
       "count": 4,
       "id": "acacia_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_trapdoor": {
@@ -325,6 +338,7 @@
       "count": 2,
       "id": "acacia_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "acacia_wood": {
@@ -347,6 +361,7 @@
       "count": 3,
       "id": "acacia_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "activator_rail": {
@@ -379,6 +394,7 @@
       "count": 6,
       "id": "activator_rail"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "amethyst_block": {
@@ -400,6 +416,7 @@
       "count": 1,
       "id": "amethyst_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "andesite": {
@@ -422,6 +439,7 @@
       "count": 2,
       "id": "andesite"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "andesite_slab": {
@@ -442,6 +460,7 @@
       "count": 6,
       "id": "andesite_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "andesite_stairs": {
@@ -464,6 +483,7 @@
       "count": 4,
       "id": "andesite_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "andesite_wall": {
@@ -485,6 +505,7 @@
       "count": 6,
       "id": "andesite_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "anvil": {
@@ -512,6 +533,7 @@
       "count": 1,
       "id": "anvil"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "armor_stand": {
@@ -539,6 +561,7 @@
       "count": 1,
       "id": "armor_stand"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "arrow": {
@@ -571,6 +594,7 @@
       "count": 4,
       "id": "arrow"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_block": {
@@ -628,6 +652,7 @@
       "count": 1,
       "id": "bamboo_block"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "bamboo_button": {
@@ -646,6 +671,7 @@
       "count": 1,
       "id": "bamboo_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "bamboo_chest_raft": {
@@ -669,6 +695,7 @@
       "count": 1,
       "id": "bamboo_chest_raft"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "bamboo_door": {
@@ -692,6 +719,7 @@
       "count": 3,
       "id": "bamboo_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_fence": {
@@ -719,6 +747,7 @@
       "count": 3,
       "id": "bamboo_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_fence_gate": {
@@ -746,6 +775,7 @@
       "count": 1,
       "id": "bamboo_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_hanging_sign": {
@@ -774,6 +804,7 @@
       "count": 6,
       "id": "bamboo_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_mosaic": {
@@ -795,6 +826,7 @@
       "count": 1,
       "id": "bamboo_mosaic"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_mosaic_slab": {
@@ -815,6 +847,7 @@
       "count": 6,
       "id": "bamboo_mosaic_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_mosaic_stairs": {
@@ -837,6 +870,7 @@
       "count": 4,
       "id": "bamboo_mosaic_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_planks": {
@@ -857,6 +891,7 @@
       "count": 2,
       "id": "bamboo_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "bamboo_pressure_plate": {
@@ -878,6 +913,7 @@
       "count": 1,
       "id": "bamboo_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_raft": {
@@ -900,6 +936,7 @@
       "count": 1,
       "id": "bamboo_raft"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_shelf": {
@@ -923,6 +960,7 @@
       "count": 6,
       "id": "bamboo_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_sign": {
@@ -951,6 +989,7 @@
       "count": 3,
       "id": "bamboo_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_slab": {
@@ -972,6 +1011,7 @@
       "count": 6,
       "id": "bamboo_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_stairs": {
@@ -995,6 +1035,7 @@
       "count": 4,
       "id": "bamboo_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bamboo_trapdoor": {
@@ -1017,6 +1058,7 @@
       "count": 2,
       "id": "bamboo_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "barrel": {
@@ -1068,6 +1110,7 @@
       "count": 1,
       "id": "barrel"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "beacon": {
@@ -1100,6 +1143,7 @@
       "count": 1,
       "id": "beacon"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "beehive": {
@@ -1139,6 +1183,7 @@
       "count": 1,
       "id": "beehive"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "beetroot_soup": {
@@ -1186,6 +1231,7 @@
       "count": 1,
       "id": "beetroot_soup"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "birch_boat": {
@@ -1208,6 +1254,7 @@
       "count": 1,
       "id": "birch_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_button": {
@@ -1226,6 +1273,7 @@
       "count": 1,
       "id": "birch_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "birch_chest_boat": {
@@ -1249,6 +1297,7 @@
       "count": 1,
       "id": "birch_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "birch_door": {
@@ -1272,6 +1321,7 @@
       "count": 3,
       "id": "birch_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_fence": {
@@ -1299,6 +1349,7 @@
       "count": 3,
       "id": "birch_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_fence_gate": {
@@ -1326,6 +1377,7 @@
       "count": 1,
       "id": "birch_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_hanging_sign": {
@@ -1354,6 +1406,7 @@
       "count": 6,
       "id": "birch_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_planks": {
@@ -1376,6 +1429,7 @@
       "count": 4,
       "id": "birch_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "birch_pressure_plate": {
@@ -1397,6 +1451,7 @@
       "count": 1,
       "id": "birch_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_shelf": {
@@ -1420,6 +1475,7 @@
       "count": 6,
       "id": "birch_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_sign": {
@@ -1448,6 +1504,7 @@
       "count": 3,
       "id": "birch_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_slab": {
@@ -1469,6 +1526,7 @@
       "count": 6,
       "id": "birch_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_stairs": {
@@ -1492,6 +1550,7 @@
       "count": 4,
       "id": "birch_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_trapdoor": {
@@ -1514,6 +1573,7 @@
       "count": 2,
       "id": "birch_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "birch_wood": {
@@ -1536,6 +1596,7 @@
       "count": 3,
       "id": "birch_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "black_banner": {
@@ -1564,6 +1625,7 @@
       "count": 1,
       "id": "black_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "black_banner_duplicate": {
@@ -1575,6 +1637,7 @@
       "count": 1,
       "id": "black_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "black_bed": {
@@ -1614,6 +1677,7 @@
       "count": 1,
       "id": "black_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "black_bundle": {
@@ -1654,6 +1718,7 @@
       "count": 1,
       "id": "black_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "black_candle": {
@@ -1677,6 +1742,7 @@
       "count": 1,
       "id": "black_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "black_carpet": {
@@ -1698,6 +1764,7 @@
       "count": 3,
       "id": "black_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "black_concrete_powder": {
@@ -1756,6 +1823,7 @@
       "count": 8,
       "id": "black_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "black_dye": {
@@ -1774,6 +1842,7 @@
       "count": 1,
       "id": "black_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "black_dye_from_wither_rose": {
@@ -1792,6 +1861,7 @@
       "count": 1,
       "id": "black_dye"
     },
+    "slug": "from-wither-rose",
     "type": "shapeless"
   },
   "black_harness": {
@@ -1824,6 +1894,7 @@
       "count": 1,
       "id": "black_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "black_shulker_box": {
@@ -1864,6 +1935,7 @@
       "count": 1,
       "id": "black_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "black_stained_glass": {
@@ -1892,6 +1964,7 @@
       "count": 8,
       "id": "black_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "black_stained_glass_pane": {
@@ -1914,6 +1987,7 @@
       "count": 16,
       "id": "black_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "black_stained_glass_pane_from_glass_pane": {
@@ -1942,6 +2016,7 @@
       "count": 8,
       "id": "black_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "black_terracotta": {
@@ -1970,6 +2045,7 @@
       "count": 8,
       "id": "black_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blackstone_slab": {
@@ -1990,6 +2066,7 @@
       "count": 6,
       "id": "blackstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blackstone_stairs": {
@@ -2012,6 +2089,7 @@
       "count": 4,
       "id": "blackstone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blackstone_wall": {
@@ -2033,6 +2111,7 @@
       "count": 6,
       "id": "blackstone_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blast_furnace": {
@@ -2065,6 +2144,7 @@
       "count": 1,
       "id": "blast_furnace"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blaze_powder": {
@@ -2082,6 +2162,7 @@
       "count": 2,
       "id": "blaze_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "blue_banner": {
@@ -2110,6 +2191,7 @@
       "count": 1,
       "id": "blue_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blue_banner_duplicate": {
@@ -2121,6 +2203,7 @@
       "count": 1,
       "id": "blue_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "blue_bed": {
@@ -2160,6 +2243,7 @@
       "count": 1,
       "id": "blue_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blue_bundle": {
@@ -2200,6 +2284,7 @@
       "count": 1,
       "id": "blue_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "blue_candle": {
@@ -2223,6 +2308,7 @@
       "count": 1,
       "id": "blue_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "blue_carpet": {
@@ -2244,6 +2330,7 @@
       "count": 3,
       "id": "blue_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blue_concrete_powder": {
@@ -2302,6 +2389,7 @@
       "count": 8,
       "id": "blue_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "blue_dye": {
@@ -2320,6 +2408,7 @@
       "count": 1,
       "id": "blue_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "blue_dye_from_cornflower": {
@@ -2338,6 +2427,7 @@
       "count": 1,
       "id": "blue_dye"
     },
+    "slug": "from-cornflower",
     "type": "shapeless"
   },
   "blue_harness": {
@@ -2370,6 +2460,7 @@
       "count": 1,
       "id": "blue_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blue_ice": {
@@ -2427,6 +2518,7 @@
       "count": 1,
       "id": "blue_ice"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "blue_shulker_box": {
@@ -2467,6 +2559,7 @@
       "count": 1,
       "id": "blue_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "blue_stained_glass": {
@@ -2495,6 +2588,7 @@
       "count": 8,
       "id": "blue_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blue_stained_glass_pane": {
@@ -2517,6 +2611,7 @@
       "count": 16,
       "id": "blue_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "blue_stained_glass_pane_from_glass_pane": {
@@ -2545,6 +2640,7 @@
       "count": 8,
       "id": "blue_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "blue_terracotta": {
@@ -2573,6 +2669,7 @@
       "count": 8,
       "id": "blue_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bolt_armor_trim_smithing_template": {
@@ -2606,6 +2703,7 @@
       "count": 2,
       "id": "bolt_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bone_block": {
@@ -2628,6 +2726,7 @@
       "count": 1,
       "id": "bone_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bone_meal": {
@@ -2646,6 +2745,7 @@
       "count": 3,
       "id": "bone_meal"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "bone_meal_from_bone_block": {
@@ -2664,6 +2764,7 @@
       "count": 9,
       "id": "bone_meal"
     },
+    "slug": "from-bone-block",
     "type": "shapeless"
   },
   "book": {
@@ -2696,6 +2797,7 @@
       "count": 1,
       "id": "book"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "book_cloning": {
@@ -2707,6 +2809,7 @@
       "count": 1,
       "id": "written_book"
     },
+    "slug": "book-cloning",
     "type": "special"
   },
   "bookshelf": {
@@ -2746,6 +2849,7 @@
       "count": 1,
       "id": "bookshelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bordure_indented_banner_pattern": {
@@ -2768,6 +2872,7 @@
       "count": 1,
       "id": "bordure_indented_banner_pattern"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "bow": {
@@ -2795,6 +2900,7 @@
       "count": 1,
       "id": "bow"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bowl": {
@@ -2828,6 +2934,7 @@
       "count": 4,
       "id": "bowl"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bread": {
@@ -2848,6 +2955,7 @@
       "count": 1,
       "id": "bread"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brewing_stand": {
@@ -2877,6 +2985,7 @@
       "count": 1,
       "id": "brewing_stand"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brick_slab": {
@@ -2897,6 +3006,7 @@
       "count": 6,
       "id": "brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brick_stairs": {
@@ -2919,6 +3029,7 @@
       "count": 4,
       "id": "brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brick_wall": {
@@ -2940,6 +3051,7 @@
       "count": 6,
       "id": "brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bricks": {
@@ -2961,6 +3073,7 @@
       "count": 1,
       "id": "bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brown_banner": {
@@ -2989,6 +3102,7 @@
       "count": 1,
       "id": "brown_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brown_banner_duplicate": {
@@ -3000,6 +3114,7 @@
       "count": 1,
       "id": "brown_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "brown_bed": {
@@ -3039,6 +3154,7 @@
       "count": 1,
       "id": "brown_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brown_bundle": {
@@ -3079,6 +3195,7 @@
       "count": 1,
       "id": "brown_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "brown_candle": {
@@ -3102,6 +3219,7 @@
       "count": 1,
       "id": "brown_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "brown_carpet": {
@@ -3123,6 +3241,7 @@
       "count": 3,
       "id": "brown_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brown_concrete_powder": {
@@ -3181,6 +3300,7 @@
       "count": 8,
       "id": "brown_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "brown_dye": {
@@ -3199,6 +3319,7 @@
       "count": 1,
       "id": "brown_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "brown_harness": {
@@ -3231,6 +3352,7 @@
       "count": 1,
       "id": "brown_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brown_shulker_box": {
@@ -3271,6 +3393,7 @@
       "count": 1,
       "id": "brown_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "brown_stained_glass": {
@@ -3299,6 +3422,7 @@
       "count": 8,
       "id": "brown_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brown_stained_glass_pane": {
@@ -3321,6 +3445,7 @@
       "count": 16,
       "id": "brown_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brown_stained_glass_pane_from_glass_pane": {
@@ -3349,6 +3474,7 @@
       "count": 8,
       "id": "brown_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "brown_terracotta": {
@@ -3377,6 +3503,7 @@
       "count": 8,
       "id": "brown_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "brush": {
@@ -3409,6 +3536,7 @@
       "count": 1,
       "id": "brush"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bucket": {
@@ -3430,6 +3558,7 @@
       "count": 1,
       "id": "bucket"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "bundle": {
@@ -3456,6 +3585,7 @@
       "count": 1,
       "id": "bundle"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cake": {
@@ -3496,6 +3626,7 @@
       "count": 1,
       "id": "cake"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "calibrated_sculk_sensor": {
@@ -3522,6 +3653,7 @@
       "count": 1,
       "id": "calibrated_sculk_sensor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "campfire": {
@@ -3600,6 +3732,7 @@
       "count": 1,
       "id": "campfire"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "candle": {
@@ -3626,6 +3759,7 @@
       "count": 1,
       "id": "candle"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "carrot_on_a_stick": {
@@ -3652,6 +3786,7 @@
       "count": 1,
       "id": "carrot_on_a_stick"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cartography_table": {
@@ -3691,6 +3826,7 @@
       "count": 1,
       "id": "cartography_table"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cauldron": {
@@ -3713,6 +3849,7 @@
       "count": 1,
       "id": "cauldron"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_boat": {
@@ -3735,6 +3872,7 @@
       "count": 1,
       "id": "cherry_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_button": {
@@ -3753,6 +3891,7 @@
       "count": 1,
       "id": "cherry_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "cherry_chest_boat": {
@@ -3776,6 +3915,7 @@
       "count": 1,
       "id": "cherry_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "cherry_door": {
@@ -3799,6 +3939,7 @@
       "count": 3,
       "id": "cherry_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_fence": {
@@ -3826,6 +3967,7 @@
       "count": 3,
       "id": "cherry_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_fence_gate": {
@@ -3853,6 +3995,7 @@
       "count": 1,
       "id": "cherry_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_hanging_sign": {
@@ -3881,6 +4024,7 @@
       "count": 6,
       "id": "cherry_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_planks": {
@@ -3903,6 +4047,7 @@
       "count": 4,
       "id": "cherry_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "cherry_pressure_plate": {
@@ -3924,6 +4069,7 @@
       "count": 1,
       "id": "cherry_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_shelf": {
@@ -3947,6 +4093,7 @@
       "count": 6,
       "id": "cherry_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_sign": {
@@ -3975,6 +4122,7 @@
       "count": 3,
       "id": "cherry_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_slab": {
@@ -3996,6 +4144,7 @@
       "count": 6,
       "id": "cherry_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_stairs": {
@@ -4019,6 +4168,7 @@
       "count": 4,
       "id": "cherry_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_trapdoor": {
@@ -4041,6 +4191,7 @@
       "count": 2,
       "id": "cherry_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cherry_wood": {
@@ -4063,6 +4214,7 @@
       "count": 3,
       "id": "cherry_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chest": {
@@ -4097,6 +4249,7 @@
       "count": 1,
       "id": "chest"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chest_minecart": {
@@ -4119,6 +4272,7 @@
       "count": 1,
       "id": "chest_minecart"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "chiseled_bookshelf": {
@@ -4170,6 +4324,7 @@
       "count": 1,
       "id": "chiseled_bookshelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_cinnabar": {
@@ -4191,6 +4346,7 @@
       "count": 1,
       "id": "chiseled_cinnabar"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_copper": {
@@ -4212,6 +4368,7 @@
       "count": 1,
       "id": "chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_deepslate": {
@@ -4233,6 +4390,7 @@
       "count": 1,
       "id": "chiseled_deepslate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_nether_bricks": {
@@ -4254,6 +4412,7 @@
       "count": 1,
       "id": "chiseled_nether_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_polished_blackstone": {
@@ -4275,6 +4434,7 @@
       "count": 1,
       "id": "chiseled_polished_blackstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_quartz_block": {
@@ -4296,6 +4456,7 @@
       "count": 1,
       "id": "chiseled_quartz_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_red_sandstone": {
@@ -4317,6 +4478,7 @@
       "count": 1,
       "id": "chiseled_red_sandstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_resin_bricks": {
@@ -4338,6 +4500,7 @@
       "count": 1,
       "id": "chiseled_resin_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_sandstone": {
@@ -4359,6 +4522,7 @@
       "count": 1,
       "id": "chiseled_sandstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_stone_bricks": {
@@ -4380,6 +4544,7 @@
       "count": 1,
       "id": "chiseled_stone_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_sulfur": {
@@ -4401,6 +4566,7 @@
       "count": 1,
       "id": "chiseled_sulfur"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_tuff": {
@@ -4422,6 +4588,7 @@
       "count": 1,
       "id": "chiseled_tuff"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "chiseled_tuff_bricks": {
@@ -4443,6 +4610,7 @@
       "count": 1,
       "id": "chiseled_tuff_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cinnabar_brick_slab": {
@@ -4463,6 +4631,7 @@
       "count": 6,
       "id": "cinnabar_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cinnabar_brick_stairs": {
@@ -4485,6 +4654,7 @@
       "count": 4,
       "id": "cinnabar_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cinnabar_brick_wall": {
@@ -4506,6 +4676,7 @@
       "count": 6,
       "id": "cinnabar_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cinnabar_bricks": {
@@ -4527,6 +4698,7 @@
       "count": 4,
       "id": "cinnabar_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cinnabar_slab": {
@@ -4547,6 +4719,7 @@
       "count": 6,
       "id": "cinnabar_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cinnabar_stairs": {
@@ -4569,6 +4742,7 @@
       "count": 4,
       "id": "cinnabar_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cinnabar_wall": {
@@ -4590,6 +4764,7 @@
       "count": 6,
       "id": "cinnabar_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "clay": {
@@ -4611,6 +4786,7 @@
       "count": 1,
       "id": "clay"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "clock": {
@@ -4638,6 +4814,7 @@
       "count": 1,
       "id": "clock"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "coal": {
@@ -4655,6 +4832,7 @@
       "count": 9,
       "id": "coal"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "coal_block": {
@@ -4677,6 +4855,7 @@
       "count": 1,
       "id": "coal_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "coarse_dirt": {
@@ -4703,6 +4882,7 @@
       "count": 4,
       "id": "coarse_dirt"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "coast_armor_trim_smithing_template": {
@@ -4735,6 +4915,7 @@
       "count": 2,
       "id": "coast_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cobbled_deepslate_slab": {
@@ -4755,6 +4936,7 @@
       "count": 6,
       "id": "cobbled_deepslate_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cobbled_deepslate_stairs": {
@@ -4777,6 +4959,7 @@
       "count": 4,
       "id": "cobbled_deepslate_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cobbled_deepslate_wall": {
@@ -4798,6 +4981,7 @@
       "count": 6,
       "id": "cobbled_deepslate_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cobblestone_slab": {
@@ -4818,6 +5002,7 @@
       "count": 6,
       "id": "cobblestone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cobblestone_stairs": {
@@ -4840,6 +5025,7 @@
       "count": 4,
       "id": "cobblestone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cobblestone_wall": {
@@ -4861,6 +5047,7 @@
       "count": 6,
       "id": "cobblestone_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "comparator": {
@@ -4893,6 +5080,7 @@
       "count": 1,
       "id": "comparator"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "compass": {
@@ -4920,6 +5108,7 @@
       "count": 1,
       "id": "compass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "composter": {
@@ -4954,6 +5143,7 @@
       "count": 1,
       "id": "composter"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "conduit": {
@@ -4981,6 +5171,7 @@
       "count": 1,
       "id": "conduit"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cookie": {
@@ -5006,6 +5197,7 @@
       "count": 8,
       "id": "cookie"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_axe": {
@@ -5034,6 +5226,7 @@
       "count": 1,
       "id": "copper_axe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_bars": {
@@ -5055,6 +5248,7 @@
       "count": 16,
       "id": "copper_bars"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_block": {
@@ -5077,6 +5271,7 @@
       "count": 1,
       "id": "copper_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_boots": {
@@ -5098,6 +5293,7 @@
       "count": 1,
       "id": "copper_boots"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_bulb": {
@@ -5131,6 +5327,7 @@
       "count": 4,
       "id": "copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_chain": {
@@ -5158,6 +5355,7 @@
       "count": 1,
       "id": "copper_chain"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_chest": {
@@ -5185,6 +5383,7 @@
       "count": 1,
       "id": "copper_chest"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_chestplate": {
@@ -5207,6 +5406,7 @@
       "count": 1,
       "id": "copper_chestplate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_door": {
@@ -5229,6 +5429,7 @@
       "count": 3,
       "id": "copper_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_grate": {
@@ -5252,6 +5453,7 @@
       "count": 4,
       "id": "copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_helmet": {
@@ -5273,6 +5475,7 @@
       "count": 1,
       "id": "copper_helmet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_hoe": {
@@ -5301,6 +5504,7 @@
       "count": 1,
       "id": "copper_hoe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_ingot": {
@@ -5319,6 +5523,7 @@
       "count": 9,
       "id": "copper_ingot"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "copper_ingot_from_nuggets": {
@@ -5342,6 +5547,7 @@
       "count": 1,
       "id": "copper_ingot"
     },
+    "slug": "from-nuggets",
     "type": "shaped"
   },
   "copper_ingot_from_waxed_copper_block": {
@@ -5360,6 +5566,7 @@
       "count": 9,
       "id": "copper_ingot"
     },
+    "slug": "from-waxed-copper-block",
     "type": "shapeless"
   },
   "copper_lantern": {
@@ -5387,6 +5594,7 @@
       "count": 1,
       "id": "copper_lantern"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_leggings": {
@@ -5409,6 +5617,7 @@
       "count": 1,
       "id": "copper_leggings"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_nugget": {
@@ -5426,6 +5635,7 @@
       "count": 9,
       "id": "copper_nugget"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "copper_pickaxe": {
@@ -5454,6 +5664,7 @@
       "count": 1,
       "id": "copper_pickaxe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_shovel": {
@@ -5482,6 +5693,7 @@
       "count": 1,
       "id": "copper_shovel"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_spear": {
@@ -5510,6 +5722,7 @@
       "count": 1,
       "id": "copper_spear"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_sword": {
@@ -5538,6 +5751,7 @@
       "count": 1,
       "id": "copper_sword"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_torch": {
@@ -5571,6 +5785,7 @@
       "count": 4,
       "id": "copper_torch"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "copper_trapdoor": {
@@ -5592,6 +5807,7 @@
       "count": 1,
       "id": "copper_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crafter": {
@@ -5629,6 +5845,7 @@
       "count": 1,
       "id": "crafter"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crafting_table": {
@@ -5662,6 +5879,7 @@
       "count": 1,
       "id": "crafting_table"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "creaking_heart": {
@@ -5689,6 +5907,7 @@
       "count": 1,
       "id": "creaking_heart"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "creeper_banner_pattern": {
@@ -5711,6 +5930,7 @@
       "count": 1,
       "id": "creeper_banner_pattern"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "crimson_button": {
@@ -5729,6 +5949,7 @@
       "count": 1,
       "id": "crimson_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "crimson_door": {
@@ -5752,6 +5973,7 @@
       "count": 3,
       "id": "crimson_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_fence": {
@@ -5779,6 +6001,7 @@
       "count": 3,
       "id": "crimson_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_fence_gate": {
@@ -5806,6 +6029,7 @@
       "count": 1,
       "id": "crimson_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_hanging_sign": {
@@ -5834,6 +6058,7 @@
       "count": 6,
       "id": "crimson_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_hyphae": {
@@ -5856,6 +6081,7 @@
       "count": 3,
       "id": "crimson_hyphae"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_planks": {
@@ -5878,6 +6104,7 @@
       "count": 4,
       "id": "crimson_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "crimson_pressure_plate": {
@@ -5899,6 +6126,7 @@
       "count": 1,
       "id": "crimson_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_shelf": {
@@ -5922,6 +6150,7 @@
       "count": 6,
       "id": "crimson_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_sign": {
@@ -5950,6 +6179,7 @@
       "count": 3,
       "id": "crimson_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_slab": {
@@ -5971,6 +6201,7 @@
       "count": 6,
       "id": "crimson_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_stairs": {
@@ -5994,6 +6225,7 @@
       "count": 4,
       "id": "crimson_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crimson_trapdoor": {
@@ -6016,6 +6248,7 @@
       "count": 2,
       "id": "crimson_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "crossbow": {
@@ -6053,6 +6286,7 @@
       "count": 1,
       "id": "crossbow"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cut_copper": {
@@ -6074,6 +6308,7 @@
       "count": 4,
       "id": "cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cut_copper_slab": {
@@ -6094,6 +6329,7 @@
       "count": 6,
       "id": "cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cut_copper_stairs": {
@@ -6116,6 +6352,7 @@
       "count": 4,
       "id": "cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cut_red_sandstone": {
@@ -6137,6 +6374,7 @@
       "count": 4,
       "id": "cut_red_sandstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cut_red_sandstone_slab": {
@@ -6157,6 +6395,7 @@
       "count": 6,
       "id": "cut_red_sandstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cut_sandstone": {
@@ -6178,6 +6417,7 @@
       "count": 4,
       "id": "cut_sandstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cut_sandstone_slab": {
@@ -6198,6 +6438,7 @@
       "count": 6,
       "id": "cut_sandstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cyan_banner": {
@@ -6226,6 +6467,7 @@
       "count": 1,
       "id": "cyan_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cyan_banner_duplicate": {
@@ -6237,6 +6479,7 @@
       "count": 1,
       "id": "cyan_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "cyan_bed": {
@@ -6276,6 +6519,7 @@
       "count": 1,
       "id": "cyan_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cyan_bundle": {
@@ -6316,6 +6560,7 @@
       "count": 1,
       "id": "cyan_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "cyan_candle": {
@@ -6339,6 +6584,7 @@
       "count": 1,
       "id": "cyan_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "cyan_carpet": {
@@ -6360,6 +6606,7 @@
       "count": 3,
       "id": "cyan_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cyan_concrete_powder": {
@@ -6418,6 +6665,7 @@
       "count": 8,
       "id": "cyan_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "cyan_dye": {
@@ -6441,6 +6689,7 @@
       "count": 2,
       "id": "cyan_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "cyan_dye_from_pitcher_plant": {
@@ -6459,6 +6708,7 @@
       "count": 2,
       "id": "cyan_dye"
     },
+    "slug": "from-pitcher-plant",
     "type": "shapeless"
   },
   "cyan_harness": {
@@ -6491,6 +6741,7 @@
       "count": 1,
       "id": "cyan_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cyan_shulker_box": {
@@ -6531,6 +6782,7 @@
       "count": 1,
       "id": "cyan_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "cyan_stained_glass": {
@@ -6559,6 +6811,7 @@
       "count": 8,
       "id": "cyan_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cyan_stained_glass_pane": {
@@ -6581,6 +6834,7 @@
       "count": 16,
       "id": "cyan_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "cyan_stained_glass_pane_from_glass_pane": {
@@ -6609,6 +6863,7 @@
       "count": 8,
       "id": "cyan_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "cyan_terracotta": {
@@ -6637,6 +6892,7 @@
       "count": 8,
       "id": "cyan_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_boat": {
@@ -6659,6 +6915,7 @@
       "count": 1,
       "id": "dark_oak_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_button": {
@@ -6677,6 +6934,7 @@
       "count": 1,
       "id": "dark_oak_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "dark_oak_chest_boat": {
@@ -6700,6 +6958,7 @@
       "count": 1,
       "id": "dark_oak_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "dark_oak_door": {
@@ -6723,6 +6982,7 @@
       "count": 3,
       "id": "dark_oak_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_fence": {
@@ -6750,6 +7010,7 @@
       "count": 3,
       "id": "dark_oak_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_fence_gate": {
@@ -6777,6 +7038,7 @@
       "count": 1,
       "id": "dark_oak_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_hanging_sign": {
@@ -6805,6 +7067,7 @@
       "count": 6,
       "id": "dark_oak_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_planks": {
@@ -6827,6 +7090,7 @@
       "count": 4,
       "id": "dark_oak_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "dark_oak_pressure_plate": {
@@ -6848,6 +7112,7 @@
       "count": 1,
       "id": "dark_oak_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_shelf": {
@@ -6871,6 +7136,7 @@
       "count": 6,
       "id": "dark_oak_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_sign": {
@@ -6899,6 +7165,7 @@
       "count": 3,
       "id": "dark_oak_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_slab": {
@@ -6920,6 +7187,7 @@
       "count": 6,
       "id": "dark_oak_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_stairs": {
@@ -6943,6 +7211,7 @@
       "count": 4,
       "id": "dark_oak_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_trapdoor": {
@@ -6965,6 +7234,7 @@
       "count": 2,
       "id": "dark_oak_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_oak_wood": {
@@ -6987,6 +7257,7 @@
       "count": 3,
       "id": "dark_oak_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_prismarine": {
@@ -7014,6 +7285,7 @@
       "count": 1,
       "id": "dark_prismarine"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_prismarine_slab": {
@@ -7034,6 +7306,7 @@
       "count": 6,
       "id": "dark_prismarine_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dark_prismarine_stairs": {
@@ -7056,6 +7329,7 @@
       "count": 4,
       "id": "dark_prismarine_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "daylight_detector": {
@@ -7100,6 +7374,7 @@
       "count": 1,
       "id": "daylight_detector"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "decorated_pot": {
@@ -7111,6 +7386,7 @@
       "count": 1,
       "id": "decorated_pot"
     },
+    "slug": "default",
     "type": "special"
   },
   "decorated_pot_simple": {
@@ -7133,6 +7409,7 @@
       "count": 1,
       "id": "decorated_pot"
     },
+    "slug": "simple",
     "type": "shaped"
   },
   "deepslate_brick_slab": {
@@ -7153,6 +7430,7 @@
       "count": 6,
       "id": "deepslate_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "deepslate_brick_stairs": {
@@ -7175,6 +7453,7 @@
       "count": 4,
       "id": "deepslate_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "deepslate_brick_wall": {
@@ -7196,6 +7475,7 @@
       "count": 6,
       "id": "deepslate_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "deepslate_bricks": {
@@ -7217,6 +7497,7 @@
       "count": 4,
       "id": "deepslate_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "deepslate_tile_slab": {
@@ -7237,6 +7518,7 @@
       "count": 6,
       "id": "deepslate_tile_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "deepslate_tile_stairs": {
@@ -7259,6 +7541,7 @@
       "count": 4,
       "id": "deepslate_tile_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "deepslate_tile_wall": {
@@ -7280,6 +7563,7 @@
       "count": 6,
       "id": "deepslate_tile_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "deepslate_tiles": {
@@ -7301,6 +7585,7 @@
       "count": 4,
       "id": "deepslate_tiles"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "detector_rail": {
@@ -7333,6 +7618,7 @@
       "count": 6,
       "id": "detector_rail"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond": {
@@ -7350,6 +7636,7 @@
       "count": 9,
       "id": "diamond"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "diamond_axe": {
@@ -7378,6 +7665,7 @@
       "count": 1,
       "id": "diamond_axe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_block": {
@@ -7400,6 +7688,7 @@
       "count": 1,
       "id": "diamond_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_boots": {
@@ -7421,6 +7710,7 @@
       "count": 1,
       "id": "diamond_boots"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_chestplate": {
@@ -7443,6 +7733,7 @@
       "count": 1,
       "id": "diamond_chestplate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_helmet": {
@@ -7464,6 +7755,7 @@
       "count": 1,
       "id": "diamond_helmet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_hoe": {
@@ -7492,6 +7784,7 @@
       "count": 1,
       "id": "diamond_hoe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_leggings": {
@@ -7514,6 +7807,7 @@
       "count": 1,
       "id": "diamond_leggings"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_pickaxe": {
@@ -7542,6 +7836,7 @@
       "count": 1,
       "id": "diamond_pickaxe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_shovel": {
@@ -7570,6 +7865,7 @@
       "count": 1,
       "id": "diamond_shovel"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_spear": {
@@ -7598,6 +7894,7 @@
       "count": 1,
       "id": "diamond_spear"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diamond_sword": {
@@ -7626,6 +7923,7 @@
       "count": 1,
       "id": "diamond_sword"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diorite": {
@@ -7652,6 +7950,7 @@
       "count": 2,
       "id": "diorite"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diorite_slab": {
@@ -7672,6 +7971,7 @@
       "count": 6,
       "id": "diorite_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diorite_stairs": {
@@ -7694,6 +7994,7 @@
       "count": 4,
       "id": "diorite_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "diorite_wall": {
@@ -7715,6 +8016,7 @@
       "count": 6,
       "id": "diorite_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dispenser": {
@@ -7747,6 +8049,7 @@
       "count": 1,
       "id": "dispenser"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dried_ghast": {
@@ -7775,6 +8078,7 @@
       "count": 1,
       "id": "dried_ghast"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dried_kelp": {
@@ -7792,6 +8096,7 @@
       "count": 9,
       "id": "dried_kelp"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "dried_kelp_block": {
@@ -7814,6 +8119,7 @@
       "count": 1,
       "id": "dried_kelp_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dripstone_block": {
@@ -7835,6 +8141,7 @@
       "count": 1,
       "id": "dripstone_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dropper": {
@@ -7862,6 +8169,7 @@
       "count": 1,
       "id": "dropper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dune_armor_trim_smithing_template": {
@@ -7894,6 +8202,7 @@
       "count": 2,
       "id": "dune_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "dye_black_bed": {
@@ -7931,6 +8240,7 @@
       "count": 1,
       "id": "black_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_black_carpet": {
@@ -7968,6 +8278,7 @@
       "count": 1,
       "id": "black_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_black_harness": {
@@ -8005,6 +8316,7 @@
       "count": 1,
       "id": "black_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_black_wool": {
@@ -8042,6 +8354,7 @@
       "count": 1,
       "id": "black_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_blue_bed": {
@@ -8079,6 +8392,7 @@
       "count": 1,
       "id": "blue_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_blue_carpet": {
@@ -8116,6 +8430,7 @@
       "count": 1,
       "id": "blue_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_blue_harness": {
@@ -8153,6 +8468,7 @@
       "count": 1,
       "id": "blue_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_blue_wool": {
@@ -8190,6 +8506,7 @@
       "count": 1,
       "id": "blue_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_brown_bed": {
@@ -8227,6 +8544,7 @@
       "count": 1,
       "id": "brown_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_brown_carpet": {
@@ -8264,6 +8582,7 @@
       "count": 1,
       "id": "brown_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_brown_harness": {
@@ -8301,6 +8620,7 @@
       "count": 1,
       "id": "brown_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_brown_wool": {
@@ -8338,6 +8658,7 @@
       "count": 1,
       "id": "brown_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_cyan_bed": {
@@ -8375,6 +8696,7 @@
       "count": 1,
       "id": "cyan_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_cyan_carpet": {
@@ -8412,6 +8734,7 @@
       "count": 1,
       "id": "cyan_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_cyan_harness": {
@@ -8449,6 +8772,7 @@
       "count": 1,
       "id": "cyan_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_cyan_wool": {
@@ -8486,6 +8810,7 @@
       "count": 1,
       "id": "cyan_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_gray_bed": {
@@ -8523,6 +8848,7 @@
       "count": 1,
       "id": "gray_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_gray_carpet": {
@@ -8560,6 +8886,7 @@
       "count": 1,
       "id": "gray_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_gray_harness": {
@@ -8597,6 +8924,7 @@
       "count": 1,
       "id": "gray_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_gray_wool": {
@@ -8634,6 +8962,7 @@
       "count": 1,
       "id": "gray_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_green_bed": {
@@ -8671,6 +9000,7 @@
       "count": 1,
       "id": "green_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_green_carpet": {
@@ -8708,6 +9038,7 @@
       "count": 1,
       "id": "green_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_green_harness": {
@@ -8745,6 +9076,7 @@
       "count": 1,
       "id": "green_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_green_wool": {
@@ -8782,6 +9114,7 @@
       "count": 1,
       "id": "green_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_blue_bed": {
@@ -8819,6 +9152,7 @@
       "count": 1,
       "id": "light_blue_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_blue_carpet": {
@@ -8856,6 +9190,7 @@
       "count": 1,
       "id": "light_blue_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_blue_harness": {
@@ -8893,6 +9228,7 @@
       "count": 1,
       "id": "light_blue_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_blue_wool": {
@@ -8930,6 +9266,7 @@
       "count": 1,
       "id": "light_blue_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_gray_bed": {
@@ -8967,6 +9304,7 @@
       "count": 1,
       "id": "light_gray_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_gray_carpet": {
@@ -9004,6 +9342,7 @@
       "count": 1,
       "id": "light_gray_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_gray_harness": {
@@ -9041,6 +9380,7 @@
       "count": 1,
       "id": "light_gray_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_light_gray_wool": {
@@ -9078,6 +9418,7 @@
       "count": 1,
       "id": "light_gray_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_lime_bed": {
@@ -9115,6 +9456,7 @@
       "count": 1,
       "id": "lime_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_lime_carpet": {
@@ -9152,6 +9494,7 @@
       "count": 1,
       "id": "lime_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_lime_harness": {
@@ -9189,6 +9532,7 @@
       "count": 1,
       "id": "lime_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_lime_wool": {
@@ -9226,6 +9570,7 @@
       "count": 1,
       "id": "lime_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_magenta_bed": {
@@ -9263,6 +9608,7 @@
       "count": 1,
       "id": "magenta_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_magenta_carpet": {
@@ -9300,6 +9646,7 @@
       "count": 1,
       "id": "magenta_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_magenta_harness": {
@@ -9337,6 +9684,7 @@
       "count": 1,
       "id": "magenta_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_magenta_wool": {
@@ -9374,6 +9722,7 @@
       "count": 1,
       "id": "magenta_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_orange_bed": {
@@ -9411,6 +9760,7 @@
       "count": 1,
       "id": "orange_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_orange_carpet": {
@@ -9448,6 +9798,7 @@
       "count": 1,
       "id": "orange_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_orange_harness": {
@@ -9485,6 +9836,7 @@
       "count": 1,
       "id": "orange_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_orange_wool": {
@@ -9522,6 +9874,7 @@
       "count": 1,
       "id": "orange_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_pink_bed": {
@@ -9559,6 +9912,7 @@
       "count": 1,
       "id": "pink_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_pink_carpet": {
@@ -9596,6 +9950,7 @@
       "count": 1,
       "id": "pink_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_pink_harness": {
@@ -9633,6 +9988,7 @@
       "count": 1,
       "id": "pink_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_pink_wool": {
@@ -9670,6 +10026,7 @@
       "count": 1,
       "id": "pink_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_purple_bed": {
@@ -9707,6 +10064,7 @@
       "count": 1,
       "id": "purple_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_purple_carpet": {
@@ -9744,6 +10102,7 @@
       "count": 1,
       "id": "purple_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_purple_harness": {
@@ -9781,6 +10140,7 @@
       "count": 1,
       "id": "purple_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_purple_wool": {
@@ -9818,6 +10178,7 @@
       "count": 1,
       "id": "purple_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_red_bed": {
@@ -9855,6 +10216,7 @@
       "count": 1,
       "id": "red_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_red_carpet": {
@@ -9892,6 +10254,7 @@
       "count": 1,
       "id": "red_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_red_harness": {
@@ -9929,6 +10292,7 @@
       "count": 1,
       "id": "red_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_red_wool": {
@@ -9966,6 +10330,7 @@
       "count": 1,
       "id": "red_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_white_bed": {
@@ -10003,6 +10368,7 @@
       "count": 1,
       "id": "white_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_white_carpet": {
@@ -10040,6 +10406,7 @@
       "count": 1,
       "id": "white_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_white_harness": {
@@ -10077,6 +10444,7 @@
       "count": 1,
       "id": "white_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_white_wool": {
@@ -10114,6 +10482,7 @@
       "count": 1,
       "id": "white_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_yellow_bed": {
@@ -10151,6 +10520,7 @@
       "count": 1,
       "id": "yellow_bed"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_yellow_carpet": {
@@ -10188,6 +10558,7 @@
       "count": 1,
       "id": "yellow_carpet"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_yellow_harness": {
@@ -10225,6 +10596,7 @@
       "count": 1,
       "id": "yellow_harness"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "dye_yellow_wool": {
@@ -10262,6 +10634,7 @@
       "count": 1,
       "id": "yellow_wool"
     },
+    "slug": "dye",
     "type": "shapeless"
   },
   "emerald": {
@@ -10279,6 +10652,7 @@
       "count": 9,
       "id": "emerald"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "emerald_block": {
@@ -10301,6 +10675,7 @@
       "count": 1,
       "id": "emerald_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "enchanting_table": {
@@ -10333,6 +10708,7 @@
       "count": 1,
       "id": "enchanting_table"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "end_crystal": {
@@ -10365,6 +10741,7 @@
       "count": 1,
       "id": "end_crystal"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "end_rod": {
@@ -10391,6 +10768,7 @@
       "count": 4,
       "id": "end_rod"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "end_stone_brick_slab": {
@@ -10411,6 +10789,7 @@
       "count": 6,
       "id": "end_stone_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "end_stone_brick_stairs": {
@@ -10433,6 +10812,7 @@
       "count": 4,
       "id": "end_stone_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "end_stone_brick_wall": {
@@ -10454,6 +10834,7 @@
       "count": 6,
       "id": "end_stone_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "end_stone_bricks": {
@@ -10475,6 +10856,7 @@
       "count": 4,
       "id": "end_stone_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "ender_chest": {
@@ -10502,6 +10884,7 @@
       "count": 1,
       "id": "ender_chest"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "ender_eye": {
@@ -10524,6 +10907,7 @@
       "count": 1,
       "id": "ender_eye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "exposed_chiseled_copper": {
@@ -10545,6 +10929,7 @@
       "count": 1,
       "id": "exposed_chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "exposed_copper_bulb": {
@@ -10578,6 +10963,7 @@
       "count": 4,
       "id": "exposed_copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "exposed_copper_grate": {
@@ -10601,6 +10987,7 @@
       "count": 4,
       "id": "exposed_copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "exposed_cut_copper": {
@@ -10622,6 +11009,7 @@
       "count": 4,
       "id": "exposed_cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "exposed_cut_copper_slab": {
@@ -10642,6 +11030,7 @@
       "count": 6,
       "id": "exposed_cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "exposed_cut_copper_stairs": {
@@ -10664,6 +11053,7 @@
       "count": 4,
       "id": "exposed_cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "eye_armor_trim_smithing_template": {
@@ -10696,6 +11086,7 @@
       "count": 2,
       "id": "eye_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "fermented_spider_eye": {
@@ -10723,6 +11114,7 @@
       "count": 1,
       "id": "fermented_spider_eye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "field_masoned_banner_pattern": {
@@ -10745,6 +11137,7 @@
       "count": 1,
       "id": "field_masoned_banner_pattern"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "fire_charge": {
@@ -10773,6 +11166,7 @@
       "count": 3,
       "id": "fire_charge"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "firework_rocket": {
@@ -10784,6 +11178,7 @@
       "count": 3,
       "id": "firework_rocket"
     },
+    "slug": "default",
     "type": "special"
   },
   "firework_rocket_simple": {
@@ -10806,6 +11201,7 @@
       "count": 3,
       "id": "firework_rocket"
     },
+    "slug": "simple",
     "type": "shapeless"
   },
   "firework_star": {
@@ -10817,6 +11213,7 @@
       "count": 1,
       "id": "firework_star"
     },
+    "slug": "default",
     "type": "special"
   },
   "firework_star_fade": {
@@ -10828,6 +11225,7 @@
       "count": 1,
       "id": "firework_star"
     },
+    "slug": "fade",
     "type": "special"
   },
   "fishing_rod": {
@@ -10855,6 +11253,7 @@
       "count": 1,
       "id": "fishing_rod"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "fletching_table": {
@@ -10894,6 +11293,7 @@
       "count": 1,
       "id": "fletching_table"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "flint_and_steel": {
@@ -10916,6 +11316,7 @@
       "count": 1,
       "id": "flint_and_steel"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "flow_armor_trim_smithing_template": {
@@ -10948,6 +11349,7 @@
       "count": 2,
       "id": "flow_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "flower_banner_pattern": {
@@ -10970,6 +11372,7 @@
       "count": 1,
       "id": "flower_banner_pattern"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "flower_pot": {
@@ -10991,6 +11394,7 @@
       "count": 1,
       "id": "flower_pot"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "furnace": {
@@ -11016,6 +11420,7 @@
       "count": 1,
       "id": "furnace"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "furnace_minecart": {
@@ -11038,6 +11443,7 @@
       "count": 1,
       "id": "furnace_minecart"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "glass_bottle": {
@@ -11059,6 +11465,7 @@
       "count": 3,
       "id": "glass_bottle"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "glass_pane": {
@@ -11080,6 +11487,7 @@
       "count": 16,
       "id": "glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "glistering_melon_slice": {
@@ -11107,6 +11515,7 @@
       "count": 1,
       "id": "glistering_melon_slice"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "glow_item_frame": {
@@ -11129,6 +11538,7 @@
       "count": 1,
       "id": "glow_item_frame"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "glowstone": {
@@ -11150,6 +11560,7 @@
       "count": 1,
       "id": "glowstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gold_block": {
@@ -11172,6 +11583,7 @@
       "count": 1,
       "id": "gold_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gold_ingot_from_gold_block": {
@@ -11190,6 +11602,7 @@
       "count": 9,
       "id": "gold_ingot"
     },
+    "slug": "from-gold-block",
     "type": "shapeless"
   },
   "gold_ingot_from_nuggets": {
@@ -11213,6 +11626,7 @@
       "count": 1,
       "id": "gold_ingot"
     },
+    "slug": "from-nuggets",
     "type": "shaped"
   },
   "gold_nugget": {
@@ -11230,6 +11644,7 @@
       "count": 9,
       "id": "gold_nugget"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "golden_apple": {
@@ -11257,6 +11672,7 @@
       "count": 1,
       "id": "golden_apple"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_axe": {
@@ -11285,6 +11701,7 @@
       "count": 1,
       "id": "golden_axe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_boots": {
@@ -11306,6 +11723,7 @@
       "count": 1,
       "id": "golden_boots"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_carrot": {
@@ -11333,6 +11751,7 @@
       "count": 1,
       "id": "golden_carrot"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_chestplate": {
@@ -11355,6 +11774,7 @@
       "count": 1,
       "id": "golden_chestplate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_dandelion": {
@@ -11382,6 +11802,7 @@
       "count": 1,
       "id": "golden_dandelion"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_helmet": {
@@ -11403,6 +11824,7 @@
       "count": 1,
       "id": "golden_helmet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_hoe": {
@@ -11431,6 +11853,7 @@
       "count": 1,
       "id": "golden_hoe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_leggings": {
@@ -11453,6 +11876,7 @@
       "count": 1,
       "id": "golden_leggings"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_pickaxe": {
@@ -11481,6 +11905,7 @@
       "count": 1,
       "id": "golden_pickaxe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_shovel": {
@@ -11509,6 +11934,7 @@
       "count": 1,
       "id": "golden_shovel"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_spear": {
@@ -11537,6 +11963,7 @@
       "count": 1,
       "id": "golden_spear"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "golden_sword": {
@@ -11565,6 +11992,7 @@
       "count": 1,
       "id": "golden_sword"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "granite": {
@@ -11587,6 +12015,7 @@
       "count": 1,
       "id": "granite"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "granite_slab": {
@@ -11607,6 +12036,7 @@
       "count": 6,
       "id": "granite_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "granite_stairs": {
@@ -11629,6 +12059,7 @@
       "count": 4,
       "id": "granite_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "granite_wall": {
@@ -11650,6 +12081,7 @@
       "count": 6,
       "id": "granite_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gray_banner": {
@@ -11678,6 +12110,7 @@
       "count": 1,
       "id": "gray_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gray_banner_duplicate": {
@@ -11689,6 +12122,7 @@
       "count": 1,
       "id": "gray_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "gray_bed": {
@@ -11728,6 +12162,7 @@
       "count": 1,
       "id": "gray_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gray_bundle": {
@@ -11768,6 +12203,7 @@
       "count": 1,
       "id": "gray_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "gray_candle": {
@@ -11791,6 +12227,7 @@
       "count": 1,
       "id": "gray_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "gray_carpet": {
@@ -11812,6 +12249,7 @@
       "count": 3,
       "id": "gray_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gray_concrete_powder": {
@@ -11870,6 +12308,7 @@
       "count": 8,
       "id": "gray_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "gray_dye": {
@@ -11893,6 +12332,7 @@
       "count": 2,
       "id": "gray_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "gray_dye_from_closed_eyeblossom": {
@@ -11911,6 +12351,7 @@
       "count": 1,
       "id": "gray_dye"
     },
+    "slug": "from-closed-eyeblossom",
     "type": "shapeless"
   },
   "gray_harness": {
@@ -11943,6 +12384,7 @@
       "count": 1,
       "id": "gray_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gray_shulker_box": {
@@ -11983,6 +12425,7 @@
       "count": 1,
       "id": "gray_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "gray_stained_glass": {
@@ -12011,6 +12454,7 @@
       "count": 8,
       "id": "gray_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gray_stained_glass_pane": {
@@ -12033,6 +12477,7 @@
       "count": 16,
       "id": "gray_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "gray_stained_glass_pane_from_glass_pane": {
@@ -12061,6 +12506,7 @@
       "count": 8,
       "id": "gray_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "gray_terracotta": {
@@ -12089,6 +12535,7 @@
       "count": 8,
       "id": "gray_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "green_banner": {
@@ -12117,6 +12564,7 @@
       "count": 1,
       "id": "green_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "green_banner_duplicate": {
@@ -12128,6 +12576,7 @@
       "count": 1,
       "id": "green_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "green_bed": {
@@ -12167,6 +12616,7 @@
       "count": 1,
       "id": "green_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "green_bundle": {
@@ -12207,6 +12657,7 @@
       "count": 1,
       "id": "green_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "green_candle": {
@@ -12230,6 +12681,7 @@
       "count": 1,
       "id": "green_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "green_carpet": {
@@ -12251,6 +12703,7 @@
       "count": 3,
       "id": "green_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "green_concrete_powder": {
@@ -12309,6 +12762,7 @@
       "count": 8,
       "id": "green_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "green_harness": {
@@ -12341,6 +12795,7 @@
       "count": 1,
       "id": "green_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "green_shulker_box": {
@@ -12381,6 +12836,7 @@
       "count": 1,
       "id": "green_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "green_stained_glass": {
@@ -12409,6 +12865,7 @@
       "count": 8,
       "id": "green_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "green_stained_glass_pane": {
@@ -12431,6 +12888,7 @@
       "count": 16,
       "id": "green_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "green_stained_glass_pane_from_glass_pane": {
@@ -12459,6 +12917,7 @@
       "count": 8,
       "id": "green_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "green_terracotta": {
@@ -12487,6 +12946,7 @@
       "count": 8,
       "id": "green_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "grindstone": {
@@ -12530,6 +12990,7 @@
       "count": 1,
       "id": "grindstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "hay_block": {
@@ -12587,6 +13048,7 @@
       "count": 1,
       "id": "hay_block"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "heavy_weighted_pressure_plate": {
@@ -12607,6 +13069,7 @@
       "count": 1,
       "id": "heavy_weighted_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "honey_block": {
@@ -12628,6 +13091,7 @@
       "count": 1,
       "id": "honey_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "honey_bottle": {
@@ -12665,6 +13129,7 @@
       "count": 4,
       "id": "honey_bottle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "honeycomb_block": {
@@ -12686,6 +13151,7 @@
       "count": 1,
       "id": "honeycomb_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "hopper": {
@@ -12713,6 +13179,7 @@
       "count": 1,
       "id": "hopper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "hopper_minecart": {
@@ -12735,6 +13202,7 @@
       "count": 1,
       "id": "hopper_minecart"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "host_armor_trim_smithing_template": {
@@ -12767,6 +13235,7 @@
       "count": 2,
       "id": "host_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_axe": {
@@ -12795,6 +13264,7 @@
       "count": 1,
       "id": "iron_axe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_bars": {
@@ -12816,6 +13286,7 @@
       "count": 16,
       "id": "iron_bars"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_block": {
@@ -12838,6 +13309,7 @@
       "count": 1,
       "id": "iron_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_boots": {
@@ -12859,6 +13331,7 @@
       "count": 1,
       "id": "iron_boots"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_chain": {
@@ -12886,6 +13359,7 @@
       "count": 1,
       "id": "iron_chain"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_chestplate": {
@@ -12908,6 +13382,7 @@
       "count": 1,
       "id": "iron_chestplate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_door": {
@@ -12930,6 +13405,7 @@
       "count": 3,
       "id": "iron_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_helmet": {
@@ -12951,6 +13427,7 @@
       "count": 1,
       "id": "iron_helmet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_hoe": {
@@ -12979,6 +13456,7 @@
       "count": 1,
       "id": "iron_hoe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_ingot_from_iron_block": {
@@ -12997,6 +13475,7 @@
       "count": 9,
       "id": "iron_ingot"
     },
+    "slug": "from-iron-block",
     "type": "shapeless"
   },
   "iron_ingot_from_nuggets": {
@@ -13020,6 +13499,7 @@
       "count": 1,
       "id": "iron_ingot"
     },
+    "slug": "from-nuggets",
     "type": "shaped"
   },
   "iron_leggings": {
@@ -13042,6 +13522,7 @@
       "count": 1,
       "id": "iron_leggings"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_nugget": {
@@ -13059,6 +13540,7 @@
       "count": 9,
       "id": "iron_nugget"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "iron_pickaxe": {
@@ -13087,6 +13569,7 @@
       "count": 1,
       "id": "iron_pickaxe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_shovel": {
@@ -13115,6 +13598,7 @@
       "count": 1,
       "id": "iron_shovel"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_spear": {
@@ -13143,6 +13627,7 @@
       "count": 1,
       "id": "iron_spear"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_sword": {
@@ -13171,6 +13656,7 @@
       "count": 1,
       "id": "iron_sword"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "iron_trapdoor": {
@@ -13192,6 +13678,7 @@
       "count": 1,
       "id": "iron_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "item_frame": {
@@ -13219,6 +13706,7 @@
       "count": 1,
       "id": "item_frame"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jack_o_lantern": {
@@ -13245,6 +13733,7 @@
       "count": 1,
       "id": "jack_o_lantern"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jukebox": {
@@ -13284,6 +13773,7 @@
       "count": 1,
       "id": "jukebox"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_boat": {
@@ -13306,6 +13796,7 @@
       "count": 1,
       "id": "jungle_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_button": {
@@ -13324,6 +13815,7 @@
       "count": 1,
       "id": "jungle_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "jungle_chest_boat": {
@@ -13347,6 +13839,7 @@
       "count": 1,
       "id": "jungle_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "jungle_door": {
@@ -13370,6 +13863,7 @@
       "count": 3,
       "id": "jungle_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_fence": {
@@ -13397,6 +13891,7 @@
       "count": 3,
       "id": "jungle_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_fence_gate": {
@@ -13424,6 +13919,7 @@
       "count": 1,
       "id": "jungle_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_hanging_sign": {
@@ -13452,6 +13948,7 @@
       "count": 6,
       "id": "jungle_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_planks": {
@@ -13474,6 +13971,7 @@
       "count": 4,
       "id": "jungle_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "jungle_pressure_plate": {
@@ -13495,6 +13993,7 @@
       "count": 1,
       "id": "jungle_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_shelf": {
@@ -13518,6 +14017,7 @@
       "count": 6,
       "id": "jungle_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_sign": {
@@ -13546,6 +14046,7 @@
       "count": 3,
       "id": "jungle_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_slab": {
@@ -13567,6 +14068,7 @@
       "count": 6,
       "id": "jungle_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_stairs": {
@@ -13590,6 +14092,7 @@
       "count": 4,
       "id": "jungle_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_trapdoor": {
@@ -13612,6 +14115,7 @@
       "count": 2,
       "id": "jungle_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "jungle_wood": {
@@ -13634,6 +14138,7 @@
       "count": 3,
       "id": "jungle_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "ladder": {
@@ -13656,6 +14161,7 @@
       "count": 3,
       "id": "ladder"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lantern": {
@@ -13683,6 +14189,7 @@
       "count": 1,
       "id": "lantern"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lapis_block": {
@@ -13705,6 +14212,7 @@
       "count": 1,
       "id": "lapis_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lapis_lazuli": {
@@ -13722,6 +14230,7 @@
       "count": 9,
       "id": "lapis_lazuli"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "lead": {
@@ -13744,6 +14253,7 @@
       "count": 2,
       "id": "lead"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "leather": {
@@ -13765,6 +14275,7 @@
       "count": 1,
       "id": "leather"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "leather_boots": {
@@ -13786,6 +14297,7 @@
       "count": 1,
       "id": "leather_boots"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "leather_boots_dyed": {
@@ -13798,6 +14310,7 @@
       "count": 1,
       "id": "leather_boots"
     },
+    "slug": "dyed",
     "type": "special"
   },
   "leather_chestplate": {
@@ -13820,6 +14333,7 @@
       "count": 1,
       "id": "leather_chestplate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "leather_chestplate_dyed": {
@@ -13832,6 +14346,7 @@
       "count": 1,
       "id": "leather_chestplate"
     },
+    "slug": "dyed",
     "type": "special"
   },
   "leather_helmet": {
@@ -13853,6 +14368,7 @@
       "count": 1,
       "id": "leather_helmet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "leather_helmet_dyed": {
@@ -13865,6 +14381,7 @@
       "count": 1,
       "id": "leather_helmet"
     },
+    "slug": "dyed",
     "type": "special"
   },
   "leather_horse_armor": {
@@ -13887,6 +14404,7 @@
       "count": 1,
       "id": "leather_horse_armor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "leather_horse_armor_dyed": {
@@ -13899,6 +14417,7 @@
       "count": 1,
       "id": "leather_horse_armor"
     },
+    "slug": "dyed",
     "type": "special"
   },
   "leather_leggings": {
@@ -13921,6 +14440,7 @@
       "count": 1,
       "id": "leather_leggings"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "leather_leggings_dyed": {
@@ -13933,6 +14453,7 @@
       "count": 1,
       "id": "leather_leggings"
     },
+    "slug": "dyed",
     "type": "special"
   },
   "lectern": {
@@ -13972,6 +14493,7 @@
       "count": 1,
       "id": "lectern"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lever": {
@@ -13998,6 +14520,7 @@
       "count": 1,
       "id": "lever"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_blue_banner": {
@@ -14026,6 +14549,7 @@
       "count": 1,
       "id": "light_blue_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_blue_banner_duplicate": {
@@ -14037,6 +14561,7 @@
       "count": 1,
       "id": "light_blue_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "light_blue_bed": {
@@ -14076,6 +14601,7 @@
       "count": 1,
       "id": "light_blue_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_blue_bundle": {
@@ -14116,6 +14642,7 @@
       "count": 1,
       "id": "light_blue_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "light_blue_candle": {
@@ -14139,6 +14666,7 @@
       "count": 1,
       "id": "light_blue_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "light_blue_carpet": {
@@ -14160,6 +14688,7 @@
       "count": 3,
       "id": "light_blue_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_blue_concrete_powder": {
@@ -14218,6 +14747,7 @@
       "count": 8,
       "id": "light_blue_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "light_blue_dye_from_blue_orchid": {
@@ -14236,6 +14766,7 @@
       "count": 1,
       "id": "light_blue_dye"
     },
+    "slug": "from-blue-orchid",
     "type": "shapeless"
   },
   "light_blue_dye_from_blue_white_dye": {
@@ -14259,6 +14790,7 @@
       "count": 2,
       "id": "light_blue_dye"
     },
+    "slug": "from-blue-white-dye",
     "type": "shapeless"
   },
   "light_blue_harness": {
@@ -14291,6 +14823,7 @@
       "count": 1,
       "id": "light_blue_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_blue_shulker_box": {
@@ -14331,6 +14864,7 @@
       "count": 1,
       "id": "light_blue_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "light_blue_stained_glass": {
@@ -14359,6 +14893,7 @@
       "count": 8,
       "id": "light_blue_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_blue_stained_glass_pane": {
@@ -14381,6 +14916,7 @@
       "count": 16,
       "id": "light_blue_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_blue_stained_glass_pane_from_glass_pane": {
@@ -14409,6 +14945,7 @@
       "count": 8,
       "id": "light_blue_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "light_blue_terracotta": {
@@ -14437,6 +14974,7 @@
       "count": 8,
       "id": "light_blue_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_gray_banner": {
@@ -14465,6 +15003,7 @@
       "count": 1,
       "id": "light_gray_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_gray_banner_duplicate": {
@@ -14476,6 +15015,7 @@
       "count": 1,
       "id": "light_gray_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "light_gray_bed": {
@@ -14515,6 +15055,7 @@
       "count": 1,
       "id": "light_gray_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_gray_bundle": {
@@ -14555,6 +15096,7 @@
       "count": 1,
       "id": "light_gray_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "light_gray_candle": {
@@ -14578,6 +15120,7 @@
       "count": 1,
       "id": "light_gray_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "light_gray_carpet": {
@@ -14599,6 +15142,7 @@
       "count": 3,
       "id": "light_gray_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_gray_concrete_powder": {
@@ -14657,6 +15201,7 @@
       "count": 8,
       "id": "light_gray_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "light_gray_dye_from_azure_bluet": {
@@ -14675,6 +15220,7 @@
       "count": 1,
       "id": "light_gray_dye"
     },
+    "slug": "from-azure-bluet",
     "type": "shapeless"
   },
   "light_gray_dye_from_black_white_dye": {
@@ -14703,6 +15249,7 @@
       "count": 3,
       "id": "light_gray_dye"
     },
+    "slug": "from-black-white-dye",
     "type": "shapeless"
   },
   "light_gray_dye_from_gray_white_dye": {
@@ -14726,6 +15273,7 @@
       "count": 2,
       "id": "light_gray_dye"
     },
+    "slug": "from-gray-white-dye",
     "type": "shapeless"
   },
   "light_gray_dye_from_oxeye_daisy": {
@@ -14744,6 +15292,7 @@
       "count": 1,
       "id": "light_gray_dye"
     },
+    "slug": "from-oxeye-daisy",
     "type": "shapeless"
   },
   "light_gray_dye_from_white_tulip": {
@@ -14762,6 +15311,7 @@
       "count": 1,
       "id": "light_gray_dye"
     },
+    "slug": "from-white-tulip",
     "type": "shapeless"
   },
   "light_gray_harness": {
@@ -14794,6 +15344,7 @@
       "count": 1,
       "id": "light_gray_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_gray_shulker_box": {
@@ -14834,6 +15385,7 @@
       "count": 1,
       "id": "light_gray_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "light_gray_stained_glass": {
@@ -14862,6 +15414,7 @@
       "count": 8,
       "id": "light_gray_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_gray_stained_glass_pane": {
@@ -14884,6 +15437,7 @@
       "count": 16,
       "id": "light_gray_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_gray_stained_glass_pane_from_glass_pane": {
@@ -14912,6 +15466,7 @@
       "count": 8,
       "id": "light_gray_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "light_gray_terracotta": {
@@ -14940,6 +15495,7 @@
       "count": 8,
       "id": "light_gray_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "light_weighted_pressure_plate": {
@@ -14960,6 +15516,7 @@
       "count": 1,
       "id": "light_weighted_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lightning_rod": {
@@ -14982,6 +15539,7 @@
       "count": 1,
       "id": "lightning_rod"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lime_banner": {
@@ -15010,6 +15568,7 @@
       "count": 1,
       "id": "lime_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lime_banner_duplicate": {
@@ -15021,6 +15580,7 @@
       "count": 1,
       "id": "lime_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "lime_bed": {
@@ -15060,6 +15620,7 @@
       "count": 1,
       "id": "lime_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lime_bundle": {
@@ -15100,6 +15661,7 @@
       "count": 1,
       "id": "lime_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "lime_candle": {
@@ -15123,6 +15685,7 @@
       "count": 1,
       "id": "lime_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "lime_carpet": {
@@ -15144,6 +15707,7 @@
       "count": 3,
       "id": "lime_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lime_concrete_powder": {
@@ -15202,6 +15766,7 @@
       "count": 8,
       "id": "lime_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "lime_dye": {
@@ -15224,6 +15789,7 @@
       "count": 2,
       "id": "lime_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "lime_harness": {
@@ -15256,6 +15822,7 @@
       "count": 1,
       "id": "lime_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lime_shulker_box": {
@@ -15296,6 +15863,7 @@
       "count": 1,
       "id": "lime_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "lime_stained_glass": {
@@ -15324,6 +15892,7 @@
       "count": 8,
       "id": "lime_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lime_stained_glass_pane": {
@@ -15346,6 +15915,7 @@
       "count": 16,
       "id": "lime_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lime_stained_glass_pane_from_glass_pane": {
@@ -15374,6 +15944,7 @@
       "count": 8,
       "id": "lime_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "lime_terracotta": {
@@ -15402,6 +15973,7 @@
       "count": 8,
       "id": "lime_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "lodestone": {
@@ -15429,6 +16001,7 @@
       "count": 1,
       "id": "lodestone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "loom": {
@@ -15467,6 +16040,7 @@
       "count": 1,
       "id": "loom"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mace": {
@@ -15493,6 +16067,7 @@
       "count": 1,
       "id": "mace"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magenta_banner": {
@@ -15521,6 +16096,7 @@
       "count": 1,
       "id": "magenta_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magenta_banner_duplicate": {
@@ -15532,6 +16108,7 @@
       "count": 1,
       "id": "magenta_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "magenta_bed": {
@@ -15571,6 +16148,7 @@
       "count": 1,
       "id": "magenta_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magenta_bundle": {
@@ -15611,6 +16189,7 @@
       "count": 1,
       "id": "magenta_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "magenta_candle": {
@@ -15634,6 +16213,7 @@
       "count": 1,
       "id": "magenta_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "magenta_carpet": {
@@ -15655,6 +16235,7 @@
       "count": 3,
       "id": "magenta_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magenta_concrete_powder": {
@@ -15713,6 +16294,7 @@
       "count": 8,
       "id": "magenta_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "magenta_dye_from_allium": {
@@ -15731,6 +16313,7 @@
       "count": 1,
       "id": "magenta_dye"
     },
+    "slug": "from-allium",
     "type": "shapeless"
   },
   "magenta_dye_from_blue_red_pink": {
@@ -15759,6 +16342,7 @@
       "count": 3,
       "id": "magenta_dye"
     },
+    "slug": "from-blue-red-pink",
     "type": "shapeless"
   },
   "magenta_dye_from_blue_red_white_dye": {
@@ -15792,6 +16376,7 @@
       "count": 4,
       "id": "magenta_dye"
     },
+    "slug": "from-blue-red-white-dye",
     "type": "shapeless"
   },
   "magenta_dye_from_lilac": {
@@ -15810,6 +16395,7 @@
       "count": 2,
       "id": "magenta_dye"
     },
+    "slug": "from-lilac",
     "type": "shapeless"
   },
   "magenta_dye_from_purple_and_pink": {
@@ -15833,6 +16419,7 @@
       "count": 2,
       "id": "magenta_dye"
     },
+    "slug": "from-purple-and-pink",
     "type": "shapeless"
   },
   "magenta_harness": {
@@ -15865,6 +16452,7 @@
       "count": 1,
       "id": "magenta_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magenta_shulker_box": {
@@ -15905,6 +16493,7 @@
       "count": 1,
       "id": "magenta_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "magenta_stained_glass": {
@@ -15933,6 +16522,7 @@
       "count": 8,
       "id": "magenta_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magenta_stained_glass_pane": {
@@ -15955,6 +16545,7 @@
       "count": 16,
       "id": "magenta_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magenta_stained_glass_pane_from_glass_pane": {
@@ -15983,6 +16574,7 @@
       "count": 8,
       "id": "magenta_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "magenta_terracotta": {
@@ -16011,6 +16603,7 @@
       "count": 8,
       "id": "magenta_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magma_block": {
@@ -16032,6 +16625,7 @@
       "count": 1,
       "id": "magma_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "magma_cream": {
@@ -16054,6 +16648,7 @@
       "count": 1,
       "id": "magma_cream"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "mangrove_boat": {
@@ -16076,6 +16671,7 @@
       "count": 1,
       "id": "mangrove_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_button": {
@@ -16094,6 +16690,7 @@
       "count": 1,
       "id": "mangrove_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "mangrove_chest_boat": {
@@ -16117,6 +16714,7 @@
       "count": 1,
       "id": "mangrove_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "mangrove_door": {
@@ -16140,6 +16738,7 @@
       "count": 3,
       "id": "mangrove_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_fence": {
@@ -16167,6 +16766,7 @@
       "count": 3,
       "id": "mangrove_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_fence_gate": {
@@ -16194,6 +16794,7 @@
       "count": 1,
       "id": "mangrove_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_hanging_sign": {
@@ -16222,6 +16823,7 @@
       "count": 6,
       "id": "mangrove_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_planks": {
@@ -16244,6 +16846,7 @@
       "count": 4,
       "id": "mangrove_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "mangrove_pressure_plate": {
@@ -16265,6 +16868,7 @@
       "count": 1,
       "id": "mangrove_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_shelf": {
@@ -16288,6 +16892,7 @@
       "count": 6,
       "id": "mangrove_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_sign": {
@@ -16316,6 +16921,7 @@
       "count": 3,
       "id": "mangrove_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_slab": {
@@ -16337,6 +16943,7 @@
       "count": 6,
       "id": "mangrove_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_stairs": {
@@ -16360,6 +16967,7 @@
       "count": 4,
       "id": "mangrove_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_trapdoor": {
@@ -16382,6 +16990,7 @@
       "count": 2,
       "id": "mangrove_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mangrove_wood": {
@@ -16404,6 +17013,7 @@
       "count": 3,
       "id": "mangrove_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "map": {
@@ -16431,6 +17041,7 @@
       "count": 1,
       "id": "map"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "map_cloning": {
@@ -16454,6 +17065,7 @@
       "count": 1,
       "id": "filled_map"
     },
+    "slug": "map-cloning",
     "type": "transmute"
   },
   "map_extending": {
@@ -16465,6 +17077,7 @@
       "count": 1,
       "id": "filled_map"
     },
+    "slug": "map-extending",
     "type": "special"
   },
   "melon": {
@@ -16522,6 +17135,7 @@
       "count": 1,
       "id": "melon"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "melon_seeds": {
@@ -16539,6 +17153,7 @@
       "count": 1,
       "id": "melon_seeds"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "minecart": {
@@ -16560,6 +17175,7 @@
       "count": 1,
       "id": "minecart"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mojang_banner_pattern": {
@@ -16582,6 +17198,7 @@
       "count": 1,
       "id": "mojang_banner_pattern"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "moss_carpet": {
@@ -16603,6 +17220,7 @@
       "count": 3,
       "id": "moss_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mossy_cobblestone_from_moss_block": {
@@ -16626,6 +17244,7 @@
       "count": 1,
       "id": "mossy_cobblestone"
     },
+    "slug": "from-moss-block",
     "type": "shapeless"
   },
   "mossy_cobblestone_from_vine": {
@@ -16649,6 +17268,7 @@
       "count": 1,
       "id": "mossy_cobblestone"
     },
+    "slug": "from-vine",
     "type": "shapeless"
   },
   "mossy_cobblestone_slab": {
@@ -16669,6 +17289,7 @@
       "count": 6,
       "id": "mossy_cobblestone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mossy_cobblestone_stairs": {
@@ -16691,6 +17312,7 @@
       "count": 4,
       "id": "mossy_cobblestone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mossy_cobblestone_wall": {
@@ -16712,6 +17334,7 @@
       "count": 6,
       "id": "mossy_cobblestone_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mossy_stone_brick_slab": {
@@ -16732,6 +17355,7 @@
       "count": 6,
       "id": "mossy_stone_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mossy_stone_brick_stairs": {
@@ -16754,6 +17378,7 @@
       "count": 4,
       "id": "mossy_stone_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mossy_stone_brick_wall": {
@@ -16775,6 +17400,7 @@
       "count": 6,
       "id": "mossy_stone_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mossy_stone_bricks_from_moss_block": {
@@ -16798,6 +17424,7 @@
       "count": 1,
       "id": "mossy_stone_bricks"
     },
+    "slug": "from-moss-block",
     "type": "shapeless"
   },
   "mossy_stone_bricks_from_vine": {
@@ -16821,6 +17448,7 @@
       "count": 1,
       "id": "mossy_stone_bricks"
     },
+    "slug": "from-vine",
     "type": "shapeless"
   },
   "mud_brick_slab": {
@@ -16841,6 +17469,7 @@
       "count": 6,
       "id": "mud_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mud_brick_stairs": {
@@ -16863,6 +17492,7 @@
       "count": 4,
       "id": "mud_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mud_brick_wall": {
@@ -16884,6 +17514,7 @@
       "count": 6,
       "id": "mud_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "mud_bricks": {
@@ -16905,6 +17536,7 @@
       "count": 4,
       "id": "mud_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "muddy_mangrove_roots": {
@@ -16927,6 +17559,7 @@
       "count": 1,
       "id": "muddy_mangrove_roots"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "mushroom_stew": {
@@ -16954,6 +17587,7 @@
       "count": 1,
       "id": "mushroom_stew"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "music_disc_5": {
@@ -17011,6 +17645,7 @@
       "count": 1,
       "id": "music_disc_5"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "name_tag": {
@@ -17040,6 +17675,7 @@
       "count": 1,
       "id": "name_tag"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "nether_brick_fence": {
@@ -17066,6 +17702,7 @@
       "count": 6,
       "id": "nether_brick_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "nether_brick_slab": {
@@ -17086,6 +17723,7 @@
       "count": 6,
       "id": "nether_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "nether_brick_stairs": {
@@ -17108,6 +17746,7 @@
       "count": 4,
       "id": "nether_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "nether_brick_wall": {
@@ -17129,6 +17768,7 @@
       "count": 6,
       "id": "nether_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "nether_bricks": {
@@ -17150,6 +17790,7 @@
       "count": 1,
       "id": "nether_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "nether_wart_block": {
@@ -17207,6 +17848,7 @@
       "count": 1,
       "id": "nether_wart_block"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "netherite_block": {
@@ -17229,6 +17871,7 @@
       "count": 1,
       "id": "netherite_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "netherite_ingot": {
@@ -17282,6 +17925,7 @@
       "count": 1,
       "id": "netherite_ingot"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "netherite_ingot_from_netherite_block": {
@@ -17300,6 +17944,7 @@
       "count": 9,
       "id": "netherite_ingot"
     },
+    "slug": "from-netherite-block",
     "type": "shapeless"
   },
   "netherite_upgrade_smithing_template": {
@@ -17332,6 +17977,7 @@
       "count": 2,
       "id": "netherite_upgrade_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "note_block": {
@@ -17371,6 +18017,7 @@
       "count": 1,
       "id": "note_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_boat": {
@@ -17393,6 +18040,7 @@
       "count": 1,
       "id": "oak_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_button": {
@@ -17411,6 +18059,7 @@
       "count": 1,
       "id": "oak_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "oak_chest_boat": {
@@ -17434,6 +18083,7 @@
       "count": 1,
       "id": "oak_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "oak_door": {
@@ -17457,6 +18107,7 @@
       "count": 3,
       "id": "oak_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_fence": {
@@ -17484,6 +18135,7 @@
       "count": 3,
       "id": "oak_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_fence_gate": {
@@ -17511,6 +18163,7 @@
       "count": 1,
       "id": "oak_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_hanging_sign": {
@@ -17539,6 +18192,7 @@
       "count": 6,
       "id": "oak_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_planks": {
@@ -17561,6 +18215,7 @@
       "count": 4,
       "id": "oak_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "oak_pressure_plate": {
@@ -17582,6 +18237,7 @@
       "count": 1,
       "id": "oak_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_shelf": {
@@ -17605,6 +18261,7 @@
       "count": 6,
       "id": "oak_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_sign": {
@@ -17633,6 +18290,7 @@
       "count": 3,
       "id": "oak_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_slab": {
@@ -17654,6 +18312,7 @@
       "count": 6,
       "id": "oak_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_stairs": {
@@ -17677,6 +18336,7 @@
       "count": 4,
       "id": "oak_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_trapdoor": {
@@ -17699,6 +18359,7 @@
       "count": 2,
       "id": "oak_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oak_wood": {
@@ -17721,6 +18382,7 @@
       "count": 3,
       "id": "oak_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "observer": {
@@ -17753,6 +18415,7 @@
       "count": 1,
       "id": "observer"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "orange_banner": {
@@ -17781,6 +18444,7 @@
       "count": 1,
       "id": "orange_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "orange_banner_duplicate": {
@@ -17792,6 +18456,7 @@
       "count": 1,
       "id": "orange_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "orange_bed": {
@@ -17831,6 +18496,7 @@
       "count": 1,
       "id": "orange_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "orange_bundle": {
@@ -17871,6 +18537,7 @@
       "count": 1,
       "id": "orange_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "orange_candle": {
@@ -17894,6 +18561,7 @@
       "count": 1,
       "id": "orange_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "orange_carpet": {
@@ -17915,6 +18583,7 @@
       "count": 3,
       "id": "orange_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "orange_concrete_powder": {
@@ -17973,6 +18642,7 @@
       "count": 8,
       "id": "orange_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "orange_dye_from_open_eyeblossom": {
@@ -17991,6 +18661,7 @@
       "count": 1,
       "id": "orange_dye"
     },
+    "slug": "from-open-eyeblossom",
     "type": "shapeless"
   },
   "orange_dye_from_orange_tulip": {
@@ -18009,6 +18680,7 @@
       "count": 1,
       "id": "orange_dye"
     },
+    "slug": "from-orange-tulip",
     "type": "shapeless"
   },
   "orange_dye_from_red_yellow": {
@@ -18032,6 +18704,7 @@
       "count": 2,
       "id": "orange_dye"
     },
+    "slug": "from-red-yellow",
     "type": "shapeless"
   },
   "orange_dye_from_torchflower": {
@@ -18050,6 +18723,7 @@
       "count": 1,
       "id": "orange_dye"
     },
+    "slug": "from-torchflower",
     "type": "shapeless"
   },
   "orange_harness": {
@@ -18082,6 +18756,7 @@
       "count": 1,
       "id": "orange_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "orange_shulker_box": {
@@ -18122,6 +18797,7 @@
       "count": 1,
       "id": "orange_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "orange_stained_glass": {
@@ -18150,6 +18826,7 @@
       "count": 8,
       "id": "orange_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "orange_stained_glass_pane": {
@@ -18172,6 +18849,7 @@
       "count": 16,
       "id": "orange_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "orange_stained_glass_pane_from_glass_pane": {
@@ -18200,6 +18878,7 @@
       "count": 8,
       "id": "orange_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "orange_terracotta": {
@@ -18228,6 +18907,7 @@
       "count": 8,
       "id": "orange_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oxidized_chiseled_copper": {
@@ -18249,6 +18929,7 @@
       "count": 1,
       "id": "oxidized_chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oxidized_copper_bulb": {
@@ -18282,6 +18963,7 @@
       "count": 4,
       "id": "oxidized_copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oxidized_copper_grate": {
@@ -18305,6 +18987,7 @@
       "count": 4,
       "id": "oxidized_copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oxidized_cut_copper": {
@@ -18326,6 +19009,7 @@
       "count": 4,
       "id": "oxidized_cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oxidized_cut_copper_slab": {
@@ -18346,6 +19030,7 @@
       "count": 6,
       "id": "oxidized_cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "oxidized_cut_copper_stairs": {
@@ -18368,6 +19053,7 @@
       "count": 4,
       "id": "oxidized_cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "packed_ice": {
@@ -18425,6 +19111,7 @@
       "count": 1,
       "id": "packed_ice"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "packed_mud": {
@@ -18447,6 +19134,7 @@
       "count": 1,
       "id": "packed_mud"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "painting": {
@@ -18490,6 +19178,7 @@
       "count": 1,
       "id": "painting"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_moss_carpet": {
@@ -18511,6 +19200,7 @@
       "count": 3,
       "id": "pale_moss_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_boat": {
@@ -18533,6 +19223,7 @@
       "count": 1,
       "id": "pale_oak_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_button": {
@@ -18551,6 +19242,7 @@
       "count": 1,
       "id": "pale_oak_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "pale_oak_chest_boat": {
@@ -18574,6 +19266,7 @@
       "count": 1,
       "id": "pale_oak_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "pale_oak_door": {
@@ -18597,6 +19290,7 @@
       "count": 3,
       "id": "pale_oak_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_fence": {
@@ -18624,6 +19318,7 @@
       "count": 3,
       "id": "pale_oak_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_fence_gate": {
@@ -18651,6 +19346,7 @@
       "count": 1,
       "id": "pale_oak_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_hanging_sign": {
@@ -18679,6 +19375,7 @@
       "count": 6,
       "id": "pale_oak_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_planks": {
@@ -18701,6 +19398,7 @@
       "count": 4,
       "id": "pale_oak_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "pale_oak_pressure_plate": {
@@ -18722,6 +19420,7 @@
       "count": 1,
       "id": "pale_oak_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_shelf": {
@@ -18745,6 +19444,7 @@
       "count": 6,
       "id": "pale_oak_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_sign": {
@@ -18773,6 +19473,7 @@
       "count": 3,
       "id": "pale_oak_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_slab": {
@@ -18794,6 +19495,7 @@
       "count": 6,
       "id": "pale_oak_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_stairs": {
@@ -18817,6 +19519,7 @@
       "count": 4,
       "id": "pale_oak_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_trapdoor": {
@@ -18839,6 +19542,7 @@
       "count": 2,
       "id": "pale_oak_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pale_oak_wood": {
@@ -18861,6 +19565,7 @@
       "count": 3,
       "id": "pale_oak_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "paper": {
@@ -18881,6 +19586,7 @@
       "count": 3,
       "id": "paper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pink_banner": {
@@ -18909,6 +19615,7 @@
       "count": 1,
       "id": "pink_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pink_banner_duplicate": {
@@ -18920,6 +19627,7 @@
       "count": 1,
       "id": "pink_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "pink_bed": {
@@ -18959,6 +19667,7 @@
       "count": 1,
       "id": "pink_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pink_bundle": {
@@ -18999,6 +19708,7 @@
       "count": 1,
       "id": "pink_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "pink_candle": {
@@ -19022,6 +19732,7 @@
       "count": 1,
       "id": "pink_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "pink_carpet": {
@@ -19043,6 +19754,7 @@
       "count": 3,
       "id": "pink_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pink_concrete_powder": {
@@ -19101,6 +19813,7 @@
       "count": 8,
       "id": "pink_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "pink_dye_from_cactus_flower": {
@@ -19119,6 +19832,7 @@
       "count": 1,
       "id": "pink_dye"
     },
+    "slug": "from-cactus-flower",
     "type": "shapeless"
   },
   "pink_dye_from_peony": {
@@ -19137,6 +19851,7 @@
       "count": 2,
       "id": "pink_dye"
     },
+    "slug": "from-peony",
     "type": "shapeless"
   },
   "pink_dye_from_pink_petals": {
@@ -19155,6 +19870,7 @@
       "count": 1,
       "id": "pink_dye"
     },
+    "slug": "from-pink-petals",
     "type": "shapeless"
   },
   "pink_dye_from_pink_tulip": {
@@ -19173,6 +19889,7 @@
       "count": 1,
       "id": "pink_dye"
     },
+    "slug": "from-pink-tulip",
     "type": "shapeless"
   },
   "pink_dye_from_red_white_dye": {
@@ -19196,6 +19913,7 @@
       "count": 2,
       "id": "pink_dye"
     },
+    "slug": "from-red-white-dye",
     "type": "shapeless"
   },
   "pink_harness": {
@@ -19228,6 +19946,7 @@
       "count": 1,
       "id": "pink_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pink_shulker_box": {
@@ -19268,6 +19987,7 @@
       "count": 1,
       "id": "pink_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "pink_stained_glass": {
@@ -19296,6 +20016,7 @@
       "count": 8,
       "id": "pink_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pink_stained_glass_pane": {
@@ -19318,6 +20039,7 @@
       "count": 16,
       "id": "pink_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pink_stained_glass_pane_from_glass_pane": {
@@ -19346,6 +20068,7 @@
       "count": 8,
       "id": "pink_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "pink_terracotta": {
@@ -19374,6 +20097,7 @@
       "count": 8,
       "id": "pink_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "piston": {
@@ -19423,6 +20147,7 @@
       "count": 1,
       "id": "piston"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_andesite": {
@@ -19444,6 +20169,7 @@
       "count": 4,
       "id": "polished_andesite"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_andesite_slab": {
@@ -19464,6 +20190,7 @@
       "count": 6,
       "id": "polished_andesite_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_andesite_stairs": {
@@ -19486,6 +20213,7 @@
       "count": 4,
       "id": "polished_andesite_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_basalt": {
@@ -19507,6 +20235,7 @@
       "count": 4,
       "id": "polished_basalt"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone": {
@@ -19528,6 +20257,7 @@
       "count": 4,
       "id": "polished_blackstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_brick_slab": {
@@ -19548,6 +20278,7 @@
       "count": 6,
       "id": "polished_blackstone_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_brick_stairs": {
@@ -19570,6 +20301,7 @@
       "count": 4,
       "id": "polished_blackstone_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_brick_wall": {
@@ -19591,6 +20323,7 @@
       "count": 6,
       "id": "polished_blackstone_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_bricks": {
@@ -19612,6 +20345,7 @@
       "count": 4,
       "id": "polished_blackstone_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_button": {
@@ -19629,6 +20363,7 @@
       "count": 1,
       "id": "polished_blackstone_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "polished_blackstone_pressure_plate": {
@@ -19649,6 +20384,7 @@
       "count": 1,
       "id": "polished_blackstone_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_slab": {
@@ -19669,6 +20405,7 @@
       "count": 6,
       "id": "polished_blackstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_stairs": {
@@ -19691,6 +20428,7 @@
       "count": 4,
       "id": "polished_blackstone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_blackstone_wall": {
@@ -19712,6 +20450,7 @@
       "count": 6,
       "id": "polished_blackstone_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_cinnabar": {
@@ -19733,6 +20472,7 @@
       "count": 4,
       "id": "polished_cinnabar"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_cinnabar_slab": {
@@ -19753,6 +20493,7 @@
       "count": 6,
       "id": "polished_cinnabar_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_cinnabar_stairs": {
@@ -19775,6 +20516,7 @@
       "count": 4,
       "id": "polished_cinnabar_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_cinnabar_wall": {
@@ -19796,6 +20538,7 @@
       "count": 6,
       "id": "polished_cinnabar_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_deepslate": {
@@ -19817,6 +20560,7 @@
       "count": 4,
       "id": "polished_deepslate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_deepslate_slab": {
@@ -19837,6 +20581,7 @@
       "count": 6,
       "id": "polished_deepslate_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_deepslate_stairs": {
@@ -19859,6 +20604,7 @@
       "count": 4,
       "id": "polished_deepslate_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_deepslate_wall": {
@@ -19880,6 +20626,7 @@
       "count": 6,
       "id": "polished_deepslate_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_diorite": {
@@ -19901,6 +20648,7 @@
       "count": 4,
       "id": "polished_diorite"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_diorite_slab": {
@@ -19921,6 +20669,7 @@
       "count": 6,
       "id": "polished_diorite_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_diorite_stairs": {
@@ -19943,6 +20692,7 @@
       "count": 4,
       "id": "polished_diorite_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_granite": {
@@ -19964,6 +20714,7 @@
       "count": 4,
       "id": "polished_granite"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_granite_slab": {
@@ -19984,6 +20735,7 @@
       "count": 6,
       "id": "polished_granite_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_granite_stairs": {
@@ -20006,6 +20758,7 @@
       "count": 4,
       "id": "polished_granite_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_sulfur": {
@@ -20027,6 +20780,7 @@
       "count": 4,
       "id": "polished_sulfur"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_sulfur_slab": {
@@ -20047,6 +20801,7 @@
       "count": 6,
       "id": "polished_sulfur_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_sulfur_stairs": {
@@ -20069,6 +20824,7 @@
       "count": 4,
       "id": "polished_sulfur_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_sulfur_wall": {
@@ -20090,6 +20846,7 @@
       "count": 6,
       "id": "polished_sulfur_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_tuff": {
@@ -20111,6 +20868,7 @@
       "count": 4,
       "id": "polished_tuff"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_tuff_slab": {
@@ -20131,6 +20889,7 @@
       "count": 6,
       "id": "polished_tuff_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_tuff_stairs": {
@@ -20153,6 +20912,7 @@
       "count": 4,
       "id": "polished_tuff_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "polished_tuff_wall": {
@@ -20174,6 +20934,7 @@
       "count": 6,
       "id": "polished_tuff_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "potent_sulfur": {
@@ -20231,6 +20992,7 @@
       "count": 1,
       "id": "potent_sulfur"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "powered_rail": {
@@ -20263,6 +21025,7 @@
       "count": 6,
       "id": "powered_rail"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "prismarine": {
@@ -20284,6 +21047,7 @@
       "count": 1,
       "id": "prismarine"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "prismarine_brick_slab": {
@@ -20304,6 +21068,7 @@
       "count": 6,
       "id": "prismarine_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "prismarine_brick_stairs": {
@@ -20326,6 +21091,7 @@
       "count": 4,
       "id": "prismarine_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "prismarine_bricks": {
@@ -20383,6 +21149,7 @@
       "count": 1,
       "id": "prismarine_bricks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "prismarine_slab": {
@@ -20403,6 +21170,7 @@
       "count": 6,
       "id": "prismarine_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "prismarine_stairs": {
@@ -20425,6 +21193,7 @@
       "count": 4,
       "id": "prismarine_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "prismarine_wall": {
@@ -20446,6 +21215,7 @@
       "count": 6,
       "id": "prismarine_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "pumpkin_pie": {
@@ -20476,6 +21246,7 @@
       "count": 1,
       "id": "pumpkin_pie"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "pumpkin_seeds": {
@@ -20493,6 +21264,7 @@
       "count": 4,
       "id": "pumpkin_seeds"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "purple_banner": {
@@ -20521,6 +21293,7 @@
       "count": 1,
       "id": "purple_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purple_banner_duplicate": {
@@ -20532,6 +21305,7 @@
       "count": 1,
       "id": "purple_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "purple_bed": {
@@ -20571,6 +21345,7 @@
       "count": 1,
       "id": "purple_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purple_bundle": {
@@ -20611,6 +21386,7 @@
       "count": 1,
       "id": "purple_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "purple_candle": {
@@ -20634,6 +21410,7 @@
       "count": 1,
       "id": "purple_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "purple_carpet": {
@@ -20655,6 +21432,7 @@
       "count": 3,
       "id": "purple_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purple_concrete_powder": {
@@ -20713,6 +21491,7 @@
       "count": 8,
       "id": "purple_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "purple_dye": {
@@ -20735,6 +21514,7 @@
       "count": 2,
       "id": "purple_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "purple_harness": {
@@ -20767,6 +21547,7 @@
       "count": 1,
       "id": "purple_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purple_shulker_box": {
@@ -20807,6 +21588,7 @@
       "count": 1,
       "id": "purple_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "purple_stained_glass": {
@@ -20835,6 +21617,7 @@
       "count": 8,
       "id": "purple_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purple_stained_glass_pane": {
@@ -20857,6 +21640,7 @@
       "count": 16,
       "id": "purple_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purple_stained_glass_pane_from_glass_pane": {
@@ -20885,6 +21669,7 @@
       "count": 8,
       "id": "purple_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "purple_terracotta": {
@@ -20913,6 +21698,7 @@
       "count": 8,
       "id": "purple_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purpur_block": {
@@ -20934,6 +21720,7 @@
       "count": 4,
       "id": "purpur_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purpur_pillar": {
@@ -20955,6 +21742,7 @@
       "count": 1,
       "id": "purpur_pillar"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purpur_slab": {
@@ -20976,6 +21764,7 @@
       "count": 6,
       "id": "purpur_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "purpur_stairs": {
@@ -20999,6 +21788,7 @@
       "count": 4,
       "id": "purpur_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "quartz_block": {
@@ -21020,6 +21810,7 @@
       "count": 1,
       "id": "quartz_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "quartz_bricks": {
@@ -21041,6 +21832,7 @@
       "count": 4,
       "id": "quartz_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "quartz_pillar": {
@@ -21062,6 +21854,7 @@
       "count": 2,
       "id": "quartz_pillar"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "quartz_slab": {
@@ -21084,6 +21877,7 @@
       "count": 6,
       "id": "quartz_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "quartz_stairs": {
@@ -21108,6 +21902,7 @@
       "count": 4,
       "id": "quartz_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "rabbit_stew_from_brown_mushroom": {
@@ -21146,6 +21941,7 @@
       "count": 1,
       "id": "rabbit_stew"
     },
+    "slug": "from-brown-mushroom",
     "type": "shapeless"
   },
   "rabbit_stew_from_red_mushroom": {
@@ -21184,6 +21980,7 @@
       "count": 1,
       "id": "rabbit_stew"
     },
+    "slug": "from-red-mushroom",
     "type": "shapeless"
   },
   "rail": {
@@ -21211,6 +22008,7 @@
       "count": 16,
       "id": "rail"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "raiser_armor_trim_smithing_template": {
@@ -21243,6 +22041,7 @@
       "count": 2,
       "id": "raiser_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "raw_copper": {
@@ -21260,6 +22059,7 @@
       "count": 9,
       "id": "raw_copper"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "raw_copper_block": {
@@ -21282,6 +22082,7 @@
       "count": 1,
       "id": "raw_copper_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "raw_gold": {
@@ -21299,6 +22100,7 @@
       "count": 9,
       "id": "raw_gold"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "raw_gold_block": {
@@ -21321,6 +22123,7 @@
       "count": 1,
       "id": "raw_gold_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "raw_iron": {
@@ -21338,6 +22141,7 @@
       "count": 9,
       "id": "raw_iron"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "raw_iron_block": {
@@ -21360,6 +22164,7 @@
       "count": 1,
       "id": "raw_iron_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "recovery_compass": {
@@ -21387,6 +22192,7 @@
       "count": 1,
       "id": "recovery_compass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_banner": {
@@ -21415,6 +22221,7 @@
       "count": 1,
       "id": "red_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_banner_duplicate": {
@@ -21426,6 +22233,7 @@
       "count": 1,
       "id": "red_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "red_bed": {
@@ -21465,6 +22273,7 @@
       "count": 1,
       "id": "red_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_bundle": {
@@ -21505,6 +22314,7 @@
       "count": 1,
       "id": "red_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "red_candle": {
@@ -21528,6 +22338,7 @@
       "count": 1,
       "id": "red_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "red_carpet": {
@@ -21549,6 +22360,7 @@
       "count": 3,
       "id": "red_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_concrete_powder": {
@@ -21607,6 +22419,7 @@
       "count": 8,
       "id": "red_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "red_dye_from_beetroot": {
@@ -21625,6 +22438,7 @@
       "count": 1,
       "id": "red_dye"
     },
+    "slug": "from-beetroot",
     "type": "shapeless"
   },
   "red_dye_from_poppy": {
@@ -21643,6 +22457,7 @@
       "count": 1,
       "id": "red_dye"
     },
+    "slug": "from-poppy",
     "type": "shapeless"
   },
   "red_dye_from_rose_bush": {
@@ -21661,6 +22476,7 @@
       "count": 2,
       "id": "red_dye"
     },
+    "slug": "from-rose-bush",
     "type": "shapeless"
   },
   "red_dye_from_tulip": {
@@ -21679,6 +22495,7 @@
       "count": 1,
       "id": "red_dye"
     },
+    "slug": "from-tulip",
     "type": "shapeless"
   },
   "red_harness": {
@@ -21711,6 +22528,7 @@
       "count": 1,
       "id": "red_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_nether_brick_slab": {
@@ -21731,6 +22549,7 @@
       "count": 6,
       "id": "red_nether_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_nether_brick_stairs": {
@@ -21753,6 +22572,7 @@
       "count": 4,
       "id": "red_nether_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_nether_brick_wall": {
@@ -21774,6 +22594,7 @@
       "count": 6,
       "id": "red_nether_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_nether_bricks": {
@@ -21800,6 +22621,7 @@
       "count": 1,
       "id": "red_nether_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_sandstone": {
@@ -21821,6 +22643,7 @@
       "count": 1,
       "id": "red_sandstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_sandstone_slab": {
@@ -21842,6 +22665,7 @@
       "count": 6,
       "id": "red_sandstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_sandstone_stairs": {
@@ -21866,6 +22690,7 @@
       "count": 4,
       "id": "red_sandstone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_sandstone_wall": {
@@ -21887,6 +22712,7 @@
       "count": 6,
       "id": "red_sandstone_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_shulker_box": {
@@ -21927,6 +22753,7 @@
       "count": 1,
       "id": "red_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "red_stained_glass": {
@@ -21955,6 +22782,7 @@
       "count": 8,
       "id": "red_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_stained_glass_pane": {
@@ -21977,6 +22805,7 @@
       "count": 16,
       "id": "red_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "red_stained_glass_pane_from_glass_pane": {
@@ -22005,6 +22834,7 @@
       "count": 8,
       "id": "red_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "red_terracotta": {
@@ -22033,6 +22863,7 @@
       "count": 8,
       "id": "red_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "redstone": {
@@ -22050,6 +22881,7 @@
       "count": 9,
       "id": "redstone"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "redstone_block": {
@@ -22072,6 +22904,7 @@
       "count": 1,
       "id": "redstone_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "redstone_lamp": {
@@ -22099,6 +22932,7 @@
       "count": 1,
       "id": "redstone_lamp"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "redstone_torch": {
@@ -22125,6 +22959,7 @@
       "count": 1,
       "id": "redstone_torch"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "repair_item": {
@@ -22132,6 +22967,7 @@
     "family": "Miscellaneous",
     "id": "repair_item",
     "note": "Combine two damaged items of the same type to repair them, combining their remaining durability.",
+    "slug": "default",
     "type": "special"
   },
   "repeater": {
@@ -22163,6 +22999,7 @@
       "count": 1,
       "id": "repeater"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "resin_block": {
@@ -22185,6 +23022,7 @@
       "count": 1,
       "id": "resin_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "resin_brick_slab": {
@@ -22205,6 +23043,7 @@
       "count": 6,
       "id": "resin_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "resin_brick_stairs": {
@@ -22227,6 +23066,7 @@
       "count": 4,
       "id": "resin_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "resin_brick_wall": {
@@ -22248,6 +23088,7 @@
       "count": 6,
       "id": "resin_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "resin_bricks": {
@@ -22269,6 +23110,7 @@
       "count": 1,
       "id": "resin_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "resin_clump": {
@@ -22286,6 +23128,7 @@
       "count": 9,
       "id": "resin_clump"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "respawn_anchor": {
@@ -22313,6 +23156,7 @@
       "count": 1,
       "id": "respawn_anchor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "rib_armor_trim_smithing_template": {
@@ -22345,6 +23189,7 @@
       "count": 2,
       "id": "rib_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "saddle": {
@@ -22371,6 +23216,7 @@
       "count": 1,
       "id": "saddle"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sandstone": {
@@ -22392,6 +23238,7 @@
       "count": 1,
       "id": "sandstone"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sandstone_slab": {
@@ -22413,6 +23260,7 @@
       "count": 6,
       "id": "sandstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sandstone_stairs": {
@@ -22437,6 +23285,7 @@
       "count": 4,
       "id": "sandstone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sandstone_wall": {
@@ -22458,6 +23307,7 @@
       "count": 6,
       "id": "sandstone_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "scaffolding": {
@@ -22485,6 +23335,7 @@
       "count": 6,
       "id": "scaffolding"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sea_lantern": {
@@ -22512,6 +23363,7 @@
       "count": 1,
       "id": "sea_lantern"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sentry_armor_trim_smithing_template": {
@@ -22544,6 +23396,7 @@
       "count": 2,
       "id": "sentry_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "shaper_armor_trim_smithing_template": {
@@ -22576,6 +23429,7 @@
       "count": 2,
       "id": "shaper_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "shears": {
@@ -22597,6 +23451,7 @@
       "count": 1,
       "id": "shears"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "shield": {
@@ -22636,6 +23491,7 @@
       "count": 1,
       "id": "shield"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "shield_decoration": {
@@ -22647,6 +23503,7 @@
       "count": 1,
       "id": "shield"
     },
+    "slug": "decoration",
     "type": "special"
   },
   "shulker_box": {
@@ -22674,6 +23531,7 @@
       "count": 1,
       "id": "shulker_box"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "silence_armor_trim_smithing_template": {
@@ -22706,6 +23564,7 @@
       "count": 2,
       "id": "silence_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "skull_banner_pattern": {
@@ -22728,6 +23587,7 @@
       "count": 1,
       "id": "skull_banner_pattern"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "slime_ball": {
@@ -22745,6 +23605,7 @@
       "count": 9,
       "id": "slime_ball"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "slime_block": {
@@ -22767,6 +23628,7 @@
       "count": 1,
       "id": "slime_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smithing_table": {
@@ -22806,6 +23668,7 @@
       "count": 1,
       "id": "smithing_table"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smoker": {
@@ -22877,6 +23740,7 @@
       "count": 1,
       "id": "smoker"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smooth_quartz_slab": {
@@ -22897,6 +23761,7 @@
       "count": 6,
       "id": "smooth_quartz_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smooth_quartz_stairs": {
@@ -22919,6 +23784,7 @@
       "count": 4,
       "id": "smooth_quartz_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smooth_red_sandstone_slab": {
@@ -22939,6 +23805,7 @@
       "count": 6,
       "id": "smooth_red_sandstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smooth_red_sandstone_stairs": {
@@ -22961,6 +23828,7 @@
       "count": 4,
       "id": "smooth_red_sandstone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smooth_sandstone_slab": {
@@ -22981,6 +23849,7 @@
       "count": 6,
       "id": "smooth_sandstone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smooth_sandstone_stairs": {
@@ -23003,6 +23872,7 @@
       "count": 4,
       "id": "smooth_sandstone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "smooth_stone_slab": {
@@ -23023,6 +23893,7 @@
       "count": 6,
       "id": "smooth_stone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "snout_armor_trim_smithing_template": {
@@ -23055,6 +23926,7 @@
       "count": 2,
       "id": "snout_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "snow": {
@@ -23075,6 +23947,7 @@
       "count": 6,
       "id": "snow"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "snow_block": {
@@ -23096,6 +23969,7 @@
       "count": 1,
       "id": "snow_block"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "soul_campfire": {
@@ -23174,6 +24048,7 @@
       "count": 1,
       "id": "soul_campfire"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "soul_lantern": {
@@ -23201,6 +24076,7 @@
       "count": 1,
       "id": "soul_lantern"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "soul_torch": {
@@ -23236,6 +24112,7 @@
       "count": 4,
       "id": "soul_torch"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spectral_arrow": {
@@ -23263,6 +24140,7 @@
       "count": 2,
       "id": "spectral_arrow"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spire_armor_trim_smithing_template": {
@@ -23295,6 +24173,7 @@
       "count": 2,
       "id": "spire_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_boat": {
@@ -23317,6 +24196,7 @@
       "count": 1,
       "id": "spruce_boat"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_button": {
@@ -23335,6 +24215,7 @@
       "count": 1,
       "id": "spruce_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "spruce_chest_boat": {
@@ -23358,6 +24239,7 @@
       "count": 1,
       "id": "spruce_chest_boat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "spruce_door": {
@@ -23381,6 +24263,7 @@
       "count": 3,
       "id": "spruce_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_fence": {
@@ -23408,6 +24291,7 @@
       "count": 3,
       "id": "spruce_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_fence_gate": {
@@ -23435,6 +24319,7 @@
       "count": 1,
       "id": "spruce_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_hanging_sign": {
@@ -23463,6 +24348,7 @@
       "count": 6,
       "id": "spruce_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_planks": {
@@ -23485,6 +24371,7 @@
       "count": 4,
       "id": "spruce_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "spruce_pressure_plate": {
@@ -23506,6 +24393,7 @@
       "count": 1,
       "id": "spruce_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_shelf": {
@@ -23529,6 +24417,7 @@
       "count": 6,
       "id": "spruce_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_sign": {
@@ -23557,6 +24446,7 @@
       "count": 3,
       "id": "spruce_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_slab": {
@@ -23578,6 +24468,7 @@
       "count": 6,
       "id": "spruce_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_stairs": {
@@ -23601,6 +24492,7 @@
       "count": 4,
       "id": "spruce_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_trapdoor": {
@@ -23623,6 +24515,7 @@
       "count": 2,
       "id": "spruce_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spruce_wood": {
@@ -23645,6 +24538,7 @@
       "count": 3,
       "id": "spruce_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "spyglass": {
@@ -23672,6 +24566,7 @@
       "count": 1,
       "id": "spyglass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stick": {
@@ -23706,6 +24601,7 @@
       "count": 4,
       "id": "stick"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stick_from_bamboo_item": {
@@ -23728,6 +24624,7 @@
       "count": 1,
       "id": "stick"
     },
+    "slug": "from-bamboo-item",
     "type": "shaped"
   },
   "sticky_piston": {
@@ -23754,6 +24651,7 @@
       "count": 1,
       "id": "sticky_piston"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_axe": {
@@ -23784,6 +24682,7 @@
       "count": 1,
       "id": "stone_axe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_brick_slab": {
@@ -23804,6 +24703,7 @@
       "count": 6,
       "id": "stone_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_brick_stairs": {
@@ -23826,6 +24726,7 @@
       "count": 4,
       "id": "stone_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_brick_wall": {
@@ -23847,6 +24748,7 @@
       "count": 6,
       "id": "stone_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_bricks": {
@@ -23868,6 +24770,7 @@
       "count": 4,
       "id": "stone_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_button": {
@@ -23885,6 +24788,7 @@
       "count": 1,
       "id": "stone_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "stone_hoe": {
@@ -23915,6 +24819,7 @@
       "count": 1,
       "id": "stone_hoe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_pickaxe": {
@@ -23945,6 +24850,7 @@
       "count": 1,
       "id": "stone_pickaxe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_pressure_plate": {
@@ -23965,6 +24871,7 @@
       "count": 1,
       "id": "stone_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_shovel": {
@@ -23995,6 +24902,7 @@
       "count": 1,
       "id": "stone_shovel"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_slab": {
@@ -24015,6 +24923,7 @@
       "count": 6,
       "id": "stone_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_spear": {
@@ -24045,6 +24954,7 @@
       "count": 1,
       "id": "stone_spear"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_stairs": {
@@ -24067,6 +24977,7 @@
       "count": 4,
       "id": "stone_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stone_sword": {
@@ -24097,6 +25008,7 @@
       "count": 1,
       "id": "stone_sword"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stonecutter": {
@@ -24123,6 +25035,7 @@
       "count": 1,
       "id": "stonecutter"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_acacia_wood": {
@@ -24145,6 +25058,7 @@
       "count": 3,
       "id": "stripped_acacia_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_birch_wood": {
@@ -24167,6 +25081,7 @@
       "count": 3,
       "id": "stripped_birch_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_cherry_wood": {
@@ -24189,6 +25104,7 @@
       "count": 3,
       "id": "stripped_cherry_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_crimson_hyphae": {
@@ -24211,6 +25127,7 @@
       "count": 3,
       "id": "stripped_crimson_hyphae"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_dark_oak_wood": {
@@ -24233,6 +25150,7 @@
       "count": 3,
       "id": "stripped_dark_oak_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_jungle_wood": {
@@ -24255,6 +25173,7 @@
       "count": 3,
       "id": "stripped_jungle_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_mangrove_wood": {
@@ -24277,6 +25196,7 @@
       "count": 3,
       "id": "stripped_mangrove_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_oak_wood": {
@@ -24299,6 +25219,7 @@
       "count": 3,
       "id": "stripped_oak_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_pale_oak_wood": {
@@ -24321,6 +25242,7 @@
       "count": 3,
       "id": "stripped_pale_oak_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_spruce_wood": {
@@ -24343,6 +25265,7 @@
       "count": 3,
       "id": "stripped_spruce_wood"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "stripped_warped_hyphae": {
@@ -24365,6 +25288,7 @@
       "count": 3,
       "id": "stripped_warped_hyphae"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sugar_from_honey_bottle": {
@@ -24383,6 +25307,7 @@
       "count": 3,
       "id": "sugar"
     },
+    "slug": "from-honey-bottle",
     "type": "shapeless"
   },
   "sugar_from_sugar_cane": {
@@ -24401,6 +25326,7 @@
       "count": 1,
       "id": "sugar"
     },
+    "slug": "from-sugar-cane",
     "type": "shapeless"
   },
   "sulfur_brick_slab": {
@@ -24421,6 +25347,7 @@
       "count": 6,
       "id": "sulfur_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sulfur_brick_stairs": {
@@ -24443,6 +25370,7 @@
       "count": 4,
       "id": "sulfur_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sulfur_brick_wall": {
@@ -24464,6 +25392,7 @@
       "count": 6,
       "id": "sulfur_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sulfur_bricks": {
@@ -24485,6 +25414,7 @@
       "count": 4,
       "id": "sulfur_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sulfur_from_sulfur_spikes": {
@@ -24506,6 +25436,7 @@
       "count": 1,
       "id": "sulfur"
     },
+    "slug": "from-sulfur-spikes",
     "type": "shaped"
   },
   "sulfur_slab": {
@@ -24526,6 +25457,7 @@
       "count": 6,
       "id": "sulfur_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sulfur_stairs": {
@@ -24548,6 +25480,7 @@
       "count": 4,
       "id": "sulfur_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "sulfur_wall": {
@@ -24569,6 +25502,7 @@
       "count": 6,
       "id": "sulfur_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "suspicious_stew_from_allium": {
@@ -24602,6 +25536,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-allium",
     "type": "shapeless"
   },
   "suspicious_stew_from_azure_bluet": {
@@ -24635,6 +25570,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-azure-bluet",
     "type": "shapeless"
   },
   "suspicious_stew_from_blue_orchid": {
@@ -24668,6 +25604,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-blue-orchid",
     "type": "shapeless"
   },
   "suspicious_stew_from_closed_eyeblossom": {
@@ -24701,6 +25638,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-closed-eyeblossom",
     "type": "shapeless"
   },
   "suspicious_stew_from_cornflower": {
@@ -24734,6 +25672,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-cornflower",
     "type": "shapeless"
   },
   "suspicious_stew_from_dandelion": {
@@ -24767,6 +25706,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-dandelion",
     "type": "shapeless"
   },
   "suspicious_stew_from_golden_dandelion": {
@@ -24800,6 +25740,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-golden-dandelion",
     "type": "shapeless"
   },
   "suspicious_stew_from_lily_of_the_valley": {
@@ -24833,6 +25774,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-lily-of-the-valley",
     "type": "shapeless"
   },
   "suspicious_stew_from_open_eyeblossom": {
@@ -24866,6 +25808,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-open-eyeblossom",
     "type": "shapeless"
   },
   "suspicious_stew_from_orange_tulip": {
@@ -24899,6 +25842,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-orange-tulip",
     "type": "shapeless"
   },
   "suspicious_stew_from_oxeye_daisy": {
@@ -24932,6 +25876,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-oxeye-daisy",
     "type": "shapeless"
   },
   "suspicious_stew_from_pink_tulip": {
@@ -24965,6 +25910,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-pink-tulip",
     "type": "shapeless"
   },
   "suspicious_stew_from_poppy": {
@@ -24998,6 +25944,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-poppy",
     "type": "shapeless"
   },
   "suspicious_stew_from_red_tulip": {
@@ -25031,6 +25978,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-red-tulip",
     "type": "shapeless"
   },
   "suspicious_stew_from_torchflower": {
@@ -25064,6 +26012,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-torchflower",
     "type": "shapeless"
   },
   "suspicious_stew_from_white_tulip": {
@@ -25097,6 +26046,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-white-tulip",
     "type": "shapeless"
   },
   "suspicious_stew_from_wither_rose": {
@@ -25130,6 +26080,7 @@
       "count": 1,
       "id": "suspicious_stew"
     },
+    "slug": "from-wither-rose",
     "type": "shapeless"
   },
   "target": {
@@ -25157,6 +26108,7 @@
       "count": 1,
       "id": "target"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tide_armor_trim_smithing_template": {
@@ -25189,6 +26141,7 @@
       "count": 2,
       "id": "tide_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tinted_glass": {
@@ -25216,6 +26169,7 @@
       "count": 2,
       "id": "tinted_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tipped_arrow": {
@@ -25227,6 +26181,7 @@
       "count": 8,
       "id": "tipped_arrow"
     },
+    "slug": "default",
     "type": "special"
   },
   "tnt": {
@@ -25255,6 +26210,7 @@
       "count": 1,
       "id": "tnt"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tnt_minecart": {
@@ -25277,6 +26233,7 @@
       "count": 1,
       "id": "tnt_minecart"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "torch": {
@@ -25304,6 +26261,7 @@
       "count": 4,
       "id": "torch"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "trapped_chest": {
@@ -25326,6 +26284,7 @@
       "count": 1,
       "id": "trapped_chest"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "tripwire_hook": {
@@ -25370,6 +26329,7 @@
       "count": 2,
       "id": "tripwire_hook"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tuff_brick_slab": {
@@ -25390,6 +26350,7 @@
       "count": 6,
       "id": "tuff_brick_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tuff_brick_stairs": {
@@ -25412,6 +26373,7 @@
       "count": 4,
       "id": "tuff_brick_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tuff_brick_wall": {
@@ -25433,6 +26395,7 @@
       "count": 6,
       "id": "tuff_brick_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tuff_bricks": {
@@ -25454,6 +26417,7 @@
       "count": 4,
       "id": "tuff_bricks"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tuff_slab": {
@@ -25474,6 +26438,7 @@
       "count": 6,
       "id": "tuff_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tuff_stairs": {
@@ -25496,6 +26461,7 @@
       "count": 4,
       "id": "tuff_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "tuff_wall": {
@@ -25517,6 +26483,7 @@
       "count": 6,
       "id": "tuff_wall"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "turtle_helmet": {
@@ -25538,6 +26505,7 @@
       "count": 1,
       "id": "turtle_helmet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "vex_armor_trim_smithing_template": {
@@ -25570,6 +26538,7 @@
       "count": 2,
       "id": "vex_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "ward_armor_trim_smithing_template": {
@@ -25602,6 +26571,7 @@
       "count": 2,
       "id": "ward_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_button": {
@@ -25620,6 +26590,7 @@
       "count": 1,
       "id": "warped_button"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "warped_door": {
@@ -25643,6 +26614,7 @@
       "count": 3,
       "id": "warped_door"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_fence": {
@@ -25670,6 +26642,7 @@
       "count": 3,
       "id": "warped_fence"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_fence_gate": {
@@ -25697,6 +26670,7 @@
       "count": 1,
       "id": "warped_fence_gate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_fungus_on_a_stick": {
@@ -25723,6 +26697,7 @@
       "count": 1,
       "id": "warped_fungus_on_a_stick"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_hanging_sign": {
@@ -25751,6 +26726,7 @@
       "count": 6,
       "id": "warped_hanging_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_hyphae": {
@@ -25773,6 +26749,7 @@
       "count": 3,
       "id": "warped_hyphae"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_planks": {
@@ -25795,6 +26772,7 @@
       "count": 4,
       "id": "warped_planks"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "warped_pressure_plate": {
@@ -25816,6 +26794,7 @@
       "count": 1,
       "id": "warped_pressure_plate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_shelf": {
@@ -25839,6 +26818,7 @@
       "count": 6,
       "id": "warped_shelf"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_sign": {
@@ -25867,6 +26847,7 @@
       "count": 3,
       "id": "warped_sign"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_slab": {
@@ -25888,6 +26869,7 @@
       "count": 6,
       "id": "warped_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_stairs": {
@@ -25911,6 +26893,7 @@
       "count": 4,
       "id": "warped_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "warped_trapdoor": {
@@ -25933,6 +26916,7 @@
       "count": 2,
       "id": "warped_trapdoor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_chiseled_copper": {
@@ -25955,6 +26939,7 @@
       "count": 1,
       "id": "waxed_chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_chiseled_copper_from_honeycomb": {
@@ -25978,6 +26963,7 @@
       "count": 1,
       "id": "waxed_chiseled_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_bars_from_honeycomb": {
@@ -26001,6 +26987,7 @@
       "count": 1,
       "id": "waxed_copper_bars"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_block_from_honeycomb": {
@@ -26024,6 +27011,7 @@
       "count": 1,
       "id": "waxed_copper_block"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_bulb": {
@@ -26057,6 +27045,7 @@
       "count": 4,
       "id": "waxed_copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_copper_bulb_from_honeycomb": {
@@ -26080,6 +27069,7 @@
       "count": 1,
       "id": "waxed_copper_bulb"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_chain_from_honeycomb": {
@@ -26103,6 +27093,7 @@
       "count": 1,
       "id": "waxed_copper_chain"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_chest_from_honeycomb": {
@@ -26126,6 +27117,7 @@
       "count": 1,
       "id": "waxed_copper_chest"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_door_from_honeycomb": {
@@ -26149,6 +27141,7 @@
       "count": 1,
       "id": "waxed_copper_door"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_golem_statue_from_honeycomb": {
@@ -26172,6 +27165,7 @@
       "count": 1,
       "id": "waxed_copper_golem_statue"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_grate": {
@@ -26195,6 +27189,7 @@
       "count": 4,
       "id": "waxed_copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_copper_grate_from_honeycomb": {
@@ -26218,6 +27213,7 @@
       "count": 1,
       "id": "waxed_copper_grate"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_lantern_from_honeycomb": {
@@ -26241,6 +27237,7 @@
       "count": 1,
       "id": "waxed_copper_lantern"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_copper_trapdoor_from_honeycomb": {
@@ -26264,6 +27261,7 @@
       "count": 1,
       "id": "waxed_copper_trapdoor"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_cut_copper": {
@@ -26286,6 +27284,7 @@
       "count": 4,
       "id": "waxed_cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_cut_copper_from_honeycomb": {
@@ -26309,6 +27308,7 @@
       "count": 1,
       "id": "waxed_cut_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_cut_copper_slab": {
@@ -26330,6 +27330,7 @@
       "count": 6,
       "id": "waxed_cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_cut_copper_slab_from_honeycomb": {
@@ -26353,6 +27354,7 @@
       "count": 1,
       "id": "waxed_cut_copper_slab"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_cut_copper_stairs": {
@@ -26376,6 +27378,7 @@
       "count": 4,
       "id": "waxed_cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_cut_copper_stairs_from_honeycomb": {
@@ -26399,6 +27402,7 @@
       "count": 1,
       "id": "waxed_cut_copper_stairs"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_chiseled_copper": {
@@ -26421,6 +27425,7 @@
       "count": 1,
       "id": "waxed_exposed_chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_exposed_chiseled_copper_from_honeycomb": {
@@ -26444,6 +27449,7 @@
       "count": 1,
       "id": "waxed_exposed_chiseled_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_bars_from_honeycomb": {
@@ -26467,6 +27473,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_bars"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_bulb": {
@@ -26500,6 +27507,7 @@
       "count": 4,
       "id": "waxed_exposed_copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_exposed_copper_bulb_from_honeycomb": {
@@ -26523,6 +27531,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_bulb"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_chain_from_honeycomb": {
@@ -26546,6 +27555,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_chain"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_chest_from_honeycomb": {
@@ -26569,6 +27579,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_chest"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_door_from_honeycomb": {
@@ -26592,6 +27603,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_door"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_from_honeycomb": {
@@ -26615,6 +27627,7 @@
       "count": 1,
       "id": "waxed_exposed_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_golem_statue_from_honeycomb": {
@@ -26638,6 +27651,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_golem_statue"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_grate": {
@@ -26661,6 +27675,7 @@
       "count": 4,
       "id": "waxed_exposed_copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_exposed_copper_grate_from_honeycomb": {
@@ -26684,6 +27699,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_grate"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_lantern_from_honeycomb": {
@@ -26707,6 +27723,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_lantern"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_copper_trapdoor_from_honeycomb": {
@@ -26730,6 +27747,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_trapdoor"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_cut_copper": {
@@ -26752,6 +27770,7 @@
       "count": 4,
       "id": "waxed_exposed_cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_exposed_cut_copper_from_honeycomb": {
@@ -26775,6 +27794,7 @@
       "count": 1,
       "id": "waxed_exposed_cut_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_cut_copper_slab": {
@@ -26796,6 +27816,7 @@
       "count": 6,
       "id": "waxed_exposed_cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_exposed_cut_copper_slab_from_honeycomb": {
@@ -26819,6 +27840,7 @@
       "count": 1,
       "id": "waxed_exposed_cut_copper_slab"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_cut_copper_stairs": {
@@ -26842,6 +27864,7 @@
       "count": 4,
       "id": "waxed_exposed_cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_exposed_cut_copper_stairs_from_honeycomb": {
@@ -26865,6 +27888,7 @@
       "count": 1,
       "id": "waxed_exposed_cut_copper_stairs"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_exposed_lightning_rod_from_honeycomb": {
@@ -26888,6 +27912,7 @@
       "count": 1,
       "id": "waxed_exposed_lightning_rod"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_lightning_rod_from_honeycomb": {
@@ -26911,6 +27936,7 @@
       "count": 1,
       "id": "waxed_lightning_rod"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_chiseled_copper": {
@@ -26933,6 +27959,7 @@
       "count": 1,
       "id": "waxed_oxidized_chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_oxidized_chiseled_copper_from_honeycomb": {
@@ -26956,6 +27983,7 @@
       "count": 1,
       "id": "waxed_oxidized_chiseled_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_bars_from_honeycomb": {
@@ -26979,6 +28007,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_bars"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_bulb": {
@@ -27012,6 +28041,7 @@
       "count": 4,
       "id": "waxed_oxidized_copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_oxidized_copper_bulb_from_honeycomb": {
@@ -27035,6 +28065,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_bulb"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_chain_from_honeycomb": {
@@ -27058,6 +28089,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_chain"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_chest_from_honeycomb": {
@@ -27081,6 +28113,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_chest"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_door_from_honeycomb": {
@@ -27104,6 +28137,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_door"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_from_honeycomb": {
@@ -27127,6 +28161,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_golem_statue_from_honeycomb": {
@@ -27150,6 +28185,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_golem_statue"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_grate": {
@@ -27173,6 +28209,7 @@
       "count": 4,
       "id": "waxed_oxidized_copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_oxidized_copper_grate_from_honeycomb": {
@@ -27196,6 +28233,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_grate"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_lantern_from_honeycomb": {
@@ -27219,6 +28257,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_lantern"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_copper_trapdoor_from_honeycomb": {
@@ -27242,6 +28281,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_trapdoor"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_cut_copper": {
@@ -27264,6 +28304,7 @@
       "count": 4,
       "id": "waxed_oxidized_cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_oxidized_cut_copper_from_honeycomb": {
@@ -27287,6 +28328,7 @@
       "count": 1,
       "id": "waxed_oxidized_cut_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_cut_copper_slab": {
@@ -27308,6 +28350,7 @@
       "count": 6,
       "id": "waxed_oxidized_cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_oxidized_cut_copper_slab_from_honeycomb": {
@@ -27331,6 +28374,7 @@
       "count": 1,
       "id": "waxed_oxidized_cut_copper_slab"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_cut_copper_stairs": {
@@ -27354,6 +28398,7 @@
       "count": 4,
       "id": "waxed_oxidized_cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_oxidized_cut_copper_stairs_from_honeycomb": {
@@ -27377,6 +28422,7 @@
       "count": 1,
       "id": "waxed_oxidized_cut_copper_stairs"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_oxidized_lightning_rod_from_honeycomb": {
@@ -27400,6 +28446,7 @@
       "count": 1,
       "id": "waxed_oxidized_lightning_rod"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_chiseled_copper": {
@@ -27422,6 +28469,7 @@
       "count": 1,
       "id": "waxed_weathered_chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_weathered_chiseled_copper_from_honeycomb": {
@@ -27445,6 +28493,7 @@
       "count": 1,
       "id": "waxed_weathered_chiseled_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_bars_from_honeycomb": {
@@ -27468,6 +28517,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_bars"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_bulb": {
@@ -27501,6 +28551,7 @@
       "count": 4,
       "id": "waxed_weathered_copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_weathered_copper_bulb_from_honeycomb": {
@@ -27524,6 +28575,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_bulb"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_chain_from_honeycomb": {
@@ -27547,6 +28599,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_chain"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_chest_from_honeycomb": {
@@ -27570,6 +28623,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_chest"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_door_from_honeycomb": {
@@ -27593,6 +28647,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_door"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_from_honeycomb": {
@@ -27616,6 +28671,7 @@
       "count": 1,
       "id": "waxed_weathered_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_golem_statue_from_honeycomb": {
@@ -27639,6 +28695,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_golem_statue"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_grate": {
@@ -27662,6 +28719,7 @@
       "count": 4,
       "id": "waxed_weathered_copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_weathered_copper_grate_from_honeycomb": {
@@ -27685,6 +28743,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_grate"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_lantern_from_honeycomb": {
@@ -27708,6 +28767,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_lantern"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_copper_trapdoor_from_honeycomb": {
@@ -27731,6 +28791,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_trapdoor"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_cut_copper": {
@@ -27753,6 +28814,7 @@
       "count": 4,
       "id": "waxed_weathered_cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_weathered_cut_copper_from_honeycomb": {
@@ -27776,6 +28838,7 @@
       "count": 1,
       "id": "waxed_weathered_cut_copper"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_cut_copper_slab": {
@@ -27797,6 +28860,7 @@
       "count": 6,
       "id": "waxed_weathered_cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_weathered_cut_copper_slab_from_honeycomb": {
@@ -27820,6 +28884,7 @@
       "count": 1,
       "id": "waxed_weathered_cut_copper_slab"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_cut_copper_stairs": {
@@ -27843,6 +28908,7 @@
       "count": 4,
       "id": "waxed_weathered_cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "waxed_weathered_cut_copper_stairs_from_honeycomb": {
@@ -27866,6 +28932,7 @@
       "count": 1,
       "id": "waxed_weathered_cut_copper_stairs"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "waxed_weathered_lightning_rod_from_honeycomb": {
@@ -27889,6 +28956,7 @@
       "count": 1,
       "id": "waxed_weathered_lightning_rod"
     },
+    "slug": "from-honeycomb",
     "type": "shapeless"
   },
   "wayfinder_armor_trim_smithing_template": {
@@ -27921,6 +28989,7 @@
       "count": 2,
       "id": "wayfinder_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "weathered_chiseled_copper": {
@@ -27942,6 +29011,7 @@
       "count": 1,
       "id": "weathered_chiseled_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "weathered_copper_bulb": {
@@ -27975,6 +29045,7 @@
       "count": 4,
       "id": "weathered_copper_bulb"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "weathered_copper_grate": {
@@ -27998,6 +29069,7 @@
       "count": 4,
       "id": "weathered_copper_grate"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "weathered_cut_copper": {
@@ -28019,6 +29091,7 @@
       "count": 4,
       "id": "weathered_cut_copper"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "weathered_cut_copper_slab": {
@@ -28039,6 +29112,7 @@
       "count": 6,
       "id": "weathered_cut_copper_slab"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "weathered_cut_copper_stairs": {
@@ -28061,6 +29135,7 @@
       "count": 4,
       "id": "weathered_cut_copper_stairs"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wheat": {
@@ -28078,6 +29153,7 @@
       "count": 9,
       "id": "wheat"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "white_banner": {
@@ -28106,6 +29182,7 @@
       "count": 1,
       "id": "white_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "white_banner_duplicate": {
@@ -28117,6 +29194,7 @@
       "count": 1,
       "id": "white_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "white_bed": {
@@ -28156,6 +29234,7 @@
       "count": 1,
       "id": "white_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "white_bundle": {
@@ -28196,6 +29275,7 @@
       "count": 1,
       "id": "white_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "white_candle": {
@@ -28219,6 +29299,7 @@
       "count": 1,
       "id": "white_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "white_carpet": {
@@ -28240,6 +29321,7 @@
       "count": 3,
       "id": "white_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "white_concrete_powder": {
@@ -28298,6 +29380,7 @@
       "count": 8,
       "id": "white_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "white_dye": {
@@ -28316,6 +29399,7 @@
       "count": 1,
       "id": "white_dye"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "white_dye_from_lily_of_the_valley": {
@@ -28334,6 +29418,7 @@
       "count": 1,
       "id": "white_dye"
     },
+    "slug": "from-lily-of-the-valley",
     "type": "shapeless"
   },
   "white_harness": {
@@ -28366,6 +29451,7 @@
       "count": 1,
       "id": "white_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "white_shulker_box": {
@@ -28406,6 +29492,7 @@
       "count": 1,
       "id": "white_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "white_stained_glass": {
@@ -28434,6 +29521,7 @@
       "count": 8,
       "id": "white_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "white_stained_glass_pane": {
@@ -28456,6 +29544,7 @@
       "count": 16,
       "id": "white_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "white_stained_glass_pane_from_glass_pane": {
@@ -28484,6 +29573,7 @@
       "count": 8,
       "id": "white_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "white_terracotta": {
@@ -28512,6 +29602,7 @@
       "count": 8,
       "id": "white_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "white_wool_from_string": {
@@ -28533,6 +29624,7 @@
       "count": 1,
       "id": "white_wool"
     },
+    "slug": "from-string",
     "type": "shaped"
   },
   "wild_armor_trim_smithing_template": {
@@ -28565,6 +29657,7 @@
       "count": 2,
       "id": "wild_armor_trim_smithing_template"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wind_charge": {
@@ -28582,6 +29675,7 @@
       "count": 4,
       "id": "wind_charge"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "wolf_armor": {
@@ -28604,6 +29698,7 @@
       "count": 1,
       "id": "wolf_armor"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wolf_armor_dyed": {
@@ -28616,6 +29711,7 @@
       "count": 1,
       "id": "wolf_armor"
     },
+    "slug": "dyed",
     "type": "special"
   },
   "wooden_axe": {
@@ -28655,6 +29751,7 @@
       "count": 1,
       "id": "wooden_axe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wooden_hoe": {
@@ -28694,6 +29791,7 @@
       "count": 1,
       "id": "wooden_hoe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wooden_pickaxe": {
@@ -28733,6 +29831,7 @@
       "count": 1,
       "id": "wooden_pickaxe"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wooden_shovel": {
@@ -28772,6 +29871,7 @@
       "count": 1,
       "id": "wooden_shovel"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wooden_spear": {
@@ -28811,6 +29911,7 @@
       "count": 1,
       "id": "wooden_spear"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "wooden_sword": {
@@ -28850,6 +29951,7 @@
       "count": 1,
       "id": "wooden_sword"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "writable_book": {
@@ -28877,6 +29979,7 @@
       "count": 1,
       "id": "writable_book"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "yellow_banner": {
@@ -28905,6 +30008,7 @@
       "count": 1,
       "id": "yellow_banner"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "yellow_banner_duplicate": {
@@ -28916,6 +30020,7 @@
       "count": 1,
       "id": "yellow_banner"
     },
+    "slug": "duplicate",
     "type": "special"
   },
   "yellow_bed": {
@@ -28955,6 +30060,7 @@
       "count": 1,
       "id": "yellow_bed"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "yellow_bundle": {
@@ -28995,6 +30101,7 @@
       "count": 1,
       "id": "yellow_bundle"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "yellow_candle": {
@@ -29018,6 +30125,7 @@
       "count": 1,
       "id": "yellow_candle"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "yellow_carpet": {
@@ -29039,6 +30147,7 @@
       "count": 3,
       "id": "yellow_carpet"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "yellow_concrete_powder": {
@@ -29097,6 +30206,7 @@
       "count": 8,
       "id": "yellow_concrete_powder"
     },
+    "slug": "default",
     "type": "shapeless"
   },
   "yellow_dye_from_dandelion": {
@@ -29115,6 +30225,7 @@
       "count": 1,
       "id": "yellow_dye"
     },
+    "slug": "from-dandelion",
     "type": "shapeless"
   },
   "yellow_dye_from_golden_dandelion": {
@@ -29133,6 +30244,7 @@
       "count": 1,
       "id": "yellow_dye"
     },
+    "slug": "from-golden-dandelion",
     "type": "shapeless"
   },
   "yellow_dye_from_sunflower": {
@@ -29151,6 +30263,7 @@
       "count": 2,
       "id": "yellow_dye"
     },
+    "slug": "from-sunflower",
     "type": "shapeless"
   },
   "yellow_dye_from_wildflowers": {
@@ -29169,6 +30282,7 @@
       "count": 1,
       "id": "yellow_dye"
     },
+    "slug": "from-wildflowers",
     "type": "shapeless"
   },
   "yellow_harness": {
@@ -29201,6 +30315,7 @@
       "count": 1,
       "id": "yellow_harness"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "yellow_shulker_box": {
@@ -29241,6 +30356,7 @@
       "count": 1,
       "id": "yellow_shulker_box"
     },
+    "slug": "default",
     "type": "transmute"
   },
   "yellow_stained_glass": {
@@ -29269,6 +30385,7 @@
       "count": 8,
       "id": "yellow_stained_glass"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "yellow_stained_glass_pane": {
@@ -29291,6 +30408,7 @@
       "count": 16,
       "id": "yellow_stained_glass_pane"
     },
+    "slug": "default",
     "type": "shaped"
   },
   "yellow_stained_glass_pane_from_glass_pane": {
@@ -29319,6 +30437,7 @@
       "count": 8,
       "id": "yellow_stained_glass_pane"
     },
+    "slug": "from-glass-pane",
     "type": "shaped"
   },
   "yellow_terracotta": {
@@ -29347,6 +30466,7 @@
       "count": 8,
       "id": "yellow_terracotta"
     },
+    "slug": "default",
     "type": "shaped"
   }
 }

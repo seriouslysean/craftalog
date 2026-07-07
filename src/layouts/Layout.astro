@@ -116,19 +116,24 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --radius-sm: 0.125rem;
     --radius-md: 0.125rem;
 
-    /* Flat, solid "chunky" border -- the search input uses this alone. */
-    --border-width: 0.125rem;
-
     /* Two-tone horizontal divider (site header, footer, recipe pager) -- a
-       dark line plus an inset highlight right next to it, same dark/light
-       pairing as the bevels above, instead of the flat single-tone
-       --color-border rule that reads as out of place next to all the
-       stepped-pixel bevel UI. --divider-border works on either border-top or
-       border-bottom; the highlight shadow direction has to match which edge
-       the border is drawn on, hence the two variants. */
+       dark line plus a highlight right next to it, same dark/light pairing
+       as the bevels above, instead of the flat single-tone --color-border
+       rule that reads as out of place next to all the stepped-pixel bevel
+       UI, and always reading dark-then-light scanning top to bottom.
+       --divider-border works on either border-top or border-bottom.
+       --divider-shadow-top pairs with border-top: an *inset* shadow, since
+       the highlight needs to land just inside the box, below the border.
+       --divider-shadow-bottom pairs with border-bottom: NOT inset -- an
+       inset shadow can only render on the interior side of whichever border
+       it's offset toward, so pairing border-bottom with an inset shadow
+       would pin the highlight *above* the line (inside the box), the mirror
+       image of --divider-shadow-top's dark-then-light order. A regular
+       (non-inset) shadow renders just outside the box instead, continuing
+       the same order below the border. */
     --divider-border: 0.0625rem solid var(--color-gray-dark);
     --divider-shadow-top: inset 0 0.0625rem 0 0 rgba(255, 255, 255, 0.75);
-    --divider-shadow-bottom: inset 0 -0.0625rem 0 0 rgba(255, 255, 255, 0.75);
+    --divider-shadow-bottom: 0 0.0625rem 0 0 rgba(255, 255, 255, 0.75);
 
     /* Spacing */
     --space-1: 0.25rem;
@@ -226,7 +231,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
      category pills all use exactly this, so the whole site has one
      clickable-control style instead of a different one per component. Same
      raised bevel as the crafting grid's slots, just inverted, and square for
-     the same reason the grid is square (see --bevel-button above). */
+     the same reason the grid is square (see --bevel-button above). Also
+     picks up the same thin dark-gray --panel-border-outer ring as the
+     crafting grid and ingredient-options panels, so every clickable chip is
+     grounded by the same outline as the rest of the chunky-panel system. */
   .link-chip {
     display: inline-flex;
     align-items: center;
@@ -235,13 +243,13 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     appearance: none;
     -webkit-appearance: none;
     background-color: var(--color-panel);
-    box-shadow: var(--bevel-button);
+    box-shadow: var(--bevel-button), var(--panel-border-outer);
   }
 
   .link-chip:hover,
   .link-chip:active,
   .link-chip--selected {
-    box-shadow: var(--bevel-button-pressed);
+    box-shadow: var(--bevel-button-pressed), var(--panel-border-outer);
   }
 
   .link-chip:active {

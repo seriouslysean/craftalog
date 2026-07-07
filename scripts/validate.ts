@@ -34,6 +34,10 @@ const ROOT = path.resolve(scriptDir, "..");
 
 const VENDOR_SUMMARY_DIR = path.join(ROOT, "vendor/mcmeta-summary");
 const VENDOR_TEXTURES_DIR = path.join(ROOT, "vendor/mcmeta-assets/assets/minecraft/textures");
+const VENDOR_BEDROCK_ITEMS_DIR = path.join(
+  ROOT,
+  "vendor/bedrock-samples/resource_pack/textures/items",
+);
 const GENERATED_DIR = path.join(ROOT, "src/data/generated");
 const PUBLIC_DIR = path.join(ROOT, "public");
 
@@ -118,6 +122,8 @@ function checkDrift(committed: { recipes: RecipesOutput; items: ItemsOutput; met
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
+  const bedrockBedIconExists = (bedrockColorName: string): boolean =>
+    fs.existsSync(path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`));
 
   const fresh = generate({
     version,
@@ -128,6 +134,7 @@ function checkDrift(committed: { recipes: RecipesOutput; items: ItemsOutput; met
     componentsRaw,
     enUs,
     textureExists,
+    bedrockBedIconExists,
   });
 
   diffSummary("recipes.json", fresh.recipes, committed.recipes);
@@ -185,8 +192,11 @@ function checkInternalConsistency(committed: {
   }
 
   for (const [id, item] of Object.entries(items)) {
+    // Every icon type is either single-texture ("texture") or a top/side
+    // cube ("top" + "side") -- never both fields on the same object, so this
+    // narrows cleanly without needing a per-type case.
     const texturePaths =
-      item.icon.type === "flat" ? [item.icon.texture] : [item.icon.top, item.icon.side];
+      "texture" in item.icon ? [item.icon.texture] : [item.icon.top, item.icon.side];
     for (const texturePath of texturePaths) {
       const onDisk = path.join(PUBLIC_DIR, texturePath.replace(/^\//, ""));
       if (!fs.existsSync(onDisk)) {
@@ -224,6 +234,10 @@ function main(): void {
   } else if (!fs.existsSync(path.join(VENDOR_SUMMARY_DIR, "version.txt"))) {
     fail(
       `vendor/mcmeta-summary is not populated (run "npm run vendor:init"), and --offline was not passed.`,
+    );
+  } else if (!fs.existsSync(VENDOR_BEDROCK_ITEMS_DIR)) {
+    fail(
+      `vendor/bedrock-samples is not populated (run "npm run vendor:init"), and --offline was not passed.`,
     );
   } else {
     checkDrift(committed);

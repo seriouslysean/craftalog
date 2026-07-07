@@ -26,13 +26,12 @@
     "vendor:init": "git submodule update --init --depth 1"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.9",
     "@fontsource/pixelify-sans": "5.2.7",
     "astro": "7.0.6",
-    "modern-normalize": "3.0.1",
-    "typescript": "6.0.3"
+    "modern-normalize": "3.0.1"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.9",
     "@types/pngjs": "^6.0.5",
     "oxfmt": "0.57.0",
     "oxlint": "1.72.0",
@@ -40,6 +39,7 @@
     "prettier": "3.9.4",
     "prettier-plugin-astro": "0.14.1",
     "tsx": "4.23.0",
+    "typescript": "6.0.3",
     "vitest": "4.1.9"
   },
   "engines": {

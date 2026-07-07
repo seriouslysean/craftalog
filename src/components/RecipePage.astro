@@ -1,66 +1,60 @@
 ---
-import { getCollection } from 'astro:content';
-import MainLayout from '../../layouts/MainLayout.astro';
-import Badge from '../../components/Badge.astro';
-import CraftingGrid from '../../components/CraftingGrid.astro';
-import IngredientOptions from '../../components/IngredientOptions.astro';
-import ItemCard from '../../components/ItemCard.astro';
-import ItemIcon from '../../components/ItemIcon.astro';
-import ItemStat from '../../components/ItemStat.astro';
-import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../../utils/crafting-grid';
-import { ingredientOption, type IngredientOption } from '../../utils/tag-label';
-import { withBase } from '../../utils/with-base';
-import type { ItemData, RecipeData } from '../../content.config';
+import Badge from './Badge.astro';
+import CraftingGrid from './CraftingGrid.astro';
+import IngredientOptions from './IngredientOptions.astro';
+import ItemCard from './ItemCard.astro';
+import ItemIcon from './ItemIcon.astro';
+import ItemStat from './ItemStat.astro';
+import RecipeVariants from './RecipeVariants.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../utils/crafting-grid';
+import { recipePath, type SiblingRecipe } from '../utils/recipe-groups';
+import { ingredientOption, type IngredientOption } from '../utils/tag-label';
+import { withBase } from '../utils/with-base';
+import type { ItemData, RecipeData } from '../content.config';
 
-interface PageProps {
+interface Props {
   recipe: RecipeData;
   displayName: string;
   itemsMap: Map<string, ItemData>;
-  prevId: string;
+  /** This item's /recipe/{itemSlug}/... URL segment (see groupItemSlug). */
+  itemSlug: string;
+  /** The group's canonical recipe id -- reachable at the bare /recipe/{itemSlug}/ path, no slug segment. */
+  canonicalId: string;
+  siblings: SiblingRecipe[];
+  prevHref: string;
   prevName: string;
   prevItem: ItemData | null;
-  nextId: string;
+  nextHref: string;
   nextName: string;
   nextItem: ItemData | null;
 }
 
-export async function getStaticPaths() {
-  const recipeEntries = await getCollection('recipes');
-  const itemEntries = await getCollection('items');
-  const itemsMap = new Map(itemEntries.map((entry) => [entry.id, entry.data]));
-
-  const withNames = recipeEntries.map((entry) => {
-    const resultItem = entry.data.result ? itemsMap.get(entry.data.result.id) : undefined;
-    const displayName = resultItem?.name ?? entry.data.id.replace(/_/g, ' ');
-    return { entry, displayName, item: resultItem ?? null };
-  });
-  withNames.sort((a, b) => a.displayName.localeCompare(b.displayName));
-
-  return withNames.map(({ entry, displayName }, index) => {
-    const prev = withNames[(index - 1 + withNames.length) % withNames.length];
-    const next = withNames[(index + 1) % withNames.length];
-    return {
-      params: { id: entry.id },
-      props: {
-        recipe: entry.data,
-        displayName,
-        itemsMap,
-        prevId: prev.entry.id,
-        prevName: prev.displayName,
-        prevItem: prev.item,
-        nextId: next.entry.id,
-        nextName: next.displayName,
-        nextItem: next.item,
-      } satisfies PageProps,
-    };
-  });
-}
-
-const { recipe, displayName, itemsMap, prevId, prevName, prevItem, nextId, nextName, nextItem } =
-  Astro.props as PageProps;
+const {
+  recipe,
+  displayName,
+  itemsMap,
+  itemSlug,
+  canonicalId,
+  siblings,
+  prevHref,
+  prevName,
+  prevItem,
+  nextHref,
+  nextName,
+  nextItem,
+} = Astro.props as Props;
 
 const resultItem = recipe.result ? itemsMap.get(recipe.result.id) : undefined;
 const getItemName = (id: string) => itemsMap.get(id)?.name ?? id;
+
+const variants = siblings.map((sibling) => ({
+  recipeId: sibling.recipeId,
+  label: sibling.label,
+  iconItem:
+    (sibling.iconItemId ? itemsMap.get(sibling.iconItemId) : undefined) ?? resultItem ?? null,
+  href: withBase(recipePath(itemSlug, canonicalId, sibling.recipeId, sibling.slug)),
+}));
 
 let cells: GridCell[] = [];
 if (recipe.type === 'shaped' && recipe.pattern && recipe.key) {
@@ -161,7 +155,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         <Badge>{recipe.family}</Badge>
         {recipe.type === 'transmute' && <Badge variant="gui">Transmute</Badge>}
       </div>
+      {resultItem?.stat && <ItemStat stat={resultItem.stat} />}
     </div>
+
+    {siblings.length > 1 && <RecipeVariants siblings={variants} currentId={recipe.id} />}
 
     {
       hasGrid ? (
@@ -180,7 +177,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
           {resultItem && (
             <div class="recipe__special-icon">
               <ItemIcon item={resultItem} loading="eager" />
-              {resultItem.stat && <ItemStat stat={resultItem.stat} />}
             </div>
           )}
           <p class="recipe__note">{recipe.note}</p>
@@ -190,7 +186,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
     <nav class="recipe__pager" aria-label="Recipe navigation">
       <ItemCard
-        href={withBase(`/recipe/${prevId}/`)}
+        href={prevHref}
         item={prevItem}
         name={prevName}
         subtitle="Previous"
@@ -199,7 +195,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
       />
       <a href={withBase('/')} class="recipe__pager-home link-chip">All recipes</a>
       <ItemCard
-        href={withBase(`/recipe/${nextId}/`)}
+        href={nextHref}
         item={nextItem}
         name={nextName}
         subtitle="Next"

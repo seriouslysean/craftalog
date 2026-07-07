@@ -11,10 +11,22 @@ resume from here plus the task list in the PR description.
 ## Decisions (agreed with owner)
 
 1. **Data source**: `misode/mcmeta` submodules, pinned to the latest **stable**
-   release tag (snapshots/pre/rc excluded). Current pin: `26.2`.
+   release tag (snapshots/pre/rc excluded). Current pin: `26.2`. This is the
+   sole source of truth for recipes, items, tags, and lang — nothing below
+   changes that.
    - `vendor/mcmeta-summary` → tag `<version>-summary` (condensed JSON: all
      recipes, item tags, item definitions, models, lang, registries).
    - `vendor/mcmeta-assets` → tag `<version>-assets` (PNG textures).
+   - `vendor/bedrock-samples` → [Mojang/bedrock-samples](https://github.com/Mojang/bedrock-samples),
+     pinned to the latest stable tag (`v<major>.<minor>.<patch>.<build>`,
+     `-preview` tags excluded). A second, narrowly-scoped vendor source used
+     for exactly one thing: the 16 pre-baked bed icon PNGs
+     (`resource_pack/textures/items/bed_<color>.png`), which Java has no
+     equivalent for (beds are the only vanilla item rendered as two
+     composited block models rather than a single flat/cube icon). Verified
+     Bedrock does _not_ have bed's crafting recipe (checked both this repo
+     and the actual Bedrock Dedicated Server package — absent from both, almost
+     certainly hardcoded in the engine), so recipes/items stay Java-only.
 2. **Scope**: all vanilla crafting recipes — `crafting_shaped`,
    `crafting_shapeless`, `crafting_transmute` rendered; `crafting_special_*` /
    `crafting_dye` / `crafting_decorated_pot` cataloged with a curated
@@ -63,6 +75,7 @@ type Recipe = {
   type: "shaped" | "shapeless" | "transmute" | "special";
   category: string; // vanilla crafting book category, e.g. "building"
   family: string; // derived browse taxonomy, e.g. "Slabs" — see scripts/lib/family.ts
+  slug: string; // URL-safe /recipe/{item}/{slug}/ segment, unique within its result-item group — see scripts/lib/recipe-slug.ts
   group?: string; // vanilla group, e.g. "planks", "wooden_door"
   result: { id: string; count: number };
   // shaped only — placement matters:
@@ -81,9 +94,19 @@ type Recipe = {
 type Item = {
   id: string;
   name: string; // from en_us lang (item.minecraft.* / block.minecraft.*)
+  slug: string; // URL-safe /recipe/{slug}/... segment, derived from `id` (not `name` — several items share a display name, e.g. every smithing template)
   icon:
     | { type: "flat"; texture: string } // /textures/... path
-    | { type: "block"; top: string; side: string }; // pseudo-3D cube
+    | { type: "block"; top: string; side: string } // pseudo-3D cube
+    | { type: "slab"; top: string; side: string } // half-height pseudo-3D cube
+    | { type: "stairs"; top: string; side: string } // stepped pseudo-3D cube
+    // single-texture compound shapes (one material texture on every face
+    // of a multi-element model) — see ItemIcon.astro for each shape's CSS
+    | { type: "pressure_plate"; texture: string }
+    | { type: "wall"; texture: string }
+    | { type: "button"; texture: string }
+    | { type: "fence"; texture: string }
+    | { type: "fence_gate"; texture: string };
   stat?:
     | { type: "food"; nutrition: number }
     | { type: "armor"; points: number }
@@ -109,6 +132,36 @@ atlas's two real UV crops onto a transparent canvas at the model's own
 element offsets (block-space y flipped to image rows), reconstructing the
 rod's actual silhouette — thin pole, wider cap — as a flat icon at parse time
 (written under `public/textures/item/<name>.png`).
+
+Beds (the only `minecraft:composite` items — a head + foot sub-model pair,
+detected via `block/template_bed_head` appearing in the head model's parent
+chain) are a second named exception, but not a texture-resolution one: no
+Java texture reads well as a flat icon for a 2-block compound shape, and
+Bedrock Edition ships an actual pre-baked isometric sprite for every color
+(`vendor/bedrock-samples/resource_pack/textures/items/bed_<color>.png` —
+verified as genuine shipped game art, not a wiki render). `resolveIconCandidate`
+extracts just the color id from the head model's name (e.g.
+`block/black_bed_head` → `black`); `scripts/parse.ts` copies the matching
+Bedrock PNG straight to `public/textures/item/bed_<javaColorId>.png` (color
+name remapped via `scripts/lib/bedrock-colors.ts` — Bedrock still calls
+`light_gray` by its legacy name, `silver`) and the icon is a plain `flat`
+type, no new rendering code needed.
+
+Five more shapes — pressure plate, wall, button, fence, fence gate — also
+fell through to the generic best-effort fallback (a flat crop of the block's
+own `particle`/`texture` var, e.g. a fence showing as a flat plank square)
+despite each having a distinct, shared, material-agnostic geometry template
+(`block/pressure_plate_up`, `block/wall_inventory`, `block/button_inventory`,
+`block/fence_inventory`, `block/template_fence_gate` respectively — same
+"shared template + per-leaf texture override" pattern as slab/stairs).
+Unlike bed, these are single-texture shapes (one material texture painted on
+every face), so no new schema variant carries more than one texture ref; each
+gets its own `IconData`/`ItemIcon.astro` rendering branch reconstructing the
+real element geometry via CSS 3D transforms (the same per-face
+`rotateX`/`rotateY`/`translate` toolkit proven out for `stairs`/bed). Stained
+glass panes were investigated too and _not_ added to this list — Mojang's own
+inventory icon for a pane genuinely is just a flat colored square, not the
+pane cross-section, so the existing flat fallback is already correct there.
 
 Items rendered via a bespoke Java renderer (`{ type: "minecraft:special", base,
 model }` — chests, shulker boxes, shields, skulls, conduit, decorated pot,
