@@ -8,3 +8,6 @@
 	url = https://github.com/misode/mcmeta
 	shallow = true
 	branch = assets
+[submodule "vendor/bedrock-samples"]
+	path = vendor/bedrock-samples
+	url = https://github.com/Mojang/bedrock-samples
