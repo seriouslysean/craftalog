@@ -444,37 +444,46 @@ export interface DeriveFamilyInput {
   category: string;
 }
 
-export function deriveFamily(input: DeriveFamilyInput, itemTagIndex: ItemTagIndex): string {
+export interface DeriveFamilyResult {
+  family: string;
+  /** True when no override/group/tag/id-pattern rule matched and the category fallback (or "Miscellaneous") was used -- a signal the taxonomy rules haven't caught up to this item, worth surfacing on a version bump. */
+  usedFallback: boolean;
+}
+
+export function deriveFamily(
+  input: DeriveFamilyInput,
+  itemTagIndex: ItemTagIndex,
+): DeriveFamilyResult {
   const { itemId, group, category } = input;
 
   if (itemId) {
     const override = ITEM_FAMILY_OVERRIDES[itemId];
-    if (override) return override;
+    if (override) return { family: override, usedFallback: false };
   }
 
   if (group) {
     const groupFamily = GROUP_FAMILY[group];
-    if (groupFamily) return groupFamily;
+    if (groupFamily) return { family: groupFamily, usedFallback: false };
   }
 
   if (itemId) {
     const itemTags = itemTagIndex.get(itemId);
     if (itemTags) {
       for (const [tag, family] of TAG_FAMILY_PRIORITY) {
-        if (itemTags.has(tag)) return family;
+        if (itemTags.has(tag)) return { family, usedFallback: false };
       }
     }
 
-    if (itemId.endsWith("_banner_pattern")) return "Banners";
+    if (itemId.endsWith("_banner_pattern")) return { family: "Banners", usedFallback: false };
     if (
       itemId.endsWith("_bricks") ||
       STONE_VARIANT_NAMES.has(itemId) ||
       STONE_VARIANT_PREFIXES.some((prefix) => itemId.startsWith(prefix))
     ) {
-      return "Stone Variants";
+      return { family: "Stone Variants", usedFallback: false };
     }
-    if (itemId.includes("copper")) return "Copper Goods";
+    if (itemId.includes("copper")) return { family: "Copper Goods", usedFallback: false };
   }
 
-  return CATEGORY_FAMILY_FALLBACK[category] ?? "Miscellaneous";
+  return { family: CATEGORY_FAMILY_FALLBACK[category] ?? "Miscellaneous", usedFallback: true };
 }

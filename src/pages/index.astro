@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import ItemCard from '../components/ItemCard.astro';
 import { withBase } from '../utils/with-base';
-import { recipeSubtitle } from '../utils/recipe-subtitle';
+import { canonicalRecipePath, groupItemSlug, groupRecipes } from '../utils/recipe-groups';
 import meta from '../data/generated/meta.json';
 
 const recipeEntries = await getCollection('recipes');
@@ -17,29 +17,38 @@ const familySlug = (family: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
-const families = [...new Set(recipeEntries.map((entry) => entry.data.family))].toSorted((a, b) =>
+const groups = groupRecipes(
+  recipeEntries.map((entry) => entry.data),
+  getItemName,
+);
+
+const families = [...new Set(groups.map((group) => group.family))].toSorted((a, b) =>
   a.localeCompare(b),
 );
 
-const resultCounts = new Map<string, number>();
-for (const entry of recipeEntries) {
-  const resultId = entry.data.result?.id;
-  if (resultId) resultCounts.set(resultId, (resultCounts.get(resultId) ?? 0) + 1);
-}
-
 const sections = families
   .map((family) => {
-    const entries = recipeEntries
-      .filter((entry) => entry.data.family === family)
-      .map((entry) => {
-        const resultId = entry.data.result?.id;
-        const resultItem = resultId ? itemsMap.get(resultId) : undefined;
-        const name = resultItem?.name ?? entry.data.id.replace(/_/g, ' ');
-        const subtitle =
-          resultId && (resultCounts.get(resultId) ?? 0) > 1
-            ? recipeSubtitle(entry.data, getItemName)
-            : null;
-        return { id: entry.id, name, subtitle, item: resultItem ?? null };
+    const entries = groups
+      .filter((group) => group.family === family)
+      .map((group) => {
+        const resultItem = itemsMap.get(group.resultId);
+        const name = resultItem?.name ?? group.canonicalId.replace(/_/g, ' ');
+        const searchText = [
+          name,
+          ...group.siblings.flatMap((sibling) => [
+            sibling.label ?? '',
+            ...sibling.ingredientItemIds.map((id) => getItemName(id)),
+          ]),
+        ]
+          .join(' ')
+          .toLowerCase();
+        const href = withBase(canonicalRecipePath(groupItemSlug(group, itemsMap)));
+        return {
+          href,
+          name,
+          item: resultItem ?? null,
+          searchText,
+        };
       })
       .toSorted((a, b) => a.name.localeCompare(b.name));
 
@@ -115,7 +124,7 @@ const totalRecipes = recipeEntries.length;
           class="catalog__family-input"
         />
         <label for="family-all" class="catalog__family-pill link-chip">
-          All <span class="catalog__family-count">({totalRecipes})</span>
+          All <span class="catalog__family-count">({groups.length})</span>
         </label>
         {
           sections.map((section) => (
@@ -147,16 +156,11 @@ const totalRecipes = recipeEntries.length;
           </h2>
           <ul class="catalog__grid">
             {section.entries.map((entry) => (
-              <li
-                class="catalog__item"
-                data-search={entry.name.toLowerCase()}
-                data-family={section.slug}
-              >
+              <li class="catalog__item" data-search={entry.searchText} data-family={section.slug}>
                 <ItemCard
-                  href={withBase(`/recipe/${entry.id}/`)}
+                  href={entry.href}
                   item={entry.item}
                   name={entry.name}
-                  subtitle={entry.subtitle}
                   class="catalog__link"
                 />
               </li>
@@ -172,7 +176,11 @@ const totalRecipes = recipeEntries.length;
   // astro:page-load fires on the initial load AND every subsequent View
   // Transitions navigation, so re-querying/re-binding here keeps this working
   // when navigating back to this page via the client router.
+  const SEARCH_PARAM = 'q';
+  const FAMILY_PARAM = 'family';
+
   document.addEventListener('astro:page-load', () => {
+    const form = document.querySelector<HTMLFormElement>('.catalog__filter');
     const input = document.getElementById('recipe-filter');
     const items = document.querySelectorAll<HTMLElement>('.catalog__item');
     const sections = document.querySelectorAll<HTMLElement>('[data-family-section]');
@@ -201,6 +209,27 @@ const totalRecipes = recipeEntries.length;
       if (emptyState) emptyState.hidden = anyVisible;
     }
 
+    // Restore the search text and family filter from the URL before wiring
+    // up listeners, so the initially-rendered grid matches the
+    // shared/bookmarked state instead of flashing the defaults first.
+    const restoreParams = new URLSearchParams(location.search);
+    const urlSearch = restoreParams.get(SEARCH_PARAM) ?? '';
+    const urlFamily = restoreParams.get(FAMILY_PARAM);
+    const familyToCheck =
+      Array.from(familyInputs).find((radio) => radio.value === urlFamily) ??
+      Array.from(familyInputs).find((radio) => radio.value === 'all');
+
+    if (input instanceof HTMLInputElement) {
+      input.value = urlSearch;
+    }
+
+    familyInputs.forEach((radio) => {
+      radio.checked = radio === familyToCheck;
+    });
+    activeFamily = familyToCheck?.value ?? 'all';
+
+    applyFilter(urlSearch);
+
     if (input instanceof HTMLInputElement) {
       input.addEventListener('input', () => applyFilter(input.value));
     }
@@ -212,6 +241,37 @@ const totalRecipes = recipeEntries.length;
           applyFilter(input instanceof HTMLInputElement ? input.value : '');
         }
       });
+    });
+
+    // Only write the filter state back to the URL on submit (Enter in the
+    // search field) rather than on every keystroke or family click, so the
+    // address bar doesn't get rewritten mid-typing -- this is a client-side
+    // filter, not a real navigation, so preventDefault and use replaceState
+    // to update the current history entry in place instead of pushing a new
+    // one for every search.
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const searchValue = input instanceof HTMLInputElement ? input.value : '';
+      const nextParams = new URLSearchParams(location.search);
+
+      if (searchValue) {
+        nextParams.set(SEARCH_PARAM, searchValue);
+      } else {
+        nextParams.delete(SEARCH_PARAM);
+      }
+
+      if (activeFamily !== 'all') {
+        nextParams.set(FAMILY_PARAM, activeFamily);
+      } else {
+        nextParams.delete(FAMILY_PARAM);
+      }
+
+      const query = nextParams.toString();
+      history.replaceState(
+        null,
+        '',
+        `${location.pathname}${query ? `?${query}` : ''}${location.hash}`,
+      );
     });
 
     const filterToggle = document.querySelector<HTMLButtonElement>('.catalog__filter-toggle');
@@ -256,9 +316,11 @@ const totalRecipes = recipeEntries.length;
   .catalog__filter-input {
     flex: 1;
     min-width: 0;
+    height: 2.5rem;
     padding: var(--space-2) var(--space-4);
-    border: var(--border-width) solid var(--color-gray-dark);
+    border: none;
     background-color: #fff;
+    box-shadow: var(--bevel-slot), var(--panel-border-outer);
     font-size: 1rem;
     font-family: var(--font-sans);
     color: var(--color-fg);
@@ -266,12 +328,13 @@ const totalRecipes = recipeEntries.length;
 
   .catalog__filter-input:focus {
     outline: 2px solid var(--color-fg);
-    outline-offset: 1px;
+    outline-offset: 2px;
   }
 
   .catalog__filter-toggle {
     flex-shrink: 0;
     width: 2.5rem;
+    height: 2.5rem;
     padding: var(--space-2);
     justify-content: center;
     font-size: 0.8125rem;
@@ -280,7 +343,7 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__filter-toggle[aria-expanded='false'] {
-    box-shadow: var(--bevel-button-pressed);
+    box-shadow: var(--bevel-button-pressed), var(--panel-border-outer);
   }
 
   .catalog__families {
@@ -311,7 +374,7 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__family-input:checked + .catalog__family-pill {
-    box-shadow: var(--bevel-button-pressed);
+    box-shadow: var(--bevel-button-pressed), var(--panel-border-outer);
   }
 
   .catalog__family-input:focus-visible + .catalog__family-pill {
@@ -348,6 +411,13 @@ const totalRecipes = recipeEntries.length;
   .catalog__item {
     content-visibility: auto;
     contain-intrinsic-size: auto 4.5rem;
+    /* content-visibility: auto always turns on paint containment, which
+       clips descendant painting to this element's own box -- including the
+       card's --panel-border-outer ring, a non-inset box-shadow that bleeds
+       2px outside its own border-box. This padding reserves exactly that
+       much room so the ring lands at this element's edge instead of past
+       it, where paint containment would clip it off. */
+    padding: var(--panel-border-outer-width);
   }
 
   /* ItemCard renders its own <a> inside its own scoped style boundary, so a

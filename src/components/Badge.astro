@@ -34,5 +34,11 @@ const { variant = 'default', title } = Astro.props;
     background-color: var(--color-panel);
     color: var(--color-panel-fg);
     text-transform: none;
+    /* --color-panel matches the page background everywhere this variant is
+       used (recipe-mechanical facts sitting directly on the page, not inside
+       a panel), so its background never actually renders -- the base class's
+       horizontal padding would then read as an unexplained gap when this is
+       the first badge in a row instead of the inset of a visible box. */
+    padding-inline: 0;
   }
 </style>

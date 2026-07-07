@@ -3,6 +3,8 @@ name: CI
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
   merge_group:
   workflow_dispatch:
 
@@ -14,22 +16,46 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout with submodules
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: 'npm'
+
       - name: Install dependencies from lockfile
         run: npm ci
+
+      - name: Parse vendored data into generated JSON
+        run: npm run parse
+
+      - name: Check committed generated data matches submodule pin
+        run: git diff --exit-code -- src/data/generated public/textures
+
+      - name: Explain drift failure
+        if: failure()
+        run: |
+          echo "::error::src/data/generated and/or public/textures are out of date with the pinned mcmeta submodules."
+          echo "Run 'npm run parse' locally after updating vendor/mcmeta-summary and vendor/mcmeta-assets, then commit the regenerated files."
+
+      - name: Validate generated data
+        run: npm run validate
+
       - name: Check formatting
         run: npm run format:check
+
       - name: Type check
         run: npm run type-check
+
       - name: Lint
         run: npm run lint
+
       - name: Unit tests
         run: npm test
+
       - name: Build
         run: npm run build

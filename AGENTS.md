@@ -165,8 +165,9 @@ export function generateItemIconHTML(item: any) {
 ```
 /
 ├── vendor/
-│   ├── mcmeta-summary/  # submodule: recipes, tags, item defs, models, lang (pinned tag)
-│   └── mcmeta-assets/   # submodule: textures (pinned tag)
+│   ├── mcmeta-summary/    # submodule: recipes, tags, item defs, models, lang (pinned tag)
+│   ├── mcmeta-assets/     # submodule: textures (pinned tag)
+│   └── bedrock-samples/   # submodule: bed icon PNGs only (pinned tag) — Java remains authoritative for everything else
 ├── scripts/
 │   ├── parse.ts         # vendor/ → src/data/generated/* + public/textures/*
 │   └── validate.ts      # re-derives + checks committed generated data for drift
@@ -195,7 +196,7 @@ export function generateItemIconHTML(item: any) {
 Vanilla Minecraft recipe/item data is never hand-authored. It flows:
 
 ```
-vendor/mcmeta-summary + vendor/mcmeta-assets   (git submodules, pinned to a stable release tag)
+vendor/mcmeta-summary + vendor/mcmeta-assets + vendor/bedrock-samples   (git submodules, pinned to a stable release tag)
         │  npm run parse
         ▼
 src/data/generated/{items,recipes,meta}.json + public/textures/**
@@ -204,9 +205,15 @@ src/data/generated/{items,recipes,meta}.json + public/textures/**
 Astro content collections consume the generated JSON
 ```
 
-- **Submodules** are pinned to the latest **stable** `misode/mcmeta` release
-  tag (snapshot/pre/rc tags are excluded). The current pin is readable at
-  `vendor/mcmeta-summary/version.txt`.
+- **Submodules** are pinned to the latest **stable** release tag (snapshot/
+  pre/rc/preview tags are excluded). `misode/mcmeta`'s pin is readable at
+  `vendor/mcmeta-summary/version.txt`; `bedrock-samples` has no equivalent
+  file, so its pin is just whatever tag its submodule commit is checked out
+  at (`git -C vendor/bedrock-samples describe --tags`).
+- `bedrock-samples` is a narrowly-scoped second source used for exactly one
+  thing: the 16 pre-baked bed icon PNGs (Java has no equivalent — beds are
+  the only item rendered as two composited block models). `misode/mcmeta`
+  remains the sole source of truth for recipes, items, tags, and lang.
 - **Generated data is committed** so the site builds without submodules and
   data bumps are reviewable as a normal diff. `npm run validate` re-derives
   everything and fails if committed data has drifted from the pin — CI

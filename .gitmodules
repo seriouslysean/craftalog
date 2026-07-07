@@ -11,3 +11,4 @@
 [submodule "vendor/bedrock-samples"]
 	path = vendor/bedrock-samples
 	url = https://github.com/Mojang/bedrock-samples
+	shallow = true

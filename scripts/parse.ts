@@ -29,6 +29,10 @@ const ROOT = path.resolve(scriptDir, "..");
 
 const VENDOR_SUMMARY_DIR = path.join(ROOT, "vendor/mcmeta-summary");
 const VENDOR_TEXTURES_DIR = path.join(ROOT, "vendor/mcmeta-assets/assets/minecraft/textures");
+const VENDOR_BEDROCK_ITEMS_DIR = path.join(
+  ROOT,
+  "vendor/bedrock-samples/resource_pack/textures/items",
+);
 const GENERATED_DIR = path.join(ROOT, "src/data/generated");
 const PUBLIC_TEXTURES_DIR = path.join(ROOT, "public/textures");
 
@@ -61,6 +65,8 @@ function main(): void {
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
+  const bedrockBedIconExists = (bedrockColorName: string): boolean =>
+    fs.existsSync(path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`));
 
   const {
     recipes,
@@ -69,6 +75,7 @@ function main(): void {
     texturesToCopy,
     bannerIconsToSynthesize,
     lightningRodIconsToSynthesize,
+    bedIconsToCopy,
   } = generate({
     version,
     recipesRaw,
@@ -78,10 +85,10 @@ function main(): void {
     componentsRaw,
     enUs,
     textureExists,
+    bedrockBedIconExists,
   });
 
-  // Clean + repopulate the generated texture dirs (leave legacy
-  // textures/items and textures/blocks alone — a later task removes them).
+  // Clean + repopulate the generated texture dirs.
   const itemTexturesDir = path.join(PUBLIC_TEXTURES_DIR, "item");
   const blockTexturesDir = path.join(PUBLIC_TEXTURES_DIR, "block");
   const hudTexturesDir = path.join(PUBLIC_TEXTURES_DIR, "hud");
@@ -115,6 +122,16 @@ function main(): void {
     fs.writeFileSync(destPath, generateLightningRodIcon(fs.readFileSync(atlasPath)));
   }
 
+  // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
+  // no synthesis, just a straight copy with the color-name remap applied
+  // (see scripts/lib/bedrock-colors.ts).
+  for (const [javaColorId, bedrockColorName] of bedIconsToCopy) {
+    const sourcePath = path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `item/bed_${javaColorId}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
   for (const relativePath of HUD_ICON_RELATIVE_PATHS) {
     const sourcePath = path.join(VENDOR_TEXTURES_DIR, HUD_ICON_VENDOR_BASE, relativePath);
     const destPath = path.join(hudTexturesDir, relativePath);
@@ -138,10 +155,16 @@ function main(): void {
   console.log(`textures copied:  ${meta.counts.texturesCopied}`);
   console.log(`banner icons:     ${bannerIconsToSynthesize.size}`);
   console.log(`lightning rod icons: ${lightningRodIconsToSynthesize.size}`);
+  console.log(`bed icons:        ${bedIconsToCopy.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
     console.log(`  ${preview}${meta.unresolvedIcons.length > 20 ? ", ..." : ""}`);
+  }
+  console.log(`fallback family:  ${meta.fallbackFamilyItems.length}`);
+  if (meta.fallbackFamilyItems.length > 0) {
+    const preview = meta.fallbackFamilyItems.slice(0, 20).join(", ");
+    console.log(`  ${preview}${meta.fallbackFamilyItems.length > 20 ? ", ..." : ""}`);
   }
 }
 
