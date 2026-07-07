@@ -1,15 +1,17 @@
 ---
-import ItemIcon from './ItemIcon.astro';
+import ItemIconTooltip from './ItemIconTooltip.astro';
 import type { ItemData } from '../content.config';
 
 interface Props {
   /** Item ids this slot accepts; cycles between them when there's more than one. */
   items: string[];
   itemsMap: Map<string, ItemData>;
+  /** Maps a craftable item's id to its recipe path -- see buildRecipeHrefMap. */
+  recipeHrefs: Map<string, string>;
   loading?: 'lazy' | 'eager';
 }
 
-const { items, itemsMap, loading = 'lazy' } = Astro.props;
+const { items, itemsMap, recipeHrefs, loading = 'lazy' } = Astro.props;
 ---
 
 <span class="item-variants" data-variant-cycle={items.length > 1 ? items.length : undefined}>
@@ -19,7 +21,11 @@ const { items, itemsMap, loading = 'lazy' } = Astro.props;
       return (
         item && (
           <span class="item-variants__variant" hidden={index !== 0}>
-            <ItemIcon item={item} loading={loading} />
+            <ItemIconTooltip
+              item={item}
+              recipePath={recipeHrefs.get(item.id) ?? null}
+              loading={loading}
+            />
           </span>
         )
       );

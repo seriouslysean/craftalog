@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildRecipeHrefMap,
   canonicalRecipePath,
   groupItemSlug,
   groupRecipes,
@@ -314,5 +315,29 @@ describe("indexByRecipeId", () => {
 
     expect(byRecipeId.get("bone_meal")).toBe(groups[0]);
     expect(byRecipeId.get("bone_meal_from_bone_block")).toBe(groups[0]);
+  });
+});
+
+describe("buildRecipeHrefMap", () => {
+  it("maps a group's result id to its canonical recipe path", () => {
+    const recipes = [
+      recipe({ id: "bone_meal", result: { id: "bone_meal", count: 3 }, ingredients: [] }),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const itemsMap = new Map([["bone_meal", item({ id: "bone_meal", slug: "bone-meal" })]]);
+
+    const hrefs = buildRecipeHrefMap(groups, itemsMap);
+    expect(hrefs.get("bone_meal")).toBe("/recipe/bone-meal/");
+  });
+
+  it("omits items that aren't the result of any recipe", () => {
+    const recipes = [
+      recipe({ id: "bone_meal", result: { id: "bone_meal", count: 3 }, ingredients: [] }),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const itemsMap = new Map([["bone_meal", item({ id: "bone_meal", slug: "bone-meal" })]]);
+
+    const hrefs = buildRecipeHrefMap(groups, itemsMap);
+    expect(hrefs.has("bone")).toBe(false);
   });
 });
