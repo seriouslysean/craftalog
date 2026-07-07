@@ -1,6 +1,5 @@
 ---
 import ItemIcon from './ItemIcon.astro';
-import ItemStat from './ItemStat.astro';
 import ItemVariants from './ItemVariants.astro';
 import type { GridCell } from '../utils/crafting-grid';
 import type { ItemData, RecipeResult } from '../content.config';
@@ -41,7 +40,6 @@ const resultItem = result ? items.get(result.id) : undefined;
           )
         }
       </div>
-      {resultItem?.stat && <ItemStat stat={resultItem.stat} />}
     </div>
   </div>
 </div>

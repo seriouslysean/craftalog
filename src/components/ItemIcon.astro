@@ -38,13 +38,50 @@ function getFaces(icon: IconData): Face[] {
     ];
   }
 
+  if (icon.type === 'pressure_plate' || icon.type === 'button') {
+    return [
+      { className: 'top', texture: icon.texture },
+      { className: 'left', texture: icon.texture },
+      { className: 'right', texture: icon.texture },
+    ];
+  }
+
   return [];
 }
 
+/** Fence gate's 8 elements (2 outer posts, 2 inner door posts, 4 door bars) all
+ * share the same Z-depth band (block-space z:7-9, centered), so -- unlike
+ * fence's posts -- none of these need the group-level depth-shift trick;
+ * each is just its own X/Y-cropped box, keyed by CSS class below. */
+const FENCE_GATE_PARTS = [
+  'post-outer-left',
+  'post-outer-right',
+  'post-inner-left',
+  'post-inner-right',
+  'bar-lower-left',
+  'bar-upper-left',
+  'bar-lower-right',
+  'bar-upper-right',
+];
+
 const { item, loading = 'lazy' } = Astro.props;
 const is3d =
-  item?.icon.type === 'block' || item?.icon.type === 'slab' || item?.icon.type === 'stairs';
+  item?.icon.type === 'block' ||
+  item?.icon.type === 'slab' ||
+  item?.icon.type === 'stairs' ||
+  item?.icon.type === 'pressure_plate' ||
+  item?.icon.type === 'button' ||
+  item?.icon.type === 'wall' ||
+  item?.icon.type === 'fence' ||
+  item?.icon.type === 'fence_gate';
 const faces = item ? getFaces(item.icon) : [];
+// Wall/fence/fence_gate are multi-element compounds (a center post + a wider
+// cross-brace; 2 corner posts + 2 connecting bars; 8 posts/bars) rather than
+// "one box, different faces" -- every element shares the same single
+// texture, resolved once here for the multi-group markup below.
+const wallTexture = item && item.icon.type === 'wall' ? withBase(item.icon.texture) : '';
+const fenceTexture = item && item.icon.type === 'fence' ? withBase(item.icon.texture) : '';
+const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item.icon.texture) : '';
 ---
 
 {
@@ -61,6 +98,67 @@ const faces = item ? getFaces(item.icon) : [];
           loading={loading}
           decoding="async"
         />
+      ) : item.icon.type === 'wall' ? (
+        <div class="wall" role="img" aria-label={item.name} title={item.name}>
+          {['post', 'base'].map((part) => (
+            <div class:list={['wall__group', `wall__group--${part}`]}>
+              <div class="wall__top" style={`background-image: url(${wallTexture})`} />
+              <div
+                class="wall__side wall__side--east"
+                style={`background-image: url(${wallTexture})`}
+              />
+              <div
+                class="wall__side wall__side--south"
+                style={`background-image: url(${wallTexture})`}
+              />
+            </div>
+          ))}
+        </div>
+      ) : item.icon.type === 'fence' ? (
+        <div class="fence" role="img" aria-label={item.name} title={item.name}>
+          {['left', 'right'].map((side) => (
+            <div class:list={['fence__post', `fence__post--${side}`]}>
+              <div class="fence__post-top" style={`background-image: url(${fenceTexture})`} />
+              <div
+                class="fence__post-side fence__post-side--east"
+                style={`background-image: url(${fenceTexture})`}
+              />
+              <div
+                class="fence__post-side fence__post-side--south"
+                style={`background-image: url(${fenceTexture})`}
+              />
+            </div>
+          ))}
+          {['upper', 'lower'].map((position) => (
+            <div class:list={['fence__bar', `fence__bar--${position}`]}>
+              <div class="fence__bar-top" style={`background-image: url(${fenceTexture})`} />
+              <div
+                class="fence__bar-side fence__bar-side--east"
+                style={`background-image: url(${fenceTexture})`}
+              />
+              <div
+                class="fence__bar-side fence__bar-side--south"
+                style={`background-image: url(${fenceTexture})`}
+              />
+            </div>
+          ))}
+        </div>
+      ) : item.icon.type === 'fence_gate' ? (
+        <div class="fence-gate" role="img" aria-label={item.name} title={item.name}>
+          {FENCE_GATE_PARTS.map((part) => (
+            <div class:list={['fence-gate__el', `fence-gate__el--${part}`]}>
+              <div class="fence-gate__top" style={`background-image: url(${fenceGateTexture})`} />
+              <div
+                class="fence-gate__side fence-gate__side--west"
+                style={`background-image: url(${fenceGateTexture})`}
+              />
+              <div
+                class="fence-gate__side fence-gate__side--south"
+                style={`background-image: url(${fenceGateTexture})`}
+              />
+            </div>
+          ))}
+        </div>
       ) : (
         <ul
           class:list={[
@@ -68,6 +166,8 @@ const faces = item ? getFaces(item.icon) : [];
             {
               'block--slab': item.icon.type === 'slab',
               'block--stairs': item.icon.type === 'stairs',
+              'block--pressure-plate': item.icon.type === 'pressure_plate',
+              'block--button': item.icon.type === 'button',
             },
           ]}
           role="img"
@@ -103,6 +203,11 @@ const faces = item ? getFaces(item.icon) : [];
   .item-icon--block {
     max-width: 60%;
     margin-inline: auto;
+    /* Adjacent 3D faces that share a mathematically exact edge still rasterize
+       with a hairline background gap (sub-pixel anti-aliasing). Appending this
+       to a face's transform (i.e. applied first, in the face's own flat plane)
+       overgrows every edge ~1.5% so neighboring faces overlap instead of abut. */
+    --face-overlap: scale(1.03);
   }
 
   .icon {
@@ -204,5 +309,410 @@ const faces = item ? getFaces(item.icon) : [];
     height: 50%;
     top: 0;
     transform: rotateY(90deg);
+  }
+
+  /* Pressure plate: a thin plank resting on the ground, inset 1px from every
+     edge (Minecraft block-space [1,0,1]->[15,1,15] of 16). */
+  .block--pressure-plate .top {
+    top: 50%;
+    left: 6.25%;
+    width: 87.5%;
+    height: 87.5%;
+    transform: rotateX(90deg) var(--face-overlap);
+  }
+
+  .block--pressure-plate .left,
+  .block--pressure-plate .right {
+    top: 93.75%;
+    height: 6.25%;
+  }
+
+  .block--pressure-plate .right {
+    left: 6.25%;
+    width: 87.5%;
+    transform: translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .block--pressure-plate .left {
+    left: 6.25%;
+    width: 87.5%;
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  /* Button: Minecraft's inventory model is a 6x4x4 nub floating centered in
+     the block space ([5,6,6]->[11,10,10] of 16) -- faithful, but at catalog
+     size it reads as a detached box. Deliberate deviation: keep the nub's
+     exact proportions but rest it on the ground plane (y 0-4, like the
+     pressure plate) so it reads as attached to something. */
+  .block--button .top {
+    top: 62.5%;
+    left: 31.25%;
+    width: 37.5%;
+    height: 25%;
+    transform: rotateX(90deg) var(--face-overlap);
+  }
+
+  .block--button .left,
+  .block--button .right {
+    top: 75%;
+    height: 25%;
+  }
+
+  .block--button .right {
+    left: 43.75%;
+    width: 25%;
+    transform: translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .block--button .left {
+    left: 31.25%;
+    width: 37.5%;
+    transform: rotateY(-90deg) translateX(33.3333%) rotateY(90deg) var(--face-overlap);
+  }
+
+  /* Wall: not one box, different faces, but two -- a full-height center post
+     (Minecraft block-space [4,0,4]->[12,16,12]) plus a wider, shorter
+     cross-brace spanning the full depth ([5,0,0]->[11,13,16]). Both share
+     the same single texture, so unlike bed there's no per-group texture --
+     just two differently-sized boxes rendered at the same origin (no
+     depth-separation trick needed, since this is one model, not a composite). */
+  .wall {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(-35deg) rotateY(-45deg);
+  }
+
+  .wall__group {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  .wall__top,
+  .wall__side {
+    position: absolute;
+    background-repeat: no-repeat;
+    /* Scale the 16px texture to the face (crop the overflow axis), matching
+       the img-based cube faces' object-fit: cover. Intrinsic sizing leaves
+       faces taller/deeper than 16px partially untextured. */
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Center post: full height, 8x8 footprint centered on both ground axes. */
+  .wall__group--post .wall__top {
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    transform: translateY(-50%) rotateX(90deg) var(--face-overlap);
+  }
+
+  .wall__group--post .wall__side {
+    top: 0;
+    height: 100%;
+    left: 25%;
+    width: 50%;
+  }
+
+  .wall__group--post .wall__side--east {
+    transform: translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .wall__group--post .wall__side--south {
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  /* Cross-brace: full depth, 6-wide x 13-tall, sitting on the ground. */
+  .wall__group--base .wall__top {
+    left: 31.25%;
+    width: 37.5%;
+    height: 100%;
+    transform: translateY(-31.25%) rotateX(90deg) var(--face-overlap);
+  }
+
+  .wall__group--base .wall__side {
+    top: 18.75%;
+    height: 81.25%;
+  }
+
+  .wall__group--base .wall__side--east {
+    left: 0;
+    width: 100%;
+    transform: translateX(18.75%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .wall__group--base .wall__side--south {
+    left: 31.25%;
+    width: 37.5%;
+    transform: rotateY(-90deg) translateX(133.3333%) rotateY(90deg) var(--face-overlap);
+  }
+
+  /* Fence: 2 corner posts (full height, at the north/south ends) + 2 bars
+     connecting them (upper near the top, lower near the middle) --
+     Minecraft block-space posts [6,0,0]->[10,16,4] / [6,0,12]->[10,16,16],
+     bars [7,12,0]->[9,15,16] / [7,6,0]->[9,9,16]. The "connector stub"
+     elements the real fence geometry also has (for neighbor-block culling
+     in-world) are dropped -- irrelevant for a standalone item icon. */
+  .fence {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(-35deg) rotateY(-45deg);
+  }
+
+  .fence__post,
+  .fence__bar {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  /* Posts are centered (in their own depth) by construction below, then
+     shifted to the actual north/south ends via the same rotateY/translateX/
+     rotateY pure-depth-shift trick proven out for bed's head/foot groups. */
+  .fence__post--left {
+    transform: rotateY(-90deg) translateX(-37.5%) rotateY(90deg);
+  }
+
+  .fence__post--right {
+    transform: rotateY(-90deg) translateX(37.5%) rotateY(90deg);
+  }
+
+  .fence__post-top,
+  .fence__post-side,
+  .fence__bar-top,
+  .fence__bar-side {
+    position: absolute;
+    background-repeat: no-repeat;
+    /* Scale the 16px texture to the face (crop the overflow axis), matching
+       the img-based cube faces' object-fit: cover. Intrinsic sizing leaves
+       faces taller/deeper than 16px partially untextured. */
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Both posts share identical internal geometry (4x16x4) -- only the
+     group-level shift above differs between them. */
+  .fence__post-top {
+    top: 0;
+    left: 37.5%;
+    width: 25%;
+    height: 25%;
+    transform: translateY(-50%) rotateX(90deg) var(--face-overlap);
+  }
+
+  .fence__post-side {
+    top: 0;
+    height: 100%;
+    left: 37.5%;
+    width: 25%;
+  }
+
+  .fence__post-side--east {
+    transform: translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .fence__post-side--south {
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  /* Both bars span the full depth and share the same 2-wide footprint --
+     only their Y position (top/height, in the *-side rules below) differs. */
+  .fence__bar-top {
+    left: 43.75%;
+    width: 12.5%;
+    height: 100%;
+  }
+
+  .fence__bar--upper .fence__bar-top {
+    transform: translateY(-43.75%) rotateX(90deg) var(--face-overlap);
+  }
+
+  .fence__bar--lower .fence__bar-top {
+    transform: translateY(-6.25%) rotateX(90deg) var(--face-overlap);
+  }
+
+  .fence__bar-side--east {
+    left: 0;
+    width: 100%;
+    transform: translateX(6.25%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .fence__bar-side--south {
+    left: 43.75%;
+    width: 12.5%;
+    transform: rotateY(-90deg) translateX(400%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .fence__bar--upper .fence__bar-side {
+    top: 6.25%;
+    height: 18.75%;
+  }
+
+  .fence__bar--lower .fence__bar-side {
+    top: 43.75%;
+    height: 18.75%;
+  }
+
+  /* Fence gate: 8 elements (2 outer posts, 2 inner door posts, 4 door bars),
+     all sharing the SAME thin Z-depth band (block-space z:7-9, centered) --
+     unlike fence's posts, none of these need the group-level depth-shift
+     trick, since they're already Z-centered by construction. Only each
+     element's own X-extent (left/width) and Y-crop (top/height) differ.
+
+     Camera: the gate's own display.gui rotation ([30, 45, 0], from
+     block/template_fence_gate.json) is 180deg around Y from the default
+     [30, 225, 0] -- in this orthographic setup that's the horizontal mirror
+     of the shared rotateY(-45deg) camera, so the gate gets rotateY(45deg)
+     and builds its X-normal caps on the WEST side (the side that faces the
+     viewer at this yaw; east caps would face away and leave hollow gaps).
+     Pitch is 30deg (Minecraft's own GUI pitch) rather than the shared 35deg:
+     at 35deg each through-hole splits in two around a sliver of the lower
+     bar's top face, while at 30deg each hole renders as the single clean
+     opening the vanilla icon shows. */
+  .fence-gate {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg) rotateY(45deg);
+  }
+
+  .fence-gate__el {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  .fence-gate__top,
+  .fence-gate__side {
+    position: absolute;
+    background-repeat: no-repeat;
+    /* Scale the 16px texture to the face (crop the overflow axis), matching
+       the img-based cube faces' object-fit: cover. Intrinsic sizing leaves
+       faces taller/deeper than 16px partially untextured. */
+    background-size: cover;
+    background-position: center;
+  }
+
+  .fence-gate__top {
+    height: 12.5%;
+    transform: rotateX(90deg) var(--face-overlap);
+  }
+
+  .fence-gate__side--west {
+    transform: translateX(-50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  /* Posts (2-wide, matching the shared 2-deep Z-band) reach their south face
+     with the same magnitude of shift as their west caps; bars (4-wide) need
+     a shallower custom translateX, since the same Z target is a smaller
+     fraction of their wider box. */
+  .fence-gate__el--post-outer-left .fence-gate__side--south,
+  .fence-gate__el--post-outer-right .fence-gate__side--south,
+  .fence-gate__el--post-inner-left .fence-gate__side--south,
+  .fence-gate__el--post-inner-right .fence-gate__side--south {
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
+  }
+
+  .fence-gate__el--bar-lower-left .fence-gate__side--south,
+  .fence-gate__el--bar-upper-left .fence-gate__side--south,
+  .fence-gate__el--bar-lower-right .fence-gate__side--south,
+  .fence-gate__el--bar-upper-right .fence-gate__side--south {
+    transform: rotateY(-90deg) translateX(25%) rotateY(90deg) var(--face-overlap);
+  }
+
+  /* Outer posts: block-space y5-16, at the block's west/east edges. */
+  .fence-gate__el--post-outer-left .fence-gate__top {
+    top: -6.25%;
+    left: 0;
+    width: 12.5%;
+  }
+
+  .fence-gate__el--post-outer-left .fence-gate__side {
+    top: 0;
+    height: 68.75%;
+    left: 0;
+    width: 12.5%;
+  }
+
+  .fence-gate__el--post-outer-right .fence-gate__top {
+    top: -6.25%;
+    left: 87.5%;
+    width: 12.5%;
+  }
+
+  .fence-gate__el--post-outer-right .fence-gate__side {
+    top: 0;
+    height: 68.75%;
+    left: 87.5%;
+    width: 12.5%;
+  }
+
+  /* Inner door posts: block-space y6-15, at the gate's own center-left/center-right. */
+  .fence-gate__el--post-inner-left .fence-gate__top {
+    top: 0;
+    left: 37.5%;
+    width: 12.5%;
+  }
+
+  .fence-gate__el--post-inner-left .fence-gate__side {
+    top: 6.25%;
+    height: 56.25%;
+    left: 37.5%;
+    width: 12.5%;
+  }
+
+  .fence-gate__el--post-inner-right .fence-gate__top {
+    top: 0;
+    left: 50%;
+    width: 12.5%;
+  }
+
+  .fence-gate__el--post-inner-right .fence-gate__side {
+    top: 6.25%;
+    height: 56.25%;
+    left: 50%;
+    width: 12.5%;
+  }
+
+  /* Door bars: 4-wide -- left pair (x2-6) / right pair (x10-14), each with a
+     lower (y6-9) and upper (y12-15) bar. */
+  .fence-gate__el--bar-lower-left .fence-gate__top,
+  .fence-gate__el--bar-upper-left .fence-gate__top,
+  .fence-gate__el--bar-lower-left .fence-gate__side,
+  .fence-gate__el--bar-upper-left .fence-gate__side {
+    left: 12.5%;
+    width: 25%;
+  }
+
+  .fence-gate__el--bar-lower-right .fence-gate__top,
+  .fence-gate__el--bar-upper-right .fence-gate__top,
+  .fence-gate__el--bar-lower-right .fence-gate__side,
+  .fence-gate__el--bar-upper-right .fence-gate__side {
+    left: 62.5%;
+    width: 25%;
+  }
+
+  .fence-gate__el--bar-lower-left .fence-gate__top,
+  .fence-gate__el--bar-lower-right .fence-gate__top {
+    top: 37.5%;
+  }
+
+  .fence-gate__el--bar-lower-left .fence-gate__side,
+  .fence-gate__el--bar-lower-right .fence-gate__side {
+    top: 43.75%;
+    height: 18.75%;
+  }
+
+  .fence-gate__el--bar-upper-left .fence-gate__top,
+  .fence-gate__el--bar-upper-right .fence-gate__top {
+    top: 0;
+  }
+
+  .fence-gate__el--bar-upper-left .fence-gate__side,
+  .fence-gate__el--bar-upper-right .fence-gate__side {
+    top: 6.25%;
+    height: 18.75%;
   }
 </style>

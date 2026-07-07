@@ -1,0 +1,74 @@
+---
+import ItemIcon from './ItemIcon.astro';
+import type { ItemData } from '../content.config';
+
+interface Variant {
+  recipeId: string;
+  label: string | null;
+  iconItem: ItemData | null;
+  href: string;
+}
+
+interface Props {
+  siblings: Variant[];
+  currentId: string;
+}
+
+const { siblings, currentId } = Astro.props;
+---
+
+<nav class="recipe-variants" aria-label="Other recipes for this item">
+  <ul class="recipe-variants__list">
+    {
+      siblings.map((sibling) => {
+        const isCurrent = sibling.recipeId === currentId;
+        const label = sibling.label ?? sibling.recipeId.replace(/_/g, ' ');
+        return (
+          <li>
+            {isCurrent ? (
+              <span class="recipe-variant link-chip link-chip--selected" aria-current="page">
+                <span class="recipe-variant__icon">
+                  <ItemIcon item={sibling.iconItem} />
+                </span>
+                <span class="recipe-variant__label">{label}</span>
+              </span>
+            ) : (
+              <a href={sibling.href} class="recipe-variant link-chip">
+                <span class="recipe-variant__icon">
+                  <ItemIcon item={sibling.iconItem} />
+                </span>
+                <span class="recipe-variant__label">{label}</span>
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<style>
+  .recipe-variants {
+    margin-bottom: var(--space-6);
+  }
+
+  .recipe-variants__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .recipe-variant {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.8125rem;
+    color: var(--color-panel-fg);
+    text-transform: capitalize;
+  }
+
+  .recipe-variant__icon {
+    display: block;
+    width: 1.25rem;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+  }
+</style>

@@ -19,15 +19,20 @@ function buildPng(
 }
 
 describe("generateBannerIcon", () => {
-  it("crops to the opaque front-face region and tints it with the wool's average color", () => {
-    // 6-wide base: a 2x2 opaque white square at (0,0)-(1,1) is the "front face";
-    // columns 2-5 are opaque too but outside the front-face search width and must be ignored.
-    const width = 6;
-    const height = 2;
+  it("crops the flag's front face -- not the adjacent back/side faces it touches -- and tints it with the wool's average color", () => {
+    // Mimics banner_base.png's real layout: the flag's front face is a
+    // 20x40 opaque rect starting at (1,1) (the generator's crop rect is a
+    // fixed pixel offset into the real 64x64 template, so the fixture has to
+    // be at least that big). It's flanked with no gap by other opaque box
+    // faces (column 0, and columns 21+) that must be excluded from the crop.
+    const width = 30;
+    const height = 45;
     const basePixels: [number, number, number, number][] = [];
     for (let y = 0; y < height; y += 1) {
       for (let x = 0; x < width; x += 1) {
-        basePixels.push(x < 2 ? [200, 200, 200, 255] : [0, 0, 0, 0]);
+        const isFrontFace = x >= 1 && x < 21 && y >= 1 && y < 41;
+        const isOtherFace = !isFrontFace && x < 28 && y < 41;
+        basePixels.push(isFrontFace || isOtherFace ? [200, 200, 200, 255] : [0, 0, 0, 0]);
       }
     }
     const base = buildPng(width, height, basePixels);
@@ -42,8 +47,8 @@ describe("generateBannerIcon", () => {
 
     const icon = PNG.sync.read(generateBannerIcon(base, wool));
 
-    expect(icon.width).toBe(2);
-    expect(icon.height).toBe(2);
+    expect(icon.width).toBe(20);
+    expect(icon.height).toBe(40);
     for (let i = 0; i < icon.data.length; i += 4) {
       // 200/255 intensity * pure red (200,0,0) tint => round(156.86) = 157, alpha preserved.
       expect(icon.data[i]).toBe(157);
