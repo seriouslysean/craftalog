@@ -17,6 +17,8 @@ interface Props {
   recipe: RecipeData;
   displayName: string;
   itemsMap: Map<string, ItemData>;
+  /** Maps a craftable item's id to its recipe path -- see buildRecipeHrefMap. */
+  recipeHrefs: Map<string, string>;
   /** This item's /recipe/{itemSlug}/... URL segment (see groupItemSlug). */
   itemSlug: string;
   /** The group's canonical recipe id -- reachable at the bare /recipe/{itemSlug}/ path, no slug segment. */
@@ -34,6 +36,7 @@ const {
   recipe,
   displayName,
   itemsMap,
+  recipeHrefs,
   itemSlug,
   canonicalId,
   siblings,
@@ -167,10 +170,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
             cells={cells}
             result={recipe.result}
             items={itemsMap}
+            recipeHrefs={recipeHrefs}
             ariaLabel={ariaLabel}
           />
 
-          <IngredientOptions entries={ingredientOptions} itemsMap={itemsMap} note={transmuteNote} />
+          <IngredientOptions
+            entries={ingredientOptions}
+            itemsMap={itemsMap}
+            recipeHrefs={recipeHrefs}
+            note={transmuteNote}
+          />
         </>
       ) : (
         <div class="recipe__special">

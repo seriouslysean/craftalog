@@ -1,5 +1,5 @@
 ---
-import ItemIcon from './ItemIcon.astro';
+import ItemIconTooltip from './ItemIconTooltip.astro';
 import ItemVariants from './ItemVariants.astro';
 import type { GridCell } from '../utils/crafting-grid';
 import type { ItemData, RecipeResult } from '../content.config';
@@ -8,10 +8,12 @@ interface Props {
   cells: GridCell[];
   result?: RecipeResult;
   items: Map<string, ItemData>;
+  /** Maps a craftable item's id to its recipe path -- see buildRecipeHrefMap. */
+  recipeHrefs: Map<string, string>;
   ariaLabel: string;
 }
 
-const { cells, result, items, ariaLabel } = Astro.props;
+const { cells, result, items, recipeHrefs, ariaLabel } = Astro.props;
 const resultItem = result ? items.get(result.id) : undefined;
 ---
 
@@ -20,7 +22,14 @@ const resultItem = result ? items.get(result.id) : undefined;
     {
       cells.map((cell, index) => (
         <div class="crafting__cell" data-index={index}>
-          {cell && <ItemVariants items={cell.items} itemsMap={items} loading="eager" />}
+          {cell && (
+            <ItemVariants
+              items={cell.items}
+              itemsMap={items}
+              recipeHrefs={recipeHrefs}
+              loading="eager"
+            />
+          )}
         </div>
       ))
     }
@@ -34,7 +43,11 @@ const resultItem = result ? items.get(result.id) : undefined;
         {
           resultItem && (
             <>
-              <ItemIcon item={resultItem} loading="eager" />
+              <ItemIconTooltip
+                item={resultItem}
+                recipePath={recipeHrefs.get(resultItem.id) ?? null}
+                loading="eager"
+              />
               {result && result.count > 1 && <span class="crafting__count">×{result.count}</span>}
             </>
           )

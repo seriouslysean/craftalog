@@ -112,6 +112,23 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     --panel-border-outer-width: 0.125rem;
     --panel-border-outer: 0 0 0 var(--panel-border-outer-width) var(--color-gray-dark);
 
+    /* A hard, unblurred offset shadow (no blur radius) for elements that
+       float above the page rather than sitting flush in it -- e.g. the item
+       tooltip -- matching the pixel-art aesthetic instead of a soft CSS
+       drop shadow, which would read as out of place next to the chunky
+       stepped-pixel bevel system above. */
+    --shadow-sharp: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.5);
+
+    /* A mid-tone for shapes that read as "cut from the same panel material"
+       without literally matching --bevel-panel's rgba(0, 0, 0, 0.5) inset --
+       a shape using the *exact* inset tone (e.g. the tooltip's arrow) reads
+       visibly darker than the inset itself does, because it sits inside a
+       much darker surround (the arrow's own dark outline plus
+       --shadow-sharp) instead of the inset's light panel surround --
+       simultaneous contrast, not a color bug. color-mix() keeps this tied to
+       --color-panel so it can't drift, without hardcoding a hex. */
+    --color-panel-shade: color-mix(in srgb, black 43.75%, var(--color-panel));
+
     /* Shape */
     --radius-sm: 0.125rem;
     --radius-md: 0.125rem;
