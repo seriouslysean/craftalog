@@ -3,7 +3,12 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import ItemCard from '../components/ItemCard.astro';
 import { withBase } from '../utils/with-base';
-import { canonicalRecipePath, groupItemSlug, groupRecipes } from '../utils/recipe-groups';
+import {
+  canonicalRecipePath,
+  groupDisplayName,
+  groupItemSlug,
+  groupRecipes,
+} from '../utils/recipe-groups';
 import meta from '../data/generated/meta.json';
 
 const recipeEntries = await getCollection('recipes');
@@ -32,7 +37,7 @@ const sections = families
       .filter((group) => group.family === family)
       .map((group) => {
         const resultItem = itemsMap.get(group.resultId);
-        const name = resultItem?.name ?? group.canonicalId.replace(/_/g, ' ');
+        const name = groupDisplayName(group, itemsMap);
         const searchText = [
           name,
           ...group.siblings.flatMap((sibling) => [

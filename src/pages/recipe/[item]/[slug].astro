@@ -1,7 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
 import RecipePage from '../../../components/RecipePage.astro';
-import { buildRecipeHrefMap, groupItemSlug, groupRecipes } from '../../../utils/recipe-groups';
+import {
+  buildRecipeHrefMap,
+  groupDisplayName,
+  groupItemSlug,
+  groupRecipes,
+} from '../../../utils/recipe-groups';
 import { buildPagerSequence, pagerNeighbors } from '../../../utils/recipe-pager';
 
 export async function getStaticPaths() {
@@ -22,8 +27,7 @@ export async function getStaticPaths() {
   // group) is reachable at the bare /recipe/{item}/ path instead (see
   // src/pages/recipe/[item]/index.astro).
   return groups.flatMap((group) => {
-    const resultItem = itemsMap.get(group.resultId);
-    const displayName = resultItem?.name ?? group.canonicalId.replace(/_/g, ' ');
+    const displayName = groupDisplayName(group, itemsMap);
     const itemSlug = groupItemSlug(group, itemsMap);
     const neighbors = pagerNeighbors(pagerSequence, group.canonicalId);
 

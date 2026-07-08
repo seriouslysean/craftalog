@@ -224,6 +224,34 @@ export function groupItemSlug(group: RecipeGroup, itemsMap: Map<string, ItemData
   return itemsMap.get(group.resultId)?.slug ?? slugify(group.canonicalId);
 }
 
+/**
+ * Patches the display name for recipes whose result has no items.json entry
+ * to read from -- currently only repair_item (it repairs any matching pair
+ * of damaged tools/armor, so there's no single result item to name it
+ * after). Keyed by resultId, which for every such recipe equals its own
+ * singleton group's canonicalId (see groupRecipes' resultId fallback above).
+ */
+const KNOWN_RESULTLESS_RECIPE_NAMES: Record<string, string> = {
+  repair_item: "Repair Item",
+};
+
+/**
+ * The human-readable display name for a recipe group's result. Reads the
+ * result item's name where one exists; otherwise checks
+ * KNOWN_RESULTLESS_RECIPE_NAMES before falling back to a raw, lowercase
+ * de-slugified canonicalId. Single source of truth for every <title>, meta
+ * description, card label, and pager name derived from a group, so this raw
+ * lowercase fallback never leaks into production HTML on its own.
+ */
+export function groupDisplayName(group: RecipeGroup, itemsMap: Map<string, ItemData>): string {
+  const resultItem = itemsMap.get(group.resultId);
+  return (
+    resultItem?.name ??
+    KNOWN_RESULTLESS_RECIPE_NAMES[group.resultId] ??
+    group.canonicalId.replace(/_/g, " ")
+  );
+}
+
 /** The bare canonical URL path for an item's recipe group -- no slug segment. Callers still apply withBase(). */
 export function canonicalRecipePath(itemSlug: string): string {
   return `${RECIPE_BASE_PATH}/${itemSlug}/`;

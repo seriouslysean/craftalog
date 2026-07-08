@@ -183,10 +183,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         </>
       ) : (
         <div class="recipe__special">
-          {resultItem && (
+          {resultItem ? (
             <div class="recipe__special-icon">
               <ItemIcon item={resultItem} loading="eager" />
             </div>
+          ) : (
+            // repair_item is the one special recipe with no single result item
+            // (it repairs any matching pair of damaged tools/armor) -- there's
+            // no vanilla icon that represents "any tool", so intentionally
+            // render no icon here rather than a fabricated placeholder graphic.
+            <Fragment />
           )}
           <p class="recipe__note">{recipe.note}</p>
         </div>
