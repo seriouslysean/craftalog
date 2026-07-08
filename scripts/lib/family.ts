@@ -1,5 +1,7 @@
+import { CATEGORIES } from "./category.ts";
 import type { RawTagsData } from "./types.ts";
 import { resolveTag } from "./tags.ts";
+import { toSnakeId } from "./strings.ts";
 
 /**
  * Derives a human-facing taxonomy ("family") for each recipe's result item,
@@ -21,6 +23,13 @@ import { resolveTag } from "./tags.ts";
  *   5. CATEGORY_FAMILY_FALLBACK — vanilla's coarse category, so every item
  *      still lands somewhere even if a future game update adds something
  *      none of the above rules recognize.
+ *
+ * Every family this module can produce also has a stable, underscore-style
+ * id (`toSnakeId` of its display name, e.g. "Copper Goods" -> "copper_goods")
+ * and a mapped top-level category (FAMILY_CATEGORY, below) -- together these
+ * back the `families`/`categories` content collections (see
+ * src/content.config.ts) that `recipes.family` now references, instead of
+ * embedding the display name directly on the recipe.
  */
 
 const GROUP_FAMILY: Record<string, string> = {
@@ -65,7 +74,7 @@ const GROUP_FAMILY: Record<string, string> = {
   netherite_ingot: "Materials",
   harness: "Harnesses",
   harness_dye: "Harnesses",
-  map_cloning: "Tools & Utility",
+  map_cloning: "Utilities",
   mossy_cobblestone: "Stone Variants",
   mossy_stone_bricks: "Stone Variants",
   planks: "Planks",
@@ -156,8 +165,6 @@ const TAG_FAMILY_PRIORITY: Array<[tag: string, family: string]> = [
   ["head_armor", "Armor"],
   ["leg_armor", "Armor"],
   ["foot_armor", "Armor"],
-  ["bars", "Bars & Chains"],
-  ["chains", "Bars & Chains"],
   ["rails", "Rails & Minecarts"],
   ["dyes", "Dyes"],
   ["logs", "Logs & Wood"],
@@ -170,7 +177,7 @@ const TAG_FAMILY_PRIORITY: Array<[tag: string, family: string]> = [
   ["copper_chests", "Copper Goods"],
   ["copper_golem_statues", "Copper Goods"],
   ["lanterns", "Decoration"],
-  ["compasses", "Tools & Utility"],
+  ["compasses", "Utilities"],
 ];
 
 /** Item ids vanilla gives no distinguishing group or family-shaped tag for. */
@@ -303,6 +310,14 @@ const ITEM_FAMILY_OVERRIDES: Record<string, string> = {
       "music_disc_5",
       "sea_lantern",
       "dripstone_block",
+      // jack_o_lantern: a light source, sits with lanterns/torches/etc.
+      "jack_o_lantern",
+      // iron_bars/iron_chain: dissolved out of the former 2-item "Bars &
+      // Chains" family into Decoration (matches lanterns already being
+      // here) -- waxed/oxidized copper bars and chains keep their own
+      // Copper Goods override above and are unaffected.
+      "iron_bars",
+      "iron_chain",
     ].map((id) => [id, "Decoration"]),
   ),
   ...Object.fromEntries(["glass_pane", "tinted_glass"].map((id) => [id, "Glass"])),
@@ -349,7 +364,10 @@ const ITEM_FAMILY_OVERRIDES: Record<string, string> = {
       "written_book",
       "paper",
       "lodestone",
-    ].map((id) => [id, "Tools & Utility"]),
+      // In-game these live in Tools & Utilities too.
+      "firework_rocket",
+      "firework_star",
+    ].map((id) => [id, "Utilities"]),
   ),
   ...Object.fromEntries(
     [
@@ -390,6 +408,50 @@ const ITEM_FAMILY_OVERRIDES: Record<string, string> = {
       "glowstone",
     ].map((id) => [id, "Ores & Minerals"]),
   ),
+  // "Storage"/"compressed" blocks -- 9x the crafting material packed into one
+  // block. honey_block and slime_block fit the same shape (4 honey bottles /
+  // 9 slimeballs compacted) but have no group or family-shaped tag of their
+  // own, so without this they'd fall through to the generic category
+  // fallback (see CATEGORY_FAMILY_FALLBACK below).
+  ...Object.fromEntries(
+    [
+      "hay_block",
+      "bone_block",
+      "dried_kelp_block",
+      "nether_wart_block",
+      "honeycomb_block",
+      "bamboo_block",
+      "bamboo_mosaic",
+      "resin_block",
+      "amethyst_block",
+      "bricks",
+      "clay",
+      "potent_sulfur",
+      "honey_block",
+      "slime_block",
+    ].map((id) => [id, "Compact Blocks"]),
+  ),
+  // Naturally-occurring terrain/decoration blocks with no group or
+  // family-shaped tag of their own -- mirrors the creative inventory's
+  // Natural Blocks tab.
+  ...Object.fromEntries(
+    [
+      "packed_ice",
+      "blue_ice",
+      "snow",
+      "snow_block",
+      "coarse_dirt",
+      "packed_mud",
+      "muddy_mangrove_roots",
+      "magma_block",
+    ].map((id) => [id, "Natural Blocks"]),
+  ),
+  // repair_item is the one recipe with no result item (it repairs any
+  // matching pair of damaged tools/armor), so it has no vanilla category to
+  // fall back to in the usual sense -- generate.ts passes its own recipe id
+  // as a stand-in itemId (see deriveFamily's call site) so this override
+  // still matches instead of silently landing in the generic fallback.
+  repair_item: "Other",
 };
 
 const STONE_VARIANT_NAMES = new Set([
@@ -412,11 +474,24 @@ const STONE_VARIANT_NAMES = new Set([
 ]);
 const STONE_VARIANT_PREFIXES = ["chiseled_", "cut_", "polished_", "smooth_", "cracked_"];
 
+/**
+ * Generic per-category landing zones for whatever none of the rules above
+ * recognize -- kept deliberately bland ("Other …") rather than a real-
+ * sounding family name, so a future version bump surfaces new items here
+ * (via `usedFallback`/fallbackFamilyItems) instead of silently blending them
+ * into an established family. "Building Blocks"/"Miscellaneous" (this
+ * fallback's original names) are retired in favor of "Other Blocks"/"Other"
+ * so they don't collide with the "Building Blocks" *category* name (see
+ * scripts/lib/category.ts) -- "Equipment" and "Redstone Components" are
+ * unaffected since neither collides with anything and the latter already
+ * matches the real "Redstone Components" family produced by
+ * ITEM_FAMILY_OVERRIDES for comparators/repeaters/etc.
+ */
 const CATEGORY_FAMILY_FALLBACK: Record<string, string> = {
-  building: "Building Blocks",
+  building: "Other Blocks",
   equipment: "Equipment",
   redstone: "Redstone Components",
-  misc: "Miscellaneous",
+  misc: "Other",
 };
 
 /** Item id -> every vanilla tag name it belongs to, resolved once per parse run. */
@@ -438,16 +513,23 @@ export function buildItemTagIndex(tagsRaw: RawTagsData): ItemTagIndex {
 }
 
 export interface DeriveFamilyInput {
-  /** The recipe's result item id, if it has one (crafting_special_repairitem has none). */
+  /** The recipe's result item id, if it has one. Callers pass the recipe's own id as a stand-in for the one recipe with no result (repair_item) -- see generate.ts's call site -- so the ITEM_FAMILY_OVERRIDES lookup below still has something to match against. */
   itemId?: string;
   group?: string;
   category: string;
 }
 
 export interface DeriveFamilyResult {
-  family: string;
-  /** True when no override/group/tag/id-pattern rule matched and the category fallback (or "Miscellaneous") was used -- a signal the taxonomy rules haven't caught up to this item, worth surfacing on a version bump. */
+  /** Stable underscore-style id (see toSnakeId) -- what recipes.family now stores and families.json is keyed by. */
+  id: string;
+  /** Human-facing display name, e.g. "Copper Goods" -- what families.json's `name` field stores. */
+  name: string;
+  /** True when no override/group/tag/id-pattern rule matched and the category fallback ("Other Blocks"/"Equipment"/"Redstone Components"/"Other") was used -- a signal the taxonomy rules haven't caught up to this item, worth surfacing on a version bump. */
   usedFallback: boolean;
+}
+
+function familyResult(name: string, usedFallback: boolean): DeriveFamilyResult {
+  return { id: toSnakeId(name), name, usedFallback };
 }
 
 export function deriveFamily(
@@ -458,32 +540,127 @@ export function deriveFamily(
 
   if (itemId) {
     const override = ITEM_FAMILY_OVERRIDES[itemId];
-    if (override) return { family: override, usedFallback: false };
+    if (override) return familyResult(override, false);
   }
 
   if (group) {
     const groupFamily = GROUP_FAMILY[group];
-    if (groupFamily) return { family: groupFamily, usedFallback: false };
+    if (groupFamily) return familyResult(groupFamily, false);
   }
 
   if (itemId) {
     const itemTags = itemTagIndex.get(itemId);
     if (itemTags) {
       for (const [tag, family] of TAG_FAMILY_PRIORITY) {
-        if (itemTags.has(tag)) return { family, usedFallback: false };
+        if (itemTags.has(tag)) return familyResult(family, false);
       }
     }
 
-    if (itemId.endsWith("_banner_pattern")) return { family: "Banners", usedFallback: false };
+    if (itemId.endsWith("_banner_pattern")) return familyResult("Banners", false);
     if (
       itemId.endsWith("_bricks") ||
+      itemId.endsWith("_tiles") ||
       STONE_VARIANT_NAMES.has(itemId) ||
       STONE_VARIANT_PREFIXES.some((prefix) => itemId.startsWith(prefix))
     ) {
-      return { family: "Stone Variants", usedFallback: false };
+      return familyResult("Stone Variants", false);
     }
-    if (itemId.includes("copper")) return { family: "Copper Goods", usedFallback: false };
+    if (itemId.includes("copper")) return familyResult("Copper Goods", false);
   }
 
-  return { family: CATEGORY_FAMILY_FALLBACK[category] ?? "Miscellaneous", usedFallback: true };
+  return familyResult(CATEGORY_FAMILY_FALLBACK[category] ?? "Other", true);
+}
+
+/**
+ * Every family id -> its owning top-level category id (see
+ * scripts/lib/category.ts's CATEGORIES). Must stay total: generate.ts throws
+ * if a derived family has no entry here, so a future version bump that
+ * produces a genuinely new family (almost always via CATEGORY_FAMILY_FALLBACK
+ * above -- an ID_PATTERN/GROUP/TAG/override rule always targets an existing,
+ * already-mapped name) fails the build loudly instead of silently shipping
+ * an uncategorized family. Order mirrors the taxonomy proposal's per-category
+ * breakdown; category ids come from scripts/lib/category.ts.
+ */
+export const FAMILY_CATEGORY: Record<string, string> = {
+  // Building Blocks (13)
+  slabs: "building_blocks",
+  stairs: "building_blocks",
+  stone_variants: "building_blocks",
+  walls: "building_blocks",
+  logs_wood: "building_blocks",
+  doors: "building_blocks",
+  trapdoors: "building_blocks",
+  fences: "building_blocks",
+  fence_gates: "building_blocks",
+  planks: "building_blocks",
+  copper_goods: "building_blocks",
+  compact_blocks: "building_blocks",
+  natural_blocks: "building_blocks",
+  // dormant safety net -- see CATEGORY_FAMILY_FALLBACK's "building" entry;
+  // 0 items use this today (that's the point of the family fixes above).
+  other_blocks: "building_blocks",
+
+  // Colored Blocks (10)
+  glass: "colored_blocks",
+  banners: "colored_blocks",
+  carpets: "colored_blocks",
+  shulker_boxes: "colored_blocks",
+  bundles: "colored_blocks",
+  wool: "colored_blocks",
+  beds: "colored_blocks",
+  candles: "colored_blocks",
+  concrete: "colored_blocks",
+  terracotta: "colored_blocks",
+
+  // Functional Blocks (6)
+  decoration: "functional_blocks",
+  workstations: "functional_blocks",
+  shelves: "functional_blocks",
+  signs: "functional_blocks",
+  hanging_signs: "functional_blocks",
+  storage: "functional_blocks",
+
+  // Redstone (3)
+  redstone_components: "redstone",
+  pressure_plates: "redstone",
+  buttons: "redstone",
+
+  // Tools & Utilities (3 -- "other" is a judgment call: repair_item is the
+  // sole occupant and isn't a block/item the proposal's category breakdown
+  // explicitly placed, but every family must map somewhere; a tool-repair
+  // action reads closest to "utility" of the 9 categories)
+  tools: "tools_utilities",
+  utilities: "tools_utilities",
+  other: "tools_utilities",
+
+  // Combat (3)
+  armor: "combat",
+  weapons: "combat",
+  smithing_templates: "combat",
+
+  // Transportation (3)
+  boats: "transportation",
+  harnesses: "transportation",
+  rails_minecarts: "transportation",
+
+  // Food (1)
+  food: "food",
+
+  // Materials (3)
+  materials: "materials",
+  ores_minerals: "materials",
+  dyes: "materials",
+};
+
+// Self-audit: every FAMILY_CATEGORY value must be a real category id, so a
+// typo here fails immediately at import time (test/parse/validate alike)
+// instead of silently producing a families.json entry with a category
+// reference nothing resolves.
+const VALID_CATEGORY_IDS = new Set(CATEGORIES.map((category) => category.id));
+for (const [familyId, categoryId] of Object.entries(FAMILY_CATEGORY)) {
+  if (!VALID_CATEGORY_IDS.has(categoryId)) {
+    throw new Error(
+      `FAMILY_CATEGORY["${familyId}"] = "${categoryId}" is not a real category id -- see scripts/lib/category.ts's CATEGORIES.`,
+    );
+  }
 }

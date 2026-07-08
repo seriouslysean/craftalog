@@ -3677,7 +3677,7 @@
               ]
             },
             "north": {
-              "texture": "/textures/block/chiseled_bookshelf_empty.png",
+              "texture": "/textures/block/chiseled_bookshelf_side.png",
               "uv": [
                 0,
                 0,
@@ -3686,7 +3686,7 @@
               ]
             },
             "south": {
-              "texture": "/textures/block/chiseled_bookshelf_side.png",
+              "texture": "/textures/block/chiseled_bookshelf_empty.png",
               "uv": [
                 0,
                 0,
@@ -4747,7 +4747,7 @@
               ]
             },
             "north": {
-              "texture": "/textures/block/crafter_north.png",
+              "texture": "/textures/block/crafter_south.png",
               "uv": [
                 0,
                 0,
@@ -4756,7 +4756,7 @@
               ]
             },
             "south": {
-              "texture": "/textures/block/crafter_south.png",
+              "texture": "/textures/block/crafter_north.png",
               "uv": [
                 0,
                 0,
@@ -6905,18 +6905,18 @@
             "north": {
               "texture": "/textures/block/dried_kelp_side.png",
               "uv": [
-                0,
-                0,
                 16,
+                0,
+                0,
                 16
               ]
             },
             "south": {
               "texture": "/textures/block/dried_kelp_side.png",
               "uv": [
+                0,
+                0,
                 16,
-                0,
-                0,
                 16
               ]
             },
@@ -12570,7 +12570,7 @@
               ]
             },
             "north": {
-              "texture": "/textures/block/observer_front.png",
+              "texture": "/textures/block/observer_back.png",
               "uv": [
                 0,
                 0,
@@ -12579,7 +12579,7 @@
               ]
             },
             "south": {
-              "texture": "/textures/block/observer_back.png",
+              "texture": "/textures/block/observer_front.png",
               "uv": [
                 0,
                 0,

@@ -1,6 +1,7 @@
 /**
  * Parses vendored mcmeta-summary + mcmeta-assets data into the generated
- * data contract described in docs/PLAN.md: src/data/generated/{recipes,items,meta}.json
+ * data contract described in docs/PLAN.md:
+ * src/data/generated/{recipes,items,categories,families,meta}.json
  * and the referenced texture PNGs under public/textures/{item,block}/.
  *
  * Run via `npm run parse`. Requires the vendor/ submodules to be populated
@@ -15,6 +16,7 @@ import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
 import { generateLightningRodIcon } from "./lib/lightning-rod-icon.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
+import { firstAnimationFrame } from "./lib/texture-frame.ts";
 import type {
   RawItemComponentsData,
   RawItemDefinitionsData,
@@ -71,6 +73,8 @@ function main(): void {
   const {
     recipes,
     items,
+    categories,
+    families,
     meta,
     texturesToCopy,
     bannerIconsToSynthesize,
@@ -103,7 +107,8 @@ function main(): void {
     const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
     const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    fs.copyFileSync(sourcePath, destPath);
+    // Animation strips are cropped to their first frame -- see texture-frame.ts.
+    fs.writeFileSync(destPath, firstAnimationFrame(fs.readFileSync(sourcePath)));
   }
 
   const bannerBasePath = path.join(VENDOR_TEXTURES_DIR, "entity/banner/banner_base.png");
@@ -142,6 +147,8 @@ function main(): void {
   fs.mkdirSync(GENERATED_DIR, { recursive: true });
   writeJson(path.join(GENERATED_DIR, "recipes.json"), recipes);
   writeJson(path.join(GENERATED_DIR, "items.json"), items);
+  writeJson(path.join(GENERATED_DIR, "categories.json"), categories);
+  writeJson(path.join(GENERATED_DIR, "families.json"), families);
   writeJson(path.join(GENERATED_DIR, "meta.json"), meta);
 
   console.log("Craftalog parse summary");
@@ -152,6 +159,8 @@ function main(): void {
   console.log(`transmute:        ${meta.counts.transmute}`);
   console.log(`special:          ${meta.counts.special}`);
   console.log(`items:            ${meta.counts.items}`);
+  console.log(`categories:       ${Object.keys(categories).length}`);
+  console.log(`families:         ${Object.keys(families).length}`);
   console.log(`textures copied:  ${meta.counts.texturesCopied}`);
   console.log(`banner icons:     ${bannerIconsToSynthesize.size}`);
   console.log(`lightning rod icons: ${lightningRodIconsToSynthesize.size}`);

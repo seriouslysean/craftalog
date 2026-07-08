@@ -8,7 +8,7 @@ import ItemStat from './ItemStat.astro';
 import RecipeVariants from './RecipeVariants.astro';
 import MainLayout from '../layouts/MainLayout.astro';
 import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../utils/crafting-grid';
-import { recipePath, type SiblingRecipe } from '../utils/recipe-groups';
+import { familyDisplayName, recipePath, type SiblingRecipe } from '../utils/recipe-groups';
 import { ingredientOption, type IngredientOption } from '../utils/tag-label';
 import { withBase } from '../utils/with-base';
 import type { ItemData, RecipeData } from '../content.config';
@@ -155,7 +155,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
             </Badge>
           )
         }
-        <Badge>{recipe.family}</Badge>
+        <Badge>{familyDisplayName(recipe.family)}</Badge>
         {recipe.type === 'transmute' && <Badge variant="gui">Transmute</Badge>}
       </div>
       {resultItem?.stat && <ItemStat stat={resultItem.stat} />}

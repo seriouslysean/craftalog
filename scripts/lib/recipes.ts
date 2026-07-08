@@ -1,9 +1,9 @@
 import type {
+  GeneratedRecipe,
   Ingredient,
   RawRecipeEntry,
   RawResult,
   RawTagsData,
-  Recipe,
   RecipeResult,
 } from "./types.ts";
 import { normalizeIngredient } from "./ingredients.ts";
@@ -60,7 +60,7 @@ export function transformRecipe(
   id: string,
   raw: RawRecipeEntry,
   tags: RawTagsData,
-): Omit<Recipe, "family"> | undefined {
+): Omit<GeneratedRecipe, "family"> | undefined {
   const category = raw.category ?? DEFAULT_CATEGORY;
   const group = raw.group;
 
@@ -128,7 +128,7 @@ export function transformRecipe(
 }
 
 /** Collects every item id referenced by a recipe (result + all resolved ingredients). */
-export function collectRecipeItemIds(recipe: Recipe): string[] {
+export function collectRecipeItemIds(recipe: GeneratedRecipe): string[] {
   const ids = new Set<string>();
 
   if (recipe.result) ids.add(recipe.result.id);

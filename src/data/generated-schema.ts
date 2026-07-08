@@ -1,3 +1,4 @@
+import { reference } from "astro:content";
 import { z } from "astro/zod";
 
 // Single source of truth for the generated data contract described in
@@ -6,6 +7,26 @@ import { z } from "astro/zod";
 // build time), and via z.infer by scripts/lib/types.ts (the parser/validator
 // pipeline, which is excluded from `astro check` and only needs the derived
 // TS types, never the zod runtime — see that file's `import type` usage).
+//
+// `reference()` (from "astro:content") is safe to call here even though this
+// file also feeds the Node-only parser/validator pipeline: scripts/lib/types.ts
+// only ever does `import type` from this file, which tsx erases entirely, so
+// the virtual "astro:content" module is never touched outside Astro's own
+// Vite-processed graph (content.config.ts and friends).
+
+export const categorySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  /** Curated display order (1-9) for the top-level category nav -- see scripts/lib/category.ts. */
+  order: z.number(),
+});
+
+export const familySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  /** The owning category's id -- see scripts/lib/family.ts's FAMILY_CATEGORY. */
+  category: reference("categories"),
+});
 
 export const ingredientSchema = z.object({
   items: z.array(z.string()),
@@ -21,7 +42,8 @@ export const recipeSchema = z.object({
   id: z.string(),
   type: z.enum(["shaped", "shapeless", "transmute", "special"]),
   category: z.string(),
-  family: z.string(),
+  /** Derived browse taxonomy -- a reference to the families collection's id, e.g. "copper_goods" (see scripts/lib/family.ts's deriveFamily). */
+  family: reference("families"),
   /** URL-safe /recipe/{item}/{slug}/ segment, unique within the recipe's result-item group (see scripts/lib/recipe-slug.ts). */
   slug: z.string(),
   group: z.string().optional(),

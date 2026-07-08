@@ -13,6 +13,8 @@
  */
 import type { z } from "astro/zod";
 import type {
+  categorySchema,
+  familySchema,
   iconSchema,
   ingredientSchema,
   itemSchema,
@@ -146,12 +148,23 @@ export type RawItemComponentsData = Record<string, RawItemComponents>;
 export type Ingredient = z.infer<typeof ingredientSchema>;
 export type RecipeResult = z.infer<typeof recipeResultSchema>;
 
-/** Derived taxonomy label for browsing (see scripts/lib/family.ts) — always present on `Recipe.family`. */
-export type Recipe = z.infer<typeof recipeSchema>;
+/**
+ * The generator/validator's on-disk view of a recipe. `z.infer<typeof
+ * recipeSchema>` alone gives the shape Astro's content loader produces
+ * *after* resolving `family` as a `families` collection reference (see
+ * src/content.config.ts's `RecipeData`, the Astro-runtime equivalent) —
+ * but scripts/lib/generate.ts writes the raw pre-resolution JSON, where
+ * `family` is still a plain family id string (e.g. "copper_goods"). This
+ * type swaps that one field back to what's actually on disk.
+ */
+export type GeneratedRecipe = Omit<z.infer<typeof recipeSchema>, "family"> & {
+  /** Family id (see scripts/lib/family.ts's deriveFamily), not yet resolved to a `families` collection reference. */
+  family: string;
+};
 
-export type RecipeType = Recipe["type"];
+export type RecipeType = GeneratedRecipe["type"];
 
-export type RecipesOutput = Record<string, Recipe>;
+export type RecipesOutput = Record<string, GeneratedRecipe>;
 
 export type IconOutput = z.infer<typeof iconSchema>;
 
@@ -165,6 +178,24 @@ export type ItemStat = z.infer<typeof itemStatSchema>;
 export type Item = z.infer<typeof itemSchema>;
 
 export type ItemsOutput = Record<string, Item>;
+
+/** No reference fields, so the on-disk shape and the Astro-loaded shape are identical -- see scripts/lib/category.ts's CATEGORIES. */
+export type Category = z.infer<typeof categorySchema>;
+
+export type CategoriesOutput = Record<string, Category>;
+
+/**
+ * The generator/validator's on-disk view of a family (see GeneratedRecipe's
+ * doc comment above for why `category` -- a `categories` collection
+ * reference -- needs the same on-disk-string override as `family` does on
+ * Recipe).
+ */
+export type GeneratedFamily = Omit<z.infer<typeof familySchema>, "category"> & {
+  /** Category id (see scripts/lib/family.ts's FAMILY_CATEGORY), not yet resolved to a `categories` collection reference. */
+  category: string;
+};
+
+export type FamiliesOutput = Record<string, GeneratedFamily>;
 
 export interface Meta {
   version: string;

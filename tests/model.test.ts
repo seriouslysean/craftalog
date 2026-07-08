@@ -669,3 +669,85 @@ describe("resolveIconCandidate: compound (generic multi-element)", () => {
     });
   });
 });
+
+describe("resolveIconCandidate: compound full-cube front swap", () => {
+  // Vanilla puts a full-cube block's "front" texture on NORTH (observer,
+  // crafter, chiseled bookshelf) — a face this catalog's mirrored camera
+  // never shows. Extraction swaps north/south so the front lands on the
+  // visible south slot (see swapFullCubeFrontFaces).
+  const models: RawModelsData = {
+    "block/block": {},
+    "block/fronted_cube": {
+      parent: "block/block",
+      textures: {
+        particle: "block/fc_top",
+        top: "block/fc_top",
+        side: "block/fc_side",
+        front: "block/fc_front",
+      },
+      elements: [
+        {
+          from: [0, 0, 0],
+          to: [16, 16, 16],
+          faces: {
+            up: { texture: "#top" },
+            north: { texture: "#front", uv: [0, 0, 16, 16] },
+            south: { texture: "#side", uv: [16, 0, 0, 16] },
+            east: { texture: "#side" },
+          },
+        },
+      ],
+    },
+    // Same face layout on a non-full-cube element — must NOT swap (a bare
+    // face swap on partial geometry repaints physically distinct surfaces).
+    "block/fronted_slab": {
+      parent: "block/block",
+      textures: { particle: "block/fs_top", front: "block/fs_front", side: "block/fs_side" },
+      elements: [
+        {
+          from: [0, 0, 0],
+          to: [16, 8, 16],
+          faces: {
+            north: { texture: "#front" },
+            south: { texture: "#side" },
+          },
+        },
+      ],
+    },
+  };
+
+  const itemDefinitions: RawItemDefinitionsData = {
+    fronted_cube: { model: { type: "minecraft:model", model: "minecraft:block/fronted_cube" } },
+    fronted_slab: { model: { type: "minecraft:model", model: "minecraft:block/fronted_slab" } },
+  };
+
+  it("swaps north/south face data verbatim (texture + uv) for a single-element full cube", () => {
+    const candidate = resolveIconCandidate("fronted_cube", itemDefinitions, models);
+    expect(candidate).toMatchObject({
+      type: "compound",
+      elements: [
+        {
+          faces: {
+            south: { texture: "block/fc_front", uv: [0, 0, 16, 16] },
+            north: { texture: "block/fc_side", uv: [16, 0, 0, 16] },
+          },
+        },
+      ],
+    });
+  });
+
+  it("leaves non-full-cube elements unswapped", () => {
+    const candidate = resolveIconCandidate("fronted_slab", itemDefinitions, models);
+    expect(candidate).toMatchObject({
+      type: "compound",
+      elements: [
+        {
+          faces: {
+            north: { texture: "block/fs_front" },
+            south: { texture: "block/fs_side" },
+          },
+        },
+      ],
+    });
+  });
+});

@@ -241,7 +241,10 @@ function computeUvCrop([u0, v0, u1, v1]: [number, number, number, number]): UvCr
   const posY = h === 16 ? 0 : (-100 * fv) / (h - 16);
 
   return {
-    background: { size: `${pct(16 / w)} ${pct(16 / h)}`, position: `${posX.toFixed(4)}% ${posY.toFixed(4)}%` },
+    background: {
+      size: `${pct(16 / w)} ${pct(16 / h)}`,
+      position: `${posX.toFixed(4)}% ${posY.toFixed(4)}%`,
+    },
     contentTransform: `scale(${flipX}, ${flipY})`,
   };
 }

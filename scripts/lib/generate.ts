@@ -1,5 +1,6 @@
 import { toBedrockColorName } from "./bedrock-colors.ts";
-import { buildItemTagIndex, deriveFamily } from "./family.ts";
+import { CATEGORIES } from "./category.ts";
+import { buildItemTagIndex, deriveFamily, FAMILY_CATEGORY } from "./family.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
@@ -8,6 +9,8 @@ import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
 import { slugify } from "../../src/utils/slugify.ts";
 import type {
+  CategoriesOutput,
+  FamiliesOutput,
   Item,
   ItemsOutput,
   Meta,
@@ -36,6 +39,8 @@ export interface GenerateInput {
 export interface GenerateOutput {
   recipes: RecipesOutput;
   items: ItemsOutput;
+  categories: CategoriesOutput;
+  families: FamiliesOutput;
   meta: Meta;
   /** Every texture ref that should be copied into public/textures/. */
   texturesToCopy: Set<string>;
@@ -138,21 +143,52 @@ export function generate(input: GenerateInput): GenerateOutput {
   const counts = { shaped: 0, shapeless: 0, transmute: 0, special: 0 };
   const itemTagIndex = buildItemTagIndex(tagsRaw);
   const fallbackFamilyItems: string[] = [];
+  // Only families actually referenced by an emitted recipe end up in
+  // families.json, same "only what's referenced" contract items.json/
+  // texturesToCopy already follow.
+  const familiesUsed: FamiliesOutput = {};
 
   for (const [id, raw] of Object.entries(recipesRaw)) {
     const transformed = transformRecipe(id, raw, tagsRaw);
     if (!transformed) continue;
-    const { family, usedFallback } = deriveFamily(
-      { itemId: transformed.result?.id, group: transformed.group, category: transformed.category },
+    // Falls back to the recipe's own id for the one recipe with no result
+    // (repair_item), so it still has an itemId to match ITEM_FAMILY_OVERRIDES
+    // against instead of silently landing in the generic fallback.
+    const resultId = transformed.result?.id ?? id;
+    const derivedFamily = deriveFamily(
+      { itemId: resultId, group: transformed.group, category: transformed.category },
       itemTagIndex,
     );
-    if (usedFallback) fallbackFamilyItems.push(transformed.result?.id ?? id);
-    const resultId = transformed.result?.id ?? id;
+    if (derivedFamily.usedFallback) fallbackFamilyItems.push(resultId);
+
+    if (!(derivedFamily.id in familiesUsed)) {
+      const categoryId = FAMILY_CATEGORY[derivedFamily.id];
+      if (!categoryId) {
+        // Every family scripts/lib/family.ts can produce is listed in
+        // FAMILY_CATEGORY -- this can only fire if a future version bump
+        // routes a genuinely new item through CATEGORY_FAMILY_FALLBACK into
+        // a family name that was never added there. Fail immediately rather
+        // than emit a families.json entry with no valid category.
+        throw new Error(
+          `Family "${derivedFamily.id}" (${derivedFamily.name}) has no entry in FAMILY_CATEGORY ` +
+            `(scripts/lib/family.ts) -- every family must map to one of the 9 top-level categories.`,
+        );
+      }
+      familiesUsed[derivedFamily.id] = {
+        id: derivedFamily.id,
+        name: derivedFamily.name,
+        category: categoryId,
+      };
+    }
+
     const slug = slugify(deriveRecipeSlugSource(id, resultId));
-    const recipe = { ...transformed, family, slug };
+    const recipe = { ...transformed, family: derivedFamily.id, slug };
     recipes[id] = recipe;
     counts[recipe.type] += 1;
   }
+
+  const categories: CategoriesOutput = {};
+  for (const category of CATEGORIES) categories[category.id] = category;
 
   const referencedIds = new Set<string>();
   for (const recipe of Object.values(recipes)) {
@@ -264,6 +300,8 @@ export function generate(input: GenerateInput): GenerateOutput {
   return {
     recipes,
     items,
+    categories,
+    families: familiesUsed,
     meta,
     texturesToCopy,
     bannerIconsToSynthesize,

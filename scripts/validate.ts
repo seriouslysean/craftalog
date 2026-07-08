@@ -18,6 +18,8 @@ import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS } from "./lib/hud-icons.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
 import type {
+  CategoriesOutput,
+  FamiliesOutput,
   ItemsOutput,
   Meta,
   RawItemComponentsData,
@@ -53,10 +55,20 @@ function fail(message: string): void {
   errors.push(message);
 }
 
-function loadCommitted(): { recipes: RecipesOutput; items: ItemsOutput; meta: Meta } {
+interface Committed {
+  recipes: RecipesOutput;
+  items: ItemsOutput;
+  categories: CategoriesOutput;
+  families: FamiliesOutput;
+  meta: Meta;
+}
+
+function loadCommitted(): Committed {
   return {
     recipes: readJson<RecipesOutput>(path.join(GENERATED_DIR, "recipes.json")),
     items: readJson<ItemsOutput>(path.join(GENERATED_DIR, "items.json")),
+    categories: readJson<CategoriesOutput>(path.join(GENERATED_DIR, "categories.json")),
+    families: readJson<FamiliesOutput>(path.join(GENERATED_DIR, "families.json")),
     meta: readJson<Meta>(path.join(GENERATED_DIR, "meta.json")),
   };
 }
@@ -102,7 +114,7 @@ function diffSummary(
   }
 }
 
-function checkDrift(committed: { recipes: RecipesOutput; items: ItemsOutput; meta: Meta }): void {
+function checkDrift(committed: Committed): void {
   const version = fs.readFileSync(path.join(VENDOR_SUMMARY_DIR, "version.txt"), "utf8").trim();
   const recipesRaw = readJson<RawRecipesData>(
     path.join(VENDOR_SUMMARY_DIR, "data/recipe/data.json"),
@@ -139,6 +151,8 @@ function checkDrift(committed: { recipes: RecipesOutput; items: ItemsOutput; met
 
   diffSummary("recipes.json", fresh.recipes, committed.recipes);
   diffSummary("items.json", fresh.items, committed.items);
+  diffSummary("categories.json", fresh.categories, committed.categories);
+  diffSummary("families.json", fresh.families, committed.families);
   diffSummary(
     "meta.json",
     fresh.meta as unknown as Record<string, unknown>,
@@ -146,13 +160,11 @@ function checkDrift(committed: { recipes: RecipesOutput; items: ItemsOutput; met
   );
 }
 
-function checkInternalConsistency(committed: {
-  recipes: RecipesOutput;
-  items: ItemsOutput;
-  meta: Meta;
-}): void {
-  const { recipes, items, meta } = committed;
+function checkInternalConsistency(committed: Committed): void {
+  const { recipes, items, categories, families, meta } = committed;
   const itemIds = new Set(Object.keys(items));
+  const familyIds = new Set(Object.keys(families));
+  const categoryIds = new Set(Object.keys(categories));
 
   for (const [id, recipe] of Object.entries(recipes)) {
     const referencedIds: string[] = [];
@@ -168,6 +180,10 @@ function checkInternalConsistency(committed: {
       if (!itemIds.has(itemId)) {
         fail(`recipe "${id}" references unknown item id "${itemId}" (not in items.json)`);
       }
+    }
+
+    if (!familyIds.has(recipe.family)) {
+      fail(`recipe "${id}" references unknown family id "${recipe.family}" (not in families.json)`);
     }
 
     if (recipe.type === "shaped") {
@@ -189,6 +205,27 @@ function checkInternalConsistency(committed: {
         }
       }
     }
+  }
+
+  // Every family that appears in the generated data must resolve to a real
+  // top-level category -- generate.ts already enforces this at parse time
+  // (see its FAMILY_CATEGORY lookup), but re-checking the committed JSON
+  // directly here (same "validate-time invariant" as the item-id checks
+  // above) catches drift even if that guarantee is ever weakened, mirroring
+  // the fallbackFamilyItems taxonomy-gap audit this data already carries.
+  for (const [id, family] of Object.entries(families)) {
+    if (!categoryIds.has(family.category)) {
+      fail(
+        `family "${id}" references unknown category id "${family.category}" (not in categories.json)`,
+      );
+    }
+  }
+
+  if (meta.fallbackFamilyItems.length > 0) {
+    fail(
+      `${meta.fallbackFamilyItems.length} item(s) fell through to a generic family fallback ` +
+        `(meta.fallbackFamilyItems: ${meta.fallbackFamilyItems.slice(0, 10).join(", ")}${meta.fallbackFamilyItems.length > 10 ? ", ..." : ""}) -- add a real scripts/lib/family.ts rule for each.`,
+    );
   }
 
   for (const [id, item] of Object.entries(items)) {
@@ -260,6 +297,9 @@ function main(): void {
     `  recipes: ${Object.keys(committed.recipes).length} (shaped ${committed.meta.counts.shaped}, shapeless ${committed.meta.counts.shapeless}, transmute ${committed.meta.counts.transmute}, special ${committed.meta.counts.special})`,
   );
   console.log(`  items:   ${Object.keys(committed.items).length}`);
+  console.log(
+    `  categories: ${Object.keys(committed.categories).length}, families: ${Object.keys(committed.families).length}`,
+  );
   console.log(`  unresolved icons: ${committed.meta.unresolvedIcons.length}`);
 }
 

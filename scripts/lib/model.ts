@@ -456,7 +456,49 @@ function extractCompoundElements(
   }
   if (elements.length === 0) return undefined;
 
+  swapFullCubeFrontFaces(elements);
+
   return { elements, yRotation: findGuiYawDelta(chainNames, models) };
+}
+
+/**
+ * Shows a full-cube block's "front" texture on the camera-visible face.
+ *
+ * The catalog's fixed isometric camera (rotateX(-35deg) rotateY(-45deg) --
+ * see ItemIcon.astro) shows a box's UP, SOUTH, and EAST faces; vanilla's own
+ * default GUI camera (rotation [30, 225, 0], from block/block.json) shows
+ * UP, NORTH, and EAST -- the horizontal mirror. Vanilla's convention puts a
+ * block's distinguishing "front" texture on NORTH (furnace, crafting table,
+ * observer, crafter, chiseled bookshelf), so rendered as-is here such a
+ * block shows its back/side where the vanilla icon shows its front. The
+ * shipped "block" icon type already corrects for this by resolving
+ * side=*_front (furnace/crafting_table/loom); this is the compound
+ * equivalent: swap the north/south face data so the front lands on the
+ * visible south slot. The verbatim swap is exact for a full cube -- the
+ * renderer maps south's u axis along +x from screen-left while vanilla maps
+ * north's u axis along -x from screen-left, so the moved texture reads
+ * unmirrored, exactly like the vanilla icon (the now-hidden north face
+ * carries the back texture, invisibly).
+ *
+ * Restricted to single-element full-cube models with BOTH faces declared:
+ * multi-element/partial-box geometry would repaint physically distinct
+ * surfaces (and every such shape verified against this camera -- anvil,
+ * grindstone, composter -- is north/south-symmetric anyway), and a cube
+ * declaring only one of the pair (a context-culled in-world model) would
+ * lose its declared face to the hidden slot instead of gaining a front.
+ */
+function swapFullCubeFrontFaces(elements: CompoundElementCandidate[]): void {
+  if (elements.length !== 1) return;
+  const [el] = elements;
+  const isFullCube =
+    el.from[0] === 0 &&
+    el.from[1] === 0 &&
+    el.from[2] === 0 &&
+    el.to[0] === 16 &&
+    el.to[1] === 16 &&
+    el.to[2] === 16;
+  if (!isFullCube || !el.faces.north || !el.faces.south) return;
+  [el.faces.north, el.faces.south] = [el.faces.south, el.faces.north];
 }
 
 /**

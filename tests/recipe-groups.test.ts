@@ -15,7 +15,11 @@ function recipe(overrides: Partial<RecipeData> & { id: string }): RecipeData {
   return {
     type: "shapeless",
     category: "misc",
-    family: "Materials",
+    // `family` is a `families` collection reference (see src/content.config.ts),
+    // not a plain display-name string -- "materials" matches the real
+    // generated families.json entry so familyDisplayName resolves it to
+    // "Materials" the same way real recipe data would.
+    family: { collection: "families", id: "materials" },
     // Placeholder -- real slugs come from the data pipeline (scripts/lib/recipe-slug.ts)
     // and aren't what this file's fixtures are testing; override explicitly where a test cares.
     slug: overrides.id,
@@ -102,7 +106,7 @@ describe("groupRecipes", () => {
       recipe({
         id: "black_banner",
         type: "shaped",
-        family: "Banners",
+        family: { collection: "families", id: "banners" },
         result: { id: "black_banner", count: 1 },
         pattern: ["###"],
         key: { "#": { items: ["black_wool"] } },
@@ -110,7 +114,7 @@ describe("groupRecipes", () => {
       recipe({
         id: "black_banner_duplicate",
         type: "special",
-        family: "Banners",
+        family: { collection: "families", id: "banners" },
         result: { id: "black_banner", count: 1 },
         note: "Combine a banner with a matching blank banner to duplicate its pattern.",
       }),

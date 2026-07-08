@@ -1,8 +1,26 @@
 import type { Ingredient, ItemData, RecipeData } from "../content.config";
+import familiesData from "../data/generated/families.json";
 import { slugify } from "./slugify";
 import { humanizeTagLabel } from "./tag-label";
 
 const NOTE_MAX_LENGTH = 40;
+
+// Family id -> display name, read directly from the generated data (not via
+// the `families` content collection) so this stays synchronous. `family` on
+// a recipe is now a `families` collection reference (see
+// src/content.config.ts) rather than a plain display-name string -- this is
+// a minimal shim so every existing call site that read `recipe.family` as
+// text (this file, RecipePage.astro) keeps working unchanged. Real UI
+// consumption of the `families`/`categories` collections (category nav,
+// grouped homepage sections, etc.) is tracked as follow-up work.
+const FAMILY_NAME_BY_ID: Record<string, string> = Object.fromEntries(
+  Object.values(familiesData).map((family) => [family.id, family.name]),
+);
+
+/** Resolves a recipe's `family` reference back to its display name, e.g. "Copper Goods" -- see FAMILY_NAME_BY_ID above. */
+export function familyDisplayName(family: RecipeData["family"]): string {
+  return FAMILY_NAME_BY_ID[family.id] ?? family.id;
+}
 
 /** Base path segment for every recipe page -- single source of truth for src/pages/recipe/, so a route restructure only touches one string. */
 export const RECIPE_BASE_PATH = "/recipe";
@@ -175,7 +193,7 @@ export function groupRecipes(
 
     groups.push({
       resultId,
-      family: members[0].family,
+      family: familyDisplayName(members[0].family),
       canonicalId: members[0].id,
       count,
       siblings,
