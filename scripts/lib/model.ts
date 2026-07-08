@@ -1,6 +1,7 @@
 import type {
   RawItemDefinitionsData,
   RawModel,
+  RawModelElement,
   RawModelsData,
   RawModelTextureValue,
 } from "./types.ts";
@@ -254,6 +255,22 @@ export function findSpecialModel(node: unknown): SpecialModel | undefined {
   return undefined;
 }
 
+/** One resolved face of a "compound" element: a bare texture ref (no "/textures/" prefix — parse.ts adds that) plus its texture-atlas crop rect. */
+export interface CompoundFaceCandidate {
+  texture: string;
+  /** [u0, v0, u1, v1], 0-16 texture-pixel space (explicit from the model JSON, or defaultFaceUv's position-derived fallback). */
+  uv: [number, number, number, number];
+}
+
+/** A single box element for the generic "compound" icon type. */
+export interface CompoundElementCandidate {
+  from: [number, number, number];
+  to: [number, number, number];
+  faces: Partial<
+    Record<"up" | "down" | "north" | "south" | "east" | "west", CompoundFaceCandidate>
+  >;
+}
+
 export type IconCandidate =
   | { type: "flat"; textureRef: string }
   | { type: "block"; topRef: string; sideRef: string }
@@ -270,7 +287,177 @@ export type IconCandidate =
   | { type: "wall"; textureRef: string }
   | { type: "button"; textureRef: string }
   | { type: "fence"; textureRef: string }
-  | { type: "fence_gate"; textureRef: string };
+  | { type: "fence_gate"; textureRef: string }
+  /**
+   * Generic multi-element compound (e.g. anvil): real per-element box
+   * geometry, each face resolved to its own texture. See
+   * extractCompoundElements. `flatFallbackRef` is the same particle/layer0
+   * guess the plain "unknown" flat fallback would have used — a safety net
+   * for generate.ts in case none of this candidate's own element textures
+   * actually exist as files (so a chain with elements never regresses to
+   * fully unresolved when the old flat guess would have worked fine).
+   */
+  | {
+      type: "compound";
+      elements: CompoundElementCandidate[];
+      yRotation: number;
+      flatFallbackRef?: string;
+    };
+
+// The vanilla default `display.gui` transform every block model inherits
+// unless it overrides "gui" itself: block/block.json (the root parent of
+// nearly every block model) declares `rotation: [30, 225, 0]`. Only the yaw
+// (index 1) matters here — see findGuiYawDelta.
+const DEFAULT_GUI_YAW = 225;
+
+/**
+ * Walks a model's parent chain (leaf to root, same order as walkModelChain's
+ * chainNames) looking for the first model that defines its own `elements`
+ * array — typically a shared template parent (e.g. block/template_anvil),
+ * not the leaf itself. Returns undefined when nothing in the chain has real
+ * element geometry (the common case — most items fall through classifyChain
+ * to a named shape or the flat fallback well before this is ever called).
+ */
+function findElementsInChain(
+  chainNames: string[],
+  models: RawModelsData,
+): RawModelElement[] | undefined {
+  for (const name of chainNames) {
+    const elements = models[name]?.elements;
+    if (elements && elements.length > 0) return elements;
+  }
+  return undefined;
+}
+
+/**
+ * Walks the chain for the first model that declares its own `display.gui`
+ * override, and returns its yaw (rotation[1]) minus the vanilla default
+ * (225°) — i.e. how much extra Y rotation this specific model's inventory
+ * icon needs on top of the shared camera, same idea already established for
+ * fence_gate (whose `display.gui` yaw of 45° is 180° off the default, so it
+ * gets an extra rotateY(180deg) — see ItemIcon.astro). Returns 0 when no
+ * model in the chain overrides "gui" (inherits the default unchanged, e.g.
+ * anvil — see the "why gui, not fixed" note on extractCompoundElements).
+ */
+function findGuiYawDelta(chainNames: string[], models: RawModelsData): number {
+  for (const name of chainNames) {
+    const guiYaw = models[name]?.display?.gui?.rotation?.[1];
+    if (guiYaw !== undefined) return guiYaw - DEFAULT_GUI_YAW;
+  }
+  return 0;
+}
+
+/**
+ * Resolves one element face's texture attribute against the merged texture
+ * map. Normally "#body"-style, but at least one vendored model
+ * (block/heavy_core) omits the "#" on its own texture variable ("all"
+ * instead of "#all") despite every other vanilla model prefixing texture
+ * variable refs — so a variable-name lookup is always tried first
+ * (stripping a leading "#" if present), falling back to treating the raw
+ * value as an already-resolved literal ref only when no such variable exists.
+ */
+function resolveElementFaceTexture(
+  rawTexture: string,
+  merged: Record<string, string>,
+): string | undefined {
+  const key = rawTexture.startsWith("#") ? rawTexture.slice(1) : rawTexture;
+  const viaVariable = resolveTextureRef(key, merged);
+  if (viaVariable) return viaVariable;
+  return rawTexture.startsWith("#") ? undefined : stripMcPrefix(rawTexture);
+}
+
+/**
+ * Minecraft's default `uv` for a face that omits an explicit rect: derived
+ * from the element's own from/to position on the two axes relevant to that
+ * face -- NOT a flat [0,0,16,16] for every face (verified two ways against
+ * this repo's own vendored vanilla models: (1) template_anvil.json's
+ * explicit north/south-face uv for its base element, [2,12,14,16], is
+ * exactly what this formula derives for that face/element when left to
+ * default -- vanilla only bothers overriding uv where the result needs to
+ * differ from this default, so an explicit value matching it is strong
+ * confirmation; (2) composter.json's 5 split elements declare no explicit
+ * uv on ANY face, and only tile seamlessly -- no visible seam between the
+ * two corner posts and two side rails sharing one "side"/"top" texture --
+ * if each element's own from/to position selects its own sub-region of
+ * that shared texture, not the same full 16x16 crop repeated on every
+ * element). Matches vanilla's own default-UV algorithm (BlockElement, the
+ * Java client's block-model loader).
+ */
+function defaultFaceUv(
+  face: "up" | "down" | "north" | "south" | "east" | "west",
+  from: [number, number, number],
+  to: [number, number, number],
+): [number, number, number, number] {
+  const [x0, y0, z0] = from;
+  const [x1, y1, z1] = to;
+  switch (face) {
+    case "up":
+      return [x0, z0, x1, z1];
+    case "down":
+      return [x0, 16 - z1, x1, 16 - z0];
+    case "north":
+      return [16 - x1, 16 - y1, 16 - x0, 16 - y0];
+    case "south":
+      return [x0, 16 - y1, x1, 16 - y0];
+    case "west":
+      return [z0, 16 - y1, z1, 16 - y0];
+    case "east":
+      return [16 - z1, 16 - y1, 16 - z0, 16 - y0];
+  }
+}
+
+/**
+ * Extracts a generic "compound" icon candidate from a model chain's real
+ * element geometry, for block models classifyChain doesn't recognize as any
+ * named shape (e.g. anvil, whose 4-element template_anvil parent has no
+ * dedicated classifyChain branch). All 6 declared faces are kept per
+ * element -- up/east/south are the only 3 a SIMPLE CONVEX box ever shows
+ * from this catalog's fixed isometric camera, but concave/hollow/stepped
+ * shapes (e.g. composter's open-top hollow box, grindstone's post-and-wheel
+ * assembly) genuinely expose down/north/west-facing surfaces too (see
+ * ItemIcon.astro's computeFaceStyle, which renders whichever of the 6 a
+ * given element actually has). Each kept face also carries its `uv` crop
+ * rect (explicit from the model JSON, or defaultFaceUv's fallback) --
+ * see ItemIcon.astro's computeUvCrop for how that's applied. Returns
+ * undefined when the chain has no element geometry, or when every
+ * element's faces are undefined/unresolvable (so the caller can fall back
+ * to the flat-texture guess).
+ *
+ * yRotation is sourced from `display.gui` (the vanilla inventory-icon
+ * display context), NOT `display.fixed` (the item-frame context) — a block
+ * model's `display.fixed` transform has no bearing on how it looks in an
+ * inventory/GUI slot, which is what this catalog's icons emulate. Verified
+ * against vendor/mcmeta-assets/assets/minecraft/models/block/block.json
+ * (the root parent nearly every block model inherits from), whose `display`
+ * object lists "gui" as its own context distinct from "fixed"/"ground"/
+ * "thirdperson_righthand"/etc. — the same distinction the already-shipped
+ * fence_gate handling relies on (see findGuiYawDelta).
+ */
+function extractCompoundElements(
+  chainNames: string[],
+  merged: Record<string, string>,
+  models: RawModelsData,
+): { elements: CompoundElementCandidate[]; yRotation: number } | undefined {
+  const rawElements = findElementsInChain(chainNames, models);
+  if (!rawElements) return undefined;
+
+  const elements: CompoundElementCandidate[] = [];
+  for (const rawEl of rawElements) {
+    const faces: CompoundElementCandidate["faces"] = {};
+    for (const face of ["up", "down", "north", "south", "east", "west"] as const) {
+      const rawFace = rawEl.faces?.[face];
+      if (!rawFace) continue;
+      const ref = resolveElementFaceTexture(rawFace.texture, merged);
+      if (!ref) continue;
+      const uv = rawFace.uv ?? defaultFaceUv(face, rawEl.from, rawEl.to);
+      faces[face] = { texture: ref, uv };
+    }
+    if (Object.keys(faces).length > 0) elements.push({ from: rawEl.from, to: rawEl.to, faces });
+  }
+  if (elements.length === 0) return undefined;
+
+  return { elements, yRotation: findGuiYawDelta(chainNames, models) };
+}
 
 /**
  * Resolves an item's icon down to bare texture refs (e.g. "block/oak_log_top",
@@ -386,6 +573,16 @@ export function resolveIconCandidate(
     default: {
       const textureRef =
         resolve("particle") ?? resolve("layer0") ?? firstResolvableTexture(chain.mergedTextures);
+
+      // Before committing to a flat texture, check whether some model in
+      // the chain has real element geometry (e.g. anvil's template_anvil
+      // parent) — if so, render the actual shape instead of a flat crop of
+      // its particle/layer0 texture. The flat guess still rides along as
+      // flatFallbackRef in case none of the compound's own element textures
+      // exist as files (generate.ts is the one that can check).
+      const compound = extractCompoundElements(chain.chainNames, chain.mergedTextures, models);
+      if (compound) return { type: "compound", ...compound, flatFallbackRef: textureRef };
+
       return textureRef ? { type: "flat", textureRef } : undefined;
     }
   }

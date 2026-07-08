@@ -70,9 +70,53 @@ export type RawTagsData = Record<string, RawTag>;
  */
 export type RawModelTextureValue = string | { sprite: string; [key: string]: unknown };
 
+/**
+ * One face of a model element's `faces` map. `texture` (an indirection like
+ * "#body" or an occasional literal ref) and `uv` (the face's texture-atlas
+ * sub-rectangle, [u0,v0,u1,v1] in 0-16 texture-pixel space) are both read --
+ * see scripts/lib/model.ts's extractCompoundElements, which crops the
+ * "compound" icon type's faces to this rect instead of showing the whole
+ * texture. `rotation`/`cullface` still aren't reproduced (no visible defect
+ * from skipping cullface -- see extractCompoundElements' own comment on why
+ * hidden/culled faces don't matter for a fixed isometric camera).
+ */
+export interface RawModelElementFace {
+  texture: string;
+  /** [u0, v0, u1, v1], 0-16 texture-pixel space. u0>u1 or v0>v1 signals a mirror on that axis. Optional -- see scripts/lib/model.ts's defaultFaceUv for the fallback when omitted. */
+  uv?: [number, number, number, number];
+  [key: string]: unknown;
+}
+
+/**
+ * One element (a single axis-aligned box) of a block model's `elements`
+ * array, in 0-16 block-space coordinates. `faces` is keyed by all 6
+ * cardinal directions, and extractCompoundElements (scripts/lib/model.ts)
+ * reads all 6 -- up/east/south are the only 3 a SIMPLE CONVEX box ever
+ * shows from this catalog's fixed isometric camera (see ItemIcon.astro's
+ * shared `rotateX(-35deg) rotateY(-45deg)` camera), but concave/hollow/
+ * stepped shapes (e.g. composter, grindstone) genuinely expose down/north/
+ * west-facing surfaces too.
+ */
+export interface RawModelElement {
+  from: [number, number, number];
+  to: [number, number, number];
+  faces?: Partial<Record<"up" | "down" | "north" | "south" | "east" | "west", RawModelElementFace>>;
+  [key: string]: unknown;
+}
+
+/** A single display context's transform (rotation in degrees [x,y,z]). Only `rotation` is read. */
+export interface RawModelDisplayTransform {
+  rotation?: [number, number, number];
+  [key: string]: unknown;
+}
+
 export interface RawModel {
   parent?: string;
   textures?: Record<string, RawModelTextureValue>;
+  /** Real per-element box geometry, when this model defines its own shape rather than inheriting a shared template's. */
+  elements?: RawModelElement[];
+  /** Per display-context transforms (gui, fixed, ground, ...) -- see scripts/lib/model.ts's gui-yaw-delta handling. */
+  display?: Partial<Record<string, RawModelDisplayTransform>>;
   [key: string]: unknown;
 }
 

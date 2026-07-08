@@ -3,6 +3,7 @@ import { buildItemTagIndex, deriveFamily } from "./family.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
+import type { IconCandidate } from "./model.ts";
 import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
 import { slugify } from "../../src/utils/slugify.ts";
@@ -44,6 +45,74 @@ export interface GenerateOutput {
   lightningRodIconsToSynthesize: Map<string, string>;
   /** Java colorId -> Bedrock source filename suffix, for bed icons the caller must copy from vendor/bedrock-samples (see scripts/parse.ts). */
   bedIconsToCopy: Map<string, string>;
+}
+
+/** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
+interface ResolvedCompoundFace {
+  texture: string;
+  uv: [number, number, number, number];
+}
+
+interface ResolvedCompoundElement {
+  from: [number, number, number];
+  to: [number, number, number];
+  faces: {
+    up?: ResolvedCompoundFace;
+    down?: ResolvedCompoundFace;
+    north?: ResolvedCompoundFace;
+    south?: ResolvedCompoundFace;
+    east?: ResolvedCompoundFace;
+    west?: ResolvedCompoundFace;
+  };
+}
+
+/**
+ * Resolves a "compound" candidate's per-element faces to concrete
+ * `/textures/...` paths (+ their uv crop rect, carried through unchanged
+ * from scripts/lib/model.ts's extractCompoundElements), dropping any face
+ * whose texture doesn't exist on disk and any element left with zero
+ * remaining faces. Returns undefined when nothing resolves at all, so the
+ * caller falls back to the placeholder icon — same "best effort, else
+ * unresolved" contract every other icon type here already follows. All 6
+ * cardinal faces are resolved (whichever the candidate's own element data
+ * actually declares) -- see scripts/lib/model.ts's extractCompoundElements
+ * and ItemIcon.astro's computeFaceStyle for why down/north/west matter
+ * alongside up/east/south. No culling pass: an earlier version of this
+ * function dropped faces on any partial footprint overlap between two
+ * elements' touching boundary, on the theory that coplanar contact seams
+ * cause CSS z-fighting -- that diagnosis was wrong (confirmed: rendering
+ * every declared face with flat opaque debug colors, uncropped, produces a
+ * pixel-perfect silhouette with zero visual conflicts) and the culling
+ * itself was separately buggy (it deleted a face on ANY partial overlap,
+ * even when the real overlap was a small fraction of that face's actual
+ * area -- confirmed on grindstone's wheel, where it wrongly deleted the
+ * entire east+west faces, including the prominent grindstone_side.png
+ * surface, over a contact patch that was only a sliver of the wheel's true
+ * footprint). The real bug was the now-fixed missing uv crop (see
+ * ItemIcon.astro's computeUvCrop): un-cropped faces stretched a mostly-
+ * transparent texture atlas over their whole footprint, letting interior
+ * geometry show through and look like a conflict.
+ */
+function resolveCompoundElements(
+  candidate: Extract<IconCandidate, { type: "compound" }>,
+  textureExists: (ref: string) => boolean,
+): { elements: ResolvedCompoundElement[]; textureRefs: string[] } | undefined {
+  const elements: ResolvedCompoundElement[] = [];
+  const textureRefs: string[] = [];
+
+  for (const el of candidate.elements) {
+    const faces: ResolvedCompoundElement["faces"] = {};
+    for (const face of ["up", "down", "north", "south", "east", "west"] as const) {
+      const faceCandidate = el.faces[face];
+      if (faceCandidate && textureExists(faceCandidate.texture)) {
+        faces[face] = { texture: `/textures/${faceCandidate.texture}.png`, uv: faceCandidate.uv };
+        textureRefs.push(faceCandidate.texture);
+      }
+    }
+    if (Object.keys(faces).length > 0) elements.push({ from: el.from, to: el.to, faces });
+  }
+
+  return elements.length > 0 ? { elements, textureRefs } : undefined;
 }
 
 /**
@@ -100,6 +169,10 @@ export function generate(input: GenerateInput): GenerateOutput {
   for (const itemId of Array.from(referencedIds).toSorted()) {
     const name = getItemName(itemId, enUs);
     const candidate = resolveIconCandidate(itemId, itemDefsRaw, modelsRaw);
+    const resolvedCompound =
+      candidate?.type === "compound"
+        ? resolveCompoundElements(candidate, textureExists)
+        : undefined;
 
     let icon: Item["icon"];
     if (candidate?.type === "banner" && textureExists(`block/${candidate.colorId}_wool`)) {
@@ -143,6 +216,24 @@ export function generate(input: GenerateInput): GenerateOutput {
       };
       texturesToCopy.add(candidate.topRef);
       texturesToCopy.add(candidate.sideRef);
+    } else if (candidate?.type === "compound" && resolvedCompound) {
+      icon = {
+        type: "compound",
+        elements: resolvedCompound.elements,
+        yRotation: candidate.yRotation,
+      };
+      for (const ref of resolvedCompound.textureRefs) texturesToCopy.add(ref);
+    } else if (
+      candidate?.type === "compound" &&
+      candidate.flatFallbackRef &&
+      textureExists(candidate.flatFallbackRef)
+    ) {
+      // None of the compound's own element textures exist as files --
+      // fall back to the same flat particle/layer0 guess the plain
+      // "unknown" path would have used, so this never regresses below what
+      // the old fallback already achieved.
+      icon = { type: "flat", texture: `/textures/${candidate.flatFallbackRef}.png` };
+      texturesToCopy.add(candidate.flatFallbackRef);
     } else {
       icon = { type: "flat", texture: "/textures/placeholder.png" };
       unresolvedIcons.push(itemId);

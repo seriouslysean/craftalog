@@ -502,3 +502,170 @@ describe("resolveIconCandidate", () => {
     expect(resolveIconCandidate("conduit", specials, models)).toBeUndefined();
   });
 });
+
+describe("resolveIconCandidate: compound (generic multi-element)", () => {
+  const compoundModels: RawModelsData = {
+    // A shared template (like block/template_anvil) defines the real
+    // geometry; the leaf (like block/anvil) only overrides one texture var.
+    "block/template_widget": {
+      parent: "block/block",
+      textures: { particle: "block/widget_body", body: "block/widget_body" },
+      elements: [
+        {
+          from: [2, 0, 2],
+          to: [14, 4, 14],
+          faces: {
+            up: { texture: "#body" },
+            east: { texture: "#body" },
+            south: { texture: "#body" },
+            // down/north/west aren't shown by a SIMPLE CONVEX box from this
+            // catalog's fixed camera, but concave/hollow shapes (composter,
+            // grindstone) genuinely expose them — all 6 should be kept.
+            down: { texture: "#body" },
+            north: { texture: "#body" },
+            west: { texture: "#body" },
+          },
+        },
+        {
+          from: [3, 4, 0],
+          to: [13, 10, 16],
+          // Only east/south are culled/omitted here (e.g. occluded
+          // in-world) — the candidate should carry just the faces the
+          // model actually defines.
+          faces: { east: { texture: "#top" }, south: { texture: "#top" } },
+        },
+      ],
+    },
+    "block/block": {},
+    "block/widget": {
+      parent: "minecraft:block/template_widget",
+      textures: { top: "minecraft:block/widget_top" },
+    },
+    // block/heavy_core's real vendored quirk: a face texture ref with no
+    // leading "#", naming a texture variable directly instead of the usual
+    // "#varname" indirection — must still resolve via the textures map, not
+    // be treated as an already-resolved literal ref.
+    "block/bare_ref_widget": {
+      textures: { all: "block/bare_ref_body" },
+      elements: [{ from: [4, 0, 4], to: [12, 8, 12], faces: { up: { texture: "all" } } }],
+    },
+    // Overrides display.gui's yaw (45°) — 180° off the vanilla default
+    // (225°) baked into block/block.json.
+    "block/rotated_widget": {
+      parent: "block/block",
+      display: { gui: { rotation: [30, 45, 0] } },
+      textures: { particle: "block/rotated_body" },
+      elements: [{ from: [0, 0, 0], to: [16, 16, 16], faces: { up: { texture: "#particle" } } }],
+    },
+    // Exercises all 3 uv paths in one element: an explicit non-flipped
+    // rect (passed through unchanged), an explicit flipped/un-sorted rect
+    // like grindstone's real leg-element east face (uv: [10, 16, 6, 9] —
+    // also passed through unchanged; flip handling lives entirely in
+    // ItemIcon.astro's computeUvCrop, not extraction), and an omitted uv
+    // (falls back to defaultFaceUv's position-derived rect).
+    "block/uv_widget": {
+      parent: "block/block",
+      textures: { body: "block/uv_body" },
+      elements: [
+        {
+          from: [0, 0, 0],
+          to: [16, 16, 16],
+          faces: {
+            up: { texture: "#body", uv: [1, 2, 15, 14] },
+            east: { texture: "#body", uv: [10, 16, 6, 9] },
+            south: { texture: "#body" },
+          },
+        },
+      ],
+    },
+  };
+
+  const compoundItemDefinitions: RawItemDefinitionsData = {
+    widget: { model: { type: "minecraft:model", model: "minecraft:block/widget" } },
+    bare_ref_widget: {
+      model: { type: "minecraft:model", model: "minecraft:block/bare_ref_widget" },
+    },
+    rotated_widget: {
+      model: { type: "minecraft:model", model: "minecraft:block/rotated_widget" },
+    },
+    uv_widget: { model: { type: "minecraft:model", model: "minecraft:block/uv_widget" } },
+  };
+
+  it("extracts real element geometry with all 6 declared faces kept, and no gui override -> yRotation 0", () => {
+    expect(resolveIconCandidate("widget", compoundItemDefinitions, compoundModels)).toEqual({
+      type: "compound",
+      yRotation: 0,
+      flatFallbackRef: "block/widget_body",
+      elements: [
+        {
+          from: [2, 0, 2],
+          to: [14, 4, 14],
+          faces: {
+            up: { texture: "block/widget_body", uv: [2, 2, 14, 14] },
+            down: { texture: "block/widget_body", uv: [2, 2, 14, 14] },
+            north: { texture: "block/widget_body", uv: [2, 12, 14, 16] },
+            south: { texture: "block/widget_body", uv: [2, 12, 14, 16] },
+            east: { texture: "block/widget_body", uv: [2, 12, 14, 16] },
+            west: { texture: "block/widget_body", uv: [2, 12, 14, 16] },
+          },
+        },
+        {
+          from: [3, 4, 0],
+          to: [13, 10, 16],
+          faces: {
+            east: { texture: "block/widget_top", uv: [0, 6, 16, 12] },
+            south: { texture: "block/widget_top", uv: [3, 6, 13, 12] },
+          },
+        },
+      ],
+    });
+  });
+
+  it("resolves a bare (non-'#') face texture value as a texture variable name, not a literal ref", () => {
+    expect(
+      resolveIconCandidate("bare_ref_widget", compoundItemDefinitions, compoundModels),
+    ).toEqual({
+      type: "compound",
+      yRotation: 0,
+      // No "particle"/"layer0" var here — falls back to the first
+      // resolvable texture var in the merged map ("all").
+      flatFallbackRef: "block/bare_ref_body",
+      elements: [
+        {
+          from: [4, 0, 4],
+          to: [12, 8, 12],
+          faces: { up: { texture: "block/bare_ref_body", uv: [4, 4, 12, 12] } },
+        },
+      ],
+    });
+  });
+
+  it("computes yRotation as the model's own display.gui yaw minus the vanilla default (225deg)", () => {
+    const candidate = resolveIconCandidate(
+      "rotated_widget",
+      compoundItemDefinitions,
+      compoundModels,
+    );
+    expect(candidate?.type).toBe("compound");
+    expect(candidate).toMatchObject({ yRotation: 45 - 225 });
+  });
+
+  it("carries explicit uv rects through unchanged (including flipped/un-sorted ones), and derives a position-based default uv when omitted", () => {
+    expect(resolveIconCandidate("uv_widget", compoundItemDefinitions, compoundModels)).toEqual({
+      type: "compound",
+      yRotation: 0,
+      flatFallbackRef: "block/uv_body",
+      elements: [
+        {
+          from: [0, 0, 0],
+          to: [16, 16, 16],
+          faces: {
+            up: { texture: "block/uv_body", uv: [1, 2, 15, 14] },
+            east: { texture: "block/uv_body", uv: [10, 16, 6, 9] },
+            south: { texture: "block/uv_body", uv: [0, 0, 16, 16] },
+          },
+        },
+      ],
+    });
+  });
+});

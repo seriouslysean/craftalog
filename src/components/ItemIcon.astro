@@ -49,6 +49,234 @@ function getFaces(icon: IconData): Face[] {
   return [];
 }
 
+interface CompoundFaceStyle {
+  outerTransform: string;
+  content: { top: string; left: string; width: string; height: string };
+}
+
+/**
+ * Positions one face of a "compound" icon's box element (real per-element
+ * geometry from a block model, e.g. anvil's 4-element template_anvil parent
+ * -- see scripts/lib/model.ts's extractCompoundElements). Formula validated
+ * empirically (corner-marker probes matched the .top/.left/.right rules
+ * above, pixel-for-pixel, for a full cube, a slab, and a pressure plate)
+ * against this exact shared camera.
+ *
+ * All 6 directions are implemented. up/east/south are the only 3 faces a
+ * SIMPLE CONVEX box ever shows from this camera (rotateX(-35deg)
+ * rotateY(-45deg)) -- but concave/hollow/stepped shapes (e.g. composter's
+ * open-top hollow box, grindstone's post-and-wheel assembly) need
+ * down/north/west too, for interior-facing surfaces this same fixed camera
+ * genuinely exposes through a gap in the rest of the geometry. down and west
+ * are a naive sign-flip mirror of up/east (opposite rotation direction,
+ * anchored at the near-side coordinate instead of the far-side one) --
+ * verified correct by matrix-tracing a local point through each transform's
+ * exact function composition (not just assumed from symmetry). north is
+ * NOT a naive sign-flip mirror of south: the same matrix trace shows
+ * `rotateY(90deg) translateX(d) rotateY(-90deg)` (south's rotateY signs
+ * both flipped) sends a local point to the WRONG side of the Z axis --
+ * pixel-identical to south's own position rather than opposite it. The
+ * correct north transform keeps south's rotateY(-90deg)...rotateY(-90deg)
+ * pattern (same sign both times) and only swaps the anchor to the near-side
+ * coordinate. This one only surfaced empirically: a naive-mirror first pass
+ * still passed the solid-cube hidden-face check below (a full cube's
+ * north/south content crops are symmetric enough that the bug doesn't
+ * show), but rendering it against a real wide, thin element (oak_shelf's
+ * shelf board) produced a second, disconnected copy of the board floating
+ * outside the icon -- caught by adding a real, non-cubic element to the
+ * validation sweep, not by the cube check alone.
+ *
+ * Validated three ways: (1) a full solid cube rendered with all 6 faces is
+ * pixel-identical (bar sub-pixel edge AA) to one rendered with only
+ * up/east/south -- the 3 new faces stay fully hidden behind the visible
+ * ones for ordinary convex geometry, exactly like a real cube; (2)
+ * composter's and grindstone's real element geometry, re-rendered with
+ * every face their model JSON declares, closes the visible gaps that
+ * 3-face rendering left (page background showing through the hollow
+ * composter's back-right interior; a disconnected gap between grindstone's
+ * support posts and its wheel); (3) every other affected item (anvil,
+ * beacon, lectern, stonecutter, chiseled_bookshelf, carpets, trapdoors,
+ * shelves) re-renders with no new gaps or floating geometry.
+ *
+ * Returns a TWO-LEVEL style on purpose. Cropping a transformed element's own
+ * box natively (top/left/width/height set on the SAME element that also
+ * carries the depth transform) shifts its rotation origin and silently
+ * corrupts the depth placement -- confirmed while deriving this formula.
+ * `outerTransform` goes on a full 100%x100% element (correct, unshifted
+ * rotation origin); `content` goes on a plain, non-transformed child (crop +
+ * texture), inheriting the outer's already-correct 3D placement for free.
+ */
+const pct = (n: number) => `${(n * 100).toFixed(4)}%`;
+
+function computeFaceStyle(
+  from: [number, number, number],
+  to: [number, number, number],
+  face: 'up' | 'down' | 'north' | 'south' | 'east' | 'west',
+): CompoundFaceStyle {
+  const nx0 = from[0] / 16;
+  const nx1 = to[0] / 16;
+  const ny0 = from[1] / 16;
+  const ny1 = to[1] / 16;
+  const nz0 = from[2] / 16;
+  const nz1 = to[2] / 16;
+
+  if (face === 'up') {
+    const ty = -(ny1 - 0.5) * 100;
+    return {
+      outerTransform: `translateY(${ty.toFixed(4)}%) rotateX(90deg) var(--face-overlap)`,
+      content: { top: pct(nz0), left: pct(nx0), width: pct(nx1 - nx0), height: pct(nz1 - nz0) },
+    };
+  }
+
+  if (face === 'down') {
+    const ty = -(ny0 - 0.5) * 100;
+    return {
+      outerTransform: `translateY(${ty.toFixed(4)}%) rotateX(-90deg) var(--face-overlap)`,
+      content: {
+        top: pct(1 - nz1),
+        left: pct(nx0),
+        width: pct(nx1 - nx0),
+        height: pct(nz1 - nz0),
+      },
+    };
+  }
+
+  if (face === 'east') {
+    const d = (nx1 - 0.5) * 100;
+    return {
+      outerTransform: `translateX(${d.toFixed(4)}%) rotateY(90deg) var(--face-overlap)`,
+      content: {
+        top: pct(1 - ny1),
+        left: pct(1 - nz1),
+        width: pct(nz1 - nz0),
+        height: pct(ny1 - ny0),
+      },
+    };
+  }
+
+  if (face === 'west') {
+    const d = (nx0 - 0.5) * 100;
+    return {
+      outerTransform: `translateX(${d.toFixed(4)}%) rotateY(-90deg) var(--face-overlap)`,
+      content: { top: pct(1 - ny1), left: pct(nz0), width: pct(nz1 - nz0), height: pct(ny1 - ny0) },
+    };
+  }
+
+  if (face === 'south') {
+    const d = (nz1 - 0.5) * 100;
+    return {
+      outerTransform: `rotateY(-90deg) translateX(${d.toFixed(4)}%) rotateY(90deg) var(--face-overlap)`,
+      content: { top: pct(1 - ny1), left: pct(nx0), width: pct(nx1 - nx0), height: pct(ny1 - ny0) },
+    };
+  }
+
+  // north
+  const d = (nz0 - 0.5) * 100;
+  return {
+    outerTransform: `rotateY(-90deg) translateX(${d.toFixed(4)}%) rotateY(-90deg) var(--face-overlap)`,
+    content: {
+      top: pct(1 - ny1),
+      left: pct(1 - nx1),
+      width: pct(nx1 - nx0),
+      height: pct(ny1 - ny0),
+    },
+  };
+}
+
+interface UvCrop {
+  /** `background-size`/`background-position` for `.compound__face-content`'s own `background-image` (see this function's comment for why it's a background-image, not a child `<img>`). */
+  background: { size: string; position: string };
+  /** Applied to the crop container itself. See this function's own comment for why. */
+  contentTransform: string;
+}
+
+/**
+ * Computes the `background-size`/`background-position` needed to crop a
+ * compound face's full 16x16 source texture down to just its declared `uv`
+ * sub-rectangle ([u0,v0,u1,v1], 0-16 texture-pixel space -- Minecraft's UV
+ * convention; see scripts/lib/model.ts's extractCompoundElements/
+ * defaultFaceUv, which produce this rect).
+ *
+ * This is a `background-image` on `.compound__face-content` itself -- same
+ * mechanism this file already uses for wall/fence/fence-gate faces -- NOT
+ * an oversized, offset child `<img>` clipped via `overflow: hidden`. That
+ * was the first implementation and it's wrong: empirically confirmed (see
+ * PR discussion / commit history around this fix) that `overflow: hidden`
+ * on many `.compound__face-content` siblings inside this `preserve-3d`
+ * stack, on a real content-heavy page, causes Chromium's compositor to
+ * "squash" some of those clipped layers into a shared 2D-painted backing
+ * layer -- silently flattening that face's true 3D interleaving into a
+ * flat, undistorted card. Reproducible deterministically on a real recipe
+ * page; does NOT reproduce with the exact same markup in isolation (no
+ * other page content) -- a compositing-budget effect, not a logic bug in
+ * this formula or computeFaceStyle. `clip-path: inset(0)` as a drop-in
+ * `overflow: hidden` replacement does not fix it either. Switching to
+ * `background-image` (no clipping element at all -- backgrounds never
+ * overflow their box) does, verified pixel-stable across repeated reloads.
+ *
+ * `u0 > u1` (or `v0 > v1`) signals the source should be mirrored on that
+ * axis for this face -- e.g. grindstone leg element 0's east face
+ * (uv: [10, 16, 6, 9], both axes flipped). The mirror is applied to the
+ * CROP CONTAINER itself (`.compound__face-content`), not the background
+ * image: the container's own box is already sized/positioned to exactly
+ * the visible viewport, so a CSS `scale(-1, ...)` about its default center
+ * transform-origin reverses display order within that same rectangle for
+ * free.
+ */
+function computeUvCrop([u0, v0, u1, v1]: [number, number, number, number]): UvCrop {
+  const fu = Math.min(u0, u1);
+  const fv = Math.min(v0, v1);
+  // Guard a degenerate zero-width/height rect (shouldn't occur in real
+  // model data) rather than dividing by zero.
+  const w = Math.abs(u1 - u0) || 16;
+  const h = Math.abs(v1 - v0) || 16;
+  const flipX = u0 > u1 ? -1 : 1;
+  const flipY = v0 > v1 ? -1 : 1;
+
+  // background-size is the same oversized-image scale as before (16/w,
+  // 16/h). background-position is a percentage of (bgSize - container),
+  // not of container like top/left -- convert: at bgSize == container
+  // (w or h == 16) that denominator is 0, so position is a no-op 0%.
+  const posX = w === 16 ? 0 : (-100 * fu) / (w - 16);
+  const posY = h === 16 ? 0 : (-100 * fv) / (h - 16);
+
+  return {
+    background: { size: `${pct(16 / w)} ${pct(16 / h)}`, position: `${posX.toFixed(4)}% ${posY.toFixed(4)}%` },
+    contentTransform: `scale(${flipX}, ${flipY})`,
+  };
+}
+
+interface CompoundFacePart {
+  key: string;
+  outerTransform: string;
+  content: { top: string; left: string; width: string; height: string; transform: string };
+  background: { size: string; position: string };
+  texture: string;
+}
+
+/** Flattens a compound icon's elements into one render-ready face list (each element contributes up to 6: up/down/north/south/east/west, whichever the model data actually declares). */
+function getCompoundFaces(icon: IconData): CompoundFacePart[] {
+  if (icon.type !== 'compound') return [];
+
+  const parts: CompoundFacePart[] = [];
+  icon.elements.forEach((el, elIndex) => {
+    (['up', 'down', 'north', 'south', 'east', 'west'] as const).forEach((face) => {
+      const faceData = el.faces[face];
+      if (!faceData) return;
+      const style = computeFaceStyle(el.from, el.to, face);
+      const crop = computeUvCrop(faceData.uv);
+      parts.push({
+        key: `${elIndex}-${face}`,
+        outerTransform: style.outerTransform,
+        content: { ...style.content, transform: crop.contentTransform },
+        background: crop.background,
+        texture: withBase(faceData.texture),
+      });
+    });
+  });
+  return parts;
+}
+
 /** Fence gate's 8 elements (2 outer posts, 2 inner door posts, 4 door bars) all
  * share the same Z-depth band (block-space z:7-9, centered), so -- unlike
  * fence's posts -- none of these need the group-level depth-shift trick;
@@ -73,8 +301,11 @@ const is3d =
   item?.icon.type === 'button' ||
   item?.icon.type === 'wall' ||
   item?.icon.type === 'fence' ||
-  item?.icon.type === 'fence_gate';
+  item?.icon.type === 'fence_gate' ||
+  item?.icon.type === 'compound';
 const faces = item ? getFaces(item.icon) : [];
+const compoundFaces = item ? getCompoundFaces(item.icon) : [];
+const compoundYRotation = item && item.icon.type === 'compound' ? item.icon.yRotation : 0;
 // Wall/fence/fence_gate are multi-element compounds (a center post + a wider
 // cross-brace; 2 corner posts + 2 connecting bars; 8 posts/bars) rather than
 // "one box, different faces" -- every element shares the same single
@@ -159,6 +390,23 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
             </div>
           ))}
         </div>
+      ) : item.icon.type === 'compound' ? (
+        <ul
+          class="compound"
+          style={`--compound-y-rotation: ${compoundYRotation}deg`}
+          role="img"
+          aria-label={item.name}
+          title={item.name}
+        >
+          {compoundFaces.map((face) => (
+            <li class="compound__face" style={`transform: ${face.outerTransform}`}>
+              <div
+                class="compound__face-content"
+                style={`top: ${face.content.top}; left: ${face.content.left}; width: ${face.content.width}; height: ${face.content.height}; transform: ${face.content.transform}; background-image: url(${face.texture}); background-size: ${face.background.size}; background-position: ${face.background.position};`}
+              />
+            </li>
+          ))}
+        </ul>
       ) : (
         <ul
           class:list={[
@@ -718,5 +966,47 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .fence-gate__el--bar-upper-right .fence-gate__side {
     top: 6.25%;
     height: 18.75%;
+  }
+
+  /* Compound: a generic multi-element shape (e.g. anvil) built from the
+     block model's own real element geometry (see
+     scripts/lib/model.ts's extractCompoundElements + this file's
+     computeFaceStyle), rather than hand-authored per-shape rules like every
+     class above. `--compound-y-rotation` is an optional extra yaw (from the
+     model's own display.gui override, relative to vanilla's [30,225,0]
+     default -- see scripts/lib/model.ts) composed on top of the shared
+     camera; 0deg for models that don't override "gui" (e.g. anvil itself). */
+  .compound {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(-35deg) rotateY(-45deg) rotateY(var(--compound-y-rotation, 0deg));
+  }
+
+  /* Each face is TWO nested elements on purpose: cropping a transformed
+     element's own box natively (top/left/width/height on the SAME element
+     that carries the depth transform) shifts its rotation origin and
+     silently corrupts the depth placement. `.compound__face` carries only
+     the depth (3D) transform, at the element's full, un-cropped 100%x100%
+     size (correct, unshifted origin); `.compound__face-content` is the
+     footprint crop + texture, plus (see computeUvCrop) a flat 2D
+     `scale(-1, ...)` when this face's uv is mirrored on an axis -- safe to
+     add here since this element carries no 3D transform of its own to
+     corrupt. */
+  .compound__face {
+    position: absolute;
+    inset: 0;
+  }
+
+  .compound__face-content {
+    position: absolute;
+    /* The crop viewport for this face's uv sub-rect -- a background-image
+       (size+position set inline per face by computeUvCrop) so only the uv
+       window shows, deliberately NOT an oversized child <img> clipped via
+       overflow: hidden (see computeUvCrop's comment for why: that clipping
+       approach silently breaks under Chromium's compositor on a real,
+       content-heavy page). Also the element a mirrored uv (u0>u1 or v0>v1)
+       applies its scale(-1, ...) to. */
+    background-repeat: no-repeat;
   }
 </style>

@@ -36,6 +36,39 @@ export const recipeSchema = z.object({
   note: z.string().optional(),
 });
 
+/**
+ * One resolved face of a "compound" element: a concrete `/textures/...`
+ * path plus its texture-atlas crop rect ([u0,v0,u1,v1], 0-16 texture-pixel
+ * space -- Minecraft's UV convention; u0>u1 or v0>v1 signals a mirror on
+ * that axis). See ItemIcon.astro's computeUvCrop for how this is applied.
+ */
+export const compoundFaceSchema = z.object({
+  texture: z.string(),
+  uv: z.tuple([z.number(), z.number(), z.number(), z.number()]),
+});
+
+/**
+ * One box element of a "compound" icon, already resolved to concrete
+ * `/textures/...` paths. All 6 cardinal faces can be populated -- up/east/
+ * south are the only 3 a SIMPLE CONVEX box ever shows from this catalog's
+ * fixed isometric camera, but concave/hollow/stepped shapes (e.g.
+ * composter's open-top hollow box, grindstone's post-and-wheel assembly)
+ * genuinely expose down/north/west-facing surfaces too -- see
+ * ItemIcon.astro's computeFaceStyle.
+ */
+export const compoundElementSchema = z.object({
+  from: z.tuple([z.number(), z.number(), z.number()]),
+  to: z.tuple([z.number(), z.number(), z.number()]),
+  faces: z.object({
+    up: compoundFaceSchema.optional(),
+    down: compoundFaceSchema.optional(),
+    north: compoundFaceSchema.optional(),
+    south: compoundFaceSchema.optional(),
+    east: compoundFaceSchema.optional(),
+    west: compoundFaceSchema.optional(),
+  }),
+});
+
 export const iconSchema = z.union([
   z.object({ type: z.literal("flat"), texture: z.string() }),
   z.object({ type: z.literal("block"), top: z.string(), side: z.string() }),
@@ -49,6 +82,16 @@ export const iconSchema = z.union([
   z.object({ type: z.literal("button"), texture: z.string() }),
   z.object({ type: z.literal("fence"), texture: z.string() }),
   z.object({ type: z.literal("fence_gate"), texture: z.string() }),
+  // Generic multi-element compound: real per-element box geometry + resolved
+  // per-face textures, for block models classifyChain doesn't recognize as
+  // any of the shapes above (e.g. anvil) -- see ItemIcon.astro's "compound"
+  // rendering branch and scripts/lib/model.ts's extractCompoundElements.
+  z.object({
+    type: z.literal("compound"),
+    elements: z.array(compoundElementSchema),
+    /** Extra Y rotation (degrees) applied on top of the shared camera, from this model's own display.gui override (see scripts/lib/model.ts). */
+    yRotation: z.number(),
+  }),
 ]);
 
 export const itemStatSchema = z.union([

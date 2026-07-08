@@ -192,11 +192,17 @@ function checkInternalConsistency(committed: {
   }
 
   for (const [id, item] of Object.entries(items)) {
-    // Every icon type is either single-texture ("texture") or a top/side
-    // cube ("top" + "side") -- never both fields on the same object, so this
-    // narrows cleanly without needing a per-type case.
+    // Every icon type is single-texture ("texture"), a top/side cube ("top"
+    // + "side"), or a "compound" (a list of elements, each with up to 6
+    // faces, each carrying a texture path + uv crop rect) -- never more
+    // than one of these shapes on the same object, so this narrows cleanly
+    // without needing a per-type case.
     const texturePaths =
-      "texture" in item.icon ? [item.icon.texture] : [item.icon.top, item.icon.side];
+      "texture" in item.icon
+        ? [item.icon.texture]
+        : "top" in item.icon
+          ? [item.icon.top, item.icon.side]
+          : item.icon.elements.flatMap((el) => Object.values(el.faces).map((face) => face.texture));
     for (const texturePath of texturePaths) {
       const onDisk = path.join(PUBLIC_DIR, texturePath.replace(/^\//, ""));
       if (!fs.existsSync(onDisk)) {
