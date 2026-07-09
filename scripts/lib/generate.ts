@@ -94,8 +94,8 @@ interface ResolvedCompoundElement {
  * unresolved" contract every other icon type here already follows. All 6
  * cardinal faces are resolved (whichever the candidate's own element data
  * actually declares) -- see scripts/lib/model.ts's extractCompoundElements
- * and ItemIcon.astro's computeFaceStyle for why down/north/west matter
- * alongside up/east/south. No culling pass: an earlier version of this
+ * and ItemIcon.astro's computeFaceStyle for why down/south/west matter
+ * alongside up/north/east. No culling pass: an earlier version of this
  * function dropped faces on any partial footprint overlap between two
  * elements' touching boundary, on the theory that coplanar contact seams
  * cause CSS z-fighting -- that diagnosis was wrong (confirmed: rendering

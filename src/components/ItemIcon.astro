@@ -62,11 +62,12 @@ interface CompoundFaceStyle {
  * above, pixel-for-pixel, for a full cube, a slab, and a pressure plate)
  * against this exact shared camera.
  *
- * All 6 directions are implemented. up/east/south are the only 3 faces a
- * SIMPLE CONVEX box ever shows from this camera (rotateX(-35deg)
- * rotateY(-45deg)) -- but concave/hollow/stepped shapes (e.g. composter's
+ * All 6 directions are implemented. up/north/east are the only 3 faces a
+ * SIMPLE CONVEX box ever shows from the compound camera (rotateX(-35deg)
+ * rotateY(-135deg), matching vanilla's own GUI face selection -- see the
+ * `.compound` rule below) -- but concave/hollow/stepped shapes (e.g. composter's
  * open-top hollow box, grindstone's post-and-wheel assembly) need
- * down/north/west too, for interior-facing surfaces this same fixed camera
+ * down/south/west too, for interior-facing surfaces this same fixed camera
  * genuinely exposes through a gap in the rest of the geometry. down and west
  * are a naive sign-flip mirror of up/east (opposite rotation direction,
  * anchored at the near-side coordinate instead of the far-side one) --
@@ -86,9 +87,12 @@ interface CompoundFaceStyle {
  * outside the icon -- caught by adding a real, non-cubic element to the
  * validation sweep, not by the cube check alone.
  *
- * Validated three ways: (1) a full solid cube rendered with all 6 faces is
+ * Validated three ways (originally under the pre-fix -45deg yaw; the same
+ * depth-sorting argument holds unchanged at -135deg, re-verified visually
+ * against dried_ghast/anvil/grindstone/composter after the camera fix):
+ * (1) a full solid cube rendered with all 6 faces is
  * pixel-identical (bar sub-pixel edge AA) to one rendered with only
- * up/east/south -- the 3 new faces stay fully hidden behind the visible
+ * the 3 camera-facing faces -- the hidden faces stay fully behind the visible
  * ones for ordinary convex geometry, exactly like a real cube; (2)
  * composter's and grindstone's real element geometry, re-rendered with
  * every face their model JSON declares, closes the visible gaps that
@@ -977,13 +981,27 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
      computeFaceStyle), rather than hand-authored per-shape rules like every
      class above. `--compound-y-rotation` is an optional extra yaw (from the
      model's own display.gui override, relative to vanilla's [30,225,0]
-     default -- see scripts/lib/model.ts) composed on top of the shared
-     camera; 0deg for models that don't override "gui" (e.g. anvil itself). */
+     default -- see scripts/lib/model.ts) composed on top of the camera;
+     0deg for models that don't override "gui" (e.g. anvil itself).
+
+     The yaw is -135deg, NOT the -45deg the simpler `.block` icons use:
+     -135deg shows a box's UP, EAST (screen-left) and NORTH (screen-right)
+     faces -- the exact face placement of vanilla's own GUI camera (rotation
+     [30, 225, 0], block/block.json). Verified three independent ways:
+     (1) rotating the [30,225,0] gui transform's yaw through Minecraft's
+     axis convention (+X east, -Z north) puts north's normal screen-right
+     and east's screen-left; (2) a real in-game inventory screenshot of
+     dried_ghast (whose 4 side textures all differ) shows its east speckle
+     texture on the left face and its north eyes/mouth texture on the
+     right; (3) the wiki's game-rendered furnace invicon shows the furnace
+     mouth (its north "front" face) on the right face. At -45deg the
+     renderer showed SOUTH+EAST instead, so any north/south-asymmetric
+     compound model (dried_ghast's face) hid its front entirely. */
   .compound {
     position: absolute;
     inset: 0;
     transform-style: preserve-3d;
-    transform: rotateX(-35deg) rotateY(-45deg) rotateY(var(--compound-y-rotation, 0deg));
+    transform: rotateX(-35deg) rotateY(-135deg) rotateY(var(--compound-y-rotation, 0deg));
   }
 
   /* Each face is TWO nested elements on purpose: cropping a transformed
