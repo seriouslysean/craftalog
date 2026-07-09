@@ -1,4 +1,9 @@
-import { canonicalRecipePath, groupItemSlug, type RecipeGroup } from "./recipe-groups";
+import {
+  canonicalRecipePath,
+  groupDisplayName,
+  groupItemSlug,
+  type RecipeGroup,
+} from "./recipe-groups";
 import { withBase } from "./with-base";
 import type { ItemData } from "../content.config";
 
@@ -23,7 +28,7 @@ export function buildPagerSequence(
       const resultItem = itemsMap.get(group.resultId);
       return {
         canonicalId: group.canonicalId,
-        displayName: resultItem?.name ?? group.canonicalId.replace(/_/g, " "),
+        displayName: groupDisplayName(group, itemsMap),
         item: resultItem ?? null,
         itemSlug: groupItemSlug(group, itemsMap),
       };

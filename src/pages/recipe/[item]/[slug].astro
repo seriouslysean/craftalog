@@ -1,7 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import RecipePage from '../../../components/RecipePage.astro';
-import { buildRecipeHrefMap, groupItemSlug, groupRecipes } from '../../../utils/recipe-groups';
+import {
+  buildRecipeHrefMap,
+  collapseVariantGroups,
+  groupDisplayName,
+  groupItemSlug,
+  groupRecipes,
+} from '../../../utils/recipe-groups';
 import { buildPagerSequence, pagerNeighbors } from '../../../utils/recipe-pager';
 
 export async function getStaticPaths() {
@@ -17,15 +23,21 @@ export async function getStaticPaths() {
   );
   const pagerSequence = buildPagerSequence(groups, itemsMap);
   const recipeHrefs = buildRecipeHrefMap(groups, itemsMap);
+  const { variantGroups } = collapseVariantGroups(groups);
+  const variantGroupByResultId = new Map(
+    variantGroups.flatMap((variantGroup) =>
+      variantGroup.variants.map((variant) => [variant.resultId, variantGroup]),
+    ),
+  );
 
   // Only non-canonical siblings live here -- the canonical recipe (per
   // group) is reachable at the bare /recipe/{item}/ path instead (see
   // src/pages/recipe/[item]/index.astro).
   return groups.flatMap((group) => {
-    const resultItem = itemsMap.get(group.resultId);
-    const displayName = resultItem?.name ?? group.canonicalId.replace(/_/g, ' ');
+    const displayName = groupDisplayName(group, itemsMap);
     const itemSlug = groupItemSlug(group, itemsMap);
     const neighbors = pagerNeighbors(pagerSequence, group.canonicalId);
+    const variantGroup = variantGroupByResultId.get(group.resultId);
 
     return group.siblings
       .filter((sibling) => sibling.recipeId !== group.canonicalId)
@@ -39,6 +51,7 @@ export async function getStaticPaths() {
           itemSlug,
           canonicalId: group.canonicalId,
           siblings: group.siblings,
+          variantGroup,
           ...neighbors,
         },
       }));

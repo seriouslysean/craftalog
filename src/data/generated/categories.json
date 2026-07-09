@@ -1,0 +1,47 @@
+{
+  "building_blocks": {
+    "id": "building_blocks",
+    "name": "Building Blocks",
+    "order": 1
+  },
+  "colored_blocks": {
+    "id": "colored_blocks",
+    "name": "Colored Blocks",
+    "order": 2
+  },
+  "combat": {
+    "id": "combat",
+    "name": "Combat",
+    "order": 6
+  },
+  "food": {
+    "id": "food",
+    "name": "Food",
+    "order": 8
+  },
+  "functional_blocks": {
+    "id": "functional_blocks",
+    "name": "Functional Blocks",
+    "order": 3
+  },
+  "materials": {
+    "id": "materials",
+    "name": "Materials",
+    "order": 9
+  },
+  "redstone": {
+    "id": "redstone",
+    "name": "Redstone",
+    "order": 4
+  },
+  "tools_utilities": {
+    "id": "tools_utilities",
+    "name": "Tools & Utilities",
+    "order": 5
+  },
+  "transportation": {
+    "id": "transportation",
+    "name": "Transportation",
+    "order": 7
+  }
+}

@@ -170,24 +170,28 @@ describe("generate determinism", () => {
       "black_bundle",
       "oak_planks",
       "oak_slab",
-      "repair_item",
       "torch",
     ]);
     expect(result.meta.counts).toEqual({
       shaped: 2,
       shapeless: 1,
       transmute: 1,
-      special: 1,
+      special: 0,
       items: Object.keys(result.items).length,
       texturesCopied: result.texturesToCopy.size,
     });
+  });
+
+  it("excludes a resultless special recipe (repair_item) entirely, not just from item collection", () => {
+    const result = run();
+    expect(result.recipes.repair_item).toBeUndefined();
   });
 
   it("includes only items referenced by included recipes (results + resolved ingredients)", () => {
     const result = run();
     // stick/coal/charcoal/torch (shaped), oak_log/oak_wood/oak_planks/white_banner (shapeless),
     // bundle/black_bundle/black_dye (transmute), oak_slab (shaped, ingredient oak_planks).
-    // repair_item has no result/ingredients.
+    // repair_item is excluded entirely (see the resultless-recipe test above).
     expect(Object.keys(result.items).toSorted()).toEqual([
       "black_bundle",
       "black_dye",
@@ -242,5 +246,109 @@ describe("generate determinism", () => {
       texture: "/textures/item/white_banner.png",
     });
     expect(result.bannerIconsToSynthesize).toEqual(new Map([["white", "item/white_banner"]]));
+  });
+});
+
+describe("generate: compound icon (real multi-element geometry)", () => {
+  const compoundRecipesRaw: RawRecipesData = {
+    widget: {
+      type: "minecraft:crafting_shapeless",
+      ingredients: ["minecraft:stick"],
+      result: { id: "minecraft:widget" },
+    },
+    unresolvable_widget: {
+      type: "minecraft:crafting_shapeless",
+      ingredients: ["minecraft:stick"],
+      result: { id: "minecraft:unresolvable_widget" },
+    },
+  };
+
+  const compoundItemDefsRaw: RawItemDefinitionsData = {
+    stick: { model: { type: "minecraft:model", model: "minecraft:item/stick" } },
+    widget: { model: { type: "minecraft:model", model: "minecraft:block/widget" } },
+    unresolvable_widget: {
+      model: { type: "minecraft:model", model: "minecraft:block/unresolvable_widget" },
+    },
+  };
+
+  const compoundModelsRaw: RawModelsData = {
+    "item/stick": {
+      parent: "minecraft:item/generated",
+      textures: { layer0: "minecraft:item/stick" },
+    },
+    "item/generated": { parent: "builtin/generated" },
+    "block/widget": {
+      textures: { particle: "block/widget_body", body: "block/widget_body" },
+      elements: [
+        {
+          from: [2, 0, 2],
+          to: [14, 4, 14],
+          faces: {
+            up: { texture: "#body" },
+            east: { texture: "#body" },
+            south: { texture: "#body" },
+          },
+        },
+      ],
+    },
+    // Every face texture here is missing from disk -- generate() should
+    // fall back to the flat particle guess rather than leaving this
+    // unresolved, since the old "unknown" fallback would have resolved it
+    // fine as flat.
+    "block/unresolvable_widget": {
+      textures: { particle: "block/unresolvable_widget_particle" },
+      elements: [
+        {
+          from: [0, 0, 0],
+          to: [16, 16, 16],
+          faces: { up: { texture: "#missing_var" } },
+        },
+      ],
+    },
+  };
+
+  function runCompound() {
+    return generate({
+      version: "26.2",
+      recipesRaw: compoundRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: compoundItemDefsRaw,
+      modelsRaw: compoundModelsRaw,
+      componentsRaw: {},
+      enUs: {},
+      textureExists: (ref) =>
+        new Set(["item/stick", "block/widget_body", "block/unresolvable_widget_particle"]).has(ref),
+    });
+  }
+
+  it("resolves real element geometry to a compound icon with /textures/ prefixed faces and their uv crop rects", () => {
+    const result = runCompound();
+    expect(result.items.widget.icon).toEqual({
+      type: "compound",
+      yRotation: 0,
+      elements: [
+        {
+          from: [2, 0, 2],
+          to: [14, 4, 14],
+          faces: {
+            // None of these faces declare an explicit uv -- see
+            // scripts/lib/model.ts's defaultFaceUv for the position-based
+            // formula that derives [2,2,14,14] / [2,12,14,16] here.
+            up: { texture: "/textures/block/widget_body.png", uv: [2, 2, 14, 14] },
+            east: { texture: "/textures/block/widget_body.png", uv: [2, 12, 14, 16] },
+            south: { texture: "/textures/block/widget_body.png", uv: [2, 12, 14, 16] },
+          },
+        },
+      ],
+    });
+  });
+
+  it("falls back to the flat particle guess when none of a compound's own element textures exist on disk", () => {
+    const result = runCompound();
+    expect(result.items.unresolvable_widget.icon).toEqual({
+      type: "flat",
+      texture: "/textures/block/unresolvable_widget_particle.png",
+    });
+    expect(result.meta.unresolvedIcons).not.toContain("unresolvable_widget");
   });
 });
