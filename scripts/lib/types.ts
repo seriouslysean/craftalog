@@ -93,11 +93,11 @@ export interface RawModelElementFace {
  * One element (a single axis-aligned box) of a block model's `elements`
  * array, in 0-16 block-space coordinates. `faces` is keyed by all 6
  * cardinal directions, and extractCompoundElements (scripts/lib/model.ts)
- * reads all 6 -- up/east/south are the only 3 a SIMPLE CONVEX box ever
- * shows from this catalog's fixed isometric camera (see ItemIcon.astro's
- * shared `rotateX(-35deg) rotateY(-45deg)` camera), but concave/hollow/
- * stepped shapes (e.g. composter, grindstone) genuinely expose down/north/
- * west-facing surfaces too.
+ * reads all 6 -- up/north/east are the only 3 a SIMPLE CONVEX box ever
+ * shows from the compound camera (see ItemIcon.astro's `.compound`
+ * `rotateX(-35deg) rotateY(-135deg)` camera, which matches vanilla's own
+ * GUI face selection), but concave/hollow/stepped shapes (e.g. composter,
+ * grindstone) genuinely expose down/south/west-facing surfaces too.
  */
 export interface RawModelElement {
   from: [number, number, number];
