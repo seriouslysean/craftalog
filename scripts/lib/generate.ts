@@ -22,6 +22,17 @@ import type {
   RecipesOutput,
 } from "./types.ts";
 
+// Ships as a grayscale base layer meant to be dye-tinted at runtime plus an
+// untinted trim overlay (see scripts/lib/leather-armor-icon.ts) -- these are
+// the only 5 items using that two-layer contract.
+const LEATHER_ARMOR_ITEM_IDS = new Set([
+  "leather_boots",
+  "leather_chestplate",
+  "leather_helmet",
+  "leather_leggings",
+  "leather_horse_armor",
+]);
+
 export interface GenerateInput {
   version: string;
   recipesRaw: RawRecipesData;
@@ -50,6 +61,8 @@ export interface GenerateOutput {
   lightningRodIconsToSynthesize: Map<string, string>;
   /** Java colorId -> Bedrock source filename suffix, for bed icons the caller must copy from vendor/bedrock-samples (see scripts/parse.ts). */
   bedIconsToCopy: Map<string, string>;
+  /** Item id -> flat texture ref (layer0), for leather armor icons the caller must generate (see scripts/lib/leather-armor-icon.ts). */
+  leatherArmorIconsToSynthesize: Map<string, string>;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -200,6 +213,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const bannerIconsToSynthesize = new Map<string, string>();
   const lightningRodIconsToSynthesize = new Map<string, string>();
   const bedIconsToCopy = new Map<string, string>();
+  const leatherArmorIconsToSynthesize = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -237,6 +251,14 @@ export function generate(input: GenerateInput): GenerateOutput {
     ) {
       icon = { type: candidate.type, texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
+    } else if (
+      candidate?.type === "flat" &&
+      LEATHER_ARMOR_ITEM_IDS.has(itemId) &&
+      textureExists(candidate.textureRef) &&
+      textureExists(`${candidate.textureRef}_overlay`)
+    ) {
+      icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
+      leatherArmorIconsToSynthesize.set(itemId, candidate.textureRef);
     } else if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
@@ -307,5 +329,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     bannerIconsToSynthesize,
     lightningRodIconsToSynthesize,
     bedIconsToCopy,
+    leatherArmorIconsToSynthesize,
   };
 }

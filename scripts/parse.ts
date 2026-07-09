@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 import { generateBannerIcon } from "./lib/banner-icon.ts";
 import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
+import { generateLeatherArmorIcon } from "./lib/leather-armor-icon.ts";
 import { generateLightningRodIcon } from "./lib/lightning-rod-icon.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
 import { firstAnimationFrame } from "./lib/texture-frame.ts";
@@ -80,6 +81,7 @@ function main(): void {
     bannerIconsToSynthesize,
     lightningRodIconsToSynthesize,
     bedIconsToCopy,
+    leatherArmorIconsToSynthesize,
   } = generate({
     version,
     recipesRaw,
@@ -127,6 +129,17 @@ function main(): void {
     fs.writeFileSync(destPath, generateLightningRodIcon(fs.readFileSync(atlasPath)));
   }
 
+  for (const [, ref] of leatherArmorIconsToSynthesize) {
+    const layer0Path = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
+    const layer1Path = path.join(VENDOR_TEXTURES_DIR, `${ref}_overlay.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(
+      destPath,
+      generateLeatherArmorIcon(fs.readFileSync(layer0Path), fs.readFileSync(layer1Path)),
+    );
+  }
+
   // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
   // no synthesis, just a straight copy with the color-name remap applied
   // (see scripts/lib/bedrock-colors.ts).
@@ -165,6 +178,7 @@ function main(): void {
   console.log(`banner icons:     ${bannerIconsToSynthesize.size}`);
   console.log(`lightning rod icons: ${lightningRodIconsToSynthesize.size}`);
   console.log(`bed icons:        ${bedIconsToCopy.size}`);
+  console.log(`leather armor icons: ${leatherArmorIconsToSynthesize.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
