@@ -7407,7 +7407,7 @@
   },
   "exposed_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
+      "texture": "/textures/block/exposed_copper.png",
       "type": "flat"
     },
     "id": "exposed_copper_golem_statue",
@@ -12921,7 +12921,7 @@
   },
   "oxidized_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
+      "texture": "/textures/block/oxidized_copper.png",
       "type": "flat"
     },
     "id": "oxidized_copper_golem_statue",
@@ -18484,7 +18484,7 @@
   },
   "waxed_exposed_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
+      "texture": "/textures/block/exposed_copper.png",
       "type": "flat"
     },
     "id": "waxed_exposed_copper_golem_statue",
@@ -18705,7 +18705,7 @@
   },
   "waxed_oxidized_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
+      "texture": "/textures/block/oxidized_copper.png",
       "type": "flat"
     },
     "id": "waxed_oxidized_copper_golem_statue",
@@ -18917,7 +18917,7 @@
   },
   "waxed_weathered_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
+      "texture": "/textures/block/weathered_copper.png",
       "type": "flat"
     },
     "id": "waxed_weathered_copper_golem_statue",
@@ -19138,7 +19138,7 @@
   },
   "weathered_copper_golem_statue": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
+      "texture": "/textures/block/weathered_copper.png",
       "type": "flat"
     },
     "id": "weathered_copper_golem_statue",

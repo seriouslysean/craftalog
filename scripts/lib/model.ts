@@ -24,6 +24,31 @@ const FLAT_TERMINALS = new Set(["item/generated", "item/handheld", "builtin/gene
 // element offsets, reconstructing the rod's actual silhouette.
 const LIGHTNING_ROD_ATLAS_PARENTS = new Set(["block/template_lightning_rod"]);
 
+// copper_golem_statue is a `minecraft:special` entity-rendered item with no
+// vendored shape geometry at all -- its item/template_copper_golem_statue.json
+// `base` model only carries a tier-agnostic `particle: block/copper_block`,
+// so every one of the 8 tier/waxed variants resolved to that same flat
+// copper_block swatch (wrong shape *and* wrong color for 7 of the 8). The
+// in-world blockstate models (models/block/{tier}_copper_golem_statue.json)
+// DO carry the tier-correct particle texture, just never wired to the item
+// definition -- this map mirrors that per-tier association by item id.
+// Stopgap, not a real fix: still a flat icon, not a statue shape (no
+// vendored geometry exists to build one from -- see the GitHub issue this
+// links back to). Waxed variants use their un-waxed tier's texture (waxing
+// doesn't change current appearance, only halts further oxidation).
+const COPPER_GOLEM_STATUE_TIER_TEXTURES: Array<[needle: string, textureRef: string]> = [
+  ["oxidized_copper_golem_statue", "block/oxidized_copper"],
+  ["weathered_copper_golem_statue", "block/weathered_copper"],
+  ["exposed_copper_golem_statue", "block/exposed_copper"],
+];
+
+function copperGolemStatueTierTexture(itemId: string): string {
+  for (const [needle, textureRef] of COPPER_GOLEM_STATUE_TIER_TEXTURES) {
+    if (itemId.endsWith(needle)) return textureRef;
+  }
+  return "block/copper_block";
+}
+
 // Beds are the only `minecraft:composite` items (head + foot sub-models) and
 // the only ones using this bespoke multi-element parent. Used below to tell
 // which of a composite's two model refs is the head (see
@@ -499,6 +524,10 @@ export function resolveIconCandidate(
 
   if (special?.specialType === "banner" && typeof special.specialModel.color === "string") {
     return { type: "banner", colorId: special.specialModel.color };
+  }
+
+  if (special?.specialType === "copper_golem_statue") {
+    return { type: "flat", textureRef: copperGolemStatueTierTexture(itemId) };
   }
 
   const resolvedModelRef = modelRef ?? special?.base;
