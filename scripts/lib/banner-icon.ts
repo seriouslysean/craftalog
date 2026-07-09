@@ -53,7 +53,7 @@ function averageOpaqueColor(png: PNG): [r: number, g: number, b: number] {
 }
 
 /** Multiplies each opaque pixel's grayscale intensity by the tint color, alpha untouched. */
-function tint(png: PNG, [tintR, tintG, tintB]: [number, number, number]): void {
+export function tint(png: PNG, [tintR, tintG, tintB]: [number, number, number]): void {
   for (let i = 0; i < png.data.length; i += 4) {
     if (png.data[i + 3] === 0) continue;
     png.data[i] = Math.round((png.data[i] / 255) * tintR);

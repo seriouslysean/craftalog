@@ -1,6 +1,7 @@
 /**
  * Parses vendored mcmeta-summary + mcmeta-assets data into the generated
- * data contract described in docs/PLAN.md: src/data/generated/{recipes,items,meta}.json
+ * data contract described in docs/PLAN.md:
+ * src/data/generated/{recipes,items,categories,families,meta}.json
  * and the referenced texture PNGs under public/textures/{item,block}/.
  *
  * Run via `npm run parse`. Requires the vendor/ submodules to be populated
@@ -13,8 +14,10 @@ import { fileURLToPath } from "node:url";
 import { generateBannerIcon } from "./lib/banner-icon.ts";
 import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
+import { generateLeatherArmorIcon } from "./lib/leather-armor-icon.ts";
 import { generateLightningRodIcon } from "./lib/lightning-rod-icon.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
+import { firstAnimationFrame } from "./lib/texture-frame.ts";
 import type {
   RawItemComponentsData,
   RawItemDefinitionsData,
@@ -71,11 +74,14 @@ function main(): void {
   const {
     recipes,
     items,
+    categories,
+    families,
     meta,
     texturesToCopy,
     bannerIconsToSynthesize,
     lightningRodIconsToSynthesize,
     bedIconsToCopy,
+    leatherArmorIconsToSynthesize,
   } = generate({
     version,
     recipesRaw,
@@ -103,7 +109,8 @@ function main(): void {
     const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
     const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    fs.copyFileSync(sourcePath, destPath);
+    // Animation strips are cropped to their first frame -- see texture-frame.ts.
+    fs.writeFileSync(destPath, firstAnimationFrame(fs.readFileSync(sourcePath)));
   }
 
   const bannerBasePath = path.join(VENDOR_TEXTURES_DIR, "entity/banner/banner_base.png");
@@ -120,6 +127,17 @@ function main(): void {
     const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
     fs.writeFileSync(destPath, generateLightningRodIcon(fs.readFileSync(atlasPath)));
+  }
+
+  for (const [, ref] of leatherArmorIconsToSynthesize) {
+    const layer0Path = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
+    const layer1Path = path.join(VENDOR_TEXTURES_DIR, `${ref}_overlay.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.writeFileSync(
+      destPath,
+      generateLeatherArmorIcon(fs.readFileSync(layer0Path), fs.readFileSync(layer1Path)),
+    );
   }
 
   // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
@@ -142,6 +160,8 @@ function main(): void {
   fs.mkdirSync(GENERATED_DIR, { recursive: true });
   writeJson(path.join(GENERATED_DIR, "recipes.json"), recipes);
   writeJson(path.join(GENERATED_DIR, "items.json"), items);
+  writeJson(path.join(GENERATED_DIR, "categories.json"), categories);
+  writeJson(path.join(GENERATED_DIR, "families.json"), families);
   writeJson(path.join(GENERATED_DIR, "meta.json"), meta);
 
   console.log("Craftalog parse summary");
@@ -152,10 +172,13 @@ function main(): void {
   console.log(`transmute:        ${meta.counts.transmute}`);
   console.log(`special:          ${meta.counts.special}`);
   console.log(`items:            ${meta.counts.items}`);
+  console.log(`categories:       ${Object.keys(categories).length}`);
+  console.log(`families:         ${Object.keys(families).length}`);
   console.log(`textures copied:  ${meta.counts.texturesCopied}`);
   console.log(`banner icons:     ${bannerIconsToSynthesize.size}`);
   console.log(`lightning rod icons: ${lightningRodIconsToSynthesize.size}`);
   console.log(`bed icons:        ${bedIconsToCopy.size}`);
+  console.log(`leather armor icons: ${leatherArmorIconsToSynthesize.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");

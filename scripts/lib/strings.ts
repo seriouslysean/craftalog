@@ -15,6 +15,22 @@ export function titleCaseFromId(id: string): string {
 }
 
 /**
+ * Converts a display label into a stable underscore_separated id, e.g.
+ * "Copper Goods" -> "copper_goods", "Rails & Minecarts" -> "rails_minecarts".
+ * Used to derive family/category ids from their curated display names (see
+ * scripts/lib/family.ts, scripts/lib/category.ts) -- underscore style to
+ * match vanilla item id conventions, distinct from src/utils/slugify.ts's
+ * hyphenated URL-slug style.
+ */
+export function toSnakeId(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/&/g, "")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+
+/**
  * Recursively sorts object keys alphabetically for deterministic JSON output.
  * Arrays are preserved in order (element order is semantically meaningful),
  * but any objects nested inside arrays still get their keys sorted.

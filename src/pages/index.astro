@@ -3,60 +3,133 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
 import ItemCard from '../components/ItemCard.astro';
 import { withBase } from '../utils/with-base';
-import { canonicalRecipePath, groupItemSlug, groupRecipes } from '../utils/recipe-groups';
+import {
+  canonicalRecipePath,
+  collapseVariantGroups,
+  groupDisplayName,
+  groupItemSlug,
+  groupRecipes,
+  type RecipeGroup,
+} from '../utils/recipe-groups';
+import type { ItemData } from '../content.config';
 import meta from '../data/generated/meta.json';
+
+const categoryEntries = await getCollection('categories');
+const familyEntries = await getCollection('families');
 
 const recipeEntries = await getCollection('recipes');
 const itemEntries = await getCollection('items');
 const itemsMap = new Map(itemEntries.map((entry) => [entry.id, entry.data]));
 const getItemName = (id: string) => itemsMap.get(id)?.name ?? id;
 
-const familySlug = (family: string) =>
-  family
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-
 const groups = groupRecipes(
   recipeEntries.map((entry) => entry.data),
   getItemName,
 );
+const { variantGroups, singletons } = collapseVariantGroups(groups);
 
-const families = [...new Set(groups.map((group) => group.family))].toSorted((a, b) =>
-  a.localeCompare(b),
-);
+const isGroupShapeless = (group: RecipeGroup) =>
+  group.siblings.some((sibling) => sibling.type === 'shapeless' || sibling.type === 'transmute');
 
-const sections = families
-  .map((family) => {
-    const entries = groups
-      .filter((group) => group.family === family)
-      .map((group) => {
-        const resultItem = itemsMap.get(group.resultId);
-        const name = resultItem?.name ?? group.canonicalId.replace(/_/g, ' ');
-        const searchText = [
-          name,
-          ...group.siblings.flatMap((sibling) => [
-            sibling.label ?? '',
-            ...sibling.ingredientItemIds.map((id) => getItemName(id)),
-          ]),
-        ]
-          .join(' ')
-          .toLowerCase();
-        const href = withBase(canonicalRecipePath(groupItemSlug(group, itemsMap)));
-        return {
-          href,
-          name,
-          item: resultItem ?? null,
-          searchText,
-        };
-      })
-      .toSorted((a, b) => a.name.localeCompare(b.name));
+const groupSearchText = (group: RecipeGroup) =>
+  [
+    groupDisplayName(group, itemsMap),
+    ...group.siblings.flatMap((sibling) => [
+      sibling.label ?? '',
+      ...sibling.ingredientItemIds.map((id) => getItemName(id)),
+    ]),
+  ]
+    .join(' ')
+    .toLowerCase();
 
-    return { family, slug: familySlug(family), entries };
+interface CatalogCard {
+  href: string;
+  name: string;
+  item: ItemData | null;
+  searchText: string;
+  familyId: string;
+  isShapeless: boolean;
+}
+
+const variantGroupCards: CatalogCard[] = variantGroups.map((variantGroup) => {
+  // variants[0] is the alphabetically-first result item -- this card's
+  // default/linked-to variant, same convention as RecipeGroup.canonicalId.
+  const defaultVariant = variantGroup.variants[0];
+  return {
+    href: withBase(canonicalRecipePath(groupItemSlug(defaultVariant, itemsMap))),
+    name: groupDisplayName(defaultVariant, itemsMap),
+    item: itemsMap.get(defaultVariant.resultId) ?? null,
+    // Every variant's own name/labels/ingredients are searchable, not just
+    // the default one shown -- searching "blue" should still surface the
+    // Harnesses card even though its default tile shows Black Harness.
+    searchText: variantGroup.variants.map(groupSearchText).join(' '),
+    familyId: defaultVariant.familyId,
+    isShapeless: variantGroup.variants.some(isGroupShapeless),
+  };
+});
+
+const singletonCards: CatalogCard[] = singletons.map((group) => ({
+  href: withBase(canonicalRecipePath(groupItemSlug(group, itemsMap))),
+  name: groupDisplayName(group, itemsMap),
+  item: itemsMap.get(group.resultId) ?? null,
+  searchText: groupSearchText(group),
+  familyId: group.familyId,
+  isShapeless: isGroupShapeless(group),
+}));
+
+const cards = [...variantGroupCards, ...singletonCards];
+
+interface FamilySection {
+  familyId: string;
+  familyName: string;
+  cards: CatalogCard[];
+}
+
+interface CategorySection {
+  categoryId: string;
+  categoryName: string;
+  order: number;
+  families: FamilySection[];
+  totalCount: number;
+}
+
+const cardsByFamily = new Map<string, CatalogCard[]>();
+for (const card of cards) {
+  const bucket = cardsByFamily.get(card.familyId);
+  if (bucket) {
+    bucket.push(card);
+  } else {
+    cardsByFamily.set(card.familyId, [card]);
+  }
+}
+
+const categorySections: CategorySection[] = categoryEntries
+  .map((categoryEntry): CategorySection => {
+    const families: FamilySection[] = familyEntries
+      .filter((familyEntry) => familyEntry.data.category.id === categoryEntry.id)
+      .map((familyEntry) => ({
+        familyId: familyEntry.id,
+        familyName: familyEntry.data.name,
+        cards: (cardsByFamily.get(familyEntry.id) ?? []).toSorted((a, b) =>
+          a.name.localeCompare(b.name),
+        ),
+      }))
+      .filter((family) => family.cards.length > 0)
+      .toSorted((a, b) => a.familyName.localeCompare(b.familyName));
+
+    return {
+      categoryId: categoryEntry.id,
+      categoryName: categoryEntry.data.name,
+      order: categoryEntry.data.order,
+      families,
+      totalCount: families.reduce((sum, family) => sum + family.cards.length, 0),
+    };
   })
-  .filter((section) => section.entries.length > 0);
+  .filter((category) => category.totalCount > 0)
+  .toSorted((a, b) => a.order - b.order);
 
 const totalRecipes = recipeEntries.length;
+const totalCards = cards.length;
 ---
 
 <MainLayout title="Craftalog - A Minecraft Recipe Catalog">
@@ -78,94 +151,124 @@ const totalRecipes = recipeEntries.length;
           placeholder="Search recipes…"
           autocomplete="off"
         />
-        <button
-          type="button"
-          class="catalog__filter-toggle link-chip"
-          aria-expanded="true"
-          aria-controls="catalog-families"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <line x1="4" y1="21" x2="4" y2="14"></line>
-            <line x1="4" y1="10" x2="4" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12" y2="3"></line>
-            <line x1="20" y1="21" x2="20" y2="16"></line>
-            <line x1="20" y1="12" x2="20" y2="3"></line>
-            <line x1="1" y1="14" x2="7" y2="14"></line>
-            <line x1="9" y1="8" x2="15" y2="8"></line>
-            <line x1="17" y1="16" x2="23" y2="16"></line>
-          </svg>
-          <span class="visually-hidden">Show or hide family filters</span>
-        </button>
+        <label class="catalog__shapeless-toggle link-chip">
+          <input type="checkbox" id="shapeless-toggle" class="catalog__shapeless-input" />
+          Shapeless only
+        </label>
       </div>
 
-      <div
-        class="catalog__families"
-        id="catalog-families"
-        role="radiogroup"
-        aria-label="Filter by family"
-      >
+      <div class="catalog__categories" role="radiogroup" aria-label="Filter by category">
         <input
           type="radio"
-          name="family"
-          id="family-all"
+          name="category"
+          id="category-all"
           value="all"
           checked
-          class="catalog__family-input"
+          class="catalog__category-input"
         />
-        <label for="family-all" class="catalog__family-pill link-chip">
-          All <span class="catalog__family-count">({groups.length})</span>
+        <label for="category-all" class="catalog__category-pill link-chip">
+          All <span class="catalog__category-count">({totalCards})</span>
         </label>
         {
-          sections.map((section) => (
+          categorySections.map((category) => (
             <>
               <input
                 type="radio"
-                name="family"
-                id={`family-${section.slug}`}
-                value={section.slug}
-                class="catalog__family-input"
+                name="category"
+                id={`category-${category.categoryId}`}
+                value={category.categoryId}
+                class="catalog__category-input"
               />
-              <label for={`family-${section.slug}`} class="catalog__family-pill link-chip">
-                {section.family}{' '}
-                <span class="catalog__family-count">({section.entries.length})</span>
+              <label
+                for={`category-${category.categoryId}`}
+                class="catalog__category-pill link-chip"
+              >
+                {category.categoryName}{' '}
+                <span class="catalog__category-count">({category.totalCount})</span>
               </label>
             </>
           ))
         }
       </div>
+
+      {
+        categorySections.map((category) => (
+          <div
+            class="catalog__families"
+            data-category-families={category.categoryId}
+            role="radiogroup"
+            aria-label={`Filter ${category.categoryName} by family`}
+            hidden
+          >
+            <input
+              type="radio"
+              name={`family-${category.categoryId}`}
+              id={`family-${category.categoryId}-all`}
+              value="all"
+              checked
+              class="catalog__family-input"
+            />
+            <label for={`family-${category.categoryId}-all`} class="catalog__family-pill link-chip">
+              All {category.categoryName}
+            </label>
+            {category.families.map((family) => (
+              <>
+                <input
+                  type="radio"
+                  name={`family-${category.categoryId}`}
+                  id={`family-${category.categoryId}-${family.familyId}`}
+                  value={family.familyId}
+                  class="catalog__family-input"
+                />
+                <label
+                  for={`family-${category.categoryId}-${family.familyId}`}
+                  class="catalog__family-pill link-chip"
+                >
+                  {family.familyName}{' '}
+                  <span class="catalog__family-count">({family.cards.length})</span>
+                </label>
+              </>
+            ))}
+          </div>
+        ))
+      }
     </form>
 
     <p id="catalog-empty" class="catalog__empty" hidden>No recipes match your search.</p>
 
     {
-      sections.map((section) => (
-        <section class="catalog__section" data-family-section>
+      categorySections.map((category) => (
+        <section class="catalog__category-section" data-category-section={category.categoryId}>
           <h2 class="catalog__section-title">
-            {section.family} <span class="catalog__section-count">({section.entries.length})</span>
+            {category.categoryName}{' '}
+            <span class="catalog__section-count">({category.totalCount})</span>
           </h2>
-          <ul class="catalog__grid">
-            {section.entries.map((entry) => (
-              <li class="catalog__item" data-search={entry.searchText} data-family={section.slug}>
-                <ItemCard
-                  href={entry.href}
-                  item={entry.item}
-                  name={entry.name}
-                  class="catalog__link"
-                />
-              </li>
-            ))}
-          </ul>
+          {category.families.map((family) => (
+            <div class="catalog__family-group" data-family-group={family.familyId}>
+              <h3 class="catalog__family-title">
+                {family.familyName}{' '}
+                <span class="catalog__family-group-count">({family.cards.length})</span>
+              </h3>
+              <ul class="catalog__grid">
+                {family.cards.map((card) => (
+                  <li
+                    class="catalog__item"
+                    data-search={card.searchText}
+                    data-category={category.categoryId}
+                    data-family={family.familyId}
+                    data-shapeless={card.isShapeless}
+                  >
+                    <ItemCard
+                      href={card.href}
+                      item={card.item}
+                      name={card.name}
+                      class="catalog__link"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </section>
       ))
     }
@@ -177,17 +280,31 @@ const totalRecipes = recipeEntries.length;
   // Transitions navigation, so re-querying/re-binding here keeps this working
   // when navigating back to this page via the client router.
   const SEARCH_PARAM = 'q';
+  const CATEGORY_PARAM = 'category';
   const FAMILY_PARAM = 'family';
+  const SHAPELESS_PARAM = 'shapeless';
 
   document.addEventListener('astro:page-load', () => {
     const form = document.querySelector<HTMLFormElement>('.catalog__filter');
     const input = document.getElementById('recipe-filter');
+    const shapelessInput = document.getElementById('shapeless-toggle');
     const items = document.querySelectorAll<HTMLElement>('.catalog__item');
-    const sections = document.querySelectorAll<HTMLElement>('[data-family-section]');
-    const familyInputs = document.querySelectorAll<HTMLInputElement>('input[name="family"]');
+    const categorySections = document.querySelectorAll<HTMLElement>('[data-category-section]');
+    const familyGroups = document.querySelectorAll<HTMLElement>('[data-family-group]');
+    const categoryInputs = document.querySelectorAll<HTMLInputElement>('input[name="category"]');
+    const familyRadiogroups = document.querySelectorAll<HTMLElement>('[data-category-families]');
     const emptyState = document.getElementById('catalog-empty');
 
+    let activeCategory = 'all';
     let activeFamily = 'all';
+    let shapelessOnly = false;
+
+    function activeFamilyInputs(): HTMLInputElement[] {
+      const activeRadiogroup = document.querySelector<HTMLElement>(
+        `[data-category-families="${activeCategory}"]`,
+      );
+      return activeRadiogroup ? Array.from(activeRadiogroup.querySelectorAll('input')) : [];
+    }
 
     function applyFilter(query: string) {
       const needle = query.trim().toLowerCase();
@@ -195,13 +312,21 @@ const totalRecipes = recipeEntries.length;
 
       items.forEach((item) => {
         const matchesText = !needle || (item.dataset.search ?? '').includes(needle);
+        const matchesCategory =
+          activeCategory === 'all' || item.dataset.category === activeCategory;
         const matchesFamily = activeFamily === 'all' || item.dataset.family === activeFamily;
-        const visible = matchesText && matchesFamily;
+        const matchesShapeless = !shapelessOnly || item.dataset.shapeless === 'true';
+        const visible = matchesText && matchesCategory && matchesFamily && matchesShapeless;
         item.hidden = !visible;
         if (visible) anyVisible = true;
       });
 
-      sections.forEach((section) => {
+      familyGroups.forEach((group) => {
+        const visibleItems = group.querySelectorAll('.catalog__item:not([hidden])');
+        group.hidden = visibleItems.length === 0;
+      });
+
+      categorySections.forEach((section) => {
         const visibleItems = section.querySelectorAll('.catalog__item:not([hidden])');
         section.hidden = visibleItems.length === 0;
       });
@@ -209,23 +334,43 @@ const totalRecipes = recipeEntries.length;
       if (emptyState) emptyState.hidden = anyVisible;
     }
 
-    // Restore the search text and family filter from the URL before wiring
-    // up listeners, so the initially-rendered grid matches the
+    function showFamilyRadiogroupForCategory() {
+      familyRadiogroups.forEach((group) => {
+        group.hidden = group.dataset.categoryFamilies !== activeCategory;
+      });
+    }
+
+    // Restore search/category/family/shapeless state from the URL before
+    // wiring up listeners, so the initially-rendered grid matches the
     // shared/bookmarked state instead of flashing the defaults first.
     const restoreParams = new URLSearchParams(location.search);
     const urlSearch = restoreParams.get(SEARCH_PARAM) ?? '';
+    const urlCategory = restoreParams.get(CATEGORY_PARAM);
     const urlFamily = restoreParams.get(FAMILY_PARAM);
-    const familyToCheck =
-      Array.from(familyInputs).find((radio) => radio.value === urlFamily) ??
-      Array.from(familyInputs).find((radio) => radio.value === 'all');
+    const urlShapeless = restoreParams.get(SHAPELESS_PARAM) === '1';
+
+    const categoryToCheck =
+      Array.from(categoryInputs).find((radio) => radio.value === urlCategory) ??
+      Array.from(categoryInputs).find((radio) => radio.value === 'all');
 
     if (input instanceof HTMLInputElement) {
       input.value = urlSearch;
     }
+    if (shapelessInput instanceof HTMLInputElement) {
+      shapelessInput.checked = urlShapeless;
+    }
+    shapelessOnly = urlShapeless;
 
-    familyInputs.forEach((radio) => {
-      radio.checked = radio === familyToCheck;
+    categoryInputs.forEach((radio) => {
+      radio.checked = radio === categoryToCheck;
     });
+    activeCategory = categoryToCheck?.value ?? 'all';
+    showFamilyRadiogroupForCategory();
+
+    const familyToCheck =
+      activeFamilyInputs().find((radio) => radio.value === urlFamily) ??
+      activeFamilyInputs().find((radio) => radio.value === 'all');
+    if (familyToCheck) familyToCheck.checked = true;
     activeFamily = familyToCheck?.value ?? 'all';
 
     applyFilter(urlSearch);
@@ -234,17 +379,37 @@ const totalRecipes = recipeEntries.length;
       input.addEventListener('input', () => applyFilter(input.value));
     }
 
-    familyInputs.forEach((radio) => {
+    if (shapelessInput instanceof HTMLInputElement) {
+      shapelessInput.addEventListener('change', () => {
+        shapelessOnly = shapelessInput.checked;
+        applyFilter(input instanceof HTMLInputElement ? input.value : '');
+      });
+    }
+
+    categoryInputs.forEach((radio) => {
       radio.addEventListener('change', () => {
-        if (radio.checked) {
+        if (!radio.checked) return;
+        activeCategory = radio.value;
+        activeFamily = 'all';
+        showFamilyRadiogroupForCategory();
+        const resetTarget = activeFamilyInputs().find((familyRadio) => familyRadio.value === 'all');
+        if (resetTarget) resetTarget.checked = true;
+        applyFilter(input instanceof HTMLInputElement ? input.value : '');
+      });
+    });
+
+    familyRadiogroups.forEach((group) => {
+      group.querySelectorAll<HTMLInputElement>('input[type="radio"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+          if (!radio.checked) return;
           activeFamily = radio.value;
           applyFilter(input instanceof HTMLInputElement ? input.value : '');
-        }
+        });
       });
     });
 
     // Only write the filter state back to the URL on submit (Enter in the
-    // search field) rather than on every keystroke or family click, so the
+    // search field) rather than on every keystroke or chip click, so the
     // address bar doesn't get rewritten mid-typing -- this is a client-side
     // filter, not a real navigation, so preventDefault and use replaceState
     // to update the current history entry in place instead of pushing a new
@@ -259,11 +424,20 @@ const totalRecipes = recipeEntries.length;
       } else {
         nextParams.delete(SEARCH_PARAM);
       }
-
+      if (activeCategory !== 'all') {
+        nextParams.set(CATEGORY_PARAM, activeCategory);
+      } else {
+        nextParams.delete(CATEGORY_PARAM);
+      }
       if (activeFamily !== 'all') {
         nextParams.set(FAMILY_PARAM, activeFamily);
       } else {
         nextParams.delete(FAMILY_PARAM);
+      }
+      if (shapelessOnly) {
+        nextParams.set(SHAPELESS_PARAM, '1');
+      } else {
+        nextParams.delete(SHAPELESS_PARAM);
       }
 
       const query = nextParams.toString();
@@ -272,15 +446,6 @@ const totalRecipes = recipeEntries.length;
         '',
         `${location.pathname}${query ? `?${query}` : ''}${location.hash}`,
       );
-    });
-
-    const filterToggle = document.querySelector<HTMLButtonElement>('.catalog__filter-toggle');
-    const families = document.getElementById('catalog-families');
-
-    filterToggle?.addEventListener('click', () => {
-      const expanded = filterToggle.getAttribute('aria-expanded') === 'true';
-      filterToggle.setAttribute('aria-expanded', String(!expanded));
-      if (families) families.hidden = expanded;
     });
   });
 </script>
@@ -297,7 +462,21 @@ const totalRecipes = recipeEntries.length;
   }
 
   .catalog__filter {
-    margin-bottom: var(--space-8);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: 0 calc(-1 * var(--space-4)) var(--space-8);
+    padding: var(--space-4) var(--space-4) var(--space-3);
+    background-color: var(--color-bg);
+    box-shadow: var(--divider-shadow-bottom);
+    border-bottom: var(--divider-border);
+  }
+
+  @media (min-width: 640px) {
+    .catalog__filter {
+      margin-inline: calc(-1 * var(--space-8));
+      padding-inline: var(--space-8);
+    }
   }
 
   .catalog__filter-label {
@@ -309,13 +488,15 @@ const totalRecipes = recipeEntries.length;
 
   .catalog__search-row {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-2);
-    max-width: 24rem;
+    max-width: 28rem;
   }
 
   .catalog__filter-input {
     flex: 1;
-    min-width: 0;
+    min-width: 8rem;
     height: 2.5rem;
     padding: var(--space-2) var(--space-4);
     border: none;
@@ -331,21 +512,24 @@ const totalRecipes = recipeEntries.length;
     outline-offset: 2px;
   }
 
-  .catalog__filter-toggle {
+  .catalog__shapeless-toggle {
     flex-shrink: 0;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: var(--space-2);
-    justify-content: center;
+    padding: var(--space-2) var(--space-3);
     font-size: 0.8125rem;
     color: var(--color-panel-fg);
     cursor: pointer;
+    user-select: none;
   }
 
-  .catalog__filter-toggle[aria-expanded='false'] {
-    box-shadow: var(--bevel-button-pressed), var(--panel-border-outer);
+  .catalog__shapeless-input {
+    margin: 0 var(--space-1) 0 0;
   }
 
+  .catalog__shapeless-input:checked + * {
+    font-weight: 600;
+  }
+
+  .catalog__categories,
   .catalog__families {
     margin-top: var(--space-3);
     display: flex;
@@ -357,6 +541,18 @@ const totalRecipes = recipeEntries.length;
     display: none;
   }
 
+  @media (max-width: 639px) {
+    .catalog__categories,
+    .catalog__families {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+      mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+    }
+  }
+
+  .catalog__category-input,
   .catalog__family-input {
     position: absolute;
     width: 1px;
@@ -365,23 +561,29 @@ const totalRecipes = recipeEntries.length;
     opacity: 0;
   }
 
+  .catalog__category-pill,
   .catalog__family-pill {
     padding: var(--space-2) var(--space-4);
     font-size: 0.8125rem;
     color: var(--color-panel-fg);
     cursor: pointer;
     user-select: none;
+    white-space: nowrap;
+    scroll-snap-align: start;
   }
 
+  .catalog__category-input:checked + .catalog__category-pill,
   .catalog__family-input:checked + .catalog__family-pill {
     box-shadow: var(--bevel-button-pressed), var(--panel-border-outer);
   }
 
+  .catalog__category-input:focus-visible + .catalog__category-pill,
   .catalog__family-input:focus-visible + .catalog__family-pill {
     outline: 2px solid var(--color-fg);
     outline-offset: 2px;
   }
 
+  .catalog__category-count,
   .catalog__family-count {
     color: inherit;
     opacity: 0.7;
@@ -392,8 +594,8 @@ const totalRecipes = recipeEntries.length;
     color: var(--color-muted);
   }
 
-  .catalog__section + .catalog__section {
-    margin-top: var(--space-8);
+  .catalog__category-section + .catalog__category-section {
+    margin-top: var(--space-12);
   }
 
   .catalog__section-count {
@@ -401,8 +603,24 @@ const totalRecipes = recipeEntries.length;
     font-weight: 400;
   }
 
-  .catalog__grid {
+  .catalog__family-group + .catalog__family-group {
+    margin-top: var(--space-6);
+  }
+
+  .catalog__family-title {
     margin-top: var(--space-4);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-heading);
+  }
+
+  .catalog__family-group-count {
+    color: var(--color-muted);
+    font-weight: 400;
+  }
+
+  .catalog__grid {
+    margin-top: var(--space-3);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
     gap: var(--space-2);

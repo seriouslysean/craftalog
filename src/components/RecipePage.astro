@@ -8,7 +8,15 @@ import ItemStat from './ItemStat.astro';
 import RecipeVariants from './RecipeVariants.astro';
 import MainLayout from '../layouts/MainLayout.astro';
 import { buildShapedGrid, buildShapelessGrid, type GridCell } from '../utils/crafting-grid';
-import { recipePath, type SiblingRecipe } from '../utils/recipe-groups';
+import {
+  canonicalRecipePath,
+  familyDisplayName,
+  groupDisplayName,
+  groupItemSlug,
+  recipePath,
+  type SiblingRecipe,
+  type VariantGroup,
+} from '../utils/recipe-groups';
 import { ingredientOption, type IngredientOption } from '../utils/tag-label';
 import { withBase } from '../utils/with-base';
 import type { ItemData, RecipeData } from '../content.config';
@@ -24,6 +32,8 @@ interface Props {
   /** The group's canonical recipe id -- reachable at the bare /recipe/{itemSlug}/ path, no slug segment. */
   canonicalId: string;
   siblings: SiblingRecipe[];
+  /** Present when this item's RecipeGroup was folded into a color/material variant card (see collapseVariantGroups) -- renders an extra top-level tab bar spanning every variant, above the existing craft/re-dye siblings row. */
+  variantGroup?: VariantGroup;
   prevHref: string;
   prevName: string;
   prevItem: ItemData | null;
@@ -40,6 +50,7 @@ const {
   itemSlug,
   canonicalId,
   siblings,
+  variantGroup,
   prevHref,
   prevName,
   prevItem,
@@ -57,6 +68,20 @@ const variants = siblings.map((sibling) => ({
   iconItem:
     (sibling.iconItemId ? itemsMap.get(sibling.iconItemId) : undefined) ?? resultItem ?? null,
   href: withBase(recipePath(itemSlug, canonicalId, sibling.recipeId, sibling.slug)),
+}));
+
+// The outer color/material tab bar, when this item is part of a collapsed
+// VariantGroup -- result-first icons (each tab shows that variant's own
+// crafted item), unlike the siblings row above, which is ingredient-first
+// (it distinguishes *how* you craft the same result, e.g. shield's
+// from-ingot/from-banner tabs). Marked "current" by resultId, not recipe
+// id, so every sibling recipe of the current color (craft vs re-dye) still
+// highlights the same tab.
+const variantTabs = variantGroup?.variants.map((variant) => ({
+  recipeId: variant.resultId,
+  label: groupDisplayName(variant, itemsMap),
+  iconItem: itemsMap.get(variant.resultId) ?? null,
+  href: withBase(canonicalRecipePath(groupItemSlug(variant, itemsMap))),
 }));
 
 let cells: GridCell[] = [];
@@ -155,11 +180,17 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
             </Badge>
           )
         }
-        <Badge>{recipe.family}</Badge>
+        <Badge>{familyDisplayName(recipe.family)}</Badge>
         {recipe.type === 'transmute' && <Badge variant="gui">Transmute</Badge>}
       </div>
       {resultItem?.stat && <ItemStat stat={resultItem.stat} />}
     </div>
+
+    {
+      variantTabs && recipe.result && (
+        <RecipeVariants siblings={variantTabs} currentId={recipe.result.id} />
+      )
+    }
 
     {siblings.length > 1 && <RecipeVariants siblings={variants} currentId={recipe.id} />}
 
@@ -183,11 +214,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         </>
       ) : (
         <div class="recipe__special">
-          {resultItem && (
-            <div class="recipe__special-icon">
-              <ItemIcon item={resultItem} loading="eager" />
-            </div>
-          )}
+          <div class="recipe__special-icon">
+            <ItemIcon item={resultItem ?? null} loading="eager" />
+          </div>
           <p class="recipe__note">{recipe.note}</p>
         </div>
       )

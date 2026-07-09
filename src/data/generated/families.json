@@ -1,0 +1,222 @@
+{
+  "armor": {
+    "category": "combat",
+    "id": "armor",
+    "name": "Armor"
+  },
+  "banners": {
+    "category": "colored_blocks",
+    "id": "banners",
+    "name": "Banners"
+  },
+  "beds": {
+    "category": "colored_blocks",
+    "id": "beds",
+    "name": "Beds"
+  },
+  "boats": {
+    "category": "transportation",
+    "id": "boats",
+    "name": "Boats"
+  },
+  "bundles": {
+    "category": "colored_blocks",
+    "id": "bundles",
+    "name": "Bundles"
+  },
+  "buttons": {
+    "category": "redstone",
+    "id": "buttons",
+    "name": "Buttons"
+  },
+  "candles": {
+    "category": "colored_blocks",
+    "id": "candles",
+    "name": "Candles"
+  },
+  "carpets": {
+    "category": "colored_blocks",
+    "id": "carpets",
+    "name": "Carpets"
+  },
+  "compact_blocks": {
+    "category": "building_blocks",
+    "id": "compact_blocks",
+    "name": "Compact Blocks"
+  },
+  "concrete": {
+    "category": "colored_blocks",
+    "id": "concrete",
+    "name": "Concrete"
+  },
+  "copper_goods": {
+    "category": "building_blocks",
+    "id": "copper_goods",
+    "name": "Copper Goods"
+  },
+  "decoration": {
+    "category": "functional_blocks",
+    "id": "decoration",
+    "name": "Decoration"
+  },
+  "doors": {
+    "category": "building_blocks",
+    "id": "doors",
+    "name": "Doors"
+  },
+  "dyes": {
+    "category": "materials",
+    "id": "dyes",
+    "name": "Dyes"
+  },
+  "fence_gates": {
+    "category": "building_blocks",
+    "id": "fence_gates",
+    "name": "Fence Gates"
+  },
+  "fences": {
+    "category": "building_blocks",
+    "id": "fences",
+    "name": "Fences"
+  },
+  "food": {
+    "category": "food",
+    "id": "food",
+    "name": "Food"
+  },
+  "glass": {
+    "category": "colored_blocks",
+    "id": "glass",
+    "name": "Glass"
+  },
+  "hanging_signs": {
+    "category": "functional_blocks",
+    "id": "hanging_signs",
+    "name": "Hanging Signs"
+  },
+  "harnesses": {
+    "category": "transportation",
+    "id": "harnesses",
+    "name": "Harnesses"
+  },
+  "logs_wood": {
+    "category": "building_blocks",
+    "id": "logs_wood",
+    "name": "Logs & Wood"
+  },
+  "materials": {
+    "category": "materials",
+    "id": "materials",
+    "name": "Materials"
+  },
+  "natural_blocks": {
+    "category": "building_blocks",
+    "id": "natural_blocks",
+    "name": "Natural Blocks"
+  },
+  "ores_minerals": {
+    "category": "materials",
+    "id": "ores_minerals",
+    "name": "Ores & Minerals"
+  },
+  "planks": {
+    "category": "building_blocks",
+    "id": "planks",
+    "name": "Planks"
+  },
+  "pressure_plates": {
+    "category": "redstone",
+    "id": "pressure_plates",
+    "name": "Pressure Plates"
+  },
+  "rails_minecarts": {
+    "category": "transportation",
+    "id": "rails_minecarts",
+    "name": "Rails & Minecarts"
+  },
+  "redstone_components": {
+    "category": "redstone",
+    "id": "redstone_components",
+    "name": "Redstone Components"
+  },
+  "shelves": {
+    "category": "functional_blocks",
+    "id": "shelves",
+    "name": "Shelves"
+  },
+  "shulker_boxes": {
+    "category": "colored_blocks",
+    "id": "shulker_boxes",
+    "name": "Shulker Boxes"
+  },
+  "signs": {
+    "category": "functional_blocks",
+    "id": "signs",
+    "name": "Signs"
+  },
+  "slabs": {
+    "category": "building_blocks",
+    "id": "slabs",
+    "name": "Slabs"
+  },
+  "smithing_templates": {
+    "category": "combat",
+    "id": "smithing_templates",
+    "name": "Smithing Templates"
+  },
+  "stairs": {
+    "category": "building_blocks",
+    "id": "stairs",
+    "name": "Stairs"
+  },
+  "stone_variants": {
+    "category": "building_blocks",
+    "id": "stone_variants",
+    "name": "Stone Variants"
+  },
+  "storage": {
+    "category": "functional_blocks",
+    "id": "storage",
+    "name": "Storage"
+  },
+  "terracotta": {
+    "category": "colored_blocks",
+    "id": "terracotta",
+    "name": "Terracotta"
+  },
+  "tools": {
+    "category": "tools_utilities",
+    "id": "tools",
+    "name": "Tools"
+  },
+  "trapdoors": {
+    "category": "building_blocks",
+    "id": "trapdoors",
+    "name": "Trapdoors"
+  },
+  "utilities": {
+    "category": "tools_utilities",
+    "id": "utilities",
+    "name": "Utilities"
+  },
+  "walls": {
+    "category": "building_blocks",
+    "id": "walls",
+    "name": "Walls"
+  },
+  "weapons": {
+    "category": "combat",
+    "id": "weapons",
+    "name": "Weapons"
+  },
+  "wool": {
+    "category": "colored_blocks",
+    "id": "wool",
+    "name": "Wool"
+  },
+  "workstations": {
+    "category": "functional_blocks",
+    "id": "workstations",
+    "name": "Workstations"
+  }
+}

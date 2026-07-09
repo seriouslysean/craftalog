@@ -1,12 +1,16 @@
 import { toBedrockColorName } from "./bedrock-colors.ts";
-import { buildItemTagIndex, deriveFamily } from "./family.ts";
+import { CATEGORIES } from "./category.ts";
+import { buildItemTagIndex, deriveFamily, FAMILY_CATEGORY } from "./family.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
+import type { IconCandidate } from "./model.ts";
 import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
 import { slugify } from "../../src/utils/slugify.ts";
 import type {
+  CategoriesOutput,
+  FamiliesOutput,
   Item,
   ItemsOutput,
   Meta,
@@ -17,6 +21,17 @@ import type {
   RawTagsData,
   RecipesOutput,
 } from "./types.ts";
+
+// Ships as a grayscale base layer meant to be dye-tinted at runtime plus an
+// untinted trim overlay (see scripts/lib/leather-armor-icon.ts) -- these are
+// the only 5 items using that two-layer contract.
+const LEATHER_ARMOR_ITEM_IDS = new Set([
+  "leather_boots",
+  "leather_chestplate",
+  "leather_helmet",
+  "leather_leggings",
+  "leather_horse_armor",
+]);
 
 export interface GenerateInput {
   version: string;
@@ -35,6 +50,8 @@ export interface GenerateInput {
 export interface GenerateOutput {
   recipes: RecipesOutput;
   items: ItemsOutput;
+  categories: CategoriesOutput;
+  families: FamiliesOutput;
   meta: Meta;
   /** Every texture ref that should be copied into public/textures/. */
   texturesToCopy: Set<string>;
@@ -44,6 +61,76 @@ export interface GenerateOutput {
   lightningRodIconsToSynthesize: Map<string, string>;
   /** Java colorId -> Bedrock source filename suffix, for bed icons the caller must copy from vendor/bedrock-samples (see scripts/parse.ts). */
   bedIconsToCopy: Map<string, string>;
+  /** Item id -> flat texture ref (layer0), for leather armor icons the caller must generate (see scripts/lib/leather-armor-icon.ts). */
+  leatherArmorIconsToSynthesize: Map<string, string>;
+}
+
+/** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
+interface ResolvedCompoundFace {
+  texture: string;
+  uv: [number, number, number, number];
+}
+
+interface ResolvedCompoundElement {
+  from: [number, number, number];
+  to: [number, number, number];
+  faces: {
+    up?: ResolvedCompoundFace;
+    down?: ResolvedCompoundFace;
+    north?: ResolvedCompoundFace;
+    south?: ResolvedCompoundFace;
+    east?: ResolvedCompoundFace;
+    west?: ResolvedCompoundFace;
+  };
+}
+
+/**
+ * Resolves a "compound" candidate's per-element faces to concrete
+ * `/textures/...` paths (+ their uv crop rect, carried through unchanged
+ * from scripts/lib/model.ts's extractCompoundElements), dropping any face
+ * whose texture doesn't exist on disk and any element left with zero
+ * remaining faces. Returns undefined when nothing resolves at all, so the
+ * caller falls back to the placeholder icon — same "best effort, else
+ * unresolved" contract every other icon type here already follows. All 6
+ * cardinal faces are resolved (whichever the candidate's own element data
+ * actually declares) -- see scripts/lib/model.ts's extractCompoundElements
+ * and ItemIcon.astro's computeFaceStyle for why down/north/west matter
+ * alongside up/east/south. No culling pass: an earlier version of this
+ * function dropped faces on any partial footprint overlap between two
+ * elements' touching boundary, on the theory that coplanar contact seams
+ * cause CSS z-fighting -- that diagnosis was wrong (confirmed: rendering
+ * every declared face with flat opaque debug colors, uncropped, produces a
+ * pixel-perfect silhouette with zero visual conflicts) and the culling
+ * itself was separately buggy (it deleted a face on ANY partial overlap,
+ * even when the real overlap was a small fraction of that face's actual
+ * area -- confirmed on grindstone's wheel, where it wrongly deleted the
+ * entire east+west faces, including the prominent grindstone_side.png
+ * surface, over a contact patch that was only a sliver of the wheel's true
+ * footprint). The real bug was the now-fixed missing uv crop (see
+ * ItemIcon.astro's computeUvCrop): un-cropped faces stretched a mostly-
+ * transparent texture atlas over their whole footprint, letting interior
+ * geometry show through and look like a conflict.
+ */
+function resolveCompoundElements(
+  candidate: Extract<IconCandidate, { type: "compound" }>,
+  textureExists: (ref: string) => boolean,
+): { elements: ResolvedCompoundElement[]; textureRefs: string[] } | undefined {
+  const elements: ResolvedCompoundElement[] = [];
+  const textureRefs: string[] = [];
+
+  for (const el of candidate.elements) {
+    const faces: ResolvedCompoundElement["faces"] = {};
+    for (const face of ["up", "down", "north", "south", "east", "west"] as const) {
+      const faceCandidate = el.faces[face];
+      if (faceCandidate && textureExists(faceCandidate.texture)) {
+        faces[face] = { texture: `/textures/${faceCandidate.texture}.png`, uv: faceCandidate.uv };
+        textureRefs.push(faceCandidate.texture);
+      }
+    }
+    if (Object.keys(faces).length > 0) elements.push({ from: el.from, to: el.to, faces });
+  }
+
+  return elements.length > 0 ? { elements, textureRefs } : undefined;
 }
 
 /**
@@ -69,21 +156,53 @@ export function generate(input: GenerateInput): GenerateOutput {
   const counts = { shaped: 0, shapeless: 0, transmute: 0, special: 0 };
   const itemTagIndex = buildItemTagIndex(tagsRaw);
   const fallbackFamilyItems: string[] = [];
+  // Only families actually referenced by an emitted recipe end up in
+  // families.json, same "only what's referenced" contract items.json/
+  // texturesToCopy already follow.
+  const familiesUsed: FamiliesOutput = {};
 
   for (const [id, raw] of Object.entries(recipesRaw)) {
     const transformed = transformRecipe(id, raw, tagsRaw);
     if (!transformed) continue;
-    const { family, usedFallback } = deriveFamily(
-      { itemId: transformed.result?.id, group: transformed.group, category: transformed.category },
+    // repair_item is the only recipe with no result item -- exclude any
+    // resultless recipe (not hardcoded to that id) so it never reaches the
+    // rest of this pipeline, which assumes every emitted recipe has one.
+    if (!transformed.result) continue;
+    const resultId = transformed.result.id;
+    const derivedFamily = deriveFamily(
+      { itemId: resultId, group: transformed.group, category: transformed.category },
       itemTagIndex,
     );
-    if (usedFallback) fallbackFamilyItems.push(transformed.result?.id ?? id);
-    const resultId = transformed.result?.id ?? id;
+    if (derivedFamily.usedFallback) fallbackFamilyItems.push(resultId);
+
+    if (!(derivedFamily.id in familiesUsed)) {
+      const categoryId = FAMILY_CATEGORY[derivedFamily.id];
+      if (!categoryId) {
+        // Every family scripts/lib/family.ts can produce is listed in
+        // FAMILY_CATEGORY -- this can only fire if a future version bump
+        // routes a genuinely new item through CATEGORY_FAMILY_FALLBACK into
+        // a family name that was never added there. Fail immediately rather
+        // than emit a families.json entry with no valid category.
+        throw new Error(
+          `Family "${derivedFamily.id}" (${derivedFamily.name}) has no entry in FAMILY_CATEGORY ` +
+            `(scripts/lib/family.ts) -- every family must map to one of the 9 top-level categories.`,
+        );
+      }
+      familiesUsed[derivedFamily.id] = {
+        id: derivedFamily.id,
+        name: derivedFamily.name,
+        category: categoryId,
+      };
+    }
+
     const slug = slugify(deriveRecipeSlugSource(id, resultId));
-    const recipe = { ...transformed, family, slug };
+    const recipe = { ...transformed, family: derivedFamily.id, slug };
     recipes[id] = recipe;
     counts[recipe.type] += 1;
   }
+
+  const categories: CategoriesOutput = {};
+  for (const category of CATEGORIES) categories[category.id] = category;
 
   const referencedIds = new Set<string>();
   for (const recipe of Object.values(recipes)) {
@@ -95,11 +214,16 @@ export function generate(input: GenerateInput): GenerateOutput {
   const bannerIconsToSynthesize = new Map<string, string>();
   const lightningRodIconsToSynthesize = new Map<string, string>();
   const bedIconsToCopy = new Map<string, string>();
+  const leatherArmorIconsToSynthesize = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
     const name = getItemName(itemId, enUs);
     const candidate = resolveIconCandidate(itemId, itemDefsRaw, modelsRaw);
+    const resolvedCompound =
+      candidate?.type === "compound"
+        ? resolveCompoundElements(candidate, textureExists)
+        : undefined;
 
     let icon: Item["icon"];
     if (candidate?.type === "banner" && textureExists(`block/${candidate.colorId}_wool`)) {
@@ -128,6 +252,14 @@ export function generate(input: GenerateInput): GenerateOutput {
     ) {
       icon = { type: candidate.type, texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
+    } else if (
+      candidate?.type === "flat" &&
+      LEATHER_ARMOR_ITEM_IDS.has(itemId) &&
+      textureExists(candidate.textureRef) &&
+      textureExists(`${candidate.textureRef}_overlay`)
+    ) {
+      icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
+      leatherArmorIconsToSynthesize.set(itemId, candidate.textureRef);
     } else if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
@@ -143,6 +275,24 @@ export function generate(input: GenerateInput): GenerateOutput {
       };
       texturesToCopy.add(candidate.topRef);
       texturesToCopy.add(candidate.sideRef);
+    } else if (candidate?.type === "compound" && resolvedCompound) {
+      icon = {
+        type: "compound",
+        elements: resolvedCompound.elements,
+        yRotation: candidate.yRotation,
+      };
+      for (const ref of resolvedCompound.textureRefs) texturesToCopy.add(ref);
+    } else if (
+      candidate?.type === "compound" &&
+      candidate.flatFallbackRef &&
+      textureExists(candidate.flatFallbackRef)
+    ) {
+      // None of the compound's own element textures exist as files --
+      // fall back to the same flat particle/layer0 guess the plain
+      // "unknown" path would have used, so this never regresses below what
+      // the old fallback already achieved.
+      icon = { type: "flat", texture: `/textures/${candidate.flatFallbackRef}.png` };
+      texturesToCopy.add(candidate.flatFallbackRef);
     } else {
       icon = { type: "flat", texture: "/textures/placeholder.png" };
       unresolvedIcons.push(itemId);
@@ -173,10 +323,13 @@ export function generate(input: GenerateInput): GenerateOutput {
   return {
     recipes,
     items,
+    categories,
+    families: familiesUsed,
     meta,
     texturesToCopy,
     bannerIconsToSynthesize,
     lightningRodIconsToSynthesize,
     bedIconsToCopy,
+    leatherArmorIconsToSynthesize,
   };
 }
