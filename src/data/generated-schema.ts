@@ -47,7 +47,10 @@ export const recipeSchema = z.object({
   /** URL-safe /recipe/{item}/{slug}/ segment, unique within the recipe's result-item group (see scripts/lib/recipe-slug.ts). */
   slug: z.string(),
   group: z.string().optional(),
-  // Optional in practice only for crafting_special_repairitem.
+  // Vanilla's recipe schema allows a resultless special recipe (e.g.
+  // crafting_special_repairitem) -- generate.ts excludes any recipe shaped
+  // like that from what's actually emitted, so every recipe here has one in
+  // practice, but this stays optional to match the upstream contract.
   result: recipeResultSchema.optional(),
   // shaped only
   pattern: z.array(z.string()).optional(),

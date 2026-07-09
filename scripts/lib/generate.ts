@@ -164,10 +164,11 @@ export function generate(input: GenerateInput): GenerateOutput {
   for (const [id, raw] of Object.entries(recipesRaw)) {
     const transformed = transformRecipe(id, raw, tagsRaw);
     if (!transformed) continue;
-    // Falls back to the recipe's own id for the one recipe with no result
-    // (repair_item), so it still has an itemId to match ITEM_FAMILY_OVERRIDES
-    // against instead of silently landing in the generic fallback.
-    const resultId = transformed.result?.id ?? id;
+    // repair_item is the only recipe with no result item -- exclude any
+    // resultless recipe (not hardcoded to that id) so it never reaches the
+    // rest of this pipeline, which assumes every emitted recipe has one.
+    if (!transformed.result) continue;
+    const resultId = transformed.result.id;
     const derivedFamily = deriveFamily(
       { itemId: resultId, group: transformed.group, category: transformed.category },
       itemTagIndex,

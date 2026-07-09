@@ -110,12 +110,14 @@ function resolveLabelCollisions(
 }
 
 /**
- * Groups recipes by result item (recipes with no result, e.g. repair_item,
- * become their own singleton group keyed by their own id). For groups with
- * more than one recipe, derives a short "from X" label per sibling from
- * whatever ingredient actually differs between them -- not just the first
- * ingredient, which breaks when siblings share their first ingredient (all
- * 17 Suspicious Stew recipes lead with a bowl).
+ * Groups recipes by result item (a recipe with no result becomes its own
+ * singleton group keyed by its own id -- every emitted recipe has a result
+ * today, see generate.ts's resultless-recipe exclusion, but `result` stays
+ * optional on the schema so this stays defensive). For groups with more than
+ * one recipe, derives a short "from X" label per sibling from whatever
+ * ingredient actually differs between them -- not just the first ingredient,
+ * which breaks when siblings share their first ingredient (all 17
+ * Suspicious Stew recipes lead with a bowl).
  */
 export function groupRecipes(
   recipes: RecipeData[],
@@ -235,39 +237,25 @@ export function buildRecipeHrefMap(
 /**
  * The /recipe/{item}/... URL segment for a group's result item. Reads the
  * item's precomputed slug (see scripts/lib/generate.ts); only falls back to
- * slugifying the group's own canonical recipe id for repair_item, the one
- * recipe with no result (so there's no item entry to read a slug from).
+ * slugifying the group's own canonical recipe id for a resultless recipe
+ * (so there's no item entry to read a slug from) -- see groupRecipes' doc
+ * comment for why that stays a defensive case rather than a real one today.
  */
 export function groupItemSlug(group: RecipeGroup, itemsMap: Map<string, ItemData>): string {
   return itemsMap.get(group.resultId)?.slug ?? slugify(group.canonicalId);
 }
 
 /**
- * Patches the display name for recipes whose result has no items.json entry
- * to read from -- currently only repair_item (it repairs any matching pair
- * of damaged tools/armor, so there's no single result item to name it
- * after). Keyed by resultId, which for every such recipe equals its own
- * singleton group's canonicalId (see groupRecipes' resultId fallback above).
- */
-const KNOWN_RESULTLESS_RECIPE_NAMES: Record<string, string> = {
-  repair_item: "Repair Item",
-};
-
-/**
  * The human-readable display name for a recipe group's result. Reads the
- * result item's name where one exists; otherwise checks
- * KNOWN_RESULTLESS_RECIPE_NAMES before falling back to a raw, lowercase
- * de-slugified canonicalId. Single source of truth for every <title>, meta
- * description, card label, and pager name derived from a group, so this raw
- * lowercase fallback never leaks into production HTML on its own.
+ * result item's name where one exists; otherwise falls back to a raw,
+ * lowercase de-slugified canonicalId. Single source of truth for every
+ * <title>, meta description, card label, and pager name derived from a
+ * group, so this raw lowercase fallback never leaks into production HTML on
+ * its own.
  */
 export function groupDisplayName(group: RecipeGroup, itemsMap: Map<string, ItemData>): string {
   const resultItem = itemsMap.get(group.resultId);
-  return (
-    resultItem?.name ??
-    KNOWN_RESULTLESS_RECIPE_NAMES[group.resultId] ??
-    group.canonicalId.replace(/_/g, " ")
-  );
+  return resultItem?.name ?? group.canonicalId.replace(/_/g, " ");
 }
 
 /** The bare canonical URL path for an item's recipe group -- no slug segment. Callers still apply withBase(). */

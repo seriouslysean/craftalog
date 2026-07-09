@@ -273,11 +273,11 @@ describe("groupItemSlug", () => {
     expect(groupItemSlug(group, itemsMap)).toBe("bone-meal");
   });
 
-  it("falls back to slugifying the canonical recipe id when there's no result item (repair_item)", () => {
-    const recipes = [recipe({ id: "repair_item", type: "special", slug: "default" })];
+  it("falls back to slugifying the canonical recipe id when there's no result item", () => {
+    const recipes = [recipe({ id: "some_resultless_recipe", type: "special", slug: "default" })];
     const [group] = groupRecipes(recipes, itemName);
 
-    expect(groupItemSlug(group, new Map())).toBe("repair-item");
+    expect(groupItemSlug(group, new Map())).toBe("some-resultless-recipe");
   });
 });
 

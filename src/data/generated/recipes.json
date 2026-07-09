@@ -22962,14 +22962,6 @@
     "slug": "default",
     "type": "shaped"
   },
-  "repair_item": {
-    "category": "misc",
-    "family": "other",
-    "id": "repair_item",
-    "note": "Combine two damaged items of the same type to repair them, combining their remaining durability.",
-    "slug": "default",
-    "type": "special"
-  },
   "repeater": {
     "category": "redstone",
     "family": "redstone_components",

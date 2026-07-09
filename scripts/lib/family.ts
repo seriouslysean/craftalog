@@ -446,12 +446,6 @@ const ITEM_FAMILY_OVERRIDES: Record<string, string> = {
       "magma_block",
     ].map((id) => [id, "Natural Blocks"]),
   ),
-  // repair_item is the one recipe with no result item (it repairs any
-  // matching pair of damaged tools/armor), so it has no vanilla category to
-  // fall back to in the usual sense -- generate.ts passes its own recipe id
-  // as a stand-in itemId (see deriveFamily's call site) so this override
-  // still matches instead of silently landing in the generic fallback.
-  repair_item: "Other",
 };
 
 const STONE_VARIANT_NAMES = new Set([
@@ -513,7 +507,7 @@ export function buildItemTagIndex(tagsRaw: RawTagsData): ItemTagIndex {
 }
 
 export interface DeriveFamilyInput {
-  /** The recipe's result item id, if it has one. Callers pass the recipe's own id as a stand-in for the one recipe with no result (repair_item) -- see generate.ts's call site -- so the ITEM_FAMILY_OVERRIDES lookup below still has something to match against. */
+  /** The recipe's result item id. Optional since some callers (e.g. CATEGORY_FAMILY_FALLBACK-only test cases) don't need one -- every real recipe generate.ts derives a family for has a result item. */
   itemId?: string;
   group?: string;
   category: string;
@@ -625,10 +619,10 @@ export const FAMILY_CATEGORY: Record<string, string> = {
   pressure_plates: "redstone",
   buttons: "redstone",
 
-  // Tools & Utilities (3 -- "other" is a judgment call: repair_item is the
-  // sole occupant and isn't a block/item the proposal's category breakdown
-  // explicitly placed, but every family must map somewhere; a tool-repair
-  // action reads closest to "utility" of the 9 categories)
+  // Tools & Utilities (3 -- "other" is a dormant safety net for
+  // CATEGORY_FAMILY_FALLBACK's "misc" entry, same "0 items use this today"
+  // pattern as other_blocks above; a tool-repair-flavored action reads
+  // closest to "utility" of the 9 categories if it's ever actually hit)
   tools: "tools_utilities",
   utilities: "tools_utilities",
   other: "tools_utilities",

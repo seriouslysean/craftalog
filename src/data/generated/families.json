@@ -119,11 +119,6 @@
     "id": "ores_minerals",
     "name": "Ores & Minerals"
   },
-  "other": {
-    "category": "tools_utilities",
-    "id": "other",
-    "name": "Other"
-  },
   "planks": {
     "category": "building_blocks",
     "id": "planks",

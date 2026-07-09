@@ -170,24 +170,28 @@ describe("generate determinism", () => {
       "black_bundle",
       "oak_planks",
       "oak_slab",
-      "repair_item",
       "torch",
     ]);
     expect(result.meta.counts).toEqual({
       shaped: 2,
       shapeless: 1,
       transmute: 1,
-      special: 1,
+      special: 0,
       items: Object.keys(result.items).length,
       texturesCopied: result.texturesToCopy.size,
     });
+  });
+
+  it("excludes a resultless special recipe (repair_item) entirely, not just from item collection", () => {
+    const result = run();
+    expect(result.recipes.repair_item).toBeUndefined();
   });
 
   it("includes only items referenced by included recipes (results + resolved ingredients)", () => {
     const result = run();
     // stick/coal/charcoal/torch (shaped), oak_log/oak_wood/oak_planks/white_banner (shapeless),
     // bundle/black_bundle/black_dye (transmute), oak_slab (shaped, ingredient oak_planks).
-    // repair_item has no result/ingredients.
+    // repair_item is excluded entirely (see the resultless-recipe test above).
     expect(Object.keys(result.items).toSorted()).toEqual([
       "black_bundle",
       "black_dye",

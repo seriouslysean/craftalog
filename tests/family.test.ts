@@ -109,10 +109,12 @@ describe("deriveFamily — proposal fixes", () => {
     expect(result).toEqual({ id: "decoration", name: "Decoration", usedFallback: false });
   });
 
-  it("resolves repair_item to 'Other' via its own recipe id standing in for the missing result item", () => {
-    // generate.ts passes the recipe's own id as itemId for resultless recipes.
-    const result = deriveFamily({ itemId: "repair_item", category: "misc" }, emptyTagIndex);
-    expect(result).toEqual({ id: "other", name: "Other", usedFallback: false });
+  it("falls back an unrecognized misc-category item to the dormant 'Other' family", () => {
+    const result = deriveFamily(
+      { itemId: "some_unrecognized_future_item", category: "misc" },
+      emptyTagIndex,
+    );
+    expect(result).toEqual({ id: "other", name: "Other", usedFallback: true });
   });
 
   it("retires the 'Building Blocks'/'Miscellaneous' fallback names in favor of 'Other Blocks'/'Other'", () => {
