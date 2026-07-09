@@ -565,7 +565,6 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .block .left-lower,
   .block .left-upper,
   .block .riser {
-    background-color: #fff;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -580,23 +579,30 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     object-fit: cover;
   }
 
+  /* var(--face-overlap) closes the same hairline sub-pixel seam between
+     adjacent faces that pressure_plate/button/wall/fence/fence_gate already
+     account for (see --face-overlap's definition) -- plain block/slab/
+     stairs faces used an opaque white background-color to paper over that
+     gap instead, which also opaquely masked any real alpha in the source
+     texture (e.g. copper_grate's cutout lattice rendered as solid white
+     behind the pattern instead of see-through). */
   .left,
   .left-lower,
   .left-upper {
-    transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
+    transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
   .right {
-    transform: translateX(50%) rotateY(90deg);
+    transform: translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
   .top {
-    transform: translateY(-50%) rotateX(90deg);
+    transform: translateY(-50%) rotateX(90deg) var(--face-overlap);
   }
 
   /* Slab: half-height box — top face drops to the container's mid-line, sides keep only their bottom half. */
   .block--slab .top {
-    transform: rotateX(90deg);
+    transform: rotateX(90deg) var(--face-overlap);
   }
 
   .block--slab .left,
@@ -609,13 +615,13 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .block--stairs .top-low {
     width: 50%;
     left: 50%;
-    transform: rotateX(90deg);
+    transform: rotateX(90deg) var(--face-overlap);
   }
 
   .block--stairs .top-high {
     width: 50%;
     left: 0;
-    transform: translateY(-50%) rotateX(90deg);
+    transform: translateY(-50%) rotateX(90deg) var(--face-overlap);
   }
 
   .block--stairs .left-lower {
@@ -638,7 +644,7 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .block--stairs .riser {
     height: 50%;
     top: 0;
-    transform: rotateY(90deg);
+    transform: rotateY(90deg) var(--face-overlap);
   }
 
   /* Pressure plate: a thin plank resting on the ground, inset 1px from every
