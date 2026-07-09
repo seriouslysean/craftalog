@@ -1970,8 +1970,205 @@
   },
   "black_banner": {
     "icon": {
-      "texture": "/textures/item/black_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/black_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/black_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/black_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/black_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/black_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/black_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "black_banner",
     "name": "Black Banner",
@@ -2228,8 +2425,205 @@
   },
   "blue_banner": {
     "icon": {
-      "texture": "/textures/item/blue_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/blue_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/blue_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/blue_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/blue_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/blue_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/blue_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "blue_banner",
     "name": "Blue Banner",
@@ -2609,8 +3003,205 @@
   },
   "brown_banner": {
     "icon": {
-      "texture": "/textures/item/brown_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/brown_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/brown_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/brown_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/brown_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/brown_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/brown_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "brown_banner",
     "name": "Brown Banner",
@@ -5338,8 +5929,205 @@
   },
   "cyan_banner": {
     "icon": {
-      "texture": "/textures/item/cyan_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/cyan_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/cyan_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/cyan_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/cyan_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/cyan_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/cyan_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "cyan_banner",
     "name": "Cyan Banner",
@@ -8029,8 +8817,205 @@
   },
   "gray_banner": {
     "icon": {
-      "texture": "/textures/item/gray_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/gray_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/gray_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/gray_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/gray_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/gray_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/gray_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "gray_banner",
     "name": "Gray Banner",
@@ -8220,8 +9205,205 @@
   },
   "green_banner": {
     "icon": {
-      "texture": "/textures/item/green_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/green_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/green_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/green_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/green_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/green_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/green_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "green_banner",
     "name": "Green Banner",
@@ -10103,8 +11285,205 @@
   },
   "light_blue_banner": {
     "icon": {
-      "texture": "/textures/item/light_blue_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/light_blue_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/light_blue_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/light_blue_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/light_blue_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/light_blue_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/light_blue_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "light_blue_banner",
     "name": "Light Blue Banner",
@@ -10294,8 +11673,205 @@
   },
   "light_gray_banner": {
     "icon": {
-      "texture": "/textures/item/light_gray_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/light_gray_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/light_gray_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/light_gray_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/light_gray_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/light_gray_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/light_gray_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "light_gray_banner",
     "name": "Light Gray Banner",
@@ -10521,8 +12097,205 @@
   },
   "lime_banner": {
     "icon": {
-      "texture": "/textures/item/lime_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/lime_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/lime_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/lime_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/lime_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/lime_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/lime_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "lime_banner",
     "name": "Lime Banner",
@@ -10745,8 +12518,205 @@
   },
   "magenta_banner": {
     "icon": {
-      "texture": "/textures/item/magenta_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/magenta_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/magenta_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/magenta_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/magenta_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/magenta_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/magenta_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "magenta_banner",
     "name": "Magenta Banner",
@@ -12646,8 +14616,205 @@
   },
   "orange_banner": {
     "icon": {
-      "texture": "/textures/item/orange_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/orange_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/orange_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/orange_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/orange_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/orange_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/orange_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "orange_banner",
     "name": "Orange Banner",
@@ -13628,8 +15795,205 @@
   },
   "pink_banner": {
     "icon": {
-      "texture": "/textures/item/pink_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/pink_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/pink_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/pink_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/pink_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/pink_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/pink_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "pink_banner",
     "name": "Pink Banner",
@@ -14373,8 +16737,205 @@
   },
   "purple_banner": {
     "icon": {
-      "texture": "/textures/item/purple_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/purple_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/purple_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/purple_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/purple_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/purple_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/purple_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "purple_banner",
     "name": "Purple Banner",
@@ -14769,8 +17330,205 @@
   },
   "red_banner": {
     "icon": {
-      "texture": "/textures/item/red_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/red_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/red_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/red_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/red_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/red_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/red_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "red_banner",
     "name": "Red Banner",
@@ -19293,8 +22051,205 @@
   },
   "white_banner": {
     "icon": {
-      "texture": "/textures/item/white_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/white_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/white_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/white_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/white_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/white_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/white_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "white_banner",
     "name": "White Banner",
@@ -19639,8 +22594,205 @@
   },
   "yellow_banner": {
     "icon": {
-      "texture": "/textures/item/yellow_banner.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12.5,
+                0.5,
+                13,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/yellow_banner.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/yellow_banner.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/yellow_banner.png",
+              "uv": [
+                5.5,
+                0.25,
+                10.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/yellow_banner.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/yellow_banner.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/yellow_banner.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -205
     },
     "id": "yellow_banner",
     "name": "Yellow Banner",

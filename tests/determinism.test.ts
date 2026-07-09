@@ -133,6 +133,7 @@ const existingRefs = new Set([
   "block/oak_planks",
   "item/black_dye",
   "block/white_wool",
+  "entity/banner/banner_base",
 ]);
 
 function run() {
@@ -239,12 +240,19 @@ describe("generate determinism", () => {
     });
   });
 
-  it("resolves a banner icon to a generated per-color texture and queues it for synthesis", () => {
+  it("resolves a banner icon to a hand-authored compound (pole + crossbar + tinted flag) and queues its atlas for synthesis", () => {
     const result = run();
-    expect(result.items.white_banner.icon).toEqual({
-      type: "flat",
-      texture: "/textures/item/white_banner.png",
-    });
+    const icon = result.items.white_banner.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.elements).toHaveLength(3);
+    // Flag faces sample the per-color tinted atlas; pole/crossbar faces the
+    // shared untinted copy (see scripts/lib/banner-icon.ts).
+    const textures = new Set(
+      icon.elements.flatMap((el) => Object.values(el.faces).map((face) => face.texture)),
+    );
+    expect(textures).toEqual(
+      new Set(["/textures/item/white_banner.png", "/textures/item/banner_base.png"]),
+    );
     expect(result.bannerIconsToSynthesize).toEqual(new Map([["white", "item/white_banner"]]));
   });
 });

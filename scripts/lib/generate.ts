@@ -1,3 +1,8 @@
+import {
+  BANNER_BASE_ATLAS_REF,
+  BANNER_TEMPLATE_TEXTURE_REF,
+  bannerCompoundIcon,
+} from "./banner-icon.ts";
 import { toBedrockColorName } from "./bedrock-colors.ts";
 import { CATEGORIES } from "./category.ts";
 import { buildItemTagIndex, deriveFamily, FAMILY_CATEGORY } from "./family.ts";
@@ -55,7 +60,7 @@ export interface GenerateOutput {
   meta: Meta;
   /** Every texture ref that should be copied into public/textures/. */
   texturesToCopy: Set<string>;
-  /** Dye color id -> destination texture ref, for banner icons the caller must generate (see scripts/lib/banner-icon.ts). */
+  /** Dye color id -> destination texture ref, for the tinted banner atlas copies the caller must generate (plus the shared untinted BANNER_BASE_ATLAS_REF copy when non-empty -- see scripts/lib/banner-icon.ts). */
   bannerIconsToSynthesize: Map<string, string>;
   /** Source atlas texture ref -> destination texture ref, for lightning rod icons the caller must generate (see scripts/lib/lightning-rod-icon.ts). Keyed by source so oxidation variants sharing one atlas only synthesize once. */
   lightningRodIconsToSynthesize: Map<string, string>;
@@ -226,9 +231,17 @@ export function generate(input: GenerateInput): GenerateOutput {
         : undefined;
 
     let icon: Item["icon"];
-    if (candidate?.type === "banner" && textureExists(`block/${candidate.colorId}_wool`)) {
+    if (
+      candidate?.type === "banner" &&
+      textureExists(BANNER_TEMPLATE_TEXTURE_REF) &&
+      textureExists(`block/${candidate.colorId}_wool`)
+    ) {
+      // A hand-authored 3-element compound (pole + crossbar + hanging flag)
+      // rather than vendored geometry -- banners have none (see
+      // scripts/lib/banner-icon.ts for the full derivation and the
+      // tinted/untinted atlas split its two texture paths encode).
       const ref = `item/${candidate.colorId}_banner`;
-      icon = { type: "flat", texture: `/textures/${ref}.png` };
+      icon = bannerCompoundIcon(`/textures/${ref}.png`, `/textures/${BANNER_BASE_ATLAS_REF}.png`);
       bannerIconsToSynthesize.set(candidate.colorId, ref);
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;

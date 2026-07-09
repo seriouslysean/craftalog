@@ -538,9 +538,10 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .icon {
     width: 100%;
     height: 100%;
-    /* Every flat texture is a square 16x16 except banners (20x40) --
-       object-fit: contain scales those down to fit the square slot instead
-       of overflowing it, and is a no-op for the square case. */
+    /* Every current flat texture is square, so this is a no-op -- kept as
+       the safety net that used to matter for banners' 20x40 flat crop
+       (since replaced by a 3D compound icon): any future non-square flat
+       texture scales down to fit the square slot instead of overflowing. */
     object-fit: contain;
   }
 
