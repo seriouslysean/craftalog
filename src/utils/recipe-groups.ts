@@ -43,6 +43,28 @@ function ingredientLabel(ingredient: Ingredient, getItemName: (id: string) => st
   return ingredient.tag ? humanizeTagLabel(ingredient.tag) : getItemName(ingredient.items[0]);
 }
 
+/**
+ * Vanilla groups that are a "re-dye an existing item" variant of a base
+ * craft group targeting the exact same set of result items (confirmed
+ * against the real generated data: harness/harness_dye both produce all 16
+ * harness colors, bed/bed_dye all 16 bed colors, carpet/carpet_dye all 18
+ * carpet variants) -- normalized to the base group name so both sides of
+ * the pair collapse into one VariantGroup instead of two. Every other
+ * dye-only group (bundle_dye, dyed_candle, shulker_box_dye, ...) has no
+ * separate base craft group to alias to -- colors are its only recipes for
+ * that shape, so it's already a complete collapse key on its own.
+ */
+const REDYE_GROUP_ALIASES: Record<string, string> = {
+  harness_dye: "harness",
+  bed_dye: "bed",
+  carpet_dye: "carpet",
+};
+
+function normalizeVariantGroupKey(group: string | undefined): string | undefined {
+  if (!group) return undefined;
+  return REDYE_GROUP_ALIASES[group] ?? group;
+}
+
 export interface SiblingRecipe {
   recipeId: string;
   type: RecipeData["type"];
@@ -59,6 +81,9 @@ export interface SiblingRecipe {
 export interface RecipeGroup {
   resultId: string;
   family: string;
+  familyId: string;
+  /** Normalized vanilla `group` field shared by this result's recipes (see normalizeVariantGroupKey), or undefined if none carry one. Used to fold same-shape/different-material result items into one tabbed VariantGroup -- see collapseVariantGroups. */
+  variantKey: string | undefined;
   /** Alphabetically-first recipe id — the group's default/linked-to recipe. */
   canonicalId: string;
   count: number;
@@ -196,6 +221,8 @@ export function groupRecipes(
     groups.push({
       resultId,
       family: familyDisplayName(members[0].family),
+      familyId: members[0].family.id,
+      variantKey: normalizeVariantGroupKey(members[0].group),
       canonicalId: members[0].id,
       count,
       siblings,
@@ -203,6 +230,58 @@ export function groupRecipes(
   }
 
   return groups;
+}
+
+export interface VariantGroup {
+  /** The shared, normalized vanilla `group` field every member's canonical recipe carries (see normalizeVariantGroupKey). */
+  groupKey: string;
+  /** Every member RecipeGroup (one per distinct result item), sorted by resultId. variants[0] is this card's default/linked-to variant, matching RecipeGroup.canonicalId's own "alphabetically first" convention. */
+  variants: RecipeGroup[];
+}
+
+/**
+ * Folds RecipeGroups that share a normalized vanilla `group` field (see
+ * RecipeGroup.variantKey) into one tabbed VariantGroup -- e.g. all 16
+ * harness colors collapse into one "Harnesses" card instead of 16 separate
+ * catalog entries. A groupKey with only one member (most copper
+ * oxidation-tier groups, since vanilla doesn't tag every tier under one
+ * shared group the way it does for wood/color families) isn't worth a tab
+ * UI, so it's returned as a plain singleton alongside every RecipeGroup
+ * with no variantKey at all.
+ */
+export function collapseVariantGroups(groups: RecipeGroup[]): {
+  variantGroups: VariantGroup[];
+  singletons: RecipeGroup[];
+} {
+  const byKey = new Map<string, RecipeGroup[]>();
+  const singletons: RecipeGroup[] = [];
+
+  for (const group of groups) {
+    if (!group.variantKey) {
+      singletons.push(group);
+      continue;
+    }
+    const bucket = byKey.get(group.variantKey);
+    if (bucket) {
+      bucket.push(group);
+    } else {
+      byKey.set(group.variantKey, [group]);
+    }
+  }
+
+  const variantGroups: VariantGroup[] = [];
+  for (const [groupKey, members] of byKey) {
+    if (members.length === 1) {
+      singletons.push(members[0]);
+      continue;
+    }
+    variantGroups.push({
+      groupKey,
+      variants: members.toSorted((a, b) => a.resultId.localeCompare(b.resultId)),
+    });
+  }
+
+  return { variantGroups, singletons };
 }
 
 /** Looks up a recipe's group by its own recipe id (not just the canonical id). */

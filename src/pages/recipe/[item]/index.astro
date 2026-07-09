@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import RecipePage from '../../../components/RecipePage.astro';
 import {
   buildRecipeHrefMap,
+  collapseVariantGroups,
   groupDisplayName,
   groupItemSlug,
   groupRecipes,
@@ -22,6 +23,12 @@ export async function getStaticPaths() {
   );
   const pagerSequence = buildPagerSequence(groups, itemsMap);
   const recipeHrefs = buildRecipeHrefMap(groups, itemsMap);
+  const { variantGroups } = collapseVariantGroups(groups);
+  const variantGroupByResultId = new Map(
+    variantGroups.flatMap((variantGroup) =>
+      variantGroup.variants.map((variant) => [variant.resultId, variantGroup]),
+    ),
+  );
 
   // Every group's canonical recipe is reachable at the bare /recipe/{item}/
   // path -- non-canonical siblings live at /recipe/{item}/{slug}/ instead
@@ -41,6 +48,7 @@ export async function getStaticPaths() {
         itemSlug,
         canonicalId: group.canonicalId,
         siblings: group.siblings,
+        variantGroup: variantGroupByResultId.get(group.resultId),
         ...pagerNeighbors(pagerSequence, group.canonicalId),
       },
     };
