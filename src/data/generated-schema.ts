@@ -47,6 +47,8 @@ export const recipeSchema = z.object({
   /** URL-safe /recipe/{item}/{slug}/ segment, unique within the recipe's result-item group (see scripts/lib/recipe-slug.ts). */
   slug: z.string(),
   group: z.string().optional(),
+  /** This result item's shape-family collapse key, derived from vanilla item tags (e.g. "slabs") -- see scripts/lib/shape-tag.ts's deriveShapeTag. Absent when the result isn't in any allow-listed shape tag. */
+  shapeTag: z.string().optional(),
   // Vanilla's recipe schema allows a resultless special recipe (e.g.
   // crafting_special_repairitem) -- generate.ts excludes any recipe shaped
   // like that from what's actually emitted, so every recipe here has one in

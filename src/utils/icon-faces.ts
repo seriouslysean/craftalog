@@ -121,15 +121,18 @@ function iconGeometryFingerprint(icon: IconData): unknown {
  * iconGeometryFingerprint), i.e. whether iconSwapTextures' texture-URL-only
  * swap is safe for this group. This does NOT always hold: verified against
  * the real generated data (see tests/icon-faces.test.ts's regression test),
- * 41 of 42 current variant groups pass, but wooden_trapdoor's oak/dark_oak
- * members use vanilla's legacy non-orientable trapdoor template (different
- * per-face uv rects -- flipped/offset top and side crops) while its other 10
- * woods use the newer orientable template -- a real vanilla data split, not
- * a pipeline bug (see scripts/lib/model.ts and vendor/mcmeta-summary's
- * template_trapdoor_bottom vs template_orientable_trapdoor_bottom). A future
- * mcmeta version bump could introduce a similar split in a currently-uniform
- * group; this check lets a caller (variant-icons.json.ts) degrade that one
- * group safely (omit its swap textures) without a hand-maintained denylist.
+ * all current variant groups pass except "trapdoors" (see
+ * src/utils/recipe-groups.ts's shapeTag-derived collapse -- this group now
+ * spans every wood + iron + copper trapdoor, not just the 12 wood ones),
+ * whose oak/dark_oak members use vanilla's legacy non-orientable trapdoor
+ * template (different per-face uv rects -- flipped/offset top and side
+ * crops) while every other wood uses the newer orientable template -- a real
+ * vanilla data split, not a pipeline bug (see scripts/lib/model.ts and
+ * vendor/mcmeta-summary's template_trapdoor_bottom vs
+ * template_orientable_trapdoor_bottom). A future mcmeta version bump could
+ * introduce a similar split in a currently-uniform group; this check lets a
+ * caller (variant-icons.json.ts) degrade that one group safely (omit its
+ * swap textures) without a hand-maintained denylist.
  */
 export function isIconGeometryUniform(icons: IconData[]): boolean {
   if (icons.length <= 1) return true;

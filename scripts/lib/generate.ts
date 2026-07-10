@@ -30,6 +30,7 @@ import type { IconCandidate } from "./model.ts";
 import { derivePatternedBanners, PATTERNED_BANNER_GROUP } from "./patterned-banner.ts";
 import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
+import { deriveShapeTag } from "./shape-tag.ts";
 import {
   SHIELD_ATLAS_REF,
   SHIELD_TEMPLATE_TEXTURE_REF,
@@ -237,6 +238,7 @@ export function generate(input: GenerateInput): GenerateOutput {
       itemTagIndex,
     );
     if (derivedFamily.usedFallback) fallbackFamilyItems.push(resultId);
+    const shapeTag = deriveShapeTag(resultId, itemTagIndex);
 
     if (!(derivedFamily.id in familiesUsed)) {
       const categoryId = FAMILY_CATEGORY[derivedFamily.id];
@@ -259,7 +261,12 @@ export function generate(input: GenerateInput): GenerateOutput {
     }
 
     const slug = slugify(deriveRecipeSlugSource(id, resultId));
-    const recipe = { ...transformed, family: derivedFamily.id, slug };
+    const recipe = {
+      ...transformed,
+      family: derivedFamily.id,
+      slug,
+      ...(shapeTag ? { shapeTag } : {}),
+    };
     recipes[id] = recipe;
     counts[recipe.type] += 1;
   }

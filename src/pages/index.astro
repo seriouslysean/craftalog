@@ -268,10 +268,20 @@ const totalCards = cards.length;
           </h2>
           {category.families.map((family) => (
             <div class="catalog__family-group" data-family-group={family.familyId}>
-              <h3 class="catalog__family-title">
-                {family.familyName}{' '}
-                <span class="catalog__family-group-count">({family.cards.length})</span>
-              </h3>
+              {
+                // A family that collapsed to a single card (e.g. Signs,
+                // Hanging Signs, Shelves -- every vanilla variant is wood-only,
+                // so there's nothing left to distinguish within this section)
+                // doesn't need its own heading repeating a count of 1 -- the
+                // card's own name already says what it is. Multi-card families
+                // keep the heading, which is what makes the section scannable.
+                family.cards.length > 1 && (
+                  <h3 class="catalog__family-title">
+                    {family.familyName}{' '}
+                    <span class="catalog__family-group-count">({family.cards.length})</span>
+                  </h3>
+                )
+              }
               <ul class="catalog__grid">
                 {family.cards.map((card) => (
                   <li
