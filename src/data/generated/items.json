@@ -2811,7 +2811,7 @@
       "type": "flat"
     },
     "id": "bolt_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Bolt Armor Trim",
     "slug": "bolt-armor-trim-smithing-template"
   },
   "bone": {
@@ -4552,7 +4552,7 @@
       "type": "flat"
     },
     "id": "coast_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Coast Armor Trim",
     "slug": "coast-armor-trim-smithing-template"
   },
   "cobbled_deepslate": {
@@ -5982,7 +5982,7 @@
       "type": "flat"
     },
     "id": "creeper_banner_pattern",
-    "name": "Banner Pattern",
+    "name": "Creeper Charge Banner Pattern",
     "slug": "creeper-banner-pattern"
   },
   "creeper_head": {
@@ -8318,7 +8318,7 @@
       "type": "flat"
     },
     "id": "dune_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Dune Armor Trim",
     "slug": "dune-armor-trim-smithing-template"
   },
   "echo_shard": {
@@ -9505,7 +9505,7 @@
       "type": "flat"
     },
     "id": "eye_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Eye Armor Trim",
     "slug": "eye-armor-trim-smithing-template"
   },
   "feather": {
@@ -9614,7 +9614,7 @@
       "type": "flat"
     },
     "id": "flow_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Flow Armor Trim",
     "slug": "flow-armor-trim-smithing-template"
   },
   "flower_banner_pattern": {
@@ -9623,7 +9623,7 @@
       "type": "flat"
     },
     "id": "flower_banner_pattern",
-    "name": "Banner Pattern",
+    "name": "Flower Charge Banner Pattern",
     "slug": "flower-banner-pattern"
   },
   "flower_pot": {
@@ -11351,7 +11351,7 @@
       "type": "flat"
     },
     "id": "host_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Host Armor Trim",
     "slug": "host-armor-trim-smithing-template"
   },
   "ice": {
@@ -14738,7 +14738,7 @@
       "type": "flat"
     },
     "id": "mojang_banner_pattern",
-    "name": "Banner Pattern",
+    "name": "Thing Banner Pattern",
     "slug": "mojang-banner-pattern"
   },
   "moss_block": {
@@ -15126,7 +15126,7 @@
       "type": "flat"
     },
     "id": "netherite_upgrade_smithing_template",
-    "name": "Smithing Template",
+    "name": "Netherite Upgrade",
     "slug": "netherite-upgrade-smithing-template"
   },
   "netherrack": {
@@ -26818,7 +26818,7 @@
       "type": "flat"
     },
     "id": "raiser_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Raiser Armor Trim",
     "slug": "raiser-armor-trim-smithing-template"
   },
   "raw_copper": {
@@ -27494,7 +27494,7 @@
       "type": "flat"
     },
     "id": "rib_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Rib Armor Trim",
     "slug": "rib-armor-trim-smithing-template"
   },
   "rose_bush": {
@@ -28230,7 +28230,7 @@
       "type": "flat"
     },
     "id": "sentry_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Sentry Armor Trim",
     "slug": "sentry-armor-trim-smithing-template"
   },
   "shaper_armor_trim_smithing_template": {
@@ -28239,7 +28239,7 @@
       "type": "flat"
     },
     "id": "shaper_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Shaper Armor Trim",
     "slug": "shaper-armor-trim-smithing-template"
   },
   "shears": {
@@ -28337,7 +28337,7 @@
       "type": "flat"
     },
     "id": "silence_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Silence Armor Trim",
     "slug": "silence-armor-trim-smithing-template"
   },
   "skull_banner_pattern": {
@@ -28346,7 +28346,7 @@
       "type": "flat"
     },
     "id": "skull_banner_pattern",
-    "name": "Banner Pattern",
+    "name": "Skull Charge Banner Pattern",
     "slug": "skull-banner-pattern"
   },
   "slime_ball": {
@@ -28641,7 +28641,7 @@
       "type": "flat"
     },
     "id": "snout_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Snout Armor Trim",
     "slug": "snout-armor-trim-smithing-template"
   },
   "snow": {
@@ -28817,7 +28817,7 @@
       "type": "flat"
     },
     "id": "spire_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Spire Armor Trim",
     "slug": "spire-armor-trim-smithing-template"
   },
   "spruce_boat": {
@@ -29937,7 +29937,7 @@
       "type": "flat"
     },
     "id": "tide_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Tide Armor Trim",
     "slug": "tide-armor-trim-smithing-template"
   },
   "tinted_glass": {
@@ -30120,7 +30120,7 @@
       "type": "flat"
     },
     "id": "vex_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Vex Armor Trim",
     "slug": "vex-armor-trim-smithing-template"
   },
   "vine": {
@@ -30138,7 +30138,7 @@
       "type": "flat"
     },
     "id": "ward_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Ward Armor Trim",
     "slug": "ward-armor-trim-smithing-template"
   },
   "warped_button": {
@@ -33876,7 +33876,7 @@
       "type": "flat"
     },
     "id": "wayfinder_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Wayfinder Armor Trim",
     "slug": "wayfinder-armor-trim-smithing-template"
   },
   "weathered_chiseled_copper": {
@@ -35100,7 +35100,7 @@
       "type": "flat"
     },
     "id": "wild_armor_trim_smithing_template",
-    "name": "Smithing Template",
+    "name": "Wild Armor Trim",
     "slug": "wild-armor-trim-smithing-template"
   },
   "wildflowers": {
