@@ -23,6 +23,7 @@ import type {
   ItemsOutput,
   Meta,
   RawBannerPatternRegistry,
+  RawBedrockGeometryFile,
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
@@ -40,6 +41,10 @@ const VENDOR_TEXTURES_DIR = path.join(ROOT, "vendor/mcmeta-assets/assets/minecra
 const VENDOR_BEDROCK_ITEMS_DIR = path.join(
   ROOT,
   "vendor/bedrock-samples/resource_pack/textures/items",
+);
+const VENDOR_BEDROCK_MODELS_DIR = path.join(
+  ROOT,
+  "vendor/bedrock-samples/resource_pack/models/entity",
 );
 const GENERATED_DIR = path.join(ROOT, "src/data/generated");
 const PUBLIC_DIR = path.join(ROOT, "public");
@@ -138,6 +143,9 @@ function checkDrift(committed: Committed): void {
   const bannerPatternTagsRaw = readJson<RawTagsData>(
     path.join(VENDOR_SUMMARY_DIR, "data/tag/banner_pattern/data.json"),
   );
+  const copperGolemGeoRaw = readJson<RawBedrockGeometryFile>(
+    path.join(VENDOR_BEDROCK_MODELS_DIR, "copper_golem.geo.json"),
+  );
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
@@ -154,6 +162,7 @@ function checkDrift(committed: Committed): void {
     enUs,
     bannerPatternsRaw,
     bannerPatternTagsRaw,
+    copperGolemGeoRaw,
     textureExists,
     bedrockBedIconExists,
   });

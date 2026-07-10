@@ -26,6 +26,7 @@ import { sortKeysDeep } from "./lib/strings.ts";
 import { firstAnimationFrame } from "./lib/texture-frame.ts";
 import type {
   RawBannerPatternRegistry,
+  RawBedrockGeometryFile,
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
@@ -42,6 +43,10 @@ const VENDOR_TEXTURES_DIR = path.join(ROOT, "vendor/mcmeta-assets/assets/minecra
 const VENDOR_BEDROCK_ITEMS_DIR = path.join(
   ROOT,
   "vendor/bedrock-samples/resource_pack/textures/items",
+);
+const VENDOR_BEDROCK_MODELS_DIR = path.join(
+  ROOT,
+  "vendor/bedrock-samples/resource_pack/models/entity",
 );
 const GENERATED_DIR = path.join(ROOT, "src/data/generated");
 const PUBLIC_TEXTURES_DIR = path.join(ROOT, "public/textures");
@@ -78,6 +83,9 @@ function main(): void {
   const bannerPatternTagsRaw = readJson<RawTagsData>(
     path.join(VENDOR_SUMMARY_DIR, "data/tag/banner_pattern/data.json"),
   );
+  const copperGolemGeoRaw = readJson<RawBedrockGeometryFile>(
+    path.join(VENDOR_BEDROCK_MODELS_DIR, "copper_golem.geo.json"),
+  );
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
@@ -97,6 +105,7 @@ function main(): void {
     leatherArmorIconsToSynthesize,
     patternedBannerIconsToSynthesize,
     shieldIconToCopy,
+    copperGolemIconsToCopy,
   } = generate({
     version,
     recipesRaw,
@@ -107,6 +116,7 @@ function main(): void {
     enUs,
     bannerPatternsRaw,
     bannerPatternTagsRaw,
+    copperGolemGeoRaw,
     textureExists,
     bedrockBedIconExists,
   });
@@ -197,6 +207,17 @@ function main(): void {
     fs.copyFileSync(sourcePath, destPath);
   }
 
+  // Copper golem statue textures are already real Java assets (mcmeta-assets
+  // -- confirmed byte-identical to bedrock-samples' own copies) -- only the
+  // shape is extracted from Bedrock (see scripts/lib/copper-golem-icon.ts),
+  // so the texture itself is just a verbatim copy, same as shield/bed.
+  for (const [textureRef, ref] of copperGolemIconsToCopy) {
+    const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${textureRef}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
   // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
   // no synthesis, just a straight copy with the color-name remap applied
   // (see scripts/lib/bedrock-colors.ts).
@@ -238,6 +259,7 @@ function main(): void {
   console.log(`leather armor icons: ${leatherArmorIconsToSynthesize.size}`);
   console.log(`patterned banner icons: ${patternedBannerIconsToSynthesize.size}`);
   console.log(`shield icon:      ${shieldIconToCopy ? 1 : 0}`);
+  console.log(`copper golem icons: ${copperGolemIconsToCopy.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
