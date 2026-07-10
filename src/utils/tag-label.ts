@@ -29,10 +29,10 @@ export interface IngredientOption {
  * Builds the label + variant items shown for a multi-option ingredient.
  * Returns `null` for single-item ingredients (nothing to show).
  *
- * - Tag-based (e.g. "planks"): title-cased tag, "Planks" -- no "Any" prefix
- *   here, since this label is always shown nested under an "Accepts any of
- *   these" heading and repeating "any" reads as if the ingredient can go
- *   anywhere in the grid rather than accept any of these item variants.
+ * - Tag-based (e.g. "planks"): `humanizeTagLabel`, "Any Planks". Each
+ *   ingredient slot gets its own heading in `IngredientOptions.astro`, so
+ *   the label must stand on its own -- there's no shared "accepts any of
+ *   these" heading supplying that meaning for every row anymore.
  * - Non-tag multi-option: first item's name (the cycling icon + option
  *   count carry the "or others" information, so the label doesn't need to).
  */
@@ -44,7 +44,9 @@ export function ingredientOption(
     return null;
   }
 
-  const label = ingredient.tag ? tagWords(ingredient.tag) : getItemName(ingredient.items[0]);
+  const label = ingredient.tag
+    ? humanizeTagLabel(ingredient.tag)
+    : getItemName(ingredient.items[0]);
 
   return { label, items: ingredient.items };
 }

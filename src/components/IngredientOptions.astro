@@ -17,18 +17,26 @@ const { entries, itemsMap, recipeHrefs, note } = Astro.props;
 
 {
   (entries.length > 0 || note) && (
-    <section class="ingredient-options" aria-label="Ingredient options">
+    <section
+      class="ingredient-options"
+      aria-label={entries.length > 0 ? undefined : 'Ingredient options'}
+      aria-labelledby={entries.length > 0 ? 'ingredient-options-title' : undefined}
+    >
       {entries.length > 0 && (
         <>
-          <h2 class="ingredient-options__title">Accepts any of these</h2>
+          <h2 class="ingredient-options__title" id="ingredient-options-title">
+            Ingredient slot options
+          </h2>
           <ul class="ingredient-options__list">
             {entries.map((entry) => (
               <li class="ingredient-options__row">
                 <span class="ingredient-options__slot">
                   <ItemVariants items={entry.items} itemsMap={itemsMap} recipeHrefs={recipeHrefs} />
                 </span>
-                <span class="ingredient-options__label">{entry.label}</span>
-                <span class="ingredient-options__count">{entry.items.length} options</span>
+                <span class="ingredient-options__detail">
+                  <h3 class="ingredient-options__label">{entry.label}</h3>
+                  <span class="ingredient-options__count">{entry.items.length} options</span>
+                </span>
               </li>
             ))}
           </ul>
@@ -82,13 +90,24 @@ const { entries, itemsMap, recipeHrefs, note } = Astro.props;
     box-shadow: var(--bevel-slot);
   }
 
+  .ingredient-options__detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex: 1;
+    min-width: 0;
+  }
+
   .ingredient-options__label {
+    margin: 0;
     font-size: 0.875rem;
+    font-weight: 400;
     color: var(--color-panel-fg);
   }
 
   .ingredient-options__count {
-    margin-left: auto;
+    flex-shrink: 0;
     font-size: 0.75rem;
     color: var(--color-panel-fg);
     opacity: 0.75;
