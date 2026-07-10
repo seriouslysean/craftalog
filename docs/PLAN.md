@@ -93,6 +93,7 @@ type Recipe = {
   ingredients?: Ingredient[];
   // special only:
   note?: string; // curated human explanation
+  vanillaType?: string; // raw vanilla recipe type id, e.g. "minecraft:crafting_special_bannerduplicate" -- see src/utils/self-referential-specials.ts
 };
 ```
 
@@ -225,6 +226,17 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
 - Multi-option ingredients (tag or array): cycle through variants on a timer
   (like the Minecraft wiki), with the tag label shown (e.g. "Any Planks").
   Cycling is progressive enhancement; first variant renders statically.
+- **Self-referential specials** (banner duplicate, book cloning, firework
+  star fade, map extending, item repair, shield decoration, leather/wolf
+  armor dye): modify an existing item rather than craft a new one, so they
+  don't render as an equal variant tab alongside the real craft recipe.
+  Classified by an explicit allowlist of vanilla type ids, keyed on the
+  `vanillaType` field (see "Generated data contract" above) —
+  `src/utils/self-referential-specials.ts`. Demoted siblings render in a
+  visually secondary strip below the primary tab row (`RecipeVariants.astro`'s
+  `secondary` prop) instead of an equal tab; an unrecognized vanilla type id
+  (including any a future version bump introduces) fails open to the
+  current equal-tab behavior.
 
 ## Workflows
 

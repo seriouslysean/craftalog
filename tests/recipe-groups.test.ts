@@ -121,6 +121,7 @@ describe("groupRecipes", () => {
         family: { collection: "families", id: "banners" },
         result: { id: "black_banner", count: 1 },
         note: "Combine a banner with a matching blank banner to duplicate its pattern.",
+        vanillaType: "minecraft:crafting_special_bannerduplicate",
       }),
     ];
 
@@ -131,8 +132,16 @@ describe("groupRecipes", () => {
     expect(special).toMatchObject({
       label: "Combine a banner with a matching blank …",
       iconItemId: null,
+      // `vanillaType` survives onto the sibling -- consumed by
+      // src/utils/self-referential-specials.ts (via RecipePage.astro) to
+      // demote this sibling below the primary variant tabs.
+      vanillaType: "minecraft:crafting_special_bannerduplicate",
     });
-    expect(shaped).toMatchObject({ label: "from Black wool", iconItemId: "black_wool" });
+    expect(shaped).toMatchObject({
+      label: "from Black wool",
+      iconItemId: "black_wool",
+      vanillaType: undefined,
+    });
   });
 
   it("falls back to each sibling's first ingredient when they share nothing", () => {

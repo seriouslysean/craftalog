@@ -108,6 +108,10 @@ describe("transformRecipe — crafting_transmute", () => {
 
     const recipe = transformRecipe("black_bundle", raw, tags);
     expect(recipe?.type).toBe("transmute");
+    // Only "special" carries `vanillaType` -- shaped/shapeless/transmute each
+    // already map 1:1 to a single vanilla type via `type` itself (see
+    // generated-schema.ts's recipeSchema).
+    expect(recipe?.vanillaType).toBeUndefined();
     expect(recipe?.ingredients).toEqual([
       { items: ["oak_log", "oak_wood", "stripped_oak_log", "stripped_oak_wood"], tag: "oak_logs" },
       { items: ["black_dye"] },
@@ -129,6 +133,10 @@ describe("transformRecipe — special", () => {
     expect(recipe?.ingredients).toBeUndefined();
     expect(recipe?.key).toBeUndefined();
     expect(recipe?.result).toEqual({ id: "black_banner", count: 1 });
+    // The raw vanilla type id survives the transform (see generated-schema.ts's
+    // recipeSchema) -- consumed by src/utils/self-referential-specials.ts to
+    // demote self-referential specials below the primary variant tabs.
+    expect(recipe?.vanillaType).toBe("minecraft:crafting_special_bannerduplicate");
   });
 
   it("omits result entirely for crafting_special_repairitem (no result in vendored data)", () => {
@@ -137,6 +145,7 @@ describe("transformRecipe — special", () => {
     expect(recipe?.type).toBe("special");
     expect(recipe?.result).toBeUndefined();
     expect(recipe?.note).toBeTruthy();
+    expect(recipe?.vanillaType).toBe("minecraft:crafting_special_repairitem");
   });
 
   it("returns undefined for out-of-scope recipe types", () => {
