@@ -121,6 +121,9 @@ export function transformRecipe(
       // vendored data (it acts on two arbitrary matching-type items).
       ...(raw.result ? { result: toResult(raw.result) } : {}),
       note: SPECIAL_NOTES[raw.type],
+      // Raw vanilla type id, kept alongside the coarse "special" bucket above
+      // -- see generated-schema.ts's recipeSchema for why.
+      vanillaType: raw.type,
     };
   }
 

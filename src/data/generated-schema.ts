@@ -59,6 +59,15 @@ export const recipeSchema = z.object({
   ingredients: z.array(ingredientSchema).optional(),
   // special only
   note: z.string().optional(),
+  // special only -- the raw vanilla recipe type id (e.g.
+  // "minecraft:crafting_special_bannerduplicate"), preserved because the
+  // coarse `type: "special"` bucket above collapses ~11 distinct vanilla
+  // types into one value. shaped/shapeless/transmute don't need this: each
+  // already maps 1:1 to a single vanilla type via `type` itself. Consumed by
+  // src/utils/self-referential-specials.ts to demote self-referential
+  // specials (banner duplicate, shield decoration, ...) below the primary
+  // variant tabs -- see scripts/lib/recipes.ts's transformRecipe.
+  vanillaType: z.string().optional(),
 });
 
 /**

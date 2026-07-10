@@ -96,6 +96,8 @@ function stripOxidationPrefixes(resultId: string): string {
 export interface SiblingRecipe {
   recipeId: string;
   type: RecipeData["type"];
+  /** Raw vanilla recipe type id, only set when `type === "special"` -- see src/utils/self-referential-specials.ts. */
+  vanillaType: string | undefined;
   /** e.g. "from Bone", or a truncated note for special recipes. Null for singletons. */
   label: string | null;
   /** The distinguishing ingredient's item id. Null for singletons and special recipes. */
@@ -227,6 +229,7 @@ export function groupRecipes(
         return {
           recipeId: recipe.id,
           type: recipe.type,
+          vanillaType: recipe.vanillaType,
           label: null,
           iconItemId: null,
           ingredientItemIds,
@@ -238,6 +241,7 @@ export function groupRecipes(
         return {
           recipeId: recipe.id,
           type: recipe.type,
+          vanillaType: recipe.vanillaType,
           label: recipe.note ? truncateNote(recipe.note) : null,
           iconItemId: null,
           ingredientItemIds,
@@ -251,6 +255,7 @@ export function groupRecipes(
       return {
         recipeId: recipe.id,
         type: recipe.type,
+        vanillaType: recipe.vanillaType,
         label: `from ${ingredientLabel(distinguishing, getItemName)}`,
         iconItemId: distinguishing.items[0],
         ingredientItemIds,

@@ -17,6 +17,7 @@ import {
   type SiblingRecipe,
   type VariantGroup,
 } from '../utils/recipe-groups';
+import { isSelfReferentialSpecial } from '../utils/self-referential-specials';
 import { ingredientOption, type IngredientOption } from '../utils/tag-label';
 import { withBase } from '../utils/with-base';
 import type { ItemData, RecipeData } from '../content.config';
@@ -62,13 +63,43 @@ const {
 const resultItem = recipe.result ? itemsMap.get(recipe.result.id) : undefined;
 const getItemName = (id: string) => itemsMap.get(id)?.name ?? id;
 
-const variants = siblings.map((sibling) => ({
+const toVariant = (sibling: SiblingRecipe) => ({
   recipeId: sibling.recipeId,
   label: sibling.label,
   iconItem:
     (sibling.iconItemId ? itemsMap.get(sibling.iconItemId) : undefined) ?? resultItem ?? null,
   href: withBase(recipePath(itemSlug, canonicalId, sibling.recipeId, sibling.slug)),
-}));
+});
+
+// Self-referential specials (banner duplicate, shield decoration, ...)
+// modify an existing item rather than craft a new one -- demoted to a
+// secondary strip below the primary tab row instead of an equal tab (see
+// src/utils/self-referential-specials.ts). Every other sibling, including
+// any special type this repo hasn't classified, stays in the primary row --
+// unchanged from current behavior. Only demotes when at least one *other*
+// sibling stays primary -- e.g. written_book's sole recipe is bookcloning
+// itself (no craft recipe exists to demote it "below"), so with nothing
+// left to demote below, it stays undivided, exactly like any other
+// singleton (no tabs at all).
+const hasPrimarySibling = siblings.some(
+  (sibling) => !isSelfReferentialSpecial(sibling.vanillaType),
+);
+
+const primarySiblings = hasPrimarySibling
+  ? siblings.filter((sibling) => !isSelfReferentialSpecial(sibling.vanillaType))
+  : siblings;
+const secondarySiblings = hasPrimarySibling
+  ? siblings.filter((sibling) => isSelfReferentialSpecial(sibling.vanillaType))
+  : [];
+
+const variants = primarySiblings.map(toVariant);
+const secondaryVariants = secondarySiblings.map(toVariant);
+// A lone primary variant still renders as a (single-chip) tab row whenever a
+// secondary strip sits below it, so a demoted recipe's own page always has a
+// link back to the real craft recipe -- without a secondary strip, a lone
+// primary variant is just an ordinary singleton and stays hidden, unchanged
+// from current behavior.
+const showPrimaryVariants = variants.length > 1 || secondaryVariants.length > 0;
 
 // The outer color/material tab bar, when this item is part of a collapsed
 // VariantGroup -- result-first icons (each tab shows that variant's own
@@ -192,7 +223,18 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
       )
     }
 
-    {siblings.length > 1 && <RecipeVariants siblings={variants} currentId={recipe.id} />}
+    {showPrimaryVariants && <RecipeVariants siblings={variants} currentId={recipe.id} />}
+
+    {
+      secondaryVariants.length > 0 && (
+        <RecipeVariants
+          siblings={secondaryVariants}
+          currentId={recipe.id}
+          heading="Modifies an existing item"
+          secondary
+        />
+      )
+    }
 
     {
       hasGrid ? (
