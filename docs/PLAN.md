@@ -88,6 +88,7 @@ type Recipe = {
   family: string; // derived browse taxonomy, e.g. "Slabs" — see scripts/lib/family.ts
   slug: string; // URL-safe /recipe/{item}/{slug}/ segment, unique within its result-item group — see scripts/lib/recipe-slug.ts
   group?: string; // vanilla group, e.g. "planks", "wooden_door"
+  shapeTag?: string; // shape-family collapse key from vanilla item tags, e.g. "slabs" — see scripts/lib/shape-tag.ts
   result: { id: string; count: number };
   // shaped only — placement matters:
   pattern?: string[]; // e.g. ["X", "#"]; keys index into `key`
