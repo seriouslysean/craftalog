@@ -5,6 +5,7 @@ import type {
   RawBannerPatternRegistry,
   RawBedrockGeometryFile,
   RawItemDefinitionsData,
+  RawLegacyBedrockGeometryFile,
   RawModelsData,
   RawRecipesData,
   RawTagsData,
@@ -15,6 +16,13 @@ import type {
 // exercising copperGolemCompoundIcon at all -- see copper-golem-icon.test.ts
 // for that.
 const emptyCopperGolemGeoRaw: RawBedrockGeometryFile = { "minecraft:geometry": [] };
+
+// Same idea for shulker_box candidates -- see shulker-icon.test.ts for the
+// real extraction coverage.
+const emptyShulkerGeoRaw: RawLegacyBedrockGeometryFile = {
+  format_version: "1.8.0",
+  "geometry.shulker.v1.8": { texturewidth: 64, textureheight: 64, bones: [] },
+};
 
 const recipesRaw: RawRecipesData = {
   torch: {
@@ -156,6 +164,7 @@ function run() {
     bannerPatternsRaw: {},
     bannerPatternTagsRaw: {},
     copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+    shulkerGeoRaw: emptyShulkerGeoRaw,
     textureExists: (ref) => existingRefs.has(ref),
   });
 }
@@ -339,6 +348,7 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       bannerPatternsRaw: {},
       bannerPatternTagsRaw: {},
       copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists: (ref) =>
         new Set(["item/stick", "block/widget_body", "block/unresolvable_widget_particle"]).has(ref),
     });
@@ -411,6 +421,7 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
       bannerPatternsRaw,
       bannerPatternTagsRaw,
       copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
     });
   }
@@ -511,6 +522,7 @@ describe("generate: shield (bespoke special renderer, no vendored geometry)", ()
       bannerPatternsRaw: {},
       bannerPatternTagsRaw: {},
       copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
       bedrockBedIconExists: () => false,
     });
@@ -593,6 +605,7 @@ describe("generate: copper golem statue (real geometry extracted from vendored B
       bannerPatternsRaw: {},
       bannerPatternTagsRaw: {},
       copperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
       bedrockBedIconExists: () => false,
     });
@@ -619,5 +632,86 @@ describe("generate: copper golem statue (real geometry extracted from vendored B
     });
     expect(result.meta.unresolvedIcons).toContain("waxed_copper_golem_statue");
     expect(result.copperGolemIconsToCopy.size).toBe(0);
+  });
+});
+
+describe("generate: shulker box (real geometry extracted from vendored Bedrock data, legacy schema)", () => {
+  const shulkerRecipesRaw: RawRecipesData = {
+    black_shulker_box: {
+      type: "minecraft:crafting_shapeless",
+      group: "shulker_box_dye",
+      ingredients: ["minecraft:shulker_box", "minecraft:black_dye"],
+      result: { id: "minecraft:black_shulker_box" },
+    },
+  };
+  // Mirrors the real vendored shape (see tests/model.test.ts's matching case).
+  const shulkerItemDefsRaw: RawItemDefinitionsData = {
+    black_shulker_box: {
+      model: {
+        type: "minecraft:special",
+        base: "minecraft:item/black_shulker_box",
+        model: { type: "minecraft:shulker_box", texture: "minecraft:shulker_black" },
+      },
+    },
+  };
+  // Mirrors the real vendored shape (see scripts/lib/shulker-icon.ts's docstring).
+  const shulkerGeoRaw: RawLegacyBedrockGeometryFile = {
+    format_version: "1.8.0",
+    "geometry.shulker.v1.8": {
+      texturewidth: 64,
+      textureheight: 64,
+      bones: [
+        { name: "lid", cubes: [{ origin: [-8, 4, -8], size: [16, 12, 16], uv: [0, 0] }] },
+        { name: "base", cubes: [{ origin: [-8, 0, -8], size: [16, 8, 16], uv: [0, 28] }] },
+        { name: "head", cubes: [{ origin: [-3, 6, -3], size: [6, 6, 6], uv: [0, 52] }] },
+      ],
+    },
+  };
+
+  function runShulker(textureExists: (ref: string) => boolean) {
+    return generate({
+      version: "26.2",
+      recipesRaw: shulkerRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: shulkerItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw,
+      textureExists,
+      bedrockBedIconExists: () => false,
+    });
+  }
+
+  it("resolves to a compound icon extracted from the real geometry and queues its Java entity texture for a verbatim copy", () => {
+    const result = runShulker((ref) => ref === "entity/shulker/shulker_black");
+    const icon = result.items.black_shulker_box.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBeUndefined();
+    expect(icon.elements).toHaveLength(2);
+    expect(
+      icon.elements.every((el) =>
+        Object.values(el.faces).every(
+          (face) => face.texture === "/textures/item/shulker_black.png",
+        ),
+      ),
+    ).toBe(true);
+    expect(result.shulkerIconsToCopy).toEqual(
+      new Map([["entity/shulker/shulker_black", "item/shulker_black"]]),
+    );
+    expect(result.meta.unresolvedIcons).not.toContain("black_shulker_box");
+  });
+
+  it("falls back to the placeholder icon when the Java texture doesn't exist on disk, rather than crashing", () => {
+    const result = runShulker(() => false);
+    expect(result.items.black_shulker_box.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("black_shulker_box");
+    expect(result.shulkerIconsToCopy.size).toBe(0);
   });
 });

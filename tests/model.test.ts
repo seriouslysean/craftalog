@@ -563,15 +563,31 @@ describe("resolveIconCandidate", () => {
     });
   });
 
-  it("falls back to the special renderer's base model for non-banner special types (e.g. shulker box)", () => {
+  it("falls back to the special renderer's base model for non-banner special types with no dedicated classification branch (e.g. chest)", () => {
     const specialModels: RawModelsData = {
       ...models,
-      "item/black_shulker_box": {
-        parent: "minecraft:item/template_shulker_box",
-        textures: { particle: "minecraft:block/black_shulker_box" },
+      "item/chest": {
+        parent: "minecraft:item/generated",
+        textures: { layer0: "minecraft:item/chest" },
       },
-      "item/template_shulker_box": {},
     };
+    const specials: RawItemDefinitionsData = {
+      chest: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/chest",
+          model: { type: "minecraft:chest", texture: "minecraft:normal" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("chest", specials, specialModels)).toEqual({
+      type: "flat",
+      textureRef: "item/chest",
+    });
+  });
+
+  it("resolves a shulker_box candidate (textureRef) for a colored minecraft:special shulker_box renderer", () => {
     const specials: RawItemDefinitionsData = {
       black_shulker_box: {
         model: {
@@ -582,9 +598,26 @@ describe("resolveIconCandidate", () => {
       },
     };
 
-    expect(resolveIconCandidate("black_shulker_box", specials, specialModels)).toEqual({
-      type: "flat",
-      textureRef: "block/black_shulker_box",
+    expect(resolveIconCandidate("black_shulker_box", specials, models)).toEqual({
+      type: "shulker_box",
+      textureRef: "entity/shulker/shulker_black",
+    });
+  });
+
+  it("resolves a shulker_box candidate for the undyed default (no color suffix on the texture field)", () => {
+    const specials: RawItemDefinitionsData = {
+      shulker_box: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/shulker_box",
+          model: { type: "minecraft:shulker_box", texture: "minecraft:shulker" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("shulker_box", specials, models)).toEqual({
+      type: "shulker_box",
+      textureRef: "entity/shulker/shulker",
     });
   });
 

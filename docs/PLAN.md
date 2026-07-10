@@ -20,14 +20,17 @@ resume from here plus the task list in the PR description.
    - `vendor/bedrock-samples` → [Mojang/bedrock-samples](https://github.com/Mojang/bedrock-samples),
      pinned to the latest stable tag (`v<major>.<minor>.<patch>.<build>`,
      `-preview` tags excluded). A second, narrowly-scoped vendor source used
-     for exactly two things Java's data has no equivalent for: (1) the 16
+     for exactly three things Java's data has no equivalent for: (1) the 16
      pre-baked bed icon PNGs (`resource_pack/textures/items/bed_<color>.png`
      — beds are the only vanilla item rendered as two composited block
      models rather than a single flat/cube icon); (2) the copper golem
      statue's entity geometry (`resource_pack/models/entity/copper_golem.geo.json`
      — a bespoke Java-rendered item with zero vendored shape data on the
      Java side at all, since Mojang hardcodes the mesh in renderer code, not
-     data — see scripts/lib/copper-golem-icon.ts). Textures for the statue
+     data — see scripts/lib/copper-golem-icon.ts); (3) the shulker box's
+     entity geometry (`resource_pack/models/entity/shulker.geo.json`, legacy
+     pre-1.12 Bedrock schema — same situation as the golem statue, see
+     scripts/lib/shulker-icon.ts). Textures for the statue/shulker box
      still come from `mcmeta-assets` (confirmed byte-identical to Bedrock's
      own copies of the same PNGs), so Java remains authoritative for every
      texture in the catalog; Bedrock only ever contributes geometry/pixels
@@ -173,8 +176,8 @@ inventory icon for a pane genuinely is just a flat colored square, not the
 pane cross-section, so the existing flat fallback is already correct there.
 
 Items rendered via a bespoke Java renderer (`{ type: "minecraft:special", base,
-model }` — chests, shulker boxes, shields, skulls, conduit, decorated pot,
-banners, ...) have no plain model to walk. `base` is resolved through the same
+model }` — chests, shields, skulls, conduit, decorated pot, banners, ...)
+have no plain model to walk. `base` is resolved through the same
 heuristics above as a best-effort stand-in, **except** banners: dye-colored
 banners all share one `base` (no per-color texture exists upstream), so
 `scripts/lib/banner-icon.ts` instead crops the vanilla banner template

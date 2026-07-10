@@ -1,5 +1,5 @@
-import { round4, uvPx } from "./banner-icon.ts";
-import type { IconOutput, RawBedrockCube, RawBedrockGeometryFile } from "./types.ts";
+import { convertBedrockCube } from "./bedrock-geometry.ts";
+import type { IconOutput, RawBedrockGeometryFile } from "./types.ts";
 
 /**
  * The copper golem statue is a `minecraft:special` entity-rendered item
@@ -15,7 +15,9 @@ import type { IconOutput, RawBedrockCube, RawBedrockGeometryFile } from "./types
  * catalog's generic "compound" icon type -- the same category as
  * `extractCompoundElements` (scripts/lib/model.ts) uses for anvil/
  * grindstone, not the hand-authored category banner-icon.ts/shield-icon.ts
- * are in.
+ * are in. The box-UV unwrap + cube-to-element math (`faceUVs`/
+ * `convertBedrockCube`) lives in scripts/lib/bedrock-geometry.ts, shared
+ * with scripts/lib/shulker-icon.ts (the other real-geometry extractor).
  *
  * Textures still come from the Java side (mcmeta-assets) -- confirmed
  * byte-for-byte identical to bedrock-samples' own copies of the same 4
@@ -53,84 +55,6 @@ const SCALE = 16 / 24;
 
 type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
 type CompoundElement = CompoundIcon["elements"][number];
-type CompoundFace = NonNullable<CompoundElement["faces"]["up"]>;
-
-interface FaceUVs {
-  up: [number, number, number, number];
-  down: [number, number, number, number];
-  north: [number, number, number, number];
-  south: [number, number, number, number];
-  east: [number, number, number, number];
-  west: [number, number, number, number];
-}
-
-/**
- * The Bedrock box-UV unwrap for a cube of size w(width, x) x h(height, y) x
- * d(depth, z) at atlas offset (u,v) -- same convention a Java player-skin
- * texture uses (front face famously at a fixed offset from the unwrap's
- * origin). Verified exhaustively against the real texture -- see this
- * file's top docstring.
- */
-function faceUVs(u: number, v: number, w: number, h: number, d: number): FaceUVs {
-  return {
-    up: uvPx(u + d, v, u + d + w, v + d),
-    down: uvPx(u + d + w, v, u + d + 2 * w, v + d),
-    north: uvPx(u + d, v + d, u + d + w, v + d + h),
-    east: uvPx(u + d + w, v + d, u + d + w + d, v + d + h),
-    west: uvPx(u, v + d, u + d, v + d + h),
-    south: uvPx(u + 2 * d + w, v + d, u + 2 * d + 2 * w, v + d + h),
-  };
-}
-
-/**
- * Converts one Bedrock cube (native units, one corner + size, optional
- * uniform `inflate` expand) to an engine-space element (0-16 cube,
- * centered on x/z = 8, feet at y = 0 -- matching Bedrock's own object-space
- * convention for this entity, which is already feet-at-origin).
- */
-function convertCube(cube: RawBedrockCube, atlasTexturePath: string): CompoundElement {
-  const [ox, oy, oz] = cube.origin;
-  const [w, h, d] = cube.size;
-  const inflate = cube.inflate ?? 0;
-
-  const x0 = ox - inflate;
-  const x1 = ox + w + inflate;
-  const y0 = oy - inflate;
-  const y1 = oy + h + inflate;
-  const z0 = oz - inflate;
-  const z1 = oz + d + inflate;
-
-  const from: [number, number, number] = [
-    round4(x0 * SCALE + 8),
-    round4(y0 * SCALE),
-    round4(z0 * SCALE + 8),
-  ];
-  const to: [number, number, number] = [
-    round4(x1 * SCALE + 8),
-    round4(y1 * SCALE),
-    round4(z1 * SCALE + 8),
-  ];
-
-  const [u, v] = cube.uv;
-  const uvs = faceUVs(u, v, w, h, d);
-  const face = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: atlasTexturePath,
-    uv,
-  });
-
-  return {
-    from,
-    to,
-    faces: {
-      up: face(uvs.up),
-      down: face(uvs.down),
-      north: face(uvs.north),
-      south: face(uvs.south),
-      east: face(uvs.east),
-      west: face(uvs.west),
-    },
-  };
-}
 
 /**
  * Builds the copper golem statue's compound icon from the real vendored
@@ -168,7 +92,7 @@ export function copperGolemCompoundIcon(
           `copper golem geometry: bone "${bone.name}" or one of its cubes declares rotation/mirror -- this extractor only supports plain axis-aligned bind-pose cubes (verified absent in the current vendored file; a future update may have introduced one)`,
         );
       }
-      elements.push(convertCube(cube, atlasTexturePath));
+      elements.push(convertBedrockCube(cube, atlasTexturePath, SCALE));
     }
   }
 
