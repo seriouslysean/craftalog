@@ -110,7 +110,13 @@ export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: str
       // face: the crossbar's down face sits exactly coplanar on top of it
       // (both at y = poleTop, pole footprint fully inside the bar's), so
       // declaring both z-fights -- confirmed as a flickering dark notch on
-      // the rendered crossbar before this face was dropped.
+      // the rendered crossbar before this face was dropped. Same reasoning
+      // drops "south" here: the flag's north (back) face sits exactly
+      // coplanar with it (both at z = 8+poleHalf, pole footprint fully
+      // inside the flag's much wider one), and the flag hangs directly in
+      // front of this face regardless -- confirmed as a static pole-colored
+      // vertical line bisecting the rendered flag before this face was
+      // dropped (worst-case visible on white_banner's near-white flag).
       {
         from: [round4(8 - poleHalf), 0, round4(8 - poleHalf)],
         to: [round4(8 + poleHalf), poleTop, round4(8 + poleHalf)],
@@ -119,7 +125,6 @@ export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: str
           west: base(uvPx(44, 2, 46, 44)),
           north: base(uvPx(46, 2, 48, 44)),
           east: base(uvPx(48, 2, 50, 44)),
-          south: base(uvPx(50, 2, 52, 44)),
         },
       },
       // Crossbar: 20x2x2, sitting on the pole's top, spanning the flag's width.

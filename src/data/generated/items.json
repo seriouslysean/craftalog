@@ -2000,15 +2000,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -2453,15 +2444,6 @@
                 11.5,
                 0.5,
                 12,
-                11
-              ]
-            },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
                 11
               ]
             },
@@ -3032,15 +3014,6 @@
                 11.5,
                 0.5,
                 12,
-                11
-              ]
-            },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
                 11
               ]
             },
@@ -5962,15 +5935,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -8851,15 +8815,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -9237,15 +9192,6 @@
                 11.5,
                 0.5,
                 12,
-                11
-              ]
-            },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
                 11
               ]
             },
@@ -11321,15 +11267,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -11707,15 +11644,6 @@
                 11.5,
                 0.5,
                 12,
-                11
-              ]
-            },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
                 11
               ]
             },
@@ -12135,15 +12063,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -12554,15 +12473,6 @@
                 11.5,
                 0.5,
                 12,
-                11
-              ]
-            },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
                 11
               ]
             },
@@ -14656,15 +14566,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -15836,15 +15737,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -16779,15 +16671,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -17370,15 +17253,6 @@
                 11.5,
                 0.5,
                 12,
-                11
-              ]
-            },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
                 11
               ]
             },
@@ -22095,15 +21969,6 @@
                 11
               ]
             },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
-                11
-              ]
-            },
             "west": {
               "texture": "/textures/item/banner_base.png",
               "uv": [
@@ -22636,15 +22501,6 @@
                 11.5,
                 0.5,
                 12,
-                11
-              ]
-            },
-            "south": {
-              "texture": "/textures/item/banner_base.png",
-              "uv": [
-                12.5,
-                0.5,
-                13,
                 11
               ]
             },

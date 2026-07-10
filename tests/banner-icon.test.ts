@@ -81,6 +81,22 @@ describe("bannerCompoundIcon", () => {
     }
   });
 
+  it("omits the pole's up and south faces -- both exactly coplanar with a wider neighbor (crossbar's down, flag's north) that fully covers them, and z-fight if both are declared", () => {
+    const [pole, crossbar, flag] = icon.elements;
+    // Coplanar pair 1: pole top (y = to[1]) === crossbar bottom (y = from[1]).
+    expect(pole.to[1]).toBe(crossbar.from[1]);
+    // Coplanar pair 2: pole south (z = to[2]) === flag north/back (z = from[2]).
+    expect(pole.to[2]).toBe(flag.from[2]);
+    // The pole's footprint is fully inside both neighbors' wider footprints
+    // on the shared plane, so its own faces there are never visible.
+    expect(pole.from[0]).toBeGreaterThanOrEqual(crossbar.from[0]);
+    expect(pole.to[0]).toBeLessThanOrEqual(crossbar.to[0]);
+    expect(pole.from[0]).toBeGreaterThanOrEqual(flag.from[0]);
+    expect(pole.to[0]).toBeLessThanOrEqual(flag.to[0]);
+    expect(pole.faces.up).toBeUndefined();
+    expect(pole.faces.south).toBeUndefined();
+  });
+
   it("declares uv crops inside the atlas's real unwrap regions (0-16 uv space over the 64x64 template)", () => {
     // The flag's visible front face is the 20x40 rect at pixel (1,1) --
     // the same crop the old flat icon used -- which is [0.25, 0.25, 5.25,
