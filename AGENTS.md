@@ -167,7 +167,7 @@ export function generateItemIconHTML(item: any) {
 ├── vendor/
 │   ├── mcmeta-summary/    # submodule: recipes, tags, item defs, models, lang (pinned tag)
 │   ├── mcmeta-assets/     # submodule: textures (pinned tag)
-│   └── bedrock-samples/   # submodule: bed icon PNGs only (pinned tag) — Java remains authoritative for everything else
+│   └── bedrock-samples/   # submodule: bed icon PNGs + copper golem statue entity geometry (pinned tag) — Java remains authoritative for every texture
 ├── scripts/
 │   ├── parse.ts         # vendor/ → src/data/generated/* + public/textures/*
 │   └── validate.ts      # re-derives + checks committed generated data for drift

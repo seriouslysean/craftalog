@@ -495,6 +495,74 @@ describe("resolveIconCandidate", () => {
     expect(resolveIconCandidate("shield", specials, specialModels)).toEqual({ type: "shield" });
   });
 
+  it("resolves a copper_golem_statue candidate (textureRef) for a minecraft:select over pose, reading the texture from the fallback case", () => {
+    // Mirrors the real vendored shape: waxed_copper_golem_statue.json is a
+    // minecraft:select on block_state_property "copper_golem_pose" with 3
+    // cases (sitting/running/star) plus a fallback (pose "standing", the
+    // one the item/inventory form actually uses) -- every case names the
+    // same texture, so which one findSpecialModel's DFS returns first
+    // doesn't affect the result.
+    const specials: RawItemDefinitionsData = {
+      waxed_exposed_copper_golem_statue: {
+        model: {
+          type: "minecraft:select",
+          block_state_property: "copper_golem_pose",
+          cases: [
+            {
+              when: "sitting",
+              model: {
+                type: "minecraft:special",
+                base: "minecraft:item/template_copper_golem_statue",
+                model: {
+                  type: "minecraft:copper_golem_statue",
+                  pose: "sitting",
+                  texture: "minecraft:textures/entity/copper_golem/copper_golem_exposed.png",
+                },
+              },
+            },
+          ],
+          fallback: {
+            type: "minecraft:special",
+            base: "minecraft:item/template_copper_golem_statue",
+            model: {
+              type: "minecraft:copper_golem_statue",
+              pose: "standing",
+              texture: "minecraft:textures/entity/copper_golem/copper_golem_exposed.png",
+            },
+          },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("waxed_exposed_copper_golem_statue", specials, models)).toEqual({
+      type: "copper_golem_statue",
+      textureRef: "entity/copper_golem/copper_golem_exposed",
+    });
+  });
+
+  it("falls through to the flat base-model fallback when a copper_golem_statue special model has no texture field", () => {
+    const specialModels: RawModelsData = {
+      ...models,
+      "item/template_copper_golem_statue": {
+        textures: { particle: "minecraft:block/copper_block" },
+      },
+    };
+    const specials: RawItemDefinitionsData = {
+      copper_golem_statue: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/template_copper_golem_statue",
+          model: { type: "minecraft:copper_golem_statue", pose: "standing" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("copper_golem_statue", specials, specialModels)).toEqual({
+      type: "flat",
+      textureRef: "block/copper_block",
+    });
+  });
+
   it("falls back to the special renderer's base model for non-banner special types (e.g. shulker box)", () => {
     const specialModels: RawModelsData = {
       ...models,
