@@ -27,6 +27,7 @@ import type {
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
+  RawLegacyBedrockGeometryFile,
   RawModelsData,
   RawRecipesData,
   RawTagsData,
@@ -146,6 +147,9 @@ function checkDrift(committed: Committed): void {
   const copperGolemGeoRaw = readJson<RawBedrockGeometryFile>(
     path.join(VENDOR_BEDROCK_MODELS_DIR, "copper_golem.geo.json"),
   );
+  const shulkerGeoRaw = readJson<RawLegacyBedrockGeometryFile>(
+    path.join(VENDOR_BEDROCK_MODELS_DIR, "shulker.geo.json"),
+  );
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
@@ -163,6 +167,7 @@ function checkDrift(committed: Committed): void {
     bannerPatternsRaw,
     bannerPatternTagsRaw,
     copperGolemGeoRaw,
+    shulkerGeoRaw,
     textureExists,
     bedrockBedIconExists,
   });

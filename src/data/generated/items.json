@@ -2293,8 +2293,146 @@
   },
   "black_shulker_box": {
     "icon": {
-      "texture": "/textures/block/black_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_black.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "black_shulker_box",
     "name": "Black Shulker Box",
@@ -2759,8 +2897,146 @@
   },
   "blue_shulker_box": {
     "icon": {
-      "texture": "/textures/block/blue_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_blue.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "blue_shulker_box",
     "name": "Blue Shulker Box",
@@ -3310,8 +3586,146 @@
   },
   "brown_shulker_box": {
     "icon": {
-      "texture": "/textures/block/brown_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_brown.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "brown_shulker_box",
     "name": "Brown Shulker Box",
@@ -6815,8 +7229,146 @@
   },
   "cyan_shulker_box": {
     "icon": {
-      "texture": "/textures/block/cyan_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_cyan.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "cyan_shulker_box",
     "name": "Cyan Shulker Box",
@@ -10300,8 +10852,146 @@
   },
   "gray_shulker_box": {
     "icon": {
-      "texture": "/textures/block/gray_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_gray.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "gray_shulker_box",
     "name": "Gray Shulker Box",
@@ -10671,8 +11361,146 @@
   },
   "green_shulker_box": {
     "icon": {
-      "texture": "/textures/block/green_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_green.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "green_shulker_box",
     "name": "Green Shulker Box",
@@ -12734,8 +13562,146 @@
   },
   "light_blue_shulker_box": {
     "icon": {
-      "texture": "/textures/block/light_blue_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_light_blue.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "light_blue_shulker_box",
     "name": "Light Blue Shulker Box",
@@ -13105,8 +14071,146 @@
   },
   "light_gray_shulker_box": {
     "icon": {
-      "texture": "/textures/block/light_gray_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_light_gray.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "light_gray_shulker_box",
     "name": "Light Gray Shulker Box",
@@ -13512,8 +14616,146 @@
   },
   "lime_shulker_box": {
     "icon": {
-      "texture": "/textures/block/lime_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_lime.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "lime_shulker_box",
     "name": "Lime Shulker Box",
@@ -13916,8 +15158,146 @@
   },
   "magenta_shulker_box": {
     "icon": {
-      "texture": "/textures/block/magenta_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_magenta.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "magenta_shulker_box",
     "name": "Magenta Shulker Box",
@@ -15997,8 +17377,146 @@
   },
   "orange_shulker_box": {
     "icon": {
-      "texture": "/textures/block/orange_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_orange.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "orange_shulker_box",
     "name": "Orange Shulker Box",
@@ -25720,8 +27238,146 @@
   },
   "pink_shulker_box": {
     "icon": {
-      "texture": "/textures/block/pink_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_pink.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "pink_shulker_box",
     "name": "Pink Shulker Box",
@@ -26636,8 +28292,146 @@
   },
   "purple_shulker_box": {
     "icon": {
-      "texture": "/textures/block/purple_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_purple.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "purple_shulker_box",
     "name": "Purple Shulker Box",
@@ -27309,8 +29103,146 @@
   },
   "red_shulker_box": {
     "icon": {
-      "texture": "/textures/block/red_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_red.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "red_shulker_box",
     "name": "Red Shulker Box",
@@ -28315,8 +30247,146 @@
   },
   "shulker_box": {
     "icon": {
-      "texture": "/textures/block/shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "shulker_box",
     "name": "Shulker Box",
@@ -35039,8 +37109,146 @@
   },
   "white_shulker_box": {
     "icon": {
-      "texture": "/textures/block/white_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_white.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "white_shulker_box",
     "name": "White Shulker Box",
@@ -35565,8 +37773,146 @@
   },
   "yellow_shulker_box": {
     "icon": {
-      "texture": "/textures/block/yellow_shulker_box.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                8,
+                4,
+                12,
+                7
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                4,
+                4,
+                8,
+                7
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                12,
+                4,
+                16,
+                7
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                0,
+                4,
+                4,
+                7
+              ]
+            }
+          },
+          "from": [
+            0,
+            4,
+            0
+          ],
+          "to": [
+            16,
+            16,
+            16
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                8,
+                7,
+                12,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                8,
+                11,
+                12,
+                13
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                4,
+                11,
+                8,
+                13
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                12,
+                11,
+                16,
+                13
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                4,
+                7,
+                8,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shulker_yellow.png",
+              "uv": [
+                0,
+                11,
+                4,
+                13
+              ]
+            }
+          },
+          "from": [
+            0,
+            0,
+            0
+          ],
+          "to": [
+            16,
+            8,
+            16
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "yellow_shulker_box",
     "name": "Yellow Shulker Box",

@@ -286,6 +286,8 @@ export type IconCandidate =
   | { type: "shield" }
   /** A copper golem statue tier — resolved to a compound icon extracted from real vendored Bedrock entity geometry (see scripts/lib/copper-golem-icon.ts), not hand-authored. `textureRef` is this tier's Java texture ref (e.g. "entity/copper_golem/copper_golem_exposed"), read straight from the item definition's own `texture` field. */
   | { type: "copper_golem_statue"; textureRef: string }
+  /** A shulker box color (16 dyed + undyed) — resolved to a compound icon extracted from real vendored Bedrock entity geometry (see scripts/lib/shulker-icon.ts), not hand-authored. `textureRef` is this color's Java entity texture ref (e.g. "entity/shulker/shulker_black", or "entity/shulker/shulker" for undyed), read straight from the item definition's own `texture` field — covers all 16 dye colors + undyed generically, no hand list. */
+  | { type: "shulker_box"; textureRef: string }
   /** Single-texture compound shapes: one material texture painted on every face of a multi-element model (see ItemIcon.astro's dedicated rendering branch for each). */
   | { type: "pressure_plate"; textureRef: string }
   | { type: "wall"; textureRef: string }
@@ -523,6 +525,15 @@ export function resolveIconCandidate(
 
   if (special?.specialType === "shield") {
     return { type: "shield" };
+  }
+
+  if (special?.specialType === "shulker_box" && typeof special.specialModel.texture === "string") {
+    // e.g. "minecraft:shulker_black" -> "entity/shulker/shulker_black";
+    // "minecraft:shulker" (the undyed default, no color suffix) ->
+    // "entity/shulker/shulker". Covers all 16 dye colors + undyed
+    // generically off this one field, no hand list of color names.
+    const textureName = stripMcPrefix(special.specialModel.texture);
+    return { type: "shulker_box", textureRef: `entity/shulker/${textureName}` };
   }
 
   const resolvedModelRef = modelRef ?? special?.base;

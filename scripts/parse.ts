@@ -30,6 +30,7 @@ import type {
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
+  RawLegacyBedrockGeometryFile,
   RawModelsData,
   RawRecipesData,
   RawTagsData,
@@ -86,6 +87,9 @@ function main(): void {
   const copperGolemGeoRaw = readJson<RawBedrockGeometryFile>(
     path.join(VENDOR_BEDROCK_MODELS_DIR, "copper_golem.geo.json"),
   );
+  const shulkerGeoRaw = readJson<RawLegacyBedrockGeometryFile>(
+    path.join(VENDOR_BEDROCK_MODELS_DIR, "shulker.geo.json"),
+  );
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
@@ -106,6 +110,7 @@ function main(): void {
     patternedBannerIconsToSynthesize,
     shieldIconToCopy,
     copperGolemIconsToCopy,
+    shulkerIconsToCopy,
   } = generate({
     version,
     recipesRaw,
@@ -117,6 +122,7 @@ function main(): void {
     bannerPatternsRaw,
     bannerPatternTagsRaw,
     copperGolemGeoRaw,
+    shulkerGeoRaw,
     textureExists,
     bedrockBedIconExists,
   });
@@ -218,6 +224,17 @@ function main(): void {
     fs.copyFileSync(sourcePath, destPath);
   }
 
+  // Shulker box textures are already real Java assets (mcmeta-assets) --
+  // only the shape is extracted from Bedrock (see
+  // scripts/lib/shulker-icon.ts), so the texture itself is just a verbatim
+  // copy, same as shield/copper golem/bed.
+  for (const [textureRef, ref] of shulkerIconsToCopy) {
+    const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${textureRef}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
   // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
   // no synthesis, just a straight copy with the color-name remap applied
   // (see scripts/lib/bedrock-colors.ts).
@@ -260,6 +277,7 @@ function main(): void {
   console.log(`patterned banner icons: ${patternedBannerIconsToSynthesize.size}`);
   console.log(`shield icon:      ${shieldIconToCopy ? 1 : 0}`);
   console.log(`copper golem icons: ${copperGolemIconsToCopy.size}`);
+  console.log(`shulker box icons: ${shulkerIconsToCopy.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
