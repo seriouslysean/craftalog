@@ -552,24 +552,40 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
        identical-size .item-icon box): only 28.5% of the box's width and
        57.3% of its height, next to a full cube's 89.4%/101.9% -- visibly
        "tiny", matching the reported feedback.
-       Re-deriving the same reciprocal-of-projected-height construction
-       against banner's REAL geometry (not a placeholder cube) -- including
-       its own extra yRotation (-205deg on top of the shared -135deg yaw,
-       i.e. an effective 20deg yaw, computed via the same orthographic
-       rotation matrix this file's cube formula uses) -- gives a projected
-       height of 0.8927 cube-edge units, so this shape's own scale is
-       1/0.8927 = 1.1202 (bigger than 1 -- unlike the cube, this shape needs
-       to be enlarged, not shrunk, to fill its box the same way every other
-       icon does). Resulting width fills 50.5% of the box: still narrower
-       than a cube (this IS a thin flag, not a cube -- widening the
-       hand-authored geometry itself to fill more was considered and
-       rejected, see the commit this landed in), but now the vertical axis
-       matches every neighboring icon's fill instead of stopping at 57%.
+       First attempt used the SAME construction as the cube/fence-gate
+       scales -- 1 / (projected height span) -- computed via the shared
+       orthographic rotation matrix against banner's REAL geometry
+       (including its extra yRotation, -205deg on top of the shared
+       -135deg yaw). That gave 1.1202 and looked right (height ~104%,
+       matching neighboring icons), but it was WRONG: the cube/fence-gate
+       formula only works because a cube's projected footprint is
+       symmetric about its own center (span/2 in both directions), so
+       "fill the total span" and "keep both edges within bounds" are the
+       same constraint. Banner's 3 hand-authored boxes are NOT arranged
+       symmetrically about the shared model-space center -- their union's
+       projected midpoint sits 0.02 cube-edge-units off from 0 -- so
+       scaling by the total span alone left the crossbar's far edge at
+       0.5225 (past the box's 0.5 half-extent), clipped by .item-icon's
+       overflow: hidden. Confirmed via the same getBoundingClientRect
+       technique: the crossbar's "up"/"north" faces measured with a
+       negative top (above the container's own top edge), and the
+       screenshot showed the crossbar's end as a hard flat cut instead of
+       tapering naturally.
+       Fix: bound the WORST-CASE single-sided extent instead of the total
+       span -- scale = 0.5 / max(|minX|, |maxX|, |minY|, |maxY|) over the
+       union of all 3 boxes' projected corners, 1.0720 here (vs. the
+       over-eager 1.1202). This is the general-case version of the same
+       formula the cube/fence-gate scales use; those two just happen to be
+       symmetric, so span-based and worst-case-bound give the same answer
+       there. Resulting extents: maxY lands exactly at 0.5 (fills to the
+       edge, no clipping), width ~49% of the box (still narrower than a
+       cube -- an honest reflection of the real thin-flag shape, not a
+       containment artifact).
        max-width stays .item-icon--block's 97.8155% on purpose -- this only
        changes the CONTENT's internal scale, not the outer box size, so
        banner's box stays the same size as every sibling 3D icon's; only
        its own historically-undersized fill within that box changes. */
-    --icon-scale: 1.1202;
+    --icon-scale: 1.072;
     max-width: 97.8155%;
     margin-inline: auto;
     --face-overlap: scale(1.03);

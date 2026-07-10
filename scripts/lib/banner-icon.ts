@@ -143,6 +143,19 @@ export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: str
       // Flag: 20x40x1, hanging from the crossbar against the pole's south
       // face, stopping 2 native units short of the ground. South face is
       // the flag front crop (the face the gui yaw turns toward the camera).
+      // No "north" (back) face: it's the interior surface facing the pole,
+      // never visible from outside the assembly under any of this camera's
+      // rotations -- confirmed as a ghosting/double-image artifact on the
+      // rendered cloth (two near-identical, slightly offset crops of the
+      // same texture both painting) before this face was dropped, worst-case
+      // visible on white_banner's near-white flag. Unlike the pole's dropped
+      // up/south faces, this isn't an exactly-coplanar pair (the flag is a
+      // genuine 1-unit-thick box, so its own north and south sit at
+      // different depths) -- but at this icon's tiny rendered size the two
+      // near-parallel, near-fully-overlapping faces are close enough that
+      // the browser's 3D depth-sort doesn't reliably order them, so the
+      // fix is the same: don't declare the face that's never meant to be
+      // seen anyway.
       {
         from: [round4(8 - flagHalf), round4(2 * SCALE), round4(8 + poleHalf)],
         to: [round4(8 + flagHalf), poleTop, round4(8 + poleHalf + SCALE)],
@@ -152,7 +165,6 @@ export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: str
           west: flag(uvPx(0, 1, 1, 41)),
           east: flag(uvPx(21, 1, 22, 41)),
           south: flag(uvPx(1, 1, 21, 41)),
-          north: flag(uvPx(22, 1, 42, 41)),
         },
       },
     ],

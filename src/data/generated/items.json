@@ -2109,15 +2109,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/black_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/black_banner.png",
               "uv": [
@@ -2553,15 +2544,6 @@
                 5.25,
                 0.25,
                 5.5,
-                10.25
-              ]
-            },
-            "north": {
-              "texture": "/textures/item/blue_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
                 10.25
               ]
             },
@@ -3123,15 +3105,6 @@
                 5.25,
                 0.25,
                 5.5,
-                10.25
-              ]
-            },
-            "north": {
-              "texture": "/textures/item/brown_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
                 10.25
               ]
             },
@@ -6044,15 +6017,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/cyan_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/cyan_banner.png",
               "uv": [
@@ -8924,15 +8888,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/gray_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/gray_banner.png",
               "uv": [
@@ -9301,15 +9256,6 @@
                 5.25,
                 0.25,
                 5.5,
-                10.25
-              ]
-            },
-            "north": {
-              "texture": "/textures/item/green_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
                 10.25
               ]
             },
@@ -11376,15 +11322,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/light_blue_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/light_blue_banner.png",
               "uv": [
@@ -11753,15 +11690,6 @@
                 5.25,
                 0.25,
                 5.5,
-                10.25
-              ]
-            },
-            "north": {
-              "texture": "/textures/item/light_gray_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
                 10.25
               ]
             },
@@ -12172,15 +12100,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/lime_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/lime_banner.png",
               "uv": [
@@ -12582,15 +12501,6 @@
                 5.25,
                 0.25,
                 5.5,
-                10.25
-              ]
-            },
-            "north": {
-              "texture": "/textures/item/magenta_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
                 10.25
               ]
             },
@@ -14675,15 +14585,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/orange_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/orange_banner.png",
               "uv": [
@@ -15846,15 +15747,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/pink_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/pink_banner.png",
               "uv": [
@@ -16780,15 +16672,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/purple_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/purple_banner.png",
               "uv": [
@@ -17362,15 +17245,6 @@
                 5.25,
                 0.25,
                 5.5,
-                10.25
-              ]
-            },
-            "north": {
-              "texture": "/textures/item/red_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
                 10.25
               ]
             },
@@ -22078,15 +21952,6 @@
                 10.25
               ]
             },
-            "north": {
-              "texture": "/textures/item/white_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
-                10.25
-              ]
-            },
             "south": {
               "texture": "/textures/item/white_banner.png",
               "uv": [
@@ -22610,15 +22475,6 @@
                 5.25,
                 0.25,
                 5.5,
-                10.25
-              ]
-            },
-            "north": {
-              "texture": "/textures/item/yellow_banner.png",
-              "uv": [
-                5.5,
-                0.25,
-                10.5,
                 10.25
               ]
             },

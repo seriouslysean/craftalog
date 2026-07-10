@@ -97,6 +97,14 @@ describe("bannerCompoundIcon", () => {
     expect(pole.faces.south).toBeUndefined();
   });
 
+  it("omits the flag's north (back) face -- interior surface never visible from outside, and close enough to the pole's dropped south face at this icon's tiny render size to ghost/double-image instead of depth-sorting cleanly", () => {
+    const [, , flag] = icon.elements;
+    expect(flag.faces.north).toBeUndefined();
+    // The front (visible) face is still declared, at the crop the old flat
+    // icon used.
+    expect(flag.faces.south).toBeDefined();
+  });
+
   it("declares uv crops inside the atlas's real unwrap regions (0-16 uv space over the 64x64 template)", () => {
     // The flag's visible front face is the 20x40 rect at pixel (1,1) --
     // the same crop the old flat icon used -- which is [0.25, 0.25, 5.25,
