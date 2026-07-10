@@ -313,6 +313,7 @@ const is3d =
 const faces = item ? getFaces(item.icon) : [];
 const compoundFaces = item ? getCompoundFaces(item.icon) : [];
 const compoundYRotation = item && item.icon.type === 'compound' ? item.icon.yRotation : 0;
+const isBannerCompound = item?.icon.type === 'compound' && item.icon.variant === 'banner';
 // Wall/fence/fence_gate are multi-element compounds (a center post + a wider
 // cross-brace; 2 corner posts + 2 connecting bars; 8 posts/bars) rather than
 // "one box, different faces" -- every element shares the same single
@@ -331,9 +332,12 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
           // Two camera families, two --icon-scale/max-width pairs (see the
           // derivation above .item-icon--block below) -- fence_gate runs its
           // own shallower 30deg-pitch camera, every other 3D type shares the
-          // 35deg-pitch camera.
-          'item-icon--block': is3d && item.icon.type !== 'fence_gate',
+          // 35deg-pitch camera. Banner shares that same camera but swaps in
+          // its own --icon-scale (see .item-icon--banner) since its
+          // hand-authored geometry is far thinner than a cube.
+          'item-icon--block': is3d && item.icon.type !== 'fence_gate' && !isBannerCompound,
           'item-icon--fence-gate': item.icon.type === 'fence_gate',
+          'item-icon--banner': isBannerCompound,
         },
       ]}
     >
@@ -531,6 +535,42 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
        shorter 1.5731 height, not .item-icon--block's 1.6303. */
     --icon-scale: 0.6357;
     max-width: 94.3879%;
+    margin-inline: auto;
+    --face-overlap: scale(1.03);
+  }
+
+  .item-icon--banner {
+    /* .item-icon--block's 0.6134 is 1 / a full cube's projected height
+       (1.6303) -- a safe containment floor for ANY shape sharing that
+       camera, not a "fill efficiently" target (see .item-icon's comment).
+       Banner's hand-authored geometry (scripts/lib/banner-icon.ts: a 2-unit
+       pole + 20-unit crossbar + a 1-unit-thin flag, none of which use
+       anywhere near a cube's full 16-unit depth/width) projects a MUCH
+       smaller footprint under that same floor -- measured empirically
+       (getBoundingClientRect on the rendered .compound__face-content
+       elements vs. a neighboring cube icon's own faces, both inside an
+       identical-size .item-icon box): only 28.5% of the box's width and
+       57.3% of its height, next to a full cube's 89.4%/101.9% -- visibly
+       "tiny", matching the reported feedback.
+       Re-deriving the same reciprocal-of-projected-height construction
+       against banner's REAL geometry (not a placeholder cube) -- including
+       its own extra yRotation (-205deg on top of the shared -135deg yaw,
+       i.e. an effective 20deg yaw, computed via the same orthographic
+       rotation matrix this file's cube formula uses) -- gives a projected
+       height of 0.8927 cube-edge units, so this shape's own scale is
+       1/0.8927 = 1.1202 (bigger than 1 -- unlike the cube, this shape needs
+       to be enlarged, not shrunk, to fill its box the same way every other
+       icon does). Resulting width fills 50.5% of the box: still narrower
+       than a cube (this IS a thin flag, not a cube -- widening the
+       hand-authored geometry itself to fill more was considered and
+       rejected, see the commit this landed in), but now the vertical axis
+       matches every neighboring icon's fill instead of stopping at 57%.
+       max-width stays .item-icon--block's 97.8155% on purpose -- this only
+       changes the CONTENT's internal scale, not the outer box size, so
+       banner's box stays the same size as every sibling 3D icon's; only
+       its own historically-undersized fill within that box changes. */
+    --icon-scale: 1.1202;
+    max-width: 97.8155%;
     margin-inline: auto;
     --face-overlap: scale(1.03);
   }

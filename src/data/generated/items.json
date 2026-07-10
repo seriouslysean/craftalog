@@ -2168,6 +2168,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "black_banner",
@@ -2623,6 +2624,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "blue_banner",
@@ -3201,6 +3203,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "brown_banner",
@@ -6127,6 +6130,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "cyan_banner",
@@ -9015,6 +9019,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "gray_banner",
@@ -9403,6 +9408,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "green_banner",
@@ -11483,6 +11489,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "light_blue_banner",
@@ -11871,6 +11878,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "light_gray_banner",
@@ -12295,6 +12303,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "lime_banner",
@@ -12716,6 +12725,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "magenta_banner",
@@ -14814,6 +14824,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "orange_banner",
@@ -15993,6 +16004,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "pink_banner",
@@ -16935,6 +16947,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "purple_banner",
@@ -17528,6 +17541,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "red_banner",
@@ -22249,6 +22263,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "white_banner",
@@ -22792,6 +22807,7 @@
         }
       ],
       "type": "compound",
+      "variant": "banner",
       "yRotation": -205
     },
     "id": "yellow_banner",

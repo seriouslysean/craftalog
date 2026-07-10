@@ -99,6 +99,12 @@ export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: str
   return {
     type: "compound",
     yRotation: BANNER_GUI_YAW_DELTA,
+    // Tells ItemIcon.astro to use the banner-specific --icon-scale instead
+    // of the generic cube-calibrated one -- this assembly's real footprint
+    // (thin flag/pole, not a full 16x16x16 box) projects much smaller under
+    // the shared safety-floor scale, which measurably rendered "tiny" in the
+    // box (see .item-icon--banner's derivation comment in ItemIcon.astro).
+    variant: "banner",
     elements: [
       // Pole: 2x42x2, centered on the block, ground to crossbar. No "up"
       // face: the crossbar's down face sits exactly coplanar on top of it

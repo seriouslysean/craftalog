@@ -244,6 +244,7 @@ describe("generate determinism", () => {
     const result = run();
     const icon = result.items.white_banner.icon;
     if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBe("banner");
     expect(icon.elements).toHaveLength(3);
     // Flag faces sample the per-color tinted atlas; pole/crossbar faces the
     // shared untinted copy (see scripts/lib/banner-icon.ts).

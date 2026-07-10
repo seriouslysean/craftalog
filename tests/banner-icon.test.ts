@@ -55,8 +55,9 @@ describe("bannerCompoundIcon", () => {
     "/textures/item/banner_base.png",
   );
 
-  it("builds 3 elements (pole, crossbar, flag) that fit the 0-16 reference cube", () => {
+  it("builds 3 elements (pole, crossbar, flag) that fit the 0-16 reference cube, tagged with the banner icon-scale variant", () => {
     expect(icon.type).toBe("compound");
+    expect(icon.variant).toBe("banner");
     expect(icon.elements).toHaveLength(3);
     for (const el of icon.elements) {
       for (const axis of [0, 1, 2] as const) {

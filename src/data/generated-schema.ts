@@ -116,6 +116,18 @@ export const iconSchema = z.union([
     elements: z.array(compoundElementSchema),
     /** Extra Y rotation (degrees) applied on top of the shared camera, from this model's own display.gui override (see scripts/lib/model.ts). */
     yRotation: z.number(),
+    /**
+     * Tags a compound icon whose hand-authored geometry is far thinner/
+     * narrower than a real block (currently: banner's pole+crossbar+flag --
+     * see scripts/lib/banner-icon.ts) so ItemIcon.astro can apply that
+     * shape's own calibrated --icon-scale instead of the generic
+     * cube-calibrated one, which would otherwise render it tiny inside its
+     * box (the generic scale is a safe-for-any-shape containment floor, not
+     * a "fill efficiently" target -- see ItemIcon.astro's .item-icon--banner
+     * rule for the derivation). Absent for every vendored-geometry compound
+     * (anvil, grindstone, composter, ...), which all share the generic scale.
+     */
+    variant: z.literal("banner").optional(),
   }),
 ]);
 
