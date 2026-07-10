@@ -333,6 +333,98 @@ export function collapseVariantGroups(groups: RecipeGroup[]): {
   return { variantGroups, singletons };
 }
 
+export interface VariantGroupMeta {
+  /** Generic display name for the collapsed card, e.g. "Boat" not "Acacia Boat". */
+  name: string;
+  /** The variant shown as the card's default/linked-to face, e.g. "oak_boat" not the alphabetically-first "acacia_boat". Falls back to variants[0] if unset or not found (shouldn't happen for a real groupKey -- see the completeness test in tests/recipe-groups.test.ts). */
+  defaultResultId?: string;
+}
+
+/**
+ * Curated identity for every VariantGroup, keyed by groupKey. Without this,
+ * a collapsed card's name/icon default to its alphabetically-first variant
+ * (e.g. "Acacia Boat" representing the whole 10-wood-type Boats family) --
+ * which reads as one specific item, not the generic shape the card actually
+ * represents. Every key here must match a real groupKey collapseVariantGroups
+ * can produce; tests/recipe-groups.test.ts asserts this map's keys are a
+ * superset of every groupKey the real generated data currently produces (a
+ * missing entry isn't a hard error -- variantGroupDisplayName/
+ * variantGroupDefault both fall back gracefully -- but it silently
+ * regresses to the alphabetical-default problem this map exists to fix).
+ */
+export const VARIANT_GROUP_META: Record<string, VariantGroupMeta> = {
+  // Color families -- default to white except where vanilla's own
+  // iconography favors a different color (bed: red is the classic
+  // Minecraft bed color; shulker box: purple is the vanilla shulker's own
+  // color).
+  banner: { name: "Banner", defaultResultId: "white_banner" },
+  bed: { name: "Bed", defaultResultId: "red_bed" },
+  bundle_dye: { name: "Dyed Bundle", defaultResultId: "white_bundle" },
+  carpet: { name: "Carpet", defaultResultId: "white_carpet" },
+  concrete_powder: { name: "Concrete Powder", defaultResultId: "white_concrete_powder" },
+  dyed_candle: { name: "Dyed Candle", defaultResultId: "white_candle" },
+  harness: { name: "Harness", defaultResultId: "white_harness" },
+  shulker_box_dye: { name: "Dyed Shulker Box", defaultResultId: "purple_shulker_box" },
+  stained_glass: { name: "Stained Glass", defaultResultId: "white_stained_glass" },
+  stained_glass_pane: { name: "Stained Glass Pane", defaultResultId: "white_stained_glass_pane" },
+  stained_terracotta: { name: "Dyed Terracotta", defaultResultId: "white_terracotta" },
+  wool: { name: "Wool", defaultResultId: "white_wool" },
+  // Wood families -- default to oak, the wood type most players picture first.
+  bark: { name: "Wood & Hyphae", defaultResultId: "oak_wood" },
+  boat: { name: "Boat", defaultResultId: "oak_boat" },
+  chest_boat: { name: "Boat with Chest", defaultResultId: "oak_chest_boat" },
+  planks: { name: "Planks", defaultResultId: "oak_planks" },
+  shelf: { name: "Shelf", defaultResultId: "oak_shelf" },
+  wooden_button: { name: "Wooden Button", defaultResultId: "oak_button" },
+  wooden_door: { name: "Wooden Door", defaultResultId: "oak_door" },
+  wooden_fence: { name: "Wooden Fence", defaultResultId: "oak_fence" },
+  wooden_fence_gate: { name: "Fence Gate", defaultResultId: "oak_fence_gate" },
+  wooden_hanging_sign: { name: "Hanging Sign", defaultResultId: "oak_hanging_sign" },
+  wooden_pressure_plate: { name: "Wooden Pressure Plate", defaultResultId: "oak_pressure_plate" },
+  wooden_sign: { name: "Sign", defaultResultId: "oak_sign" },
+  wooden_slab: { name: "Wooden Slab", defaultResultId: "oak_slab" },
+  wooden_stairs: { name: "Wooden Stairs", defaultResultId: "oak_stairs" },
+  wooden_trapdoor: { name: "Wooden Trapdoor", defaultResultId: "oak_trapdoor" },
+  // Copper oxidation families -- default to the clean, un-oxidized base
+  // tier (golem_statue has no base-tier recipe, so its earliest waxed tier).
+  chiseled_copper: { name: "Chiseled Copper", defaultResultId: "chiseled_copper" },
+  copper_bars: { name: "Copper Bars", defaultResultId: "copper_bars" },
+  copper_block: { name: "Block of Copper", defaultResultId: "copper_block" },
+  copper_bulb: { name: "Copper Bulb", defaultResultId: "copper_bulb" },
+  copper_chain: { name: "Copper Chain", defaultResultId: "copper_chain" },
+  copper_chest: { name: "Copper Chest", defaultResultId: "copper_chest" },
+  copper_door: { name: "Copper Door", defaultResultId: "copper_door" },
+  copper_golem_statue: {
+    name: "Copper Golem Statue",
+    defaultResultId: "waxed_copper_golem_statue",
+  },
+  copper_grate: { name: "Copper Grate", defaultResultId: "copper_grate" },
+  copper_lantern: { name: "Copper Lantern", defaultResultId: "copper_lantern" },
+  copper_trapdoor: { name: "Copper Trapdoor", defaultResultId: "copper_trapdoor" },
+  cut_copper: { name: "Cut Copper", defaultResultId: "cut_copper" },
+  cut_copper_slab: { name: "Cut Copper Slab", defaultResultId: "cut_copper_slab" },
+  cut_copper_stairs: { name: "Cut Copper Stairs", defaultResultId: "cut_copper_stairs" },
+  lightning_rod: { name: "Lightning Rod", defaultResultId: "lightning_rod" },
+};
+
+/** The VariantGroup's display name -- curated (see VARIANT_GROUP_META) where one exists, else the default variant's own item name. */
+export function variantGroupDisplayName(
+  variantGroup: VariantGroup,
+  itemsMap: Map<string, ItemData>,
+): string {
+  const meta = VARIANT_GROUP_META[variantGroup.groupKey];
+  return meta?.name ?? groupDisplayName(variantGroupDefault(variantGroup), itemsMap);
+}
+
+/** The VariantGroup's default/linked-to variant -- curated (see VARIANT_GROUP_META) where one exists and resolves to a real member, else variants[0] (alphabetically-first, matching RecipeGroup.canonicalId's own convention). */
+export function variantGroupDefault(variantGroup: VariantGroup): RecipeGroup {
+  const defaultResultId = VARIANT_GROUP_META[variantGroup.groupKey]?.defaultResultId;
+  const curated = defaultResultId
+    ? variantGroup.variants.find((variant) => variant.resultId === defaultResultId)
+    : undefined;
+  return curated ?? variantGroup.variants[0];
+}
+
 /** Looks up a recipe's group by its own recipe id (not just the canonical id). */
 export function indexByRecipeId(groups: RecipeGroup[]): Map<string, RecipeGroup> {
   const map = new Map<string, RecipeGroup>();

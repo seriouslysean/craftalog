@@ -9,6 +9,8 @@ import {
   groupDisplayName,
   groupItemSlug,
   groupRecipes,
+  variantGroupDefault,
+  variantGroupDisplayName,
   type RecipeGroup,
 } from '../utils/recipe-groups';
 import type { ItemData } from '../content.config';
@@ -52,12 +54,12 @@ interface CatalogCard {
 }
 
 const variantGroupCards: CatalogCard[] = variantGroups.map((variantGroup) => {
-  // variants[0] is the alphabetically-first result item -- this card's
-  // default/linked-to variant, same convention as RecipeGroup.canonicalId.
-  const defaultVariant = variantGroup.variants[0];
+  // The curated default variant/name (see VARIANT_GROUP_META) -- e.g. "Boat"
+  // showing the oak variant, not "Acacia Boat" from alphabetical-first.
+  const defaultVariant = variantGroupDefault(variantGroup);
   return {
     href: withBase(canonicalRecipePath(groupItemSlug(defaultVariant, itemsMap))),
-    name: groupDisplayName(defaultVariant, itemsMap),
+    name: variantGroupDisplayName(variantGroup, itemsMap),
     item: itemsMap.get(defaultVariant.resultId) ?? null,
     // Every variant's own name/labels/ingredients are searchable, not just
     // the default one shown -- searching "blue" should still surface the
