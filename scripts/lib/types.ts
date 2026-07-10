@@ -141,6 +141,15 @@ export type RawLangFile = Record<string, Record<string, string>>;
 export type RawItemComponents = Record<string, unknown>;
 export type RawItemComponentsData = Record<string, RawItemComponents>;
 
+/** One entry from data/banner_pattern/data.json -- see scripts/lib/patterned-banner.ts. */
+export interface RawBannerPatternEntry {
+  asset_id: string;
+  translation_key: string;
+  [key: string]: unknown;
+}
+
+export type RawBannerPatternRegistry = Record<string, RawBannerPatternEntry>;
+
 // ---------------------------------------------------------------------------
 // Generated data contract (see docs/PLAN.md "Generated data contract")
 // ---------------------------------------------------------------------------

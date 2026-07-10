@@ -147,3 +147,23 @@ describe("wood-variant semantics survive conversion intact", () => {
     expect(recipes.oak_door.result?.count).toBe(3);
   });
 });
+
+describe("patterned banners: synthetic entries for a component-driven mechanic (issue #41)", () => {
+  it("catalogs every loom-obtainable pattern as its own special recipe, self-referential result", () => {
+    const creeper = recipes.patterned_banner_creeper;
+    expect(creeper.type).toBe("special");
+    expect(creeper.group).toBe("patterned_banner");
+    expect(creeper.family).toBe("banners");
+    expect(creeper.result?.id).toBe("patterned_banner_creeper");
+    expect(creeper.slug).toBe("default");
+  });
+
+  it("excludes 'base' -- present in vanilla's banner_pattern registry but not obtainable in a Java loom", () => {
+    expect(recipes.patterned_banner_base).toBeUndefined();
+  });
+
+  it("catalogs exactly 42 patterns (32 no_item_required + 10 pattern_item-gated)", () => {
+    const patterned = Object.keys(recipes).filter((id) => id.startsWith("patterned_banner_"));
+    expect(patterned).toHaveLength(42);
+  });
+});
