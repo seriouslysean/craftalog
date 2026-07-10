@@ -4,7 +4,10 @@ import { withBase } from '../utils/with-base';
 
 <header>
   <div class="header-content">
-    <a href={withBase('/')} class="logo">Craftalog</a>
+    <a href={withBase('/')} class="logo">
+      <img src={withBase('/favicon.png')} alt="" width="32" height="32" class="logo__icon" />
+      Craftalog
+    </a>
   </div>
 </header>
 
@@ -30,6 +33,9 @@ import { withBase } from '../utils/with-base';
   }
 
   .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
     font-family: var(--font-display);
     font-size: 1.375rem;
     font-weight: 700;
@@ -41,5 +47,11 @@ import { withBase } from '../utils/with-base';
   .logo:hover {
     border: none;
     opacity: 0.7;
+  }
+
+  .logo__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    image-rendering: pixelated;
   }
 </style>
