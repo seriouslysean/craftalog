@@ -65,12 +65,17 @@ const BANNER_GUI_YAW_DELTA = -205;
 const SCALE = 16 / 44;
 
 /** Rounds to 4 decimals so the generated JSON stays compact and stable. */
-function round4(n: number): number {
+export function round4(n: number): number {
   return Math.round(n * 10000) / 10000;
 }
 
-/** Converts a pixel rect on the 64x64 atlas to the engine's 0-16 uv space (16/64 = exact quarters). */
-function uvPx(x0: number, y0: number, x1: number, y1: number): [number, number, number, number] {
+/** Converts a pixel rect on a 64x64 atlas to the engine's 0-16 uv space (16/64 = exact quarters). */
+export function uvPx(
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+): [number, number, number, number] {
   return [x0 / 4, y0 / 4, x1 / 4, y1 / 4];
 }
 

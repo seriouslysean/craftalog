@@ -13,6 +13,11 @@ import type { IconCandidate } from "./model.ts";
 import { derivePatternedBanners, PATTERNED_BANNER_GROUP } from "./patterned-banner.ts";
 import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
+import {
+  SHIELD_ATLAS_REF,
+  SHIELD_TEMPLATE_TEXTURE_REF,
+  shieldCompoundIcon,
+} from "./shield-icon.ts";
 import { slugify } from "../../src/utils/slugify.ts";
 import type {
   CategoriesOutput,
@@ -76,6 +81,8 @@ export interface GenerateOutput {
   leatherArmorIconsToSynthesize: Map<string, string>;
   /** Pattern id -> destination texture ref, for patterned banner icons the caller must generate (see scripts/lib/patterned-banner-icon.ts). */
   patternedBannerIconsToSynthesize: Map<string, string>;
+  /** Whether the shared shield atlas (SHIELD_TEMPLATE_TEXTURE_REF) must be copied verbatim to SHIELD_ATLAS_REF (see scripts/lib/shield-icon.ts) -- no tinting, so just a boolean, not a per-item map. */
+  shieldIconToCopy: boolean;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -268,6 +275,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const bedIconsToCopy = new Map<string, string>();
   const leatherArmorIconsToSynthesize = new Map<string, string>();
   const patternedBannerIconsToSynthesize = new Map<string, string>();
+  let shieldIconToCopy = false;
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -312,6 +320,11 @@ export function generate(input: GenerateInput): GenerateOutput {
       const ref = `item/${candidate.colorId}_banner`;
       icon = bannerCompoundIcon(`/textures/${ref}.png`, `/textures/${BANNER_BASE_ATLAS_REF}.png`);
       bannerIconsToSynthesize.set(candidate.colorId, ref);
+    } else if (candidate?.type === "shield" && textureExists(SHIELD_TEMPLATE_TEXTURE_REF)) {
+      // A hand-authored single-plate compound rather than vendored geometry
+      // -- shields have none (see scripts/lib/shield-icon.ts).
+      icon = shieldCompoundIcon(`/textures/${SHIELD_ATLAS_REF}.png`);
+      shieldIconToCopy = true;
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
       const ref = `item/${baseName}`;
@@ -414,5 +427,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     bedIconsToCopy,
     leatherArmorIconsToSynthesize,
     patternedBannerIconsToSynthesize,
+    shieldIconToCopy,
   };
 }

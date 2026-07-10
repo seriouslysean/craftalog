@@ -307,6 +307,8 @@ export type IconCandidate =
   | { type: "lightning_rod"; textureRef: string }
   /** A bed color — resolved to a pre-baked Bedrock Edition sprite (see scripts/lib/bedrock-colors.ts), not a vendored Java texture. */
   | { type: "bed"; colorId: string }
+  /** The shield — resolved to a hand-authored compound icon (see scripts/lib/shield-icon.ts), not a vendored texture. Only one candidate exists (the plain `shield` item, no color/pattern variants), so this carries no further data. */
+  | { type: "shield" }
   /** Single-texture compound shapes: one material texture painted on every face of a multi-element model (see ItemIcon.astro's dedicated rendering branch for each). */
   | { type: "pressure_plate"; textureRef: string }
   | { type: "wall"; textureRef: string }
@@ -528,6 +530,10 @@ export function resolveIconCandidate(
 
   if (special?.specialType === "copper_golem_statue") {
     return { type: "flat", textureRef: copperGolemStatueTierTexture(itemId) };
+  }
+
+  if (special?.specialType === "shield") {
+    return { type: "shield" };
   }
 
   const resolvedModelRef = modelRef ?? special?.base;
