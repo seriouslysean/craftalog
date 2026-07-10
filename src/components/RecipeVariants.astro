@@ -12,12 +12,20 @@ interface Variant {
 interface Props {
   siblings: Variant[];
   currentId: string;
+  /** Small label rendered above the strip -- present only for the demoted secondary strip (see `secondary` below); the primary tab row stays unlabeled, matching current behavior. */
+  heading?: string;
+  /** Visually de-emphasized strip for recipes that modify an existing item rather than craft a new one (self-referential specials -- see src/utils/self-referential-specials.ts), rendered below the primary variant tabs instead of as an equal tab. */
+  secondary?: boolean;
 }
 
-const { siblings, currentId } = Astro.props;
+const { siblings, currentId, heading, secondary = false } = Astro.props;
 ---
 
-<nav class="recipe-variants" aria-label="Other recipes for this item">
+<nav
+  class:list={['recipe-variants', { 'recipe-variants--secondary': secondary }]}
+  aria-label={heading ?? 'Other recipes for this item'}
+>
+  {heading && <h2 class="recipe-variants__title">{heading}</h2>}
   <ul class="recipe-variants__list">
     {
       siblings.map((sibling) => {
@@ -52,6 +60,15 @@ const { siblings, currentId } = Astro.props;
     margin-bottom: var(--space-6);
   }
 
+  .recipe-variants__title {
+    margin: 0 0 var(--space-2);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+  }
+
   .recipe-variants__list {
     display: flex;
     flex-wrap: wrap;
@@ -70,5 +87,25 @@ const { siblings, currentId } = Astro.props;
     width: 1.25rem;
     flex-shrink: 0;
     image-rendering: pixelated;
+  }
+
+  /* Demoted self-referential specials (banner duplicate, shield decoration,
+     ...) -- same chip shape as the primary tab row, just visually quieter
+     and set apart by a divider, so it reads as a secondary action rather
+     than an equal alternative. */
+  .recipe-variants--secondary {
+    margin-top: calc(-1 * var(--space-3));
+    padding-top: var(--space-4);
+    border-top: var(--divider-border);
+    box-shadow: var(--divider-shadow-top);
+  }
+
+  .recipe-variants--secondary .recipe-variant {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  .recipe-variants--secondary .recipe-variant__icon {
+    width: 1rem;
   }
 </style>
