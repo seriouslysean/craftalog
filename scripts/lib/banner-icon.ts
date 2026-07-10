@@ -1,36 +1,174 @@
 import { PNG } from "pngjs";
 
+import type { IconOutput } from "./types.ts";
+
 /**
- * Banner colors render in-game via a 3D model (`BannerFlagModel`), not a flat
- * sprite: a 20x40x1 flag cuboid textured from `entity/banner/banner_base.png`
- * via the standard box UV unwrap (`texOffs(0, 0).addBox(-10, 0, -2, 20, 40, 1)`
- * in the decompiled model source), tinted per dye color, plus optional pattern
- * layers. Plain colored banners have no patterns, so cropping just the flag's
- * front face out of that unwrap and tinting it with the dye's color reproduces
- * the in-game look as a flat icon.
+ * Banners render in-game via a 3D entity model (`BannerModel`), not a flat
+ * sprite or a vendored block model -- template_banner.json / block/banner.json
+ * carry only `textures`/`display`, zero `elements`. The geometry below is
+ * therefore hand-authored for the "compound" icon engine
+ * (ItemIcon.astro's computeFaceStyle/computeUvCrop), from three sources of
+ * differing confidence:
  *
- * A box's front face sits at the unwrap origin offset by the box's own depth
- * (1px) on both axes, sized to the box's width x height (20x40) -- the rest of
- * the 64x64 template holds the flag's other faces plus the crossbar/pole
- * geometry, none of which belong in a flat icon crop. The true aspect ratio
- * (1:2, tall) only comes through once the crop stops at the front face; the
- * previous alpha-bounding-box approach swept up the adjacent back/side faces
- * too (they're opaque and touch the front face with no gap), which is why the
- * generated icon used to come out ~square instead of banner-shaped.
+ * 1. CITED -- the flag box: `texOffs(0, 0).addBox(-10, 0, -2, 20, 40, 1)`
+ *    (decompiled model source, quoted here since the original flat-icon
+ *    implementation).
+ * 2. ATLAS-VERIFIED -- the pole (2x42x2 @ texOffs 44,0) and crossbar
+ *    (20x2x2 @ texOffs 0,42) box dimensions: probing
+ *    entity/banner/banner_base.png's alpha channel shows exactly three
+ *    opaque regions, each matching the standard box-UV unwrap
+ *    (width 2*(depth+width), height depth+height, top/bottom strips inset
+ *    by depth) for exactly those dimensions at exactly those offsets:
+ *    flag cols 0-41 rows 0-40, pole cols 44-51 rows 0-43 (top/bottom pair
+ *    at cols 46-49 rows 0-1), crossbar cols 0-43 rows 42-45 (top/bottom at
+ *    cols 2-41 rows 42-43). No other layout fits.
+ * 3. HAND-AUTHORED -- the boxes' relative placement (pole centered on the
+ *    block, crossbar sitting on the pole's top spanning the flag's width,
+ *    flag hanging from the crossbar down the camera-facing side of the
+ *    pole) and the 16/44 scale that fits the 44-unit-tall assembly into
+ *    the engine's 0-16 reference cube. Vanilla's own renderer composes
+ *    these via per-part entity transforms (including a negative-z scale
+ *    flip), so the raw addBox origins aren't directly usable -- placement
+ *    is derived to match the in-game standing banner / inventory icon
+ *    appearance instead.
+ *
+ * Tinting matches vanilla's split, confirmed by the atlas pixels
+ * themselves: the flag's unwrap region is near-white grayscale (a tint
+ * target), while the pole/crossbar regions ship pre-colored wood-brown
+ * (rendered untinted). So the flag's faces sample a per-dye-color tinted
+ * copy of the atlas and the pole/crossbar faces sample an untinted shared
+ * copy -- see generateBannerAtlas + scripts/parse.ts's banner loop.
  */
-interface BoundingBox {
-  minX: number;
-  minY: number;
-  width: number;
-  height: number;
+type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
+type CompoundFace = NonNullable<CompoundIcon["elements"][number]["faces"]["up"]>;
+
+/** Vendor texture ref of the shared banner template atlas (64x64, all three boxes' UV unwraps). */
+export const BANNER_TEMPLATE_TEXTURE_REF = "entity/banner/banner_base";
+
+/** Generated texture ref for the untinted atlas copy the pole/crossbar faces sample. */
+export const BANNER_BASE_ATLAS_REF = "item/banner_base";
+
+/**
+ * Extra GUI yaw for banner icons, on top of the compound camera's default:
+ * template_banner.json declares `display.gui.rotation: [30, 20, 0]` where
+ * the inherited block default is [30, 225, 0], so the delta is 20 - 225 =
+ * -205 -- the same guiYaw-minus-default formula scripts/lib/model.ts's
+ * findGuiYawDelta applies to vendored element models. Net effect: the flag
+ * shows nearly face-on (its south face), turned ~20deg, matching the
+ * vanilla inventory icon's angled-flag-plus-pole look. (The gui transform's
+ * translation/scale are ignored -- the engine's --icon-scale containment
+ * already normalizes size, same as every other compound icon.)
+ */
+const BANNER_GUI_YAW_DELTA = -205;
+
+/** 16 model units / 44 native units: pole (42) + crossbar (2) stacked is the assembly's full height. */
+const SCALE = 16 / 44;
+
+/** Rounds to 4 decimals so the generated JSON stays compact and stable. */
+function round4(n: number): number {
+  return Math.round(n * 10000) / 10000;
 }
 
-const FLAG_FRONT_FACE: BoundingBox = { minX: 1, minY: 1, width: 20, height: 40 };
+/** Converts a pixel rect on the 64x64 atlas to the engine's 0-16 uv space (16/64 = exact quarters). */
+function uvPx(x0: number, y0: number, x1: number, y1: number): [number, number, number, number] {
+  return [x0 / 4, y0 / 4, x1 / 4, y1 / 4];
+}
 
-function crop(png: PNG, box: BoundingBox): PNG {
-  const cropped = new PNG({ width: box.width, height: box.height });
-  PNG.bitblt(png, cropped, box.minX, box.minY, box.width, box.height, 0, 0);
-  return cropped;
+/**
+ * Builds the banner "compound" icon: pole + crossbar (untinted shared
+ * atlas) + hanging flag (per-color tinted atlas). Coordinates are the
+ * native entity-model units scaled by 16/44 into the engine's 0-16 cube,
+ * centered on x/z = 8; the flag hangs against the pole's south face (the
+ * side BANNER_GUI_YAW_DELTA turns toward the camera) with its bottom edge
+ * 2 native units above the ground, mirroring the in-game standing banner.
+ */
+export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: string): CompoundIcon {
+  const flag = (uv: [number, number, number, number]): CompoundFace => ({
+    texture: flagTexturePath,
+    uv,
+  });
+  const base = (uv: [number, number, number, number]): CompoundFace => ({
+    texture: baseTexturePath,
+    uv,
+  });
+
+  const poleTop = round4(42 * SCALE);
+  const poleHalf = round4(SCALE); // pole cross-section is 2 units wide, centered
+  const flagHalf = round4(10 * SCALE); // flag/crossbar are 20 units wide, centered
+
+  return {
+    type: "compound",
+    yRotation: BANNER_GUI_YAW_DELTA,
+    // Tells ItemIcon.astro to use the banner-specific --icon-scale instead
+    // of the generic cube-calibrated one -- this assembly's real footprint
+    // (thin flag/pole, not a full 16x16x16 box) projects much smaller under
+    // the shared safety-floor scale, which measurably rendered "tiny" in the
+    // box (see .item-icon--banner's derivation comment in ItemIcon.astro).
+    variant: "banner",
+    elements: [
+      // Pole: 2x42x2, centered on the block, ground to crossbar. No "up"
+      // face: the crossbar's down face sits exactly coplanar on top of it
+      // (both at y = poleTop, pole footprint fully inside the bar's), so
+      // declaring both z-fights -- confirmed as a flickering dark notch on
+      // the rendered crossbar before this face was dropped. Same reasoning
+      // drops "south" here: the flag's north (back) face sits exactly
+      // coplanar with it (both at z = 8+poleHalf, pole footprint fully
+      // inside the flag's much wider one), and the flag hangs directly in
+      // front of this face regardless -- confirmed as a static pole-colored
+      // vertical line bisecting the rendered flag before this face was
+      // dropped (worst-case visible on white_banner's near-white flag).
+      {
+        from: [round4(8 - poleHalf), 0, round4(8 - poleHalf)],
+        to: [round4(8 + poleHalf), poleTop, round4(8 + poleHalf)],
+        faces: {
+          down: base(uvPx(48, 0, 50, 2)),
+          west: base(uvPx(44, 2, 46, 44)),
+          north: base(uvPx(46, 2, 48, 44)),
+          east: base(uvPx(48, 2, 50, 44)),
+        },
+      },
+      // Crossbar: 20x2x2, sitting on the pole's top, spanning the flag's width.
+      {
+        from: [round4(8 - flagHalf), poleTop, round4(8 - poleHalf)],
+        to: [round4(8 + flagHalf), 16, round4(8 + poleHalf)],
+        faces: {
+          up: base(uvPx(2, 42, 22, 44)),
+          down: base(uvPx(22, 42, 42, 44)),
+          west: base(uvPx(0, 44, 2, 46)),
+          south: base(uvPx(2, 44, 22, 46)),
+          east: base(uvPx(22, 44, 24, 46)),
+          north: base(uvPx(24, 44, 44, 46)),
+        },
+      },
+      // Flag: 20x40x1, hanging from the crossbar against the pole's south
+      // face, stopping 2 native units short of the ground. South face is
+      // the flag front crop (the face the gui yaw turns toward the camera).
+      // No "north" (back) face: it's the interior surface facing the pole,
+      // never visible from outside the assembly under any of this camera's
+      // rotations -- confirmed as a ghosting/double-image artifact on the
+      // rendered cloth (two near-identical, slightly offset crops of the
+      // same texture both painting) before this face was dropped, worst-case
+      // visible on white_banner's near-white flag. Unlike the pole's dropped
+      // up/south faces, this isn't an exactly-coplanar pair (the flag is a
+      // genuine 1-unit-thick box, so its own north and south sit at
+      // different depths) -- but at this icon's tiny rendered size the two
+      // near-parallel, near-fully-overlapping faces are close enough that
+      // the browser's 3D depth-sort doesn't reliably order them, so the
+      // fix is the same: don't declare the face that's never meant to be
+      // seen anyway.
+      {
+        from: [round4(8 - flagHalf), round4(2 * SCALE), round4(8 + poleHalf)],
+        to: [round4(8 + flagHalf), poleTop, round4(8 + poleHalf + SCALE)],
+        faces: {
+          up: flag(uvPx(1, 0, 21, 1)),
+          down: flag(uvPx(21, 0, 41, 1)),
+          west: flag(uvPx(0, 1, 1, 41)),
+          east: flag(uvPx(21, 1, 22, 41)),
+          south: flag(uvPx(1, 1, 21, 41)),
+        },
+      },
+    ],
+  };
 }
 
 /** Average color of a texture's opaque pixels, used as the banner's tint color. */
@@ -63,16 +201,17 @@ export function tint(png: PNG, [tintR, tintG, tintB]: [number, number, number]):
 }
 
 /**
- * Generates a flat banner icon by cropping the vanilla banner template to
- * the flag's front face and tinting it with the wool texture's average
- * color for the same dye color.
+ * Generates a dye-colored copy of the full banner template atlas by tinting
+ * every opaque pixel with the same dye's wool texture's average color. The
+ * flag's faces uv-crop their regions out of this tinted copy; the tint also
+ * covers the pole/crossbar regions of this file, but nothing samples those
+ * from the tinted copy (they sample the untinted BANNER_BASE_ATLAS_REF).
  */
-export function generateBannerIcon(bannerBasePng: Buffer, woolPng: Buffer): Buffer {
-  const base = PNG.sync.read(bannerBasePng);
+export function generateBannerAtlas(bannerBasePng: Buffer, woolPng: Buffer): Buffer {
+  const atlas = PNG.sync.read(bannerBasePng);
   const wool = PNG.sync.read(woolPng);
 
-  const icon = crop(base, FLAG_FRONT_FACE);
-  tint(icon, averageOpaqueColor(wool));
+  tint(atlas, averageOpaqueColor(wool));
 
-  return PNG.sync.write(icon);
+  return PNG.sync.write(atlas);
 }

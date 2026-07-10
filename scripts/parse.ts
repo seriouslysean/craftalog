@@ -11,7 +11,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { generateBannerIcon } from "./lib/banner-icon.ts";
+import {
+  BANNER_BASE_ATLAS_REF,
+  BANNER_TEMPLATE_TEXTURE_REF,
+  generateBannerAtlas,
+} from "./lib/banner-icon.ts";
 import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
 import { generateLeatherArmorIcon } from "./lib/leather-armor-icon.ts";
@@ -113,13 +117,20 @@ function main(): void {
     fs.writeFileSync(destPath, firstAnimationFrame(fs.readFileSync(sourcePath)));
   }
 
-  const bannerBasePath = path.join(VENDOR_TEXTURES_DIR, "entity/banner/banner_base.png");
-  const bannerBasePng = fs.readFileSync(bannerBasePath);
-  for (const [colorId, ref] of bannerIconsToSynthesize) {
-    const woolPath = path.join(VENDOR_TEXTURES_DIR, `block/${colorId}_wool.png`);
-    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
-    fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    fs.writeFileSync(destPath, generateBannerIcon(bannerBasePng, fs.readFileSync(woolPath)));
+  if (bannerIconsToSynthesize.size > 0) {
+    const bannerBasePath = path.join(VENDOR_TEXTURES_DIR, `${BANNER_TEMPLATE_TEXTURE_REF}.png`);
+    const bannerBasePng = fs.readFileSync(bannerBasePath);
+    // The untinted atlas copy every banner's pole/crossbar faces sample.
+    const baseAtlasDest = path.join(PUBLIC_TEXTURES_DIR, `${BANNER_BASE_ATLAS_REF}.png`);
+    fs.mkdirSync(path.dirname(baseAtlasDest), { recursive: true });
+    fs.writeFileSync(baseAtlasDest, bannerBasePng);
+    // One tinted atlas copy per dye color, for the flag faces.
+    for (const [colorId, ref] of bannerIconsToSynthesize) {
+      const woolPath = path.join(VENDOR_TEXTURES_DIR, `block/${colorId}_wool.png`);
+      const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      fs.writeFileSync(destPath, generateBannerAtlas(bannerBasePng, fs.readFileSync(woolPath)));
+    }
   }
 
   for (const [textureRef, ref] of lightningRodIconsToSynthesize) {
