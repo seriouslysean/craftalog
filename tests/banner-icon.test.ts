@@ -1,6 +1,12 @@
 import { PNG } from "pngjs";
 import { describe, expect, it } from "vitest";
-import { bannerCompoundIcon, generateBannerAtlas } from "../scripts/lib/banner-icon.ts";
+import {
+  bannerCompoundIcon,
+  generateBannerAtlas,
+  uvPx,
+  uvPxOnAtlas,
+} from "../scripts/lib/banner-icon.ts";
+import { boxUvFaces } from "../scripts/lib/bedrock-geometry.ts";
 
 /** Builds a PNG buffer from a row-major grid of [r, g, b, a] pixels. */
 function buildPng(
@@ -17,6 +23,53 @@ function buildPng(
   });
   return PNG.sync.write(png);
 }
+
+describe("uvPxOnAtlas / uvPx", () => {
+  it("normalizes a pixel rect per-axis against the atlas's own real dimensions, not a fixed divisor", () => {
+    // 64-wide atlas: x divisor 64/16=4. 32-tall atlas: y divisor 32/16=2 --
+    // deliberately different per axis, unlike every square 64x64 atlas
+    // this codebase used before scripts/lib/head-icon.ts needed a non-
+    // square one.
+    expect(uvPxOnAtlas(8, 0, 16, 8, 64, 32)).toEqual([2, 0, 4, 4]);
+  });
+
+  it("uvPx is the square-64x64 special case of uvPxOnAtlas", () => {
+    expect(uvPx(8, 0, 16, 8)).toEqual(uvPxOnAtlas(8, 0, 16, 8, 64, 64));
+    expect(uvPx(1, 1, 13, 23)).toEqual([0.25, 0.25, 3.25, 5.75]);
+  });
+});
+
+describe("boxUvFaces", () => {
+  it("unwraps a cube's 6 faces from atlas offset (0,0), well-formed and non-overlapping per the standard box-UV convention", () => {
+    // 8x8x8 box on a 64x32 atlas -- the real head-box case (see
+    // tests/head-icon.test.ts), verified by hand against the atlas's own
+    // alpha-channel probe (see scripts/lib/head-icon.ts's docstring).
+    const faces = boxUvFaces(0, 0, 8, 8, 8, 64, 32);
+    expect(faces.up).toEqual([2, 0, 4, 4]);
+    expect(faces.down).toEqual([4, 0, 6, 4]);
+    expect(faces.west).toEqual([0, 4, 2, 8]);
+    expect(faces.north).toEqual([2, 4, 4, 8]);
+    expect(faces.east).toEqual([4, 4, 6, 8]);
+    expect(faces.south).toEqual([6, 4, 8, 8]);
+    for (const [u0, v0, u1, v1] of Object.values(faces)) {
+      expect(u0).toBeLessThan(u1);
+      expect(v0).toBeLessThan(v1);
+    }
+  });
+
+  it("offsets every face by a nonzero atlas offset (u,v), same atlas", () => {
+    const atOrigin = boxUvFaces(0, 0, 6, 6, 6, 32, 16);
+    const shifted = boxUvFaces(4, 0, 6, 6, 6, 32, 16);
+    // atlasWidth 32 -> pixel-to-uv divisor 2 -- a 4px u-offset shifts every
+    // face's u coordinates by exactly 4/2 = 2 uv units.
+    for (const face of ["up", "down", "north", "south", "east", "west"] as const) {
+      expect(shifted[face][0]).toBeCloseTo(atOrigin[face][0] + 2);
+      expect(shifted[face][2]).toBeCloseTo(atOrigin[face][2] + 2);
+      expect(shifted[face][1]).toBeCloseTo(atOrigin[face][1]);
+      expect(shifted[face][3]).toBeCloseTo(atOrigin[face][3]);
+    }
+  });
+});
 
 describe("generateBannerAtlas", () => {
   it("tints every opaque pixel with the wool's average color and leaves transparent pixels untouched", () => {

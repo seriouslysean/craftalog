@@ -166,6 +166,7 @@ function run() {
     copperGolemGeoRaw: emptyCopperGolemGeoRaw,
     shulkerGeoRaw: emptyShulkerGeoRaw,
     textureExists: (ref) => existingRefs.has(ref),
+    textureDimensions: () => undefined,
   });
 }
 
@@ -351,6 +352,7 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists: (ref) =>
         new Set(["item/stick", "block/widget_body", "block/unresolvable_widget_particle"]).has(ref),
+      textureDimensions: () => undefined,
     });
   }
 
@@ -423,6 +425,7 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
       copperGolemGeoRaw: emptyCopperGolemGeoRaw,
       shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
+      textureDimensions: () => undefined,
     });
   }
 
@@ -524,6 +527,7 @@ describe("generate: shield (bespoke special renderer, no vendored geometry)", ()
       copperGolemGeoRaw: emptyCopperGolemGeoRaw,
       shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
+      textureDimensions: () => undefined,
       bedrockBedIconExists: () => false,
     });
   }
@@ -607,6 +611,7 @@ describe("generate: copper golem statue (real geometry extracted from vendored B
       copperGolemGeoRaw,
       shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
+      textureDimensions: () => undefined,
       bedrockBedIconExists: () => false,
     });
   }
@@ -682,6 +687,7 @@ describe("generate: shulker box (real geometry extracted from vendored Bedrock d
       copperGolemGeoRaw: emptyCopperGolemGeoRaw,
       shulkerGeoRaw,
       textureExists,
+      textureDimensions: () => undefined,
       bedrockBedIconExists: () => false,
     });
   }
@@ -713,5 +719,119 @@ describe("generate: shulker box (real geometry extracted from vendored Bedrock d
     });
     expect(result.meta.unresolvedIcons).toContain("black_shulker_box");
     expect(result.shulkerIconsToCopy.size).toBe(0);
+  });
+});
+
+describe("generate: mob heads + conduit (hand-authored cube, no vendored geometry)", () => {
+  // Mirrors the real vendored shapes (see tests/model.test.ts's matching cases).
+  const headConduitRecipesRaw: RawRecipesData = {
+    creeper_banner_pattern: {
+      type: "minecraft:crafting_shapeless",
+      ingredients: ["minecraft:paper", "minecraft:creeper_head"],
+      result: { id: "minecraft:creeper_banner_pattern" },
+    },
+    conduit: {
+      type: "minecraft:crafting_shaped",
+      key: { "#": "minecraft:nautilus_shell", X: "minecraft:heart_of_the_sea" },
+      pattern: ["###", "#X#", "###"],
+      result: { id: "minecraft:conduit" },
+    },
+  };
+  const headConduitItemDefsRaw: RawItemDefinitionsData = {
+    creeper_head: {
+      model: {
+        type: "minecraft:special",
+        base: "minecraft:item/template_skull",
+        model: { type: "minecraft:head", kind: "creeper" },
+      },
+    },
+    conduit: {
+      model: {
+        type: "minecraft:special",
+        base: "minecraft:item/conduit",
+        model: { type: "minecraft:conduit" },
+      },
+    },
+  };
+  // A 64x32 (legacy skin format) and a 32x16 atlas -- both non-64x64, unlike
+  // every other compound renderer's atlas, so this exercises the per-axis
+  // uv normalization boxUvFaces/uvPxOnAtlas thread through real dimensions
+  // for (see scripts/lib/head-icon.ts).
+  const dimensionsByRef: Record<string, { width: number; height: number }> = {
+    "entity/creeper/creeper": { width: 64, height: 32 },
+    "entity/conduit/base": { width: 32, height: 16 },
+  };
+
+  function runHeadConduit(
+    textureDimensions: (ref: string) => { width: number; height: number } | undefined,
+  ) {
+    return generate({
+      version: "26.2",
+      recipesRaw: headConduitRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: headConduitItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists: () => false,
+      textureDimensions,
+      bedrockBedIconExists: () => false,
+    });
+  }
+
+  it("resolves a head candidate to a single-cube compound icon and queues its kind's skin texture for a verbatim copy", () => {
+    const result = runHeadConduit((ref) => dimensionsByRef[ref]);
+    const icon = result.items.creeper_head.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBeUndefined();
+    expect(icon.yRotation).toBe(-180);
+    expect(icon.elements).toHaveLength(1);
+    expect(
+      Object.values(icon.elements[0].faces).every(
+        (face) => face.texture === "/textures/item/creeper.png",
+      ),
+    ).toBe(true);
+    expect(result.headIconsToCopy).toEqual(new Map([["creeper", "item/creeper"]]));
+    expect(result.meta.unresolvedIcons).not.toContain("creeper_head");
+  });
+
+  it("resolves the conduit candidate to a single-cube compound icon and queues its core texture for a verbatim copy", () => {
+    const result = runHeadConduit((ref) => dimensionsByRef[ref]);
+    const icon = result.items.conduit.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBeUndefined();
+    expect(icon.yRotation).toBe(-180);
+    expect(icon.elements).toHaveLength(1);
+    expect(
+      Object.values(icon.elements[0].faces).every(
+        (face) => face.texture === "/textures/item/conduit_base.png",
+      ),
+    ).toBe(true);
+    expect(result.conduitIconToCopy).toBe(true);
+    expect(result.meta.unresolvedIcons).not.toContain("conduit");
+  });
+
+  it("falls back to the placeholder icon when the kind's skin texture doesn't exist on disk, rather than crashing", () => {
+    const result = runHeadConduit(() => undefined);
+    expect(result.items.creeper_head.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("creeper_head");
+    expect(result.headIconsToCopy.size).toBe(0);
+  });
+
+  it("falls back to the placeholder icon when the conduit's core texture doesn't exist on disk, rather than crashing", () => {
+    const result = runHeadConduit(() => undefined);
+    expect(result.items.conduit.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("conduit");
+    expect(result.conduitIconToCopy).toBe(false);
   });
 });

@@ -1,3 +1,5 @@
+import { isHeadKind } from "./head-icon.ts";
+import type { HeadKind } from "./head-icon.ts";
 import type {
   RawItemDefinitionsData,
   RawModel,
@@ -288,6 +290,10 @@ export type IconCandidate =
   | { type: "copper_golem_statue"; textureRef: string }
   /** A shulker box color (16 dyed + undyed) — resolved to a compound icon extracted from real vendored Bedrock entity geometry (see scripts/lib/shulker-icon.ts), not hand-authored. `textureRef` is this color's Java entity texture ref (e.g. "entity/shulker/shulker_black", or "entity/shulker/shulker" for undyed), read straight from the item definition's own `texture` field — covers all 16 dye colors + undyed generically, no hand list. */
   | { type: "shulker_box"; textureRef: string }
+  /** A mob head (skull block item) — resolved to a compound icon cropped from `kind`'s own vendored entity skin texture (see scripts/lib/head-icon.ts), not a vendored block model. Only kinds in HEAD_KIND_TEXTURES reach here — "dragon" and player heads fail open to the existing base-model chain resolution instead (see resolveIconCandidate). */
+  | { type: "head"; kind: HeadKind }
+  /** The conduit — resolved to a compound icon cropped from its own vendored entity texture (see scripts/lib/head-icon.ts), the same treatment as heads. Only one variant exists, so this carries no further data. */
+  | { type: "conduit" }
   /** Single-texture compound shapes: one material texture painted on every face of a multi-element model (see ItemIcon.astro's dedicated rendering branch for each). */
   | { type: "pressure_plate"; textureRef: string }
   | { type: "wall"; textureRef: string }
@@ -534,6 +540,22 @@ export function resolveIconCandidate(
     // generically off this one field, no hand list of color names.
     const textureName = stripMcPrefix(special.specialModel.texture);
     return { type: "shulker_box", textureRef: `entity/shulker/${textureName}` };
+  }
+
+  if (special?.specialType === "head" && typeof special.specialModel.kind === "string") {
+    const { kind } = special.specialModel;
+    if (isHeadKind(kind)) {
+      return { type: "head", kind };
+    }
+    // Unsupported kind (currently just "dragon", whose entity texture isn't
+    // a standard skin box-UV atlas -- see scripts/lib/head-icon.ts) -- fall
+    // through to the base-model chain resolution below, same fail-open
+    // behavior as before this renderer existed (and as player_head, which
+    // has no `kind` at all, always did).
+  }
+
+  if (special?.specialType === "conduit") {
+    return { type: "conduit" };
   }
 
   const resolvedModelRef = modelRef ?? special?.base;

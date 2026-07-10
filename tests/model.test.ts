@@ -622,17 +622,100 @@ describe("resolveIconCandidate", () => {
   });
 
   it("returns undefined when the special renderer's base has no resolvable texture", () => {
+    // A deliberately synthetic special type: it exercises the fail-open
+    // path every unrecognized (including future-vanilla) special takes --
+    // no dedicated classification branch, base-model chain unresolvable.
+    // Kept synthetic on purpose: real examples keep graduating to
+    // dedicated renderers (shield, copper golem, shulker, heads, conduit,
+    // ...), and this fixture must stay unhandled to stay valid.
+    const specials: RawItemDefinitionsData = {
+      some_future_item: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/some_future_item_with_no_model_entry",
+          model: { type: "minecraft:some_future_special" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("some_future_item", specials, models)).toBeUndefined();
+  });
+
+  it("resolves a head candidate for each supported kind (creeper/piglin/skeleton/wither_skeleton/zombie), mirroring the real vendored `minecraft:head` shape", () => {
+    // Mirrors the real vendored shape for every head item (e.g.
+    // creeper_head/wither_skeleton_skull) -- see scripts/lib/head-icon.ts.
+    for (const kind of ["creeper", "piglin", "skeleton", "wither_skeleton", "zombie"] as const) {
+      const specials: RawItemDefinitionsData = {
+        [`${kind}_head`]: {
+          model: {
+            type: "minecraft:special",
+            base: "minecraft:item/template_skull",
+            model: { type: "minecraft:head", kind },
+          },
+        },
+      };
+
+      expect(resolveIconCandidate(`${kind}_head`, specials, models)).toEqual({
+        type: "head",
+        kind,
+      });
+    }
+  });
+
+  it("falls through to base-model chain resolution for an unsupported head kind (dragon -- non-standard atlas, see scripts/lib/head-icon.ts)", () => {
+    const specialModels: RawModelsData = {
+      ...models,
+      "item/dragon_head": { textures: { particle: "minecraft:block/soul_sand" } },
+    };
+    const specials: RawItemDefinitionsData = {
+      dragon_head: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/dragon_head",
+          model: { type: "minecraft:head", kind: "dragon" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("dragon_head", specials, specialModels)).toEqual({
+      type: "flat",
+      textureRef: "block/soul_sand",
+    });
+  });
+
+  it("falls through to base-model chain resolution for player_head (no `kind` at all -- no static texture source, see scripts/lib/head-icon.ts)", () => {
+    const specialModels: RawModelsData = {
+      ...models,
+      "item/template_skull": { textures: { particle: "minecraft:block/soul_sand" } },
+    };
+    const specials: RawItemDefinitionsData = {
+      player_head: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/template_skull",
+          model: { type: "minecraft:player_head" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("player_head", specials, specialModels)).toEqual({
+      type: "flat",
+      textureRef: "block/soul_sand",
+    });
+  });
+
+  it("resolves a conduit candidate (no extra data) for a minecraft:special conduit renderer", () => {
     const specials: RawItemDefinitionsData = {
       conduit: {
         model: {
           type: "minecraft:special",
-          base: "minecraft:item/conduit_with_no_model_entry",
+          base: "minecraft:item/conduit",
           model: { type: "minecraft:conduit" },
         },
       },
     };
 
-    expect(resolveIconCandidate("conduit", specials, models)).toBeUndefined();
+    expect(resolveIconCandidate("conduit", specials, models)).toEqual({ type: "conduit" });
   });
 });
 

@@ -1,4 +1,4 @@
-import { round4, uvPx } from "./banner-icon.ts";
+import { round4, uvPxOnAtlas } from "./banner-icon.ts";
 import type { IconOutput, RawBedrockCube } from "./types.ts";
 
 /**
@@ -27,20 +27,42 @@ export interface FaceUVs {
 }
 
 /**
- * The Bedrock box-UV unwrap for a cube of size w(width, x) x h(height, y) x
- * d(depth, z) at atlas offset (u,v) -- same convention a Java player-skin
- * texture uses (front face famously at a fixed offset from the unwrap's
- * origin).
+ * The Bedrock box-UV unwrap (Minecraft skin texture / Bedrock geometry
+ * convention: a top/bottom strip first, then west/north/east/south bands
+ * wrapping the sides) for a cube of size w(width, x) x h(height, y) x
+ * d(depth, z) at atlas pixel offset (u,v) -- same convention a Java
+ * player-skin texture uses (front face famously at a fixed offset from the
+ * unwrap's origin) -- converted into the engine's per-axis 0-16 uv space
+ * against the atlas's own real pixel width/height (see banner-icon.ts's
+ * uvPxOnAtlas). Most consumers' vendored atlases are 64x64 and go through
+ * the faceUVs shorthand below; scripts/lib/head-icon.ts's are NOT all
+ * 64x64 (e.g. a 64x32 legacy mob-skin, the conduit's 32x16), so it passes
+ * each atlas's own real dimensions through instead.
  */
-export function faceUVs(u: number, v: number, w: number, h: number, d: number): FaceUVs {
+export function boxUvFaces(
+  u: number,
+  v: number,
+  w: number,
+  h: number,
+  d: number,
+  atlasWidth: number,
+  atlasHeight: number,
+): FaceUVs {
+  const px = (x0: number, y0: number, x1: number, y1: number) =>
+    uvPxOnAtlas(x0, y0, x1, y1, atlasWidth, atlasHeight);
   return {
-    up: uvPx(u + d, v, u + d + w, v + d),
-    down: uvPx(u + d + w, v, u + d + 2 * w, v + d),
-    north: uvPx(u + d, v + d, u + d + w, v + d + h),
-    east: uvPx(u + d + w, v + d, u + d + w + d, v + d + h),
-    west: uvPx(u, v + d, u + d, v + d + h),
-    south: uvPx(u + 2 * d + w, v + d, u + 2 * d + 2 * w, v + d + h),
+    up: px(u + d, v, u + d + w, v + d),
+    down: px(u + d + w, v, u + d + 2 * w, v + d),
+    north: px(u + d, v + d, u + d + w, v + d + h),
+    east: px(u + d + w, v + d, u + d + w + d, v + d + h),
+    west: px(u, v + d, u + d, v + d + h),
+    south: px(u + 2 * d + w, v + d, u + 2 * d + 2 * w, v + d + h),
   };
+}
+
+/** The common fixed-64x64-atlas case of boxUvFaces (copper golem, shulker). */
+export function faceUVs(u: number, v: number, w: number, h: number, d: number): FaceUVs {
+  return boxUvFaces(u, v, w, h, d, 64, 64);
 }
 
 /**
