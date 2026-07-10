@@ -5,6 +5,7 @@ import {
 } from "./banner-icon.ts";
 import { toBedrockColorName } from "./bedrock-colors.ts";
 import { CATEGORIES } from "./category.ts";
+import { chestCompoundIcon } from "./chest-icon.ts";
 import { copperGolemCompoundIcon } from "./copper-golem-icon.ts";
 import { buildItemTagIndex, deriveFamily, FAMILY_CATEGORY } from "./family.ts";
 import {
@@ -109,6 +110,8 @@ export interface GenerateOutput {
   headIconsToCopy: Map<HeadKind, string>;
   /** Whether the conduit's own entity texture (CONDUIT_TEXTURE_REF) must be copied verbatim to CONDUIT_ATLAS_REF (see scripts/lib/head-icon.ts) -- only one conduit variant exists, so a boolean like shieldIconToCopy. */
   conduitIconToCopy: boolean;
+  /** Chest entity-atlas texture name (e.g. "normal", "copper") -> destination texture ref, for chest icons the caller must copy verbatim (see scripts/lib/chest-icon.ts -- geometry is hand-authored at generate() time, only the already-existing Java texture PNG needs copying). Keyed by texture name so waxed/un-waxed tier pairs and the chest/trapped_chest items sharing one texture only copy once. */
+  chestIconsToCopy: Map<string, string>;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -309,6 +312,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const shulkerIconsToCopy = new Map<string, string>();
   const headIconsToCopy = new Map<HeadKind, string>();
   let conduitIconToCopy = false;
+  const chestIconsToCopy = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -403,6 +407,17 @@ export function generate(input: GenerateInput): GenerateOutput {
         conduitTextureDimensions.height,
       );
       conduitIconToCopy = true;
+    } else if (
+      candidate?.type === "chest" &&
+      textureExists(`entity/chest/${candidate.textureName}`)
+    ) {
+      // A hand-authored 2-box (bottom + lid) compound rather than vendored
+      // geometry -- chests have none, on either the Java or Bedrock side
+      // (see scripts/lib/chest-icon.ts). Keyed by texture name so the
+      // waxed/un-waxed copper tier pairs sharing one texture only copy once.
+      const ref = `item/chest_${candidate.textureName}`;
+      icon = chestCompoundIcon(`/textures/${ref}.png`);
+      chestIconsToCopy.set(candidate.textureName, ref);
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
       const ref = `item/${baseName}`;
@@ -510,5 +525,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     shulkerIconsToCopy,
     headIconsToCopy,
     conduitIconToCopy,
+    chestIconsToCopy,
   };
 }

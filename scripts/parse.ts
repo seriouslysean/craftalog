@@ -122,6 +122,7 @@ function main(): void {
     shulkerIconsToCopy,
     headIconsToCopy,
     conduitIconToCopy,
+    chestIconsToCopy,
   } = generate({
     version,
     recipesRaw,
@@ -247,6 +248,16 @@ function main(): void {
     fs.copyFileSync(sourcePath, destPath);
   }
 
+  // Chest textures are already real Java assets (mcmeta-assets) -- only the
+  // shape is hand-authored (see scripts/lib/chest-icon.ts), so the texture
+  // itself is just a verbatim copy, same as shield/copper golem.
+  for (const [textureName, ref] of chestIconsToCopy) {
+    const sourcePath = path.join(VENDOR_TEXTURES_DIR, `entity/chest/${textureName}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
   // Head/conduit textures are already real Java entity assets -- only the
   // shape (a hand-authored cube, box-UV-cropped from the atlas's own real
   // pixel dimensions) is synthesized in generate() (see
@@ -311,6 +322,7 @@ function main(): void {
   console.log(`shulker box icons: ${shulkerIconsToCopy.size}`);
   console.log(`head icons:       ${headIconsToCopy.size}`);
   console.log(`conduit icon:     ${conduitIconToCopy ? 1 : 0}`);
+  console.log(`chest icons:      ${chestIconsToCopy.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
