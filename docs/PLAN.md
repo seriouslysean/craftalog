@@ -176,14 +176,25 @@ inventory icon for a pane genuinely is just a flat colored square, not the
 pane cross-section, so the existing flat fallback is already correct there.
 
 Items rendered via a bespoke Java renderer (`{ type: "minecraft:special", base,
-model }` — chests, shields, skulls, conduit, decorated pot, banners, ...)
-have no plain model to walk. `base` is resolved through the same
-heuristics above as a best-effort stand-in, **except** banners: dye-colored
-banners all share one `base` (no per-color texture exists upstream), so
+model }` — skulls, conduit, decorated pot, banners, shields, shulker boxes,
+copper golem statues, chests, ...) have no plain model to walk. `base` is
+resolved through the same heuristics above as a best-effort stand-in,
+**except** the types with a dedicated renderer: dye-colored banners all
+share one `base` (no per-color texture exists upstream), so
 `scripts/lib/banner-icon.ts` instead crops the vanilla banner template
 (`entity/banner/banner_base.png`) to its front-facing region and tints it with
 the corresponding wool texture's average color, generating a per-color icon
-at parse time (written under `public/textures/item/<color>_banner.png`).
+at parse time (written under `public/textures/item/<color>_banner.png`);
+shields (`scripts/lib/shield-icon.ts`), chests (`scripts/lib/chest-icon.ts`),
+mob heads, and the conduit (both `scripts/lib/head-icon.ts`) hand-author box
+geometry instead, cropped from their own vendored entity-texture atlas
+(none has real shape data on the Java or Bedrock side — chest's atlas is
+selected per item via the special model's own `texture` field:
+`normal`/`trapped`/`ender`/4 copper tiers, shared across waxed/un-waxed
+pairs); copper golem statues (`scripts/lib/copper-golem-icon.ts`) and
+shulker boxes (`scripts/lib/shulker-icon.ts`) extract real geometry from a
+vendored Bedrock `.geo.json` instead (Java has none, but Bedrock's own
+entity model is genuine data, not hand-authored).
 
 **Patterned banners** (issue #41) are a related but distinct case: applying a
 loom pattern has no recipe at all in the vanilla data (a patterned banner's

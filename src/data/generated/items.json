@@ -4591,8 +4591,146 @@
   },
   "chest": {
     "icon": {
-      "texture": "/textures/block/oak_planks.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_normal.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "chest",
     "name": "Chest",
@@ -5488,8 +5626,146 @@
   },
   "copper_chest": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "copper_chest",
     "name": "Copper Chest",
@@ -9340,8 +9616,146 @@
   },
   "ender_chest": {
     "icon": {
-      "texture": "/textures/block/obsidian.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_ender.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "ender_chest",
     "name": "Ender Chest",
@@ -9415,8 +9829,146 @@
   },
   "exposed_copper_chest": {
     "icon": {
-      "texture": "/textures/block/exposed_copper.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "exposed_copper_chest",
     "name": "Exposed Copper Chest",
@@ -17769,8 +18321,146 @@
   },
   "oxidized_copper_chest": {
     "icon": {
-      "texture": "/textures/block/oxidized_copper.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "oxidized_copper_chest",
     "name": "Oxidized Copper Chest",
@@ -32208,8 +32898,146 @@
   },
   "trapped_chest": {
     "icon": {
-      "texture": "/textures/block/oak_planks.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_trapped.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "trapped_chest",
     "name": "Trapped Chest",
@@ -32826,8 +33654,146 @@
   },
   "waxed_copper_chest": {
     "icon": {
-      "texture": "/textures/block/copper_block.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "waxed_copper_chest",
     "name": "Waxed Copper Chest",
@@ -33643,8 +34609,146 @@
   },
   "waxed_exposed_copper_chest": {
     "icon": {
-      "texture": "/textures/block/exposed_copper.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_exposed.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "waxed_exposed_copper_chest",
     "name": "Waxed Exposed Copper Chest",
@@ -34478,8 +35582,146 @@
   },
   "waxed_oxidized_copper_chest": {
     "icon": {
-      "texture": "/textures/block/oxidized_copper.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_oxidized.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "waxed_oxidized_copper_chest",
     "name": "Waxed Oxidized Copper Chest",
@@ -35304,8 +36546,146 @@
   },
   "waxed_weathered_copper_chest": {
     "icon": {
-      "texture": "/textures/block/weathered_copper.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "waxed_weathered_copper_chest",
     "name": "Waxed Weathered Copper Chest",
@@ -36139,8 +37519,146 @@
   },
   "weathered_copper_chest": {
     "icon": {
-      "texture": "/textures/block/weathered_copper.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                4.75,
+                10.5,
+                8.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                8.25,
+                10.5,
+                10.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                8.25,
+                7,
+                10.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                10.5,
+                8.25,
+                14,
+                10.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                4.75,
+                7,
+                8.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                0,
+                8.25,
+                3.5,
+                10.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            0,
+            1
+          ],
+          "to": [
+            15,
+            10,
+            15
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                0,
+                10.5,
+                3.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                7,
+                3.5,
+                10.5,
+                4.75
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                3.5,
+                7,
+                4.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                10.5,
+                3.5,
+                14,
+                4.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                3.5,
+                0,
+                7,
+                3.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/chest_copper_weathered.png",
+              "uv": [
+                0,
+                3.5,
+                3.5,
+                4.75
+              ]
+            }
+          },
+          "from": [
+            1,
+            9,
+            1
+          ],
+          "to": [
+            15,
+            14,
+            15
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "weathered_copper_chest",
     "name": "Weathered Copper Chest",

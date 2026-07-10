@@ -835,3 +835,122 @@ describe("generate: mob heads + conduit (hand-authored cube, no vendored geometr
     expect(result.conduitIconToCopy).toBe(false);
   });
 });
+
+describe("generate: chest family (bespoke special renderer, no vendored geometry on either side)", () => {
+  const chestRecipesRaw: RawRecipesData = {
+    chest: {
+      type: "minecraft:crafting_shaped",
+      key: { "#": "minecraft:oak_planks" },
+      pattern: ["###", "# #", "###"],
+      result: { id: "minecraft:chest" },
+    },
+    waxed_copper_chest: {
+      type: "minecraft:crafting_shapeless",
+      ingredients: ["minecraft:copper_chest", "minecraft:honeycomb"],
+      result: { id: "minecraft:waxed_copper_chest" },
+    },
+  };
+  // Mirrors the real vendored shape (see tests/model.test.ts's matching
+  // cases): chest.json is select-wrapped (a Dec-24-to-26 Christmas texture
+  // case alongside the year-round fallback); copper_chest/waxed_copper_chest
+  // are plain minecraft:special nodes sharing the same "copper" texture.
+  const chestItemDefsRaw: RawItemDefinitionsData = {
+    chest: {
+      model: {
+        type: "minecraft:select",
+        property: "minecraft:local_time",
+        pattern: "MM-dd",
+        cases: [
+          {
+            when: ["12-24", "12-25", "12-26"],
+            model: {
+              type: "minecraft:special",
+              base: "minecraft:item/chest",
+              model: { type: "minecraft:chest", texture: "minecraft:christmas" },
+            },
+          },
+        ],
+        fallback: {
+          type: "minecraft:special",
+          base: "minecraft:item/chest",
+          model: { type: "minecraft:chest", texture: "minecraft:normal" },
+        },
+      },
+    },
+    copper_chest: {
+      model: {
+        type: "minecraft:special",
+        base: "minecraft:item/copper_chest",
+        model: { type: "minecraft:chest", texture: "minecraft:copper" },
+      },
+    },
+    waxed_copper_chest: {
+      model: {
+        type: "minecraft:special",
+        base: "minecraft:item/copper_chest",
+        model: { type: "minecraft:chest", texture: "minecraft:copper" },
+      },
+    },
+  };
+
+  function runChest(textureExists: (ref: string) => boolean) {
+    return generate({
+      version: "26.2",
+      recipesRaw: chestRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: chestItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists,
+      textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
+    });
+  }
+
+  it("resolves chest to a bottom+lid compound icon sampling the year-round texture, not the Christmas case, and queues it for a verbatim copy", () => {
+    const result = runChest(
+      (ref) => ref === "entity/chest/normal" || ref === "entity/chest/copper",
+    );
+    const icon = result.items.chest.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBeUndefined();
+    expect(icon.elements).toHaveLength(2);
+    expect(
+      Object.values(icon.elements[0].faces).every(
+        (face) => face.texture === "/textures/item/chest_normal.png",
+      ),
+    ).toBe(true);
+    expect(result.chestIconsToCopy.get("normal")).toBe("item/chest_normal");
+    expect(result.meta.unresolvedIcons).not.toContain("chest");
+  });
+
+  it("copper_chest and waxed_copper_chest share the same texture name, so chestIconsToCopy only queues one copy", () => {
+    const result = runChest(
+      (ref) => ref === "entity/chest/normal" || ref === "entity/chest/copper",
+    );
+    expect(result.chestIconsToCopy).toEqual(
+      new Map([
+        ["normal", "item/chest_normal"],
+        ["copper", "item/chest_copper"],
+      ]),
+    );
+    const copperIcon = result.items.copper_chest.icon;
+    const waxedIcon = result.items.waxed_copper_chest.icon;
+    expect(copperIcon).toEqual(waxedIcon);
+  });
+
+  it("falls back to the placeholder icon when the chest entity texture doesn't exist on disk, rather than crashing", () => {
+    const result = runChest(() => false);
+    expect(result.items.chest.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("chest");
+    expect(result.chestIconsToCopy.size).toBe(0);
+  });
+});
