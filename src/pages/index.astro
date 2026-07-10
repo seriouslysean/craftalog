@@ -51,6 +51,12 @@ interface CatalogCard {
   searchText: string;
   familyId: string;
   isShapeless: boolean;
+  // Set only for collapsed variant-group cards -- lets the client-side
+  // search "face-swap" (see the script below + variant-icons.json.ts)
+  // identify which cards are swappable and which variant they're currently
+  // showing. Absent (undefined) on singleton cards, which never swap.
+  variantGroupKey?: string;
+  defaultResultId?: string;
 }
 
 const variantGroupCards: CatalogCard[] = variantGroups.map((variantGroup) => {
@@ -67,6 +73,8 @@ const variantGroupCards: CatalogCard[] = variantGroups.map((variantGroup) => {
     searchText: variantGroup.variants.map(groupSearchText).join(' '),
     familyId: defaultVariant.familyId,
     isShapeless: variantGroup.variants.some(isGroupShapeless),
+    variantGroupKey: variantGroup.groupKey,
+    defaultResultId: defaultVariant.resultId,
   };
 });
 
@@ -143,7 +151,11 @@ const totalCards = cards.length;
       </p>
     </div>
 
-    <form class="catalog__filter" role="search">
+    <form
+      class="catalog__filter"
+      role="search"
+      data-variant-icons-url={withBase('/variant-icons.json')}
+    >
       <label for="recipe-filter" class="catalog__filter-label">Filter recipes by name</label>
       <div class="catalog__search-row">
         <input
@@ -259,6 +271,10 @@ const totalCards = cards.length;
                     data-category={category.categoryId}
                     data-family={family.familyId}
                     data-shapeless={card.isShapeless}
+                    data-variant-group={card.variantGroupKey}
+                    data-default-result-id={card.defaultResultId}
+                    data-default-name={card.variantGroupKey ? card.name : undefined}
+                    data-current-result-id={card.defaultResultId}
                   >
                     <ItemCard
                       href={card.href}
@@ -286,20 +302,126 @@ const totalCards = cards.length;
   const FAMILY_PARAM = 'family';
   const SHAPELESS_PARAM = 'shapeless';
 
+  // --- Search-driven variant "face-swap" ---------------------------------
+  // Collapsed variant cards (Boat, Banner, Cut Copper, ...) show one curated
+  // default variant (see VARIANT_GROUP_META). Searching a color/material
+  // adjective that names exactly one variant of a visible card (e.g.
+  // "acacia" while the Boat card shows its oak default) swaps that card's
+  // icon+name+link to the matched variant instead. The swap data
+  // (variant-icons.json.ts) is fetched lazily, only once the user actually
+  // searches for something -- never on page load -- and cached after that.
+  interface VariantIconEntry {
+    resultId: string;
+    name: string;
+    href: string;
+    textures: string[];
+  }
+  type VariantIconManifest = Record<string, VariantIconEntry[]>;
+
+  let variantManifestPromise: Promise<VariantIconManifest | null> | null = null;
+
+  function ensureVariantManifest(url: string): Promise<VariantIconManifest | null> {
+    if (!variantManifestPromise) {
+      variantManifestPromise = fetch(url)
+        .then((response) =>
+          response.ok ? (response.json() as Promise<VariantIconManifest>) : null,
+        )
+        .catch(() => null);
+    }
+    return variantManifestPromise;
+  }
+
+  // Every variant in a group shares identical geometry (see
+  // iconSwapTextures' doc comment) -- swapping is just pointing each
+  // already-rendered face at a different texture URL, positionally, never
+  // regenerating markup. A single-entry textures array (wall/fence/
+  // fence_gate icons, whose several parts all paint one shared texture) is
+  // broadcast to every slot instead of matched 1:1.
+  function applyTextures(iconContainer: Element, textures: string[]): boolean {
+    if (textures.length === 0) return false;
+    const slots = iconContainer.querySelectorAll<HTMLElement>('img, [style*="background-image"]');
+    if (slots.length === 0) return false;
+    slots.forEach((slot, index) => {
+      const texture = textures.length === 1 ? textures[0] : textures[index];
+      if (!texture) return;
+      if (slot instanceof HTMLImageElement) {
+        slot.src = texture;
+      } else {
+        slot.style.backgroundImage = `url(${texture})`;
+      }
+    });
+    return true;
+  }
+
+  function applyCardFace(card: HTMLElement, variant: VariantIconEntry) {
+    if (card.dataset.currentResultId === variant.resultId) return;
+    const iconContainer = card.querySelector('.item-card__icon');
+    const nameEl = card.querySelector('.item-card__name');
+    const linkEl = card.querySelector<HTMLAnchorElement>('a.item-card');
+    if (!iconContainer || !nameEl || !linkEl) return;
+    if (!applyTextures(iconContainer, variant.textures)) return;
+    nameEl.textContent = variant.name;
+    linkEl.href = variant.href;
+    card.dataset.currentResultId = variant.resultId;
+  }
+
   document.addEventListener('astro:page-load', () => {
     const form = document.querySelector<HTMLFormElement>('.catalog__filter');
     const input = document.getElementById('recipe-filter');
     const shapelessInput = document.getElementById('shapeless-toggle');
     const items = document.querySelectorAll<HTMLElement>('.catalog__item');
+    const variantGroupItems = document.querySelectorAll<HTMLElement>('[data-variant-group]');
     const categorySections = document.querySelectorAll<HTMLElement>('[data-category-section]');
     const familyGroups = document.querySelectorAll<HTMLElement>('[data-family-group]');
     const categoryInputs = document.querySelectorAll<HTMLInputElement>('input[name="category"]');
     const familyRadiogroups = document.querySelectorAll<HTMLElement>('[data-category-families]');
     const emptyState = document.getElementById('catalog-empty');
+    const variantIconsUrl = form?.dataset.variantIconsUrl;
 
     let activeCategory = 'all';
     let activeFamily = 'all';
     let shapelessOnly = false;
+
+    function updateVariantFaces(needle: string) {
+      if (!variantIconsUrl) return;
+      // Only ever fetch once the user has actually searched for something --
+      // an empty needle with no manifest fetched yet is a no-op (matches
+      // "avoid loading unless needed"). Once the manifest IS cached, still
+      // re-run on an empty needle so previously-swapped cards revert to
+      // their curated default.
+      if (!needle && !variantManifestPromise) return;
+
+      ensureVariantManifest(variantIconsUrl).then((manifest) => {
+        if (!manifest) return;
+        variantGroupItems.forEach((card) => {
+          const groupKey = card.dataset.variantGroup;
+          const defaultResultId = card.dataset.defaultResultId;
+          if (!groupKey || !defaultResultId) return;
+          const variants = manifest[groupKey];
+          if (!variants) return;
+
+          const matches = needle
+            ? variants.filter((variant) => variant.name.toLowerCase().includes(needle))
+            : [];
+
+          if (matches.length === 1) {
+            applyCardFace(card, matches[0]);
+            return;
+          }
+
+          // No specific match (or search cleared): show the family's
+          // curated identity, not the default variant's own item name --
+          // e.g. "Boat", not "Oak Boat" (see VARIANT_GROUP_META).
+          const defaultVariant = variants.find((variant) => variant.resultId === defaultResultId);
+          if (defaultVariant) {
+            applyCardFace(card, {
+              ...defaultVariant,
+              name: card.dataset.defaultName ?? defaultVariant.name,
+            });
+          }
+        });
+      });
+    }
 
     function activeFamilyInputs(): HTMLInputElement[] {
       const activeRadiogroup = document.querySelector<HTMLElement>(
@@ -334,6 +456,7 @@ const totalCards = cards.length;
       });
 
       if (emptyState) emptyState.hidden = anyVisible;
+      updateVariantFaces(needle);
     }
 
     function showFamilyRadiogroupForCategory() {
