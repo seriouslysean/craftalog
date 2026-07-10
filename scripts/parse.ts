@@ -11,12 +11,15 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { PNG } from "pngjs";
+
 import {
   BANNER_BASE_ATLAS_REF,
   BANNER_TEMPLATE_TEXTURE_REF,
   generateBannerAtlas,
 } from "./lib/banner-icon.ts";
 import { generate } from "./lib/generate.ts";
+import { CONDUIT_ATLAS_REF, CONDUIT_TEXTURE_REF, HEAD_KIND_TEXTURES } from "./lib/head-icon.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
 import { generateLeatherArmorIcon } from "./lib/leather-armor-icon.ts";
 import { generateLightningRodIcon } from "./lib/lightning-rod-icon.ts";
@@ -93,6 +96,12 @@ function main(): void {
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
+  const textureDimensions = (ref: string): { width: number; height: number } | undefined => {
+    const filePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
+    if (!fs.existsSync(filePath)) return undefined;
+    const { width, height } = PNG.sync.read(fs.readFileSync(filePath));
+    return { width, height };
+  };
   const bedrockBedIconExists = (bedrockColorName: string): boolean =>
     fs.existsSync(path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`));
 
@@ -111,6 +120,8 @@ function main(): void {
     shieldIconToCopy,
     copperGolemIconsToCopy,
     shulkerIconsToCopy,
+    headIconsToCopy,
+    conduitIconToCopy,
   } = generate({
     version,
     recipesRaw,
@@ -124,6 +135,7 @@ function main(): void {
     copperGolemGeoRaw,
     shulkerGeoRaw,
     textureExists,
+    textureDimensions,
     bedrockBedIconExists,
   });
 
@@ -235,6 +247,25 @@ function main(): void {
     fs.copyFileSync(sourcePath, destPath);
   }
 
+  // Head/conduit textures are already real Java entity assets -- only the
+  // shape (a hand-authored cube, box-UV-cropped from the atlas's own real
+  // pixel dimensions) is synthesized in generate() (see
+  // scripts/lib/head-icon.ts); the texture itself is just a verbatim copy,
+  // same as shield/copper golem/bed.
+  for (const [kind, ref] of headIconsToCopy) {
+    const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${HEAD_KIND_TEXTURES[kind]}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
+  if (conduitIconToCopy) {
+    const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${CONDUIT_TEXTURE_REF}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${CONDUIT_ATLAS_REF}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
   // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
   // no synthesis, just a straight copy with the color-name remap applied
   // (see scripts/lib/bedrock-colors.ts).
@@ -278,6 +309,8 @@ function main(): void {
   console.log(`shield icon:      ${shieldIconToCopy ? 1 : 0}`);
   console.log(`copper golem icons: ${copperGolemIconsToCopy.size}`);
   console.log(`shulker box icons: ${shulkerIconsToCopy.size}`);
+  console.log(`head icons:       ${headIconsToCopy.size}`);
+  console.log(`conduit icon:     ${conduitIconToCopy ? 1 : 0}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");

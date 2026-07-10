@@ -69,6 +69,35 @@ export function round4(n: number): number {
   return Math.round(n * 10000) / 10000;
 }
 
+/**
+ * Converts a pixel rect on an atlas of the given real pixel dimensions to
+ * this engine's own uv convention: a PER-AXIS 0-16 space where 16 units
+ * always represents that axis's full image span, independent of the other
+ * axis and independent of the atlas's real resolution (see
+ * ItemIcon.astro's computeUvCrop, which stretches the referenced texture
+ * file to fill exactly that normalized space via CSS background-size
+ * percentages). `uvPx` below is the common case of this for a square 64x64
+ * atlas (every hand-authored compound icon before scripts/lib/head-icon.ts
+ * happened to use one); non-square vendored atlases (e.g. a 64x32 legacy
+ * mob-skin texture) need the real width/height threaded through instead,
+ * since x and y need different divisors.
+ */
+export function uvPxOnAtlas(
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  atlasWidth: number,
+  atlasHeight: number,
+): [number, number, number, number] {
+  return [
+    round4((x0 * 16) / atlasWidth),
+    round4((y0 * 16) / atlasHeight),
+    round4((x1 * 16) / atlasWidth),
+    round4((y1 * 16) / atlasHeight),
+  ];
+}
+
 /** Converts a pixel rect on a 64x64 atlas to the engine's 0-16 uv space (16/64 = exact quarters). */
 export function uvPx(
   x0: number,
@@ -76,7 +105,7 @@ export function uvPx(
   x1: number,
   y1: number,
 ): [number, number, number, number] {
-  return [x0 / 4, y0 / 4, x1 / 4, y1 / 4];
+  return uvPxOnAtlas(x0, y0, x1, y1, 64, 64);
 }
 
 /**

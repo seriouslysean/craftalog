@@ -7,6 +7,14 @@ import { toBedrockColorName } from "./bedrock-colors.ts";
 import { CATEGORIES } from "./category.ts";
 import { copperGolemCompoundIcon } from "./copper-golem-icon.ts";
 import { buildItemTagIndex, deriveFamily, FAMILY_CATEGORY } from "./family.ts";
+import {
+  CONDUIT_ATLAS_REF,
+  CONDUIT_TEXTURE_REF,
+  HEAD_KIND_TEXTURES,
+  conduitCompoundIcon,
+  headCompoundIcon,
+} from "./head-icon.ts";
+import type { HeadKind } from "./head-icon.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
@@ -67,6 +75,8 @@ export interface GenerateInput {
   shulkerGeoRaw: RawLegacyBedrockGeometryFile;
   /** Whether a texture ref (e.g. "block/oak_log_top") exists on disk. Injected so this stays I/O-free. */
   textureExists: (ref: string) => boolean;
+  /** A vendored texture ref's own real pixel width/height, or undefined when it doesn't exist on disk -- needed for head/conduit's box-UV math, whose source atlases (unlike every other compound icon's fixed 64x64 assumption) aren't uniformly sized (see scripts/lib/head-icon.ts). Injected so this stays I/O-free. */
+  textureDimensions: (ref: string) => { width: number; height: number } | undefined;
   /** Whether vendor/bedrock-samples has a bed icon PNG for this Bedrock color name (see scripts/lib/bedrock-colors.ts). Injected so this stays I/O-free. */
   bedrockBedIconExists: (bedrockColorName: string) => boolean;
 }
@@ -95,6 +105,10 @@ export interface GenerateOutput {
   copperGolemIconsToCopy: Map<string, string>;
   /** Source Java entity texture ref -> destination texture ref, for shulker box icons the caller must copy verbatim (see scripts/lib/shulker-icon.ts -- geometry is extracted at generate() time, only the already-existing Java texture PNG needs copying). Keyed by source so no color ever copies twice. */
   shulkerIconsToCopy: Map<string, string>;
+  /** Head kind -> destination texture ref, for mob head icons the caller must copy verbatim from HEAD_KIND_TEXTURES[kind] (see scripts/lib/head-icon.ts -- geometry is hand-authored at generate() time, only the already-existing Java skin texture PNG needs copying). */
+  headIconsToCopy: Map<HeadKind, string>;
+  /** Whether the conduit's own entity texture (CONDUIT_TEXTURE_REF) must be copied verbatim to CONDUIT_ATLAS_REF (see scripts/lib/head-icon.ts) -- only one conduit variant exists, so a boolean like shieldIconToCopy. */
+  conduitIconToCopy: boolean;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -185,6 +199,7 @@ export function generate(input: GenerateInput): GenerateOutput {
     copperGolemGeoRaw,
     shulkerGeoRaw,
     textureExists,
+    textureDimensions,
     bedrockBedIconExists,
   } = input;
 
@@ -292,6 +307,8 @@ export function generate(input: GenerateInput): GenerateOutput {
   let shieldIconToCopy = false;
   const copperGolemIconsToCopy = new Map<string, string>();
   const shulkerIconsToCopy = new Map<string, string>();
+  const headIconsToCopy = new Map<HeadKind, string>();
+  let conduitIconToCopy = false;
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -302,6 +319,18 @@ export function generate(input: GenerateInput): GenerateOutput {
       candidate?.type === "compound"
         ? resolveCompoundElements(candidate, textureExists)
         : undefined;
+    // Real pixel dimensions of the candidate's own vendored atlas -- see
+    // GenerateInput.textureDimensions's doc comment for why head/conduit
+    // need this (unlike every other compound renderer's fixed 64x64
+    // assumption) and why it's precomputed here rather than inline in the
+    // branch condition below (same "compute once, branch on the result"
+    // shape as resolvedCompound above).
+    const headTextureDimensions =
+      candidate?.type === "head"
+        ? textureDimensions(HEAD_KIND_TEXTURES[candidate.kind])
+        : undefined;
+    const conduitTextureDimensions =
+      candidate?.type === "conduit" ? textureDimensions(CONDUIT_TEXTURE_REF) : undefined;
 
     if (patternedBanner && candidate) {
       // A real vendored item would mean this synthetic id collided with an
@@ -355,6 +384,25 @@ export function generate(input: GenerateInput): GenerateOutput {
       const ref = `item/${candidate.textureRef.split("/").pop()}`;
       icon = shulkerCompoundIcon(shulkerGeoRaw, `/textures/${ref}.png`);
       shulkerIconsToCopy.set(candidate.textureRef, ref);
+    } else if (candidate?.type === "head" && headTextureDimensions) {
+      // A hand-authored single-cube compound rather than vendored geometry
+      // -- heads have none (see scripts/lib/head-icon.ts).
+      const ref = `item/${candidate.kind}`;
+      icon = headCompoundIcon(
+        `/textures/${ref}.png`,
+        headTextureDimensions.width,
+        headTextureDimensions.height,
+      );
+      headIconsToCopy.set(candidate.kind, ref);
+    } else if (candidate?.type === "conduit" && conduitTextureDimensions) {
+      // Same hand-authored single-cube treatment as heads, sampling the
+      // conduit's own static core texture (see scripts/lib/head-icon.ts).
+      icon = conduitCompoundIcon(
+        `/textures/${CONDUIT_ATLAS_REF}.png`,
+        conduitTextureDimensions.width,
+        conduitTextureDimensions.height,
+      );
+      conduitIconToCopy = true;
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
       const ref = `item/${baseName}`;
@@ -460,5 +508,7 @@ export function generate(input: GenerateInput): GenerateOutput {
     shieldIconToCopy,
     copperGolemIconsToCopy,
     shulkerIconsToCopy,
+    headIconsToCopy,
+    conduitIconToCopy,
   };
 }
