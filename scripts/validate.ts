@@ -14,6 +14,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { PNG } from "pngjs";
+
 import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS } from "./lib/hud-icons.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
@@ -153,6 +155,12 @@ function checkDrift(committed: Committed): void {
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
+  const textureDimensions = (ref: string): { width: number; height: number } | undefined => {
+    const filePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
+    if (!fs.existsSync(filePath)) return undefined;
+    const { width, height } = PNG.sync.read(fs.readFileSync(filePath));
+    return { width, height };
+  };
   const bedrockBedIconExists = (bedrockColorName: string): boolean =>
     fs.existsSync(path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`));
 
@@ -169,6 +177,7 @@ function checkDrift(committed: Committed): void {
     copperGolemGeoRaw,
     shulkerGeoRaw,
     textureExists,
+    textureDimensions,
     bedrockBedIconExists,
   });
 
