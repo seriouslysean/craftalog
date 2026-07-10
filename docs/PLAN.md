@@ -173,6 +173,26 @@ banners all share one `base` (no per-color texture exists upstream), so
 the corresponding wool texture's average color, generating a per-color icon
 at parse time (written under `public/textures/item/<color>_banner.png`).
 
+**Patterned banners** (issue #41) are a related but distinct case: applying a
+loom pattern has no recipe at all in the vanilla data (a patterned banner's
+result is component/NBT-driven, not a fixed item id, unlike anything above).
+`scripts/lib/patterned-banner.ts` derives the 42 loom-obtainable patterns
+(union of the `no_item_required` and `pattern_item/*` tags in
+`data/tag/banner_pattern/data.json`, against the `data/banner_pattern/`
+registry — the registry's 43rd entry, `base`, is in neither tag and is
+correctly excluded, since it isn't obtainable in a Java loom) and injects one
+synthetic `special` recipe + item per pattern (`patterned_banner_<id>`,
+`group: "patterned_banner"`) directly into `generate()`'s output, after the
+real vanilla recipe loop. Each is rendered as a canonical black-pattern-on-
+white-banner example (base/dye color are parameters of the mechanic, not part
+of a pattern's identity — enumerating all 16×16 color combinations per
+pattern would multiply the dataset for no benefit): `scripts/lib/
+patterned-banner-icon.ts` tints the shared banner atlas white, tints the
+pattern atlas (`entity/banner/<id>.png`, the same UV layout as
+`banner_base.png`) black, and composites the two (reusing `tint()` from
+`banner-icon.ts` and `compositeOver()` from `leather-armor-icon.ts`) before
+`bannerCompoundIcon()` crops it exactly like any other banner.
+
 `stat` is derived from `vendor/mcmeta-summary/item_components/data.json`
 (scripts/lib/item-stats.ts) — at most one defining stat per item, by priority
 food > armor > weapon > tool, classified via vanilla item tags

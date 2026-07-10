@@ -405,6 +405,9 @@ export const VARIANT_GROUP_META: Record<string, VariantGroupMeta> = {
   cut_copper_slab: { name: "Cut Copper Slab", defaultResultId: "cut_copper_slab" },
   cut_copper_stairs: { name: "Cut Copper Stairs", defaultResultId: "cut_copper_stairs" },
   lightning_rod: { name: "Lightning Rod", defaultResultId: "lightning_rod" },
+  // Synthetic entries (see scripts/lib/patterned-banner.ts) -- creeper is
+  // the iconic pattern, the one most players picture first.
+  patterned_banner: { name: "Patterned Banner", defaultResultId: "patterned_banner_creeper" },
 };
 
 /** The VariantGroup's display name -- curated (see VARIANT_GROUP_META) where one exists, else the default variant's own item name. */
