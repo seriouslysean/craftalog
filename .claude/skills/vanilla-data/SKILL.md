@@ -12,16 +12,21 @@ mirror of the vanilla game data, vendored as git submodules and parsed into
 this repo's own format — this is the **sole source of truth** for recipes,
 items, tags, and lang. One additional, narrowly-scoped submodule,
 [Mojang/bedrock-samples](https://github.com/Mojang/bedrock-samples), supplies
-exactly one thing: the 16 pre-baked bed icon PNGs (Java has no equivalent —
-beds are the only item rendered as two composited block models rather than a
-single flat/cube icon). See `docs/PLAN.md` for the full contract.
+exactly two things Java's own data has no equivalent for: the 16 pre-baked
+bed icon PNGs (beds are the only item rendered as two composited block
+models rather than a single flat/cube icon), and the copper golem statue's
+entity geometry (a bespoke Java-rendered item with zero vendored shape data
+on the Java side — Mojang hardcodes that mesh in renderer code, not data).
+Textures for the statue still come from `mcmeta-assets` (confirmed
+byte-identical to Bedrock's own copies), so Java remains authoritative for
+every texture in the catalog. See `docs/PLAN.md` for the full contract.
 
 ## Submodules
 
 ```
 vendor/mcmeta-summary   → misode/mcmeta, branch "summary", tag <ver>-summary
 vendor/mcmeta-assets    → misode/mcmeta, branch "assets",  tag <ver>-assets
-vendor/bedrock-samples  → Mojang/bedrock-samples, tag v<ver> (icon-only, see above)
+vendor/bedrock-samples  → Mojang/bedrock-samples, tag v<ver> (bed icons + copper golem geometry, see above)
 ```
 
 All three are `shallow = true` in `.gitmodules`, so clones/fetches only pull
@@ -31,8 +36,8 @@ the single pinned tag's history, not the whole upstream repo.
   definitions, models, lang files, registries.
 - `mcmeta-assets` contains the PNG textures referenced by item/block models.
 - `bedrock-samples` is Mojang's own official repo (not a community
-  extraction like mcmeta) — only `resource_pack/textures/items/bed_*.png` is
-  used from it.
+  extraction like mcmeta) — only `resource_pack/textures/items/bed_*.png`
+  and `resource_pack/models/entity/copper_golem.geo.json` are used from it.
 
 The current mcmeta pin is readable at `vendor/mcmeta-summary/version.txt`
 (currently `26.2`) and mirrored into `src/data/generated/meta.json` (key
@@ -64,7 +69,7 @@ builds:
 ## Pipeline
 
 ```
-vendor/mcmeta-summary + vendor/mcmeta-assets + vendor/bedrock-samples (icons only)
+vendor/mcmeta-summary + vendor/mcmeta-assets + vendor/bedrock-samples (bed icons + copper golem geometry)
         │  npm run parse   (scripts/parse.ts)
         ▼
 src/data/generated/items.json      ── committed, diffable

@@ -150,6 +150,51 @@ export interface RawBannerPatternEntry {
 
 export type RawBannerPatternRegistry = Record<string, RawBannerPatternEntry>;
 
+/**
+ * One axis-aligned box in a Bedrock entity geometry (`.geo.json`) --
+ * Bedrock's equivalent of a Java block model's `elements` array, used here
+ * only for the copper golem statue (see scripts/lib/copper-golem-icon.ts).
+ * `origin` is one corner (native model units, NOT a center), `size` the box
+ * dimensions, `uv` the top-left of its box-UV unwrap on the shared atlas.
+ * `rotation`/`mirror` are real Bedrock cube features this repo's extractor
+ * doesn't implement (verified absent on every cube it currently reads;
+ * `copperGolemCompoundIcon` throws if a future data bump introduces one
+ * rather than silently mis-rendering).
+ */
+export interface RawBedrockCube {
+  origin: [number, number, number];
+  size: [number, number, number];
+  uv: [number, number];
+  inflate?: number;
+  rotation?: [number, number, number];
+  mirror?: boolean;
+  [key: string]: unknown;
+}
+
+/** One named part of a Bedrock entity geometry -- only `cubes` is read; `pivot`/`rotation` (bone-level, not per-cube) are only meaningful when a rotation is actually applied, which this repo's one consumer verified is never the case for its source file. */
+export interface RawBedrockBone {
+  name: string;
+  cubes?: RawBedrockCube[];
+  rotation?: [number, number, number];
+  [key: string]: unknown;
+}
+
+/** One named geometry (a `.geo.json` can bundle several, e.g. a base model plus attachment-only sub-geometries) -- select by `description.identifier`. */
+export interface RawBedrockGeometry {
+  description: {
+    identifier: string;
+    texture_width: number;
+    texture_height: number;
+    [key: string]: unknown;
+  };
+  bones: RawBedrockBone[];
+}
+
+/** The root shape of a Bedrock entity geometry file (`resource_pack/models/entity/*.geo.json`). */
+export interface RawBedrockGeometryFile {
+  "minecraft:geometry": RawBedrockGeometry[];
+}
+
 // ---------------------------------------------------------------------------
 // Generated data contract (see docs/PLAN.md "Generated data contract")
 // ---------------------------------------------------------------------------

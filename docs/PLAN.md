@@ -20,13 +20,21 @@ resume from here plus the task list in the PR description.
    - `vendor/bedrock-samples` → [Mojang/bedrock-samples](https://github.com/Mojang/bedrock-samples),
      pinned to the latest stable tag (`v<major>.<minor>.<patch>.<build>`,
      `-preview` tags excluded). A second, narrowly-scoped vendor source used
-     for exactly one thing: the 16 pre-baked bed icon PNGs
-     (`resource_pack/textures/items/bed_<color>.png`), which Java has no
-     equivalent for (beds are the only vanilla item rendered as two
-     composited block models rather than a single flat/cube icon). Verified
-     Bedrock does _not_ have bed's crafting recipe (checked both this repo
-     and the actual Bedrock Dedicated Server package — absent from both, almost
-     certainly hardcoded in the engine), so recipes/items stay Java-only.
+     for exactly two things Java's data has no equivalent for: (1) the 16
+     pre-baked bed icon PNGs (`resource_pack/textures/items/bed_<color>.png`
+     — beds are the only vanilla item rendered as two composited block
+     models rather than a single flat/cube icon); (2) the copper golem
+     statue's entity geometry (`resource_pack/models/entity/copper_golem.geo.json`
+     — a bespoke Java-rendered item with zero vendored shape data on the
+     Java side at all, since Mojang hardcodes the mesh in renderer code, not
+     data — see scripts/lib/copper-golem-icon.ts). Textures for the statue
+     still come from `mcmeta-assets` (confirmed byte-identical to Bedrock's
+     own copies of the same PNGs), so Java remains authoritative for every
+     texture in the catalog; Bedrock only ever contributes geometry/pixels
+     Java's data genuinely doesn't have. Verified Bedrock does _not_ have
+     bed's crafting recipe (checked both this repo and the actual Bedrock
+     Dedicated Server package — absent from both, almost certainly
+     hardcoded in the engine), so recipes/items stay Java-only.
 2. **Scope**: all vanilla crafting recipes — `crafting_shaped`,
    `crafting_shapeless`, `crafting_transmute` rendered; `crafting_special_*` /
    `crafting_dye` / `crafting_decorated_pot` cataloged with a curated

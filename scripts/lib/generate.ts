@@ -5,6 +5,7 @@ import {
 } from "./banner-icon.ts";
 import { toBedrockColorName } from "./bedrock-colors.ts";
 import { CATEGORIES } from "./category.ts";
+import { copperGolemCompoundIcon } from "./copper-golem-icon.ts";
 import { buildItemTagIndex, deriveFamily, FAMILY_CATEGORY } from "./family.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
@@ -26,6 +27,7 @@ import type {
   ItemsOutput,
   Meta,
   RawBannerPatternRegistry,
+  RawBedrockGeometryFile,
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawModelsData,
@@ -57,6 +59,8 @@ export interface GenerateInput {
   bannerPatternsRaw: RawBannerPatternRegistry;
   /** data/tag/banner_pattern/data.json -- see scripts/lib/patterned-banner.ts. */
   bannerPatternTagsRaw: RawTagsData;
+  /** resource_pack/models/entity/copper_golem.geo.json -- see scripts/lib/copper-golem-icon.ts. */
+  copperGolemGeoRaw: RawBedrockGeometryFile;
   /** Whether a texture ref (e.g. "block/oak_log_top") exists on disk. Injected so this stays I/O-free. */
   textureExists: (ref: string) => boolean;
   /** Whether vendor/bedrock-samples has a bed icon PNG for this Bedrock color name (see scripts/lib/bedrock-colors.ts). Injected so this stays I/O-free. */
@@ -83,6 +87,8 @@ export interface GenerateOutput {
   patternedBannerIconsToSynthesize: Map<string, string>;
   /** Whether the shared shield atlas (SHIELD_TEMPLATE_TEXTURE_REF) must be copied verbatim to SHIELD_ATLAS_REF (see scripts/lib/shield-icon.ts) -- no tinting, so just a boolean, not a per-item map. */
   shieldIconToCopy: boolean;
+  /** Source Java texture ref -> destination texture ref, for copper golem statue icons the caller must copy verbatim (see scripts/lib/copper-golem-icon.ts -- geometry is extracted at generate() time, only the already-existing Java texture PNG needs copying). Keyed by source so waxed/un-waxed pairs sharing one texture only copy once. */
+  copperGolemIconsToCopy: Map<string, string>;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -170,6 +176,7 @@ export function generate(input: GenerateInput): GenerateOutput {
     enUs,
     bannerPatternsRaw,
     bannerPatternTagsRaw,
+    copperGolemGeoRaw,
     textureExists,
     bedrockBedIconExists,
   } = input;
@@ -276,6 +283,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const leatherArmorIconsToSynthesize = new Map<string, string>();
   const patternedBannerIconsToSynthesize = new Map<string, string>();
   let shieldIconToCopy = false;
+  const copperGolemIconsToCopy = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -325,6 +333,13 @@ export function generate(input: GenerateInput): GenerateOutput {
       // -- shields have none (see scripts/lib/shield-icon.ts).
       icon = shieldCompoundIcon(`/textures/${SHIELD_ATLAS_REF}.png`);
       shieldIconToCopy = true;
+    } else if (candidate?.type === "copper_golem_statue" && textureExists(candidate.textureRef)) {
+      // Real geometry extracted from vendored Bedrock entity data -- see
+      // scripts/lib/copper-golem-icon.ts. Only the texture (already a real
+      // Java asset) needs copying; the shape comes from copperGolemGeoRaw.
+      const ref = `item/${candidate.textureRef.split("/").pop()}`;
+      icon = copperGolemCompoundIcon(copperGolemGeoRaw, `/textures/${ref}.png`);
+      copperGolemIconsToCopy.set(candidate.textureRef, ref);
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
       const ref = `item/${baseName}`;
@@ -428,5 +443,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     leatherArmorIconsToSynthesize,
     patternedBannerIconsToSynthesize,
     shieldIconToCopy,
+    copperGolemIconsToCopy,
   };
 }

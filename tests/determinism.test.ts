@@ -3,11 +3,18 @@ import { generate } from "../scripts/lib/generate.ts";
 import { sortKeysDeep } from "../scripts/lib/strings.ts";
 import type {
   RawBannerPatternRegistry,
+  RawBedrockGeometryFile,
   RawItemDefinitionsData,
   RawModelsData,
   RawRecipesData,
   RawTagsData,
 } from "../scripts/lib/types.ts";
+
+// None of this file's fixtures produce a copper_golem_statue candidate, so
+// an empty geometry list satisfies generate()'s input contract without
+// exercising copperGolemCompoundIcon at all -- see copper-golem-icon.test.ts
+// for that.
+const emptyCopperGolemGeoRaw: RawBedrockGeometryFile = { "minecraft:geometry": [] };
 
 const recipesRaw: RawRecipesData = {
   torch: {
@@ -148,6 +155,7 @@ function run() {
     enUs,
     bannerPatternsRaw: {},
     bannerPatternTagsRaw: {},
+    copperGolemGeoRaw: emptyCopperGolemGeoRaw,
     textureExists: (ref) => existingRefs.has(ref),
   });
 }
@@ -330,6 +338,7 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       enUs: {},
       bannerPatternsRaw: {},
       bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
       textureExists: (ref) =>
         new Set(["item/stick", "block/widget_body", "block/unresolvable_widget_particle"]).has(ref),
     });
@@ -401,6 +410,7 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
       enUs: patternedBannerEnUs,
       bannerPatternsRaw,
       bannerPatternTagsRaw,
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
       textureExists,
     });
   }
@@ -500,6 +510,7 @@ describe("generate: shield (bespoke special renderer, no vendored geometry)", ()
       enUs: {},
       bannerPatternsRaw: {},
       bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
       textureExists,
       bedrockBedIconExists: () => false,
     });
@@ -528,5 +539,85 @@ describe("generate: shield (bespoke special renderer, no vendored geometry)", ()
     });
     expect(result.meta.unresolvedIcons).toContain("shield");
     expect(result.shieldIconToCopy).toBe(false);
+  });
+});
+
+describe("generate: copper golem statue (real geometry extracted from vendored Bedrock data)", () => {
+  const copperGolemRecipesRaw: RawRecipesData = {
+    waxed_copper_golem_statue: {
+      type: "minecraft:crafting_shapeless",
+      ingredients: ["minecraft:copper_golem_statue", "minecraft:honeycomb"],
+      result: { id: "minecraft:waxed_copper_golem_statue" },
+    },
+  };
+  // Mirrors the real vendored shape (see tests/model.test.ts's matching case).
+  const copperGolemItemDefsRaw: RawItemDefinitionsData = {
+    waxed_copper_golem_statue: {
+      model: {
+        type: "minecraft:select",
+        block_state_property: "copper_golem_pose",
+        cases: [],
+        fallback: {
+          type: "minecraft:special",
+          base: "minecraft:item/template_copper_golem_statue",
+          model: {
+            type: "minecraft:copper_golem_statue",
+            pose: "standing",
+            texture: "minecraft:textures/entity/copper_golem/copper_golem.png",
+          },
+        },
+      },
+    },
+  };
+  const copperGolemGeoRaw: RawBedrockGeometryFile = {
+    "minecraft:geometry": [
+      {
+        description: { identifier: "geometry.copper_golem", texture_width: 64, texture_height: 64 },
+        bones: [
+          { name: "root" },
+          { name: "body", cubes: [{ origin: [-4, 5, -3], size: [8, 6, 6], uv: [0, 15] }] },
+        ],
+      },
+    ],
+  };
+
+  function runCopperGolem(textureExists: (ref: string) => boolean) {
+    return generate({
+      version: "26.2",
+      recipesRaw: copperGolemRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: copperGolemItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw,
+      textureExists,
+      bedrockBedIconExists: () => false,
+    });
+  }
+
+  it("resolves to a compound icon extracted from the real geometry and queues its Java texture for a verbatim copy", () => {
+    const result = runCopperGolem((ref) => ref === "entity/copper_golem/copper_golem");
+    const icon = result.items.waxed_copper_golem_statue.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBeUndefined();
+    expect(icon.elements).toHaveLength(1);
+    expect(icon.elements[0].faces.north?.texture).toBe("/textures/item/copper_golem.png");
+    expect(result.copperGolemIconsToCopy).toEqual(
+      new Map([["entity/copper_golem/copper_golem", "item/copper_golem"]]),
+    );
+    expect(result.meta.unresolvedIcons).not.toContain("waxed_copper_golem_statue");
+  });
+
+  it("falls back to the placeholder icon when the Java texture doesn't exist on disk, rather than crashing", () => {
+    const result = runCopperGolem(() => false);
+    expect(result.items.waxed_copper_golem_statue.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("waxed_copper_golem_statue");
+    expect(result.copperGolemIconsToCopy.size).toBe(0);
   });
 });
