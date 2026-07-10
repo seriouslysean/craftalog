@@ -19,6 +19,7 @@ import {
   SHIELD_TEMPLATE_TEXTURE_REF,
   shieldCompoundIcon,
 } from "./shield-icon.ts";
+import { shulkerCompoundIcon } from "./shulker-icon.ts";
 import { slugify } from "../../src/utils/slugify.ts";
 import type {
   CategoriesOutput,
@@ -30,6 +31,7 @@ import type {
   RawBedrockGeometryFile,
   RawItemComponentsData,
   RawItemDefinitionsData,
+  RawLegacyBedrockGeometryFile,
   RawModelsData,
   RawRecipesData,
   RawTagsData,
@@ -61,6 +63,8 @@ export interface GenerateInput {
   bannerPatternTagsRaw: RawTagsData;
   /** resource_pack/models/entity/copper_golem.geo.json -- see scripts/lib/copper-golem-icon.ts. */
   copperGolemGeoRaw: RawBedrockGeometryFile;
+  /** resource_pack/models/entity/shulker.geo.json (legacy pre-1.12 Bedrock schema) -- see scripts/lib/shulker-icon.ts. */
+  shulkerGeoRaw: RawLegacyBedrockGeometryFile;
   /** Whether a texture ref (e.g. "block/oak_log_top") exists on disk. Injected so this stays I/O-free. */
   textureExists: (ref: string) => boolean;
   /** Whether vendor/bedrock-samples has a bed icon PNG for this Bedrock color name (see scripts/lib/bedrock-colors.ts). Injected so this stays I/O-free. */
@@ -89,6 +93,8 @@ export interface GenerateOutput {
   shieldIconToCopy: boolean;
   /** Source Java texture ref -> destination texture ref, for copper golem statue icons the caller must copy verbatim (see scripts/lib/copper-golem-icon.ts -- geometry is extracted at generate() time, only the already-existing Java texture PNG needs copying). Keyed by source so waxed/un-waxed pairs sharing one texture only copy once. */
   copperGolemIconsToCopy: Map<string, string>;
+  /** Source Java entity texture ref -> destination texture ref, for shulker box icons the caller must copy verbatim (see scripts/lib/shulker-icon.ts -- geometry is extracted at generate() time, only the already-existing Java texture PNG needs copying). Keyed by source so no color ever copies twice. */
+  shulkerIconsToCopy: Map<string, string>;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -177,6 +183,7 @@ export function generate(input: GenerateInput): GenerateOutput {
     bannerPatternsRaw,
     bannerPatternTagsRaw,
     copperGolemGeoRaw,
+    shulkerGeoRaw,
     textureExists,
     bedrockBedIconExists,
   } = input;
@@ -284,6 +291,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const patternedBannerIconsToSynthesize = new Map<string, string>();
   let shieldIconToCopy = false;
   const copperGolemIconsToCopy = new Map<string, string>();
+  const shulkerIconsToCopy = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -340,6 +348,13 @@ export function generate(input: GenerateInput): GenerateOutput {
       const ref = `item/${candidate.textureRef.split("/").pop()}`;
       icon = copperGolemCompoundIcon(copperGolemGeoRaw, `/textures/${ref}.png`);
       copperGolemIconsToCopy.set(candidate.textureRef, ref);
+    } else if (candidate?.type === "shulker_box" && textureExists(candidate.textureRef)) {
+      // Real geometry extracted from vendored Bedrock entity data -- see
+      // scripts/lib/shulker-icon.ts. Only the texture (already a real Java
+      // asset) needs copying; the shape comes from shulkerGeoRaw.
+      const ref = `item/${candidate.textureRef.split("/").pop()}`;
+      icon = shulkerCompoundIcon(shulkerGeoRaw, `/textures/${ref}.png`);
+      shulkerIconsToCopy.set(candidate.textureRef, ref);
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
       const ref = `item/${baseName}`;
@@ -444,5 +459,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     patternedBannerIconsToSynthesize,
     shieldIconToCopy,
     copperGolemIconsToCopy,
+    shulkerIconsToCopy,
   };
 }

@@ -195,6 +195,45 @@ export interface RawBedrockGeometryFile {
   "minecraft:geometry": RawBedrockGeometry[];
 }
 
+/**
+ * One named part of a *legacy* (pre-1.12, `"format_version"` like "1.8.0"/
+ * "1.10.0") Bedrock entity geometry -- same cube shape as `RawBedrockBone`
+ * (reuses `RawBedrockCube`), but this older schema nests `pivot`/`rotation`
+ * directly on the bone with no `description` wrapper, and a bone's parent is
+ * a bone NAME (string), not implied by array position. Used only for the
+ * shulker (see scripts/lib/shulker-icon.ts) -- `copper_golem.geo.json`
+ * already uses the newer `minecraft:geometry` schema above.
+ */
+export interface RawLegacyBedrockBone {
+  name: string;
+  parent?: string;
+  pivot?: [number, number, number];
+  rotation?: [number, number, number];
+  cubes?: RawBedrockCube[];
+  [key: string]: unknown;
+}
+
+/** One named geometry in the legacy schema -- e.g. "geometry.shulker.v1.8", the key `shulker.entity.json`'s `geometry.default` references. */
+export interface RawLegacyBedrockGeometry {
+  texturewidth: number;
+  textureheight: number;
+  bones: RawLegacyBedrockBone[];
+  [key: string]: unknown;
+}
+
+/**
+ * The root shape of a legacy-format Bedrock entity geometry file
+ * (`resource_pack/models/entity/*.geo.json` with a pre-1.12
+ * `"format_version"`) -- every top-level key besides `format_version` is
+ * itself a named geometry (Bedrock allows bundling several per file, same
+ * idea as the newer schema's `minecraft:geometry` array, just keyed instead
+ * of listed).
+ */
+export interface RawLegacyBedrockGeometryFile {
+  format_version: string;
+  [geometryKey: string]: RawLegacyBedrockGeometry | string;
+}
+
 // ---------------------------------------------------------------------------
 // Generated data contract (see docs/PLAN.md "Generated data contract")
 // ---------------------------------------------------------------------------
