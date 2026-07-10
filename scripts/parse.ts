@@ -18,6 +18,12 @@ import {
   BANNER_TEMPLATE_TEXTURE_REF,
   generateBannerAtlas,
 } from "./lib/banner-icon.ts";
+import {
+  DECORATED_POT_BASE_ATLAS_REF,
+  DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF,
+  DECORATED_POT_SIDE_ATLAS_REF,
+  DECORATED_POT_SIDE_TEMPLATE_TEXTURE_REF,
+} from "./lib/decorated-pot-icon.ts";
 import { generate } from "./lib/generate.ts";
 import { CONDUIT_ATLAS_REF, CONDUIT_TEXTURE_REF, HEAD_KIND_TEXTURES } from "./lib/head-icon.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
@@ -123,6 +129,7 @@ function main(): void {
     headIconsToCopy,
     conduitIconToCopy,
     chestIconsToCopy,
+    decoratedPotIconToCopy,
   } = generate({
     version,
     recipesRaw,
@@ -277,6 +284,28 @@ function main(): void {
     fs.copyFileSync(sourcePath, destPath);
   }
 
+  // Both decorated pot atlases (structural base + undecorated "brick" side)
+  // are pre-painted already (only one plain decorated_pot exists in the
+  // catalog, no sherd-pattern variants) -- no synthesis, just verbatim
+  // copies (see scripts/lib/decorated-pot-icon.ts).
+  if (decoratedPotIconToCopy) {
+    const baseSourcePath = path.join(
+      VENDOR_TEXTURES_DIR,
+      `${DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF}.png`,
+    );
+    const baseDestPath = path.join(PUBLIC_TEXTURES_DIR, `${DECORATED_POT_BASE_ATLAS_REF}.png`);
+    fs.mkdirSync(path.dirname(baseDestPath), { recursive: true });
+    fs.copyFileSync(baseSourcePath, baseDestPath);
+
+    const sideSourcePath = path.join(
+      VENDOR_TEXTURES_DIR,
+      `${DECORATED_POT_SIDE_TEMPLATE_TEXTURE_REF}.png`,
+    );
+    const sideDestPath = path.join(PUBLIC_TEXTURES_DIR, `${DECORATED_POT_SIDE_ATLAS_REF}.png`);
+    fs.mkdirSync(path.dirname(sideDestPath), { recursive: true });
+    fs.copyFileSync(sideSourcePath, sideDestPath);
+  }
+
   // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
   // no synthesis, just a straight copy with the color-name remap applied
   // (see scripts/lib/bedrock-colors.ts).
@@ -323,6 +352,7 @@ function main(): void {
   console.log(`head icons:       ${headIconsToCopy.size}`);
   console.log(`conduit icon:     ${conduitIconToCopy ? 1 : 0}`);
   console.log(`chest icons:      ${chestIconsToCopy.size}`);
+  console.log(`decorated pot icon: ${decoratedPotIconToCopy ? 1 : 0}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");

@@ -954,3 +954,84 @@ describe("generate: chest family (bespoke special renderer, no vendored geometry
     expect(result.chestIconsToCopy.size).toBe(0);
   });
 });
+
+describe("generate: decorated pot (bespoke special renderer, no vendored geometry)", () => {
+  // Mirrors the real vendored recipe type -- see scripts/lib/recipes.ts's
+  // SPECIAL_NOTES (already curated before this feature; this is the icon
+  // fix, not the recipe-note fix).
+  const decoratedPotRecipesRaw: RawRecipesData = {
+    decorated_pot: {
+      type: "minecraft:crafting_decorated_pot",
+      category: "misc",
+      result: { id: "minecraft:decorated_pot" },
+    },
+  };
+  // Mirrors the real vendored shape (see tests/model.test.ts's matching case).
+  const decoratedPotItemDefsRaw: RawItemDefinitionsData = {
+    decorated_pot: {
+      model: {
+        type: "minecraft:special",
+        base: "minecraft:item/decorated_pot",
+        model: { type: "minecraft:decorated_pot" },
+      },
+    },
+  };
+
+  function runDecoratedPot(textureExists: (ref: string) => boolean) {
+    return generate({
+      version: "26.2",
+      recipesRaw: decoratedPotRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: decoratedPotItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists,
+      textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
+    });
+  }
+
+  it("resolves to a 2-element compound icon and queues both shared atlases for a verbatim copy", () => {
+    const result = runDecoratedPot(
+      (ref) =>
+        ref === "entity/decorated_pot/decorated_pot_base" ||
+        ref === "entity/decorated_pot/decorated_pot_side",
+    );
+    const icon = result.items.decorated_pot.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBeUndefined();
+    expect(icon.elements).toHaveLength(2);
+    const textures = new Set(
+      icon.elements.flatMap((el) => Object.values(el.faces).map((face) => face.texture)),
+    );
+    expect(textures).toEqual(
+      new Set(["/textures/item/decorated_pot_base.png", "/textures/item/decorated_pot_side.png"]),
+    );
+    expect(result.decoratedPotIconToCopy).toBe(true);
+    expect(result.meta.unresolvedIcons).not.toContain("decorated_pot");
+  });
+
+  it("falls back to the placeholder icon when either shared atlas doesn't exist on disk, rather than crashing", () => {
+    const result = runDecoratedPot(() => false);
+    expect(result.items.decorated_pot.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("decorated_pot");
+    expect(result.decoratedPotIconToCopy).toBe(false);
+  });
+
+  it("requires BOTH atlases to exist -- one present, one missing still falls back rather than emitting a half-textured icon", () => {
+    const result = runDecoratedPot((ref) => ref === "entity/decorated_pot/decorated_pot_base");
+    expect(result.items.decorated_pot.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.decoratedPotIconToCopy).toBe(false);
+  });
+});

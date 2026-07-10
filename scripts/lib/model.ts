@@ -309,6 +309,8 @@ export type IconCandidate =
   | { type: "conduit" }
   /** A chest-family texture variant — resolved to a hand-authored compound icon (see scripts/lib/chest-icon.ts), not a vendored texture. `textureName` is the bare entity-atlas name (e.g. "normal", "trapped", "ender", "copper", "copper_exposed") read straight from the item definition's own `texture` field, mapping to `entity/chest/<textureName>.png`. */
   | { type: "chest"; textureName: string }
+  /** The decorated pot — resolved to a hand-authored compound icon (see scripts/lib/decorated-pot-icon.ts), not a vendored texture. Only one candidate exists (the plain `decorated_pot` item, no sherd-pattern variants — patterned pots aren't a distinct catalog item), so this carries no further data. */
+  | { type: "decorated_pot" }
   /** Single-texture compound shapes: one material texture painted on every face of a multi-element model (see ItemIcon.astro's dedicated rendering branch for each). */
   | { type: "pressure_plate"; textureRef: string }
   | { type: "wall"; textureRef: string }
@@ -581,6 +583,10 @@ export function resolveIconCandidate(
     // seasonal one.
     const textureName = stripMcPrefix(special.specialModel.texture);
     return { type: "chest", textureName };
+  }
+
+  if (special?.specialType === "decorated_pot") {
+    return { type: "decorated_pot" };
   }
 
   const resolvedModelRef = modelRef ?? special?.base;

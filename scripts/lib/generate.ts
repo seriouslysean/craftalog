@@ -7,6 +7,13 @@ import { toBedrockColorName } from "./bedrock-colors.ts";
 import { CATEGORIES } from "./category.ts";
 import { chestCompoundIcon } from "./chest-icon.ts";
 import { copperGolemCompoundIcon } from "./copper-golem-icon.ts";
+import {
+  DECORATED_POT_BASE_ATLAS_REF,
+  DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF,
+  DECORATED_POT_SIDE_ATLAS_REF,
+  DECORATED_POT_SIDE_TEMPLATE_TEXTURE_REF,
+  decoratedPotCompoundIcon,
+} from "./decorated-pot-icon.ts";
 import { buildItemTagIndex, deriveFamily, FAMILY_CATEGORY } from "./family.ts";
 import {
   CONDUIT_ATLAS_REF,
@@ -112,6 +119,8 @@ export interface GenerateOutput {
   conduitIconToCopy: boolean;
   /** Chest entity-atlas texture name (e.g. "normal", "copper") -> destination texture ref, for chest icons the caller must copy verbatim (see scripts/lib/chest-icon.ts -- geometry is hand-authored at generate() time, only the already-existing Java texture PNG needs copying). Keyed by texture name so waxed/un-waxed tier pairs and the chest/trapped_chest items sharing one texture only copy once. */
   chestIconsToCopy: Map<string, string>;
+  /** Whether the shared decorated pot atlases (DECORATED_POT_{BASE,SIDE}_TEMPLATE_TEXTURE_REF) must be copied verbatim (see scripts/lib/decorated-pot-icon.ts) -- no tinting/sherd variants, so just a boolean, not a per-item map. */
+  decoratedPotIconToCopy: boolean;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -313,6 +322,7 @@ export function generate(input: GenerateInput): GenerateOutput {
   const headIconsToCopy = new Map<HeadKind, string>();
   let conduitIconToCopy = false;
   const chestIconsToCopy = new Map<string, string>();
+  let decoratedPotIconToCopy = false;
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
@@ -418,6 +428,19 @@ export function generate(input: GenerateInput): GenerateOutput {
       const ref = `item/chest_${candidate.textureName}`;
       icon = chestCompoundIcon(`/textures/${ref}.png`);
       chestIconsToCopy.set(candidate.textureName, ref);
+    } else if (
+      candidate?.type === "decorated_pot" &&
+      textureExists(DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF) &&
+      textureExists(DECORATED_POT_SIDE_TEMPLATE_TEXTURE_REF)
+    ) {
+      // A hand-authored 2-element compound (body + neck) rather than
+      // vendored geometry -- decorated pots have none (see
+      // scripts/lib/decorated-pot-icon.ts).
+      icon = decoratedPotCompoundIcon(
+        `/textures/${DECORATED_POT_BASE_ATLAS_REF}.png`,
+        `/textures/${DECORATED_POT_SIDE_ATLAS_REF}.png`,
+      );
+      decoratedPotIconToCopy = true;
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
       const ref = `item/${baseName}`;
@@ -526,5 +549,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     headIconsToCopy,
     conduitIconToCopy,
     chestIconsToCopy,
+    decoratedPotIconToCopy,
   };
 }

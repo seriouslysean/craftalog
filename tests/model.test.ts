@@ -520,6 +520,31 @@ describe("resolveIconCandidate", () => {
     expect(resolveIconCandidate("shield", specials, specialModels)).toEqual({ type: "shield" });
   });
 
+  it("resolves a decorated_pot candidate (no extra data) for a minecraft:special decorated_pot renderer", () => {
+    // Mirrors the real vendored shape: assets/item_definition/data.json's
+    // "decorated_pot" entry wraps item/decorated_pot in a minecraft:special
+    // node whose model.type is "minecraft:decorated_pot" -- unlike shield,
+    // there's no minecraft:condition wrapper (a decorated pot has no idle/
+    // blocking pose), so the special node sits directly at the top.
+    const specials: RawItemDefinitionsData = {
+      decorated_pot: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/decorated_pot",
+          model: { type: "minecraft:decorated_pot" },
+        },
+      },
+    };
+    const specialModels: RawModelsData = {
+      ...models,
+      "item/decorated_pot": { textures: { particle: "minecraft:block/terracotta" } },
+    };
+
+    expect(resolveIconCandidate("decorated_pot", specials, specialModels)).toEqual({
+      type: "decorated_pot",
+    });
+  });
+
   it("resolves a copper_golem_statue candidate (textureRef) for a minecraft:select over pose, reading the texture from the fallback case", () => {
     // Mirrors the real vendored shape: waxed_copper_golem_statue.json is a
     // minecraft:select on block_state_property "copper_golem_pose" with 3
