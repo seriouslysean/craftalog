@@ -180,6 +180,31 @@ describe("findSpecialModel", () => {
       findSpecialModel({ type: "minecraft:model", model: "minecraft:item/stick" }),
     ).toBeUndefined();
   });
+
+  it("prefers a minecraft:select node's fallback over its cases, when they name different special models (e.g. chest's Christmas Dec-24-to-26 case)", () => {
+    const node = {
+      type: "minecraft:select",
+      property: "minecraft:local_time",
+      pattern: "MM-dd",
+      cases: [
+        {
+          when: ["12-24", "12-25", "12-26"],
+          model: {
+            type: "minecraft:special",
+            base: "minecraft:item/chest",
+            model: { type: "minecraft:chest", texture: "minecraft:christmas" },
+          },
+        },
+      ],
+      fallback: {
+        type: "minecraft:special",
+        base: "minecraft:item/chest",
+        model: { type: "minecraft:chest", texture: "minecraft:normal" },
+      },
+    };
+
+    expect(findSpecialModel(node)?.specialModel.texture).toBe("minecraft:normal");
+  });
 });
 
 describe("resolveIconCandidate", () => {
@@ -563,27 +588,86 @@ describe("resolveIconCandidate", () => {
     });
   });
 
-  it("falls back to the special renderer's base model for non-banner special types with no dedicated classification branch (e.g. chest)", () => {
-    const specialModels: RawModelsData = {
-      ...models,
-      "item/chest": {
-        parent: "minecraft:item/generated",
-        textures: { layer0: "minecraft:item/chest" },
-      },
-    };
+  it("resolves a chest candidate (textureName) for a plain minecraft:special chest renderer (e.g. ender_chest, not select-wrapped)", () => {
     const specials: RawItemDefinitionsData = {
-      chest: {
+      ender_chest: {
         model: {
           type: "minecraft:special",
-          base: "minecraft:item/chest",
-          model: { type: "minecraft:chest", texture: "minecraft:normal" },
+          base: "minecraft:item/ender_chest",
+          model: { type: "minecraft:chest", texture: "minecraft:ender" },
         },
       },
     };
 
-    expect(resolveIconCandidate("chest", specials, specialModels)).toEqual({
+    expect(resolveIconCandidate("ender_chest", specials, models)).toEqual({
+      type: "chest",
+      textureName: "ender",
+    });
+  });
+
+  it("resolves a chest candidate reading the year-round texture, not the Christmas case, for a minecraft:select-wrapped chest renderer (chest/trapped_chest's local_time Easter egg)", () => {
+    // Mirrors the real vendored shape: chest.json is a minecraft:select on
+    // "minecraft:local_time" with a Dec-24-to-26 "christmas" case, whose
+    // texture genuinely differs from the fallback's -- unlike copper golem's
+    // pose cases, findSpecialModel's fallback-first rule is load-bearing
+    // here (see the findSpecialModel test above).
+    const specials: RawItemDefinitionsData = {
+      chest: {
+        model: {
+          type: "minecraft:select",
+          property: "minecraft:local_time",
+          pattern: "MM-dd",
+          cases: [
+            {
+              when: ["12-24", "12-25", "12-26"],
+              model: {
+                type: "minecraft:special",
+                base: "minecraft:item/chest",
+                model: { type: "minecraft:chest", texture: "minecraft:christmas" },
+              },
+            },
+          ],
+          fallback: {
+            type: "minecraft:special",
+            base: "minecraft:item/chest",
+            model: { type: "minecraft:chest", texture: "minecraft:normal" },
+          },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("chest", specials, models)).toEqual({
+      type: "chest",
+      textureName: "normal",
+    });
+  });
+
+  it("falls back to the special renderer's base model for special types with no dedicated classification branch", () => {
+    // A deliberately synthetic special type: it exercises the fail-open
+    // path every unrecognized (including future-vanilla) special takes.
+    // Kept synthetic on purpose: real examples keep graduating to
+    // dedicated renderers (shield, copper golem, shulker, heads, conduit,
+    // chest, ...), and this fixture must stay unhandled to stay valid.
+    const specialModels: RawModelsData = {
+      ...models,
+      "item/some_future_item": {
+        parent: "minecraft:item/generated",
+        textures: { layer0: "minecraft:item/some_future_item" },
+      },
+    };
+    const specials: RawItemDefinitionsData = {
+      some_future_item: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/some_future_item",
+          model: { type: "minecraft:some_future_special" },
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("some_future_item", specials, specialModels)).toEqual({
       type: "flat",
-      textureRef: "item/chest",
+      textureRef: "item/some_future_item",
     });
   });
 

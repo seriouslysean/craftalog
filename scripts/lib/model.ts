@@ -242,6 +242,19 @@ export function findSpecialModel(node: unknown): SpecialModel | undefined {
     }
   }
 
+  // A `minecraft:select` node's `fallback` is the item's default/year-round
+  // appearance; `cases` are conditional overrides (e.g. chest/trapped_chest's
+  // Christmas Dec-24-to-26 texture swap, whose special model genuinely names
+  // a different texture than the fallback -- unlike the copper golem statue's
+  // pose cases, which all name the same texture, so DFS order never mattered
+  // there). This catalog renders exactly one static icon per item, so the
+  // fallback -- the item's real default inventory appearance -- must win
+  // over whichever `cases` entry a plain DFS below happens to reach first.
+  if (obj.type === "minecraft:select" && obj.fallback) {
+    const fromFallback = findSpecialModel(obj.fallback);
+    if (fromFallback) return fromFallback;
+  }
+
   for (const value of Object.values(obj)) {
     if (Array.isArray(value)) {
       for (const item of value) {
@@ -294,6 +307,8 @@ export type IconCandidate =
   | { type: "head"; kind: HeadKind }
   /** The conduit — resolved to a compound icon cropped from its own vendored entity texture (see scripts/lib/head-icon.ts), the same treatment as heads. Only one variant exists, so this carries no further data. */
   | { type: "conduit" }
+  /** A chest-family texture variant — resolved to a hand-authored compound icon (see scripts/lib/chest-icon.ts), not a vendored texture. `textureName` is the bare entity-atlas name (e.g. "normal", "trapped", "ender", "copper", "copper_exposed") read straight from the item definition's own `texture` field, mapping to `entity/chest/<textureName>.png`. */
+  | { type: "chest"; textureName: string }
   /** Single-texture compound shapes: one material texture painted on every face of a multi-element model (see ItemIcon.astro's dedicated rendering branch for each). */
   | { type: "pressure_plate"; textureRef: string }
   | { type: "wall"; textureRef: string }
@@ -518,11 +533,11 @@ export function resolveIconCandidate(
     typeof special.specialModel.texture === "string"
   ) {
     // e.g. "minecraft:textures/entity/copper_golem/copper_golem_exposed.png"
-    // -> "entity/copper_golem/copper_golem_exposed". Every one of this
-    // item's `select` cases (one per animation pose -- see
-    // scripts/lib/copper-golem-icon.ts's docstring) names the same texture,
-    // so which case findSpecialModel's DFS happens to return first doesn't
-    // matter here.
+    // -> "entity/copper_golem/copper_golem_exposed". findSpecialModel always
+    // resolves a `minecraft:select`'s `fallback` (this item's `standing`
+    // pose case) over its `cases`, but every one of this item's cases names
+    // the same texture anyway (unlike chest's Christmas case, below), so
+    // which one is picked wouldn't actually change the result here.
     const textureRef = stripMcPrefix(special.specialModel.texture)
       .replace(/^textures\//, "")
       .replace(/\.png$/, "");
@@ -556,6 +571,16 @@ export function resolveIconCandidate(
 
   if (special?.specialType === "conduit") {
     return { type: "conduit" };
+  }
+
+  if (special?.specialType === "chest" && typeof special.specialModel.texture === "string") {
+    // e.g. "minecraft:normal" -> "normal". `chest`/`trapped_chest` wrap this
+    // in a `minecraft:select` on `local_time` with a Dec-24-to-26 "christmas"
+    // case -- findSpecialModel's fallback-first rule (see its own comment)
+    // guarantees this always reads the year-round texture, never the
+    // seasonal one.
+    const textureName = stripMcPrefix(special.specialModel.texture);
+    return { type: "chest", textureName };
   }
 
   const resolvedModelRef = modelRef ?? special?.base;
