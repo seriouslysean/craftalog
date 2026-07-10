@@ -463,6 +463,38 @@ describe("resolveIconCandidate", () => {
     });
   });
 
+  it("resolves a shield candidate (no extra data) for a minecraft:special shield renderer nested in a minecraft:condition (idle vs. blocking pose)", () => {
+    // Mirrors the real vendored shape: item/shield.json is a
+    // minecraft:condition with on_false (idle) / on_true (blocking), both
+    // minecraft:special shield renderers -- findSpecialModel's DFS finds
+    // the first one regardless of which branch, and pose never factors
+    // into classification (the icon is static either way).
+    const specials: RawItemDefinitionsData = {
+      shield: {
+        model: {
+          type: "minecraft:condition",
+          property: "minecraft:using_item",
+          on_false: {
+            type: "minecraft:special",
+            base: "minecraft:item/shield",
+            model: { type: "minecraft:shield" },
+          },
+          on_true: {
+            type: "minecraft:special",
+            base: "minecraft:item/shield_blocking",
+            model: { type: "minecraft:shield" },
+          },
+        },
+      },
+    };
+    const specialModels: RawModelsData = {
+      ...models,
+      "item/shield": { textures: { particle: "minecraft:block/dark_oak_planks" } },
+    };
+
+    expect(resolveIconCandidate("shield", specials, specialModels)).toEqual({ type: "shield" });
+  });
+
   it("falls back to the special renderer's base model for non-banner special types (e.g. shulker box)", () => {
     const specialModels: RawModelsData = {
       ...models,

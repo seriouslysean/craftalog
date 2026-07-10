@@ -26411,8 +26411,61 @@
   },
   "shield": {
     "icon": {
-      "texture": "/textures/block/dark_oak_planks.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "east": {
+              "texture": "/textures/item/shield_base_nopattern.png",
+              "uv": [
+                3.25,
+                0.25,
+                3.5,
+                5.75
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/shield_base_nopattern.png",
+              "uv": [
+                0.25,
+                0.25,
+                3.25,
+                5.75
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/shield_base_nopattern.png",
+              "uv": [
+                0.25,
+                0,
+                3.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/shield_base_nopattern.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                5.75
+              ]
+            }
+          },
+          "from": [
+            3.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            12.3636,
+            16,
+            8.3636
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "shield",
+      "yRotation": -250
     },
     "id": "shield",
     "name": "Shield",
