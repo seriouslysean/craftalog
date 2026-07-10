@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../utils/with-base';
+import { COMPOUND_FACE_DIRECTIONS, getFaces } from '../utils/icon-faces';
 import type { IconData } from '../content.config';
 
 interface Props {
@@ -10,43 +11,6 @@ interface Props {
   } | null;
   /** Native lazy-loading hint for the underlying &lt;img&gt;. Defaults to lazy. */
   loading?: 'lazy' | 'eager';
-}
-
-interface Face {
-  className: string;
-  texture: string;
-}
-
-/** Builds the CSS-cube faces for a 3D icon. `block`/`slab` share the 3-face cube; `stairs` adds a stepped tread. */
-function getFaces(icon: IconData): Face[] {
-  if (icon.type === 'stairs') {
-    return [
-      { className: 'top-low', texture: icon.top },
-      { className: 'top-high', texture: icon.top },
-      { className: 'left-lower', texture: icon.side },
-      { className: 'left-upper', texture: icon.side },
-      { className: 'right', texture: icon.side },
-      { className: 'riser', texture: icon.side },
-    ];
-  }
-
-  if (icon.type === 'block' || icon.type === 'slab') {
-    return [
-      { className: 'top', texture: icon.top },
-      { className: 'left', texture: icon.side },
-      { className: 'right', texture: icon.side },
-    ];
-  }
-
-  if (icon.type === 'pressure_plate' || icon.type === 'button') {
-    return [
-      { className: 'top', texture: icon.texture },
-      { className: 'left', texture: icon.texture },
-      { className: 'right', texture: icon.texture },
-    ];
-  }
-
-  return [];
 }
 
 interface CompoundFaceStyle {
@@ -267,7 +231,7 @@ function getCompoundFaces(icon: IconData): CompoundFacePart[] {
 
   const parts: CompoundFacePart[] = [];
   icon.elements.forEach((el, elIndex) => {
-    (['up', 'down', 'north', 'south', 'east', 'west'] as const).forEach((face) => {
+    COMPOUND_FACE_DIRECTIONS.forEach((face) => {
       const faceData = el.faces[face];
       if (!faceData) return;
       const style = computeFaceStyle(el.from, el.to, face);

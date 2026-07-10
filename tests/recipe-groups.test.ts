@@ -7,6 +7,9 @@ import {
   groupRecipes,
   indexByRecipeId,
   recipePath,
+  VARIANT_GROUP_META,
+  variantGroupDefault,
+  variantGroupDisplayName,
 } from "../src/utils/recipe-groups";
 import type { ItemData, RecipeData } from "../src/content.config";
 
@@ -430,6 +433,82 @@ describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
     ]) {
       const group = groups.find((g) => g.resultId === resultId);
       expect(group?.variantKey, `${resultId} must never get a variantKey`).toBeUndefined();
+    }
+  });
+});
+
+describe("variantGroupDisplayName / variantGroupDefault", () => {
+  it("uses the curated name/default when a VARIANT_GROUP_META entry exists", () => {
+    const recipes = [
+      recipe({ id: "acacia_boat", group: "boat", result: { id: "acacia_boat", count: 1 } }),
+      recipe({ id: "oak_boat", group: "boat", result: { id: "oak_boat", count: 1 } }),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const [variantGroup] = collapseVariantGroups(groups).variantGroups;
+    const itemsMap = new Map([
+      ["acacia_boat", item({ id: "acacia_boat" })],
+      ["oak_boat", item({ id: "oak_boat" })],
+    ]);
+
+    expect(variantGroupDisplayName(variantGroup, itemsMap)).toBe("Boat");
+    expect(variantGroupDefault(variantGroup).resultId).toBe("oak_boat");
+  });
+
+  it("falls back to the alphabetically-first variant's own name when no meta entry exists", () => {
+    const recipes = [
+      recipe({ id: "made_up_a", group: "made_up_group", result: { id: "made_up_a", count: 1 } }),
+      recipe({ id: "made_up_b", group: "made_up_group", result: { id: "made_up_b", count: 1 } }),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const [variantGroup] = collapseVariantGroups(groups).variantGroups;
+    const itemsMap = new Map([
+      ["made_up_a", item({ id: "made_up_a", name: "Made Up A" })],
+      ["made_up_b", item({ id: "made_up_b", name: "Made Up B" })],
+    ]);
+
+    expect(variantGroupDisplayName(variantGroup, itemsMap)).toBe("Made Up A");
+    expect(variantGroupDefault(variantGroup).resultId).toBe("made_up_a");
+  });
+
+  it("falls back to variants[0] if a meta entry's defaultResultId doesn't match any real member", () => {
+    // Defensive case -- shouldn't happen for a real groupKey, but a stale/
+    // mistyped defaultResultId must not throw or silently return undefined.
+    const recipes = [
+      recipe({ id: "acacia_boat", group: "boat", result: { id: "acacia_boat", count: 1 } }),
+      recipe({ id: "birch_boat", group: "boat", result: { id: "birch_boat", count: 1 } }),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const [variantGroup] = collapseVariantGroups(groups).variantGroups;
+
+    // "boat"'s real meta points at "oak_boat", which isn't a member of this
+    // fixture's 2-variant group -- must fall back to variants[0], not throw.
+    expect(variantGroupDefault(variantGroup).resultId).toBe("acacia_boat");
+  });
+
+  it("loads the real generated recipe data and confirms VARIANT_GROUP_META covers every groupKey", async () => {
+    const recipesModule = await import("../src/data/generated/recipes.json");
+    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+
+    const groups = groupRecipes(allRecipes, itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+    const missing = variantGroups
+      .map((vg) => vg.groupKey)
+      .filter((groupKey) => !(groupKey in VARIANT_GROUP_META));
+
+    expect(
+      missing,
+      `every real groupKey needs a VARIANT_GROUP_META entry, missing: ${missing}`,
+    ).toEqual([]);
+
+    // Every curated defaultResultId must resolve to a real member of its
+    // own group -- catches a typo'd id before it silently falls back.
+    for (const variantGroup of variantGroups) {
+      const defaultResultId = VARIANT_GROUP_META[variantGroup.groupKey]?.defaultResultId;
+      if (!defaultResultId) continue;
+      expect(
+        variantGroup.variants.some((v) => v.resultId === defaultResultId),
+        `VARIANT_GROUP_META["${variantGroup.groupKey}"].defaultResultId "${defaultResultId}" is not a real member`,
+      ).toBe(true);
     }
   });
 });
