@@ -1,4 +1,5 @@
 import { tagMembers } from "./item-stats.ts";
+import { resolveLangKey } from "./lang.ts";
 import { titleCaseFromId } from "./strings.ts";
 import type { RawBannerPatternRegistry, RawTagsData } from "./types.ts";
 
@@ -82,7 +83,8 @@ export function derivePatternedBanners(
     if (!textureExists(patternTextureRef)) continue;
 
     const name =
-      enUs[`${registryEntry.translation_key}.black`] ?? `Black ${titleCaseFromId(patternId)}`;
+      resolveLangKey(`${registryEntry.translation_key}.black`, enUs) ??
+      `Black ${titleCaseFromId(patternId)}`;
 
     entries.push({
       itemId: `patterned_banner_${patternId}`,
