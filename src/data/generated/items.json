@@ -8374,8 +8374,146 @@
   },
   "decorated_pot": {
     "icon": {
-      "texture": "/textures/block/terracotta.png",
-      "type": "flat"
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                7,
+                6.5,
+                14,
+                13.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/decorated_pot_side.png",
+              "uv": [
+                1,
+                0,
+                15,
+                16
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/decorated_pot_side.png",
+              "uv": [
+                1,
+                0,
+                15,
+                16
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/decorated_pot_side.png",
+              "uv": [
+                1,
+                0,
+                15,
+                16
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                0,
+                6.5,
+                7,
+                13.5
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/decorated_pot_side.png",
+              "uv": [
+                1,
+                0,
+                15,
+                16
+              ]
+            }
+          },
+          "from": [
+            2.4,
+            0,
+            2.4
+          ],
+          "to": [
+            13.6,
+            12.8,
+            13.6
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                4,
+                0,
+                8,
+                4
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                8,
+                4,
+                12,
+                5.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                12,
+                4,
+                16,
+                5.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                4,
+                4,
+                8,
+                5.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                8,
+                0,
+                12,
+                4
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/decorated_pot_base.png",
+              "uv": [
+                0,
+                4,
+                4,
+                5.5
+              ]
+            }
+          },
+          "from": [
+            4.8,
+            13.6,
+            4.8
+          ],
+          "to": [
+            11.2,
+            16,
+            11.2
+          ]
+        }
+      ],
+      "type": "compound",
+      "yRotation": -180
     },
     "id": "decorated_pot",
     "name": "Decorated Pot",
