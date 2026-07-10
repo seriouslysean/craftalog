@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildRecipeHrefMap,
   canonicalRecipePath,
+  collapseVariantGroups,
   groupItemSlug,
   groupRecipes,
   indexByRecipeId,
@@ -258,6 +259,177 @@ describe("groupRecipes", () => {
       const labels = group.siblings.map((s) => s.label);
       expect(labels.every((label) => label !== null)).toBe(true);
       expect(new Set(labels).size).toBe(labels.length);
+    }
+  });
+});
+
+describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
+  // Vanilla's own `group` field doesn't reliably tie a copper shape's tiers
+  // together (only some shapes group their 4 waxed tiers; the un-waxed base
+  // and un-waxed oxidized tiers are often left with no group at all) --
+  // groupRecipes derives an id-based collapse key from stripping copper's
+  // oxidation/waxing prefixes as a fallback/supplement, tested here directly
+  // against synthetic fixtures rather than only via the real generated data.
+  const copperShapeRecipes = (shape: string, tiers: string[]): RecipeData[] =>
+    tiers.map((tier) =>
+      recipe({
+        id: `${tier}${shape}`,
+        result: { id: `${tier}${shape}`, count: 1 },
+        ingredients: [{ items: ["copper_ingot"] }],
+      }),
+    );
+
+  it("unifies a shape's un-waxed base + oxidized tiers + waxed tiers into one VariantGroup", () => {
+    const recipes = copperShapeRecipes("cut_copper", [
+      "",
+      "exposed_",
+      "weathered_",
+      "oxidized_",
+      "waxed_",
+      "waxed_exposed_",
+      "waxed_weathered_",
+      "waxed_oxidized_",
+    ]);
+    const groups = groupRecipes(recipes, itemName);
+    const { variantGroups, singletons } = collapseVariantGroups(groups);
+
+    expect(singletons).toHaveLength(0);
+    expect(variantGroups).toHaveLength(1);
+    expect(variantGroups[0].groupKey).toBe("cut_copper");
+    expect(variantGroups[0].variants.map((v) => v.resultId).toSorted()).toEqual(
+      [
+        "cut_copper",
+        "exposed_cut_copper",
+        "oxidized_cut_copper",
+        "waxed_cut_copper",
+        "waxed_exposed_cut_copper",
+        "waxed_oxidized_cut_copper",
+        "waxed_weathered_cut_copper",
+        "weathered_cut_copper",
+      ].toSorted(),
+    );
+  });
+
+  it("unifies just the waxed tiers (no base recipe) under the bare shape id, e.g. copper_golem_statue", () => {
+    const recipes = copperShapeRecipes("copper_golem_statue", [
+      "waxed_",
+      "waxed_exposed_",
+      "waxed_weathered_",
+      "waxed_oxidized_",
+    ]);
+    const groups = groupRecipes(recipes, itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+
+    expect(variantGroups).toHaveLength(1);
+    expect(variantGroups[0].groupKey).toBe("copper_golem_statue");
+  });
+
+  it("aliases the bare block's tier ids (waxed_exposed_copper, ...) to copper_block, not the stripped bare 'copper'", () => {
+    // Vanilla's own bare-block ids are irregular: the base item is
+    // "copper_block", but its tier ids are "waxed_exposed_copper" etc --
+    // stripping those gives bare "copper", which stripOxidationPrefixes
+    // aliases to "copper_block" so this shape collapses under the same key
+    // as its own base item's id.
+    const tierIds = [
+      "waxed_copper",
+      "waxed_exposed_copper",
+      "waxed_weathered_copper",
+      "waxed_oxidized_copper",
+    ];
+    const recipes = [
+      recipe({
+        id: "copper_block",
+        result: { id: "copper_block", count: 1 },
+        ingredients: [{ items: ["copper_ingot"] }],
+      }),
+      ...tierIds.map((id) =>
+        recipe({ id, result: { id, count: 1 }, ingredients: [{ items: ["honeycomb"] }] }),
+      ),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+
+    expect(variantGroups).toHaveLength(1);
+    expect(variantGroups[0].groupKey).toBe("copper_block");
+    expect(variantGroups[0].variants.map((v) => v.resultId).toSorted()).toEqual(
+      ["copper_block", ...tierIds].toSorted(),
+    );
+  });
+
+  it("does not collapse a shape with only one recipe present (no siblings to unify)", () => {
+    const recipes = copperShapeRecipes("copper_torch", [""]);
+    const groups = groupRecipes(recipes, itemName);
+    const { variantGroups, singletons } = collapseVariantGroups(groups);
+
+    expect(variantGroups).toHaveLength(0);
+    expect(singletons).toHaveLength(1);
+    expect(singletons[0].variantKey).toBeUndefined();
+  });
+
+  it("never collapses dyed_armor (6 different shapes sharing a re-dye mechanism, not color variants of one shape)", () => {
+    // Mirrors the real data: each armor piece's OWN craft recipe has no
+    // group; only its "_dyed" sibling (a non-canonical, alphabetically-later
+    // recipe id) carries group: "dyed_armor" -- so the canonical recipe's
+    // group (what variantKey derives from) is undefined for every piece.
+    const recipes = [
+      recipe({
+        id: "leather_boots",
+        result: { id: "leather_boots", count: 1 },
+        ingredients: [{ items: ["leather"] }],
+      }),
+      recipe({
+        id: "leather_boots_dyed",
+        type: "special",
+        group: "dyed_armor",
+        result: { id: "leather_boots", count: 1 },
+        note: "Dye leather armor.",
+      }),
+      recipe({
+        id: "wolf_armor",
+        group: "dyed_armor",
+        result: { id: "wolf_armor", count: 1 },
+        ingredients: [{ items: ["armadillo_scute"] }],
+      }),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const { variantGroups, singletons } = collapseVariantGroups(groups);
+
+    expect(variantGroups.find((vg) => vg.groupKey === "dyed_armor")).toBeUndefined();
+    // leather_boots' canonical recipe has no group at all (undefined);
+    // wolf_armor's sole/canonical recipe DOES carry group: "dyed_armor"
+    // directly, so it's a legitimate 1-member "dyed_armor" bucket --
+    // demoted to a singleton same as any other lone stripped/grouped id.
+    expect(singletons.map((s) => s.resultId).toSorted()).toEqual(["leather_boots", "wolf_armor"]);
+  });
+
+  it("loads the real generated recipe data and confirms copper shapes collapse without regressing dyed_armor", async () => {
+    const recipesModule = await import("../src/data/generated/recipes.json");
+    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+
+    const groups = groupRecipes(allRecipes, itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+
+    for (const shape of [
+      "cut_copper",
+      "cut_copper_slab",
+      "cut_copper_stairs",
+      "copper_bulb",
+      "copper_grate",
+    ]) {
+      const vg = variantGroups.find((v) => v.groupKey === shape);
+      expect(vg, `expected a VariantGroup for "${shape}"`).toBeDefined();
+      expect(vg!.variants.length).toBe(8);
+    }
+
+    expect(variantGroups.find((vg) => vg.groupKey === "dyed_armor")).toBeUndefined();
+    for (const resultId of [
+      "leather_boots",
+      "leather_chestplate",
+      "leather_helmet",
+      "wolf_armor",
+    ]) {
+      const group = groups.find((g) => g.resultId === resultId);
+      expect(group?.variantKey, `${resultId} must never get a variantKey`).toBeUndefined();
     }
   });
 });

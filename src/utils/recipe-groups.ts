@@ -65,6 +65,34 @@ function normalizeVariantGroupKey(group: string | undefined): string | undefined
   return REDYE_GROUP_ALIASES[group] ?? group;
 }
 
+/**
+ * Strips copper's oxidation/waxing prefixes from a result item id, e.g.
+ * "waxed_exposed_cut_copper_slab" -> "cut_copper_slab". Vanilla's own
+ * `group` field doesn't reliably tie a copper shape's tiers together --
+ * some shapes only group their 4 waxed tiers (leaving the un-waxed base and
+ * un-waxed oxidized tiers stranded as singletons), others have no shared
+ * group at all across any tier -- so `groupRecipes` below derives a
+ * collapse key from the id itself for any result that has a sibling this
+ * stripping would unify (see `oxidationBases`). The bare block's tier ids
+ * ("waxed_exposed_copper", ...) strip to "copper", aliased to its own item
+ * id "copper_block" so the family collapses under the same key as its
+ * tiers. Every one of the ~78 ids this prefix set matches in the current
+ * generated data is copper or lightning-rod-family -- no wood/wool/color
+ * family id carries these prefixes, so this can't accidentally rope in an
+ * unrelated shape. In particular this leaves the `dyed_armor` group (which
+ * spans 6 *different* shapes -- leather boots/chestplate/helmet/leggings/
+ * horse armor + wolf armor, not color variants of one shape) alone: none
+ * of those ids match this prefix, so they still fall through to
+ * `members[0].group`-based derivation below (undefined for all 6, since
+ * their canonical recipes carry no group).
+ */
+const OXIDATION_TIER_PREFIX = /^(?:waxed_)?(?:exposed_|weathered_|oxidized_)?/;
+
+function stripOxidationPrefixes(resultId: string): string {
+  const base = resultId.replace(OXIDATION_TIER_PREFIX, "");
+  return base === "copper" ? "copper_block" : base;
+}
+
 export interface SiblingRecipe {
   recipeId: string;
   type: RecipeData["type"];
@@ -82,7 +110,7 @@ export interface RecipeGroup {
   resultId: string;
   family: string;
   familyId: string;
-  /** Normalized vanilla `group` field shared by this result's recipes (see normalizeVariantGroupKey), or undefined if none carry one. Used to fold same-shape/different-material result items into one tabbed VariantGroup -- see collapseVariantGroups. */
+  /** This result's collapse key -- an id-derived oxidation/waxing base (see stripOxidationPrefixes) when one applies, else the normalized vanilla `group` field shared by this result's recipes (see normalizeVariantGroupKey), else undefined. Used to fold same-shape/different-material result items into one tabbed VariantGroup -- see collapseVariantGroups. */
   variantKey: string | undefined;
   /** Alphabetically-first recipe id — the group's default/linked-to recipe. */
   canonicalId: string;
@@ -159,6 +187,22 @@ export function groupRecipes(
     }
   }
 
+  // Every base id that at least one oxidation/waxing tier strips down to
+  // (i.e. a shape with a tier actually present in this dataset). Computed
+  // as its own pass (not inline below) since a group needs to know whether
+  // any *other* result id shares its stripped form before it can tell
+  // whether this key would unify anything -- including its own un-prefixed
+  // base, which never contributes to this set itself (stripping is a
+  // no-op for it) but matches once a sibling tier has added it. A lone
+  // stripped id with no sibling just becomes a 1-member bucket, which
+  // collapseVariantGroups already demotes back to a plain singleton, so no
+  // count threshold is needed here.
+  const oxidationBases = new Set<string>();
+  for (const resultId of byResult.keys()) {
+    const stripped = stripOxidationPrefixes(resultId);
+    if (stripped !== resultId) oxidationBases.add(stripped);
+  }
+
   const groups: RecipeGroup[] = [];
 
   for (const [resultId, members] of byResult) {
@@ -218,11 +262,16 @@ export function groupRecipes(
       resolveLabelCollisions(siblings, lists, getItemName);
     }
 
+    const strippedResultId = stripOxidationPrefixes(resultId);
+    const variantKey = oxidationBases.has(strippedResultId)
+      ? strippedResultId
+      : normalizeVariantGroupKey(members[0].group);
+
     groups.push({
       resultId,
       family: familyDisplayName(members[0].family),
       familyId: members[0].family.id,
-      variantKey: normalizeVariantGroupKey(members[0].group),
+      variantKey,
       canonicalId: members[0].id,
       count,
       siblings,
