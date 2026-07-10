@@ -278,6 +278,7 @@ const faces = item ? getFaces(item.icon) : [];
 const compoundFaces = item ? getCompoundFaces(item.icon) : [];
 const compoundYRotation = item && item.icon.type === 'compound' ? item.icon.yRotation : 0;
 const isBannerCompound = item?.icon.type === 'compound' && item.icon.variant === 'banner';
+const isShieldCompound = item?.icon.type === 'compound' && item.icon.variant === 'shield';
 // Wall/fence/fence_gate are multi-element compounds (a center post + a wider
 // cross-brace; 2 corner posts + 2 connecting bars; 8 posts/bars) rather than
 // "one box, different faces" -- every element shares the same single
@@ -296,12 +297,15 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
           // Two camera families, two --icon-scale/max-width pairs (see the
           // derivation above .item-icon--block below) -- fence_gate runs its
           // own shallower 30deg-pitch camera, every other 3D type shares the
-          // 35deg-pitch camera. Banner shares that same camera but swaps in
-          // its own --icon-scale (see .item-icon--banner) since its
-          // hand-authored geometry is far thinner than a cube.
-          'item-icon--block': is3d && item.icon.type !== 'fence_gate' && !isBannerCompound,
+          // 35deg-pitch camera. Banner and shield share that same camera but
+          // swap in their own --icon-scale (see .item-icon--banner /
+          // .item-icon--shield) since their hand-authored geometry is far
+          // thinner than a cube.
+          'item-icon--block':
+            is3d && item.icon.type !== 'fence_gate' && !isBannerCompound && !isShieldCompound,
           'item-icon--fence-gate': item.icon.type === 'fence_gate',
           'item-icon--banner': isBannerCompound,
+          'item-icon--shield': isShieldCompound,
         },
       ]}
     >
@@ -550,6 +554,28 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
        banner's box stays the same size as every sibling 3D icon's; only
        its own historically-undersized fill within that box changes. */
     --icon-scale: 1.072;
+    max-width: 97.8155%;
+    margin-inline: auto;
+    --face-overlap: scale(1.03);
+  }
+
+  .item-icon--shield {
+    /* Same worst-case single-sided-extent formula as .item-icon--banner
+       (scale = 0.5 / max(|minX|,|maxX|,|minY|,|maxY|) over the projected
+       corners), applied to shield's single hand-authored plate (see
+       scripts/lib/shield-icon.ts: 12x22x1 native, scaled to fill the
+       engine's full 0-16 height). The plate IS symmetric about the shared
+       model-space center (unlike banner's 3 off-center boxes), so the
+       worst-case-bound and total-span formulas agree here -- still using
+       the general one for consistency with banner's precedent. Computed
+       against the real geometry (halfWidth 4.3636, halfDepth 0.3636, full
+       0-16 height) through the shared camera plus shield's own -250deg
+       yRotation (net yaw -25deg, see shield-icon.ts's yaw derivation):
+       maxY lands at 0.4875 of the box (the taller extent, since the plate
+       spans the full engine height) -> scale 1.0256. Width comes out to
+       ~53% of the box -- an honest thin-shield silhouette, not a
+       containment artifact, same reasoning as banner's ~49%. */
+    --icon-scale: 1.0256;
     max-width: 97.8155%;
     margin-inline: auto;
     --face-overlap: scale(1.03);

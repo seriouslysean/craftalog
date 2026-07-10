@@ -21,6 +21,7 @@ import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.t
 import { generateLeatherArmorIcon } from "./lib/leather-armor-icon.ts";
 import { generateLightningRodIcon } from "./lib/lightning-rod-icon.ts";
 import { generatePatternedBannerIcon } from "./lib/patterned-banner-icon.ts";
+import { SHIELD_ATLAS_REF, SHIELD_TEMPLATE_TEXTURE_REF } from "./lib/shield-icon.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
 import { firstAnimationFrame } from "./lib/texture-frame.ts";
 import type {
@@ -95,6 +96,7 @@ function main(): void {
     bedIconsToCopy,
     leatherArmorIconsToSynthesize,
     patternedBannerIconsToSynthesize,
+    shieldIconToCopy,
   } = generate({
     version,
     recipesRaw,
@@ -185,6 +187,16 @@ function main(): void {
     );
   }
 
+  // The shield atlas is pre-painted wood-brown already (only one plain
+  // shield exists in the catalog, no dye variants) -- no tinting, just a
+  // verbatim copy (see scripts/lib/shield-icon.ts).
+  if (shieldIconToCopy) {
+    const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${SHIELD_TEMPLATE_TEXTURE_REF}.png`);
+    const destPath = path.join(PUBLIC_TEXTURES_DIR, `${SHIELD_ATLAS_REF}.png`);
+    fs.mkdirSync(path.dirname(destPath), { recursive: true });
+    fs.copyFileSync(sourcePath, destPath);
+  }
+
   // Bed icons are a pre-baked Bedrock Edition sprite, not a Java texture --
   // no synthesis, just a straight copy with the color-name remap applied
   // (see scripts/lib/bedrock-colors.ts).
@@ -225,6 +237,7 @@ function main(): void {
   console.log(`bed icons:        ${bedIconsToCopy.size}`);
   console.log(`leather armor icons: ${leatherArmorIconsToSynthesize.size}`);
   console.log(`patterned banner icons: ${patternedBannerIconsToSynthesize.size}`);
+  console.log(`shield icon:      ${shieldIconToCopy ? 1 : 0}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");

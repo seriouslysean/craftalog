@@ -459,3 +459,74 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
     expect(result.patternedBannerIconsToSynthesize.size).toBe(0);
   });
 });
+
+describe("generate: shield (bespoke special renderer, no vendored geometry)", () => {
+  const shieldRecipesRaw: RawRecipesData = {
+    shield: {
+      type: "minecraft:crafting_shaped",
+      key: { "#": "minecraft:oak_planks", X: "minecraft:iron_ingot" },
+      pattern: ["#X#", "###", "#"],
+      result: { id: "minecraft:shield" },
+    },
+  };
+  // Mirrors the real vendored shape (see tests/model.test.ts's matching case).
+  const shieldItemDefsRaw: RawItemDefinitionsData = {
+    shield: {
+      model: {
+        type: "minecraft:condition",
+        property: "minecraft:using_item",
+        on_false: {
+          type: "minecraft:special",
+          base: "minecraft:item/shield",
+          model: { type: "minecraft:shield" },
+        },
+        on_true: {
+          type: "minecraft:special",
+          base: "minecraft:item/shield_blocking",
+          model: { type: "minecraft:shield" },
+        },
+      },
+    },
+  };
+
+  function runShield(textureExists: (ref: string) => boolean) {
+    return generate({
+      version: "26.2",
+      recipesRaw: shieldRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: shieldItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      textureExists,
+      bedrockBedIconExists: () => false,
+    });
+  }
+
+  it("resolves to a single-plate compound icon and queues the shared atlas for a verbatim copy", () => {
+    const result = runShield((ref) => ref === "entity/shield/shield_base_nopattern");
+    const icon = result.items.shield.icon;
+    if (icon.type !== "compound") throw new Error(`expected compound icon, got ${icon.type}`);
+    expect(icon.variant).toBe("shield");
+    expect(icon.elements).toHaveLength(1);
+    expect(
+      Object.values(icon.elements[0].faces).every(
+        (face) => face.texture === "/textures/item/shield_base_nopattern.png",
+      ),
+    ).toBe(true);
+    expect(result.shieldIconToCopy).toBe(true);
+    expect(result.meta.unresolvedIcons).not.toContain("shield");
+  });
+
+  it("falls back to the placeholder icon when the shared shield atlas doesn't exist on disk, rather than crashing", () => {
+    const result = runShield(() => false);
+    expect(result.items.shield.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("shield");
+    expect(result.shieldIconToCopy).toBe(false);
+  });
+});
