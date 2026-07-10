@@ -112,7 +112,7 @@ export interface RecipeGroup {
   resultId: string;
   family: string;
   familyId: string;
-  /** This result's collapse key -- an id-derived oxidation/waxing base (see stripOxidationPrefixes) when one applies, else the normalized vanilla `group` field shared by this result's recipes (see normalizeVariantGroupKey), else undefined. Used to fold same-shape/different-material result items into one tabbed VariantGroup -- see collapseVariantGroups. */
+  /** This result's collapse key, highest-precedence source wins: (1) the data-pipeline-derived shape-tag key (see scripts/lib/shape-tag.ts's deriveShapeTag, persisted as recipe.shapeTag) when the result belongs to an allow-listed vanilla shape tag -- the most complete signal, since it unifies every material of a shape (wood, stone, AND copper) in one pass; (2) an id-derived oxidation/waxing base (see stripOxidationPrefixes) for copper shapes no shape tag covers; (3) the normalized vanilla `group` field shared by this result's recipes (see normalizeVariantGroupKey); else undefined. Used to fold same-shape/different-material result items into one tabbed VariantGroup -- see collapseVariantGroups. Precedence example: cut_copper_slab is both in `#minecraft:slabs` (shapeTag) and oxidation-collapsible with its own tiers -- shapeTag wins, so it joins the single "Slabs" card (with oak_slab, stone_slab, ...) rather than a standalone "Cut Copper Slab" card of just its 8 tiers (see tests/recipe-groups.test.ts). */
   variantKey: string | undefined;
   /** Alphabetically-first recipe id — the group's default/linked-to recipe. */
   canonicalId: string;
@@ -268,9 +268,13 @@ export function groupRecipes(
     }
 
     const strippedResultId = stripOxidationPrefixes(resultId);
-    const variantKey = oxidationBases.has(strippedResultId)
-      ? strippedResultId
-      : normalizeVariantGroupKey(members[0].group);
+    // Precedence: shapeTag (data-pipeline, tag-derived) > oxidation-strip >
+    // vanilla `group` -- see RecipeGroup.variantKey's doc comment above for
+    // why and the cut_copper_slab example this order resolves.
+    const variantKey =
+      members[0].shapeTag ??
+      (oxidationBases.has(strippedResultId) ? strippedResultId : undefined) ??
+      normalizeVariantGroupKey(members[0].group);
 
     groups.push({
       resultId,
@@ -374,41 +378,55 @@ export const VARIANT_GROUP_META: Record<string, VariantGroupMeta> = {
   stained_glass_pane: { name: "Stained Glass Pane", defaultResultId: "white_stained_glass_pane" },
   stained_terracotta: { name: "Dyed Terracotta", defaultResultId: "white_terracotta" },
   wool: { name: "Wool", defaultResultId: "white_wool" },
-  // Wood families -- default to oak, the wood type most players picture first.
+  // Wood-only families -- default to oak, the wood type most players
+  // picture first. Each of these stays keyed by vanilla's own `group`
+  // field: no non-wood sibling exists in vanilla for any of them today
+  // (see scripts/lib/shape-tag.ts's doc comment for the confirmed sweep),
+  // so there's nothing for a shapeTag rule to unify beyond what `group`
+  // already achieves.
   bark: { name: "Wood & Hyphae", defaultResultId: "oak_wood" },
   boat: { name: "Boat", defaultResultId: "oak_boat" },
   chest_boat: { name: "Boat with Chest", defaultResultId: "oak_chest_boat" },
   planks: { name: "Planks", defaultResultId: "oak_planks" },
   shelf: { name: "Shelf", defaultResultId: "oak_shelf" },
-  wooden_button: { name: "Wooden Button", defaultResultId: "oak_button" },
-  wooden_door: { name: "Wooden Door", defaultResultId: "oak_door" },
-  wooden_fence: { name: "Wooden Fence", defaultResultId: "oak_fence" },
   wooden_fence_gate: { name: "Fence Gate", defaultResultId: "oak_fence_gate" },
   wooden_hanging_sign: { name: "Hanging Sign", defaultResultId: "oak_hanging_sign" },
   wooden_pressure_plate: { name: "Wooden Pressure Plate", defaultResultId: "oak_pressure_plate" },
   wooden_sign: { name: "Sign", defaultResultId: "oak_sign" },
-  wooden_slab: { name: "Wooden Slab", defaultResultId: "oak_slab" },
-  wooden_stairs: { name: "Wooden Stairs", defaultResultId: "oak_stairs" },
-  wooden_trapdoor: { name: "Wooden Trapdoor", defaultResultId: "oak_trapdoor" },
+  // Shape families collapsed via vanilla item tags (see
+  // scripts/lib/shape-tag.ts) -- every material Mojang ships for the
+  // shape lands in one card, wood included, so these default the same way
+  // the wood-only families above do: oak, except walls (no vanilla wooden
+  // wall exists -- cobblestone is the earliest-game, most iconic wall
+  // material instead).
+  buttons: { name: "Buttons", defaultResultId: "oak_button" },
+  doors: { name: "Doors", defaultResultId: "oak_door" },
+  fences: { name: "Fences", defaultResultId: "oak_fence" },
+  slabs: { name: "Slabs", defaultResultId: "oak_slab" },
+  stairs: { name: "Stairs", defaultResultId: "oak_stairs" },
+  trapdoors: { name: "Trapdoors", defaultResultId: "oak_trapdoor" },
+  walls: { name: "Walls", defaultResultId: "cobblestone_wall" },
   // Copper oxidation families -- default to the clean, un-oxidized base
-  // tier (golem_statue has no base-tier recipe, so its earliest waxed tier).
+  // tier (golem_statue has no base-tier recipe, so its earliest waxed
+  // tier). Doesn't include cut_copper_slab/cut_copper_stairs/copper_door/
+  // copper_trapdoor: those shapes now collapse under the "slabs"/"stairs"/
+  // "doors"/"trapdoors" shapeTag keys above instead (see
+  // src/utils/recipe-groups.ts's groupRecipes precedence), folding their
+  // copper tiers in with every other material of the same shape rather
+  // than keeping copper on its own separate card.
   chiseled_copper: { name: "Chiseled Copper", defaultResultId: "chiseled_copper" },
   copper_bars: { name: "Copper Bars", defaultResultId: "copper_bars" },
   copper_block: { name: "Block of Copper", defaultResultId: "copper_block" },
   copper_bulb: { name: "Copper Bulb", defaultResultId: "copper_bulb" },
   copper_chain: { name: "Copper Chain", defaultResultId: "copper_chain" },
   copper_chest: { name: "Copper Chest", defaultResultId: "copper_chest" },
-  copper_door: { name: "Copper Door", defaultResultId: "copper_door" },
   copper_golem_statue: {
     name: "Copper Golem Statue",
     defaultResultId: "waxed_copper_golem_statue",
   },
   copper_grate: { name: "Copper Grate", defaultResultId: "copper_grate" },
   copper_lantern: { name: "Copper Lantern", defaultResultId: "copper_lantern" },
-  copper_trapdoor: { name: "Copper Trapdoor", defaultResultId: "copper_trapdoor" },
   cut_copper: { name: "Cut Copper", defaultResultId: "cut_copper" },
-  cut_copper_slab: { name: "Cut Copper Slab", defaultResultId: "cut_copper_slab" },
-  cut_copper_stairs: { name: "Cut Copper Stairs", defaultResultId: "cut_copper_stairs" },
   lightning_rod: { name: "Lightning Rod", defaultResultId: "lightning_rod" },
   // Synthetic entries (see scripts/lib/patterned-banner.ts) -- creeper is
   // the iconic pattern, the one most players picture first.

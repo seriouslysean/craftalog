@@ -421,17 +421,30 @@ describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
     const groups = groupRecipes(allRecipes, itemName);
     const { variantGroups } = collapseVariantGroups(groups);
 
-    for (const shape of [
-      "cut_copper",
-      "cut_copper_slab",
-      "cut_copper_stairs",
-      "copper_bulb",
-      "copper_grate",
-    ]) {
+    // cut_copper (the block itself, not a slab/stairs) plus copper_bulb/
+    // copper_grate carry no shapeTag (no vendored tag unifies them across
+    // materials -- see scripts/lib/shape-tag.ts), so they stay on the
+    // oxidation-only derivation: an 8-member group of just their own tiers.
+    for (const shape of ["cut_copper", "copper_bulb", "copper_grate"]) {
       const vg = variantGroups.find((v) => v.groupKey === shape);
       expect(vg, `expected a VariantGroup for "${shape}"`).toBeDefined();
       expect(vg!.variants.length).toBe(8);
     }
+
+    // cut_copper_slab/cut_copper_stairs are DIFFERENT: they're both
+    // oxidation-collapsible (own tiers) AND in #minecraft:slabs/#stairs
+    // (shapeTag) -- shapeTag wins (see RecipeGroup.variantKey's precedence
+    // doc comment), so they're no longer their own standalone 8-member
+    // groups; they're folded into the shape-wide "slabs"/"stairs" groups
+    // alongside every other material.
+    expect(variantGroups.find((vg) => vg.groupKey === "cut_copper_slab")).toBeUndefined();
+    expect(variantGroups.find((vg) => vg.groupKey === "cut_copper_stairs")).toBeUndefined();
+    const slabsGroup = variantGroups.find((vg) => vg.groupKey === "slabs");
+    const stairsGroup = variantGroups.find((vg) => vg.groupKey === "stairs");
+    expect(slabsGroup?.variants.map((v) => v.resultId)).toContain("cut_copper_slab");
+    expect(slabsGroup?.variants.map((v) => v.resultId)).toContain("oak_slab");
+    expect(stairsGroup?.variants.map((v) => v.resultId)).toContain("cut_copper_stairs");
+    expect(stairsGroup?.variants.map((v) => v.resultId)).toContain("oak_stairs");
 
     expect(variantGroups.find((vg) => vg.groupKey === "dyed_armor")).toBeUndefined();
     for (const resultId of [
@@ -443,6 +456,75 @@ describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
       const group = groups.find((g) => g.resultId === resultId);
       expect(group?.variantKey, `${resultId} must never get a variantKey`).toBeUndefined();
     }
+  });
+});
+
+describe("groupRecipes: shapeTag precedence over oxidation-strip and vanilla group", () => {
+  // cut_copper_slab is the real case this precedence resolves: it's both
+  // oxidation-collapsible (its own 8 waxing/exposure tiers) AND a member of
+  // #minecraft:slabs (shapeTag, persisted by scripts/lib/shape-tag.ts) --
+  // shapeTag must win, so it joins the single shape-wide "Slabs" card
+  // (oak_slab, stone_slab, ...) rather than a standalone "Cut Copper Slab"
+  // card of just its own tiers. Reproduced here against a minimal synthetic
+  // fixture (not just the real-data integration test above) so the
+  // precedence rule itself is pinned independent of what the current mcmeta
+  // pin happens to contain.
+  it("prefers shapeTag over an oxidation-eligible id, folding a copper shape into the shape-wide group", () => {
+    const recipes: RecipeData[] = [
+      recipe({
+        id: "oak_slab",
+        group: "wooden_slab",
+        shapeTag: "slabs",
+        result: { id: "oak_slab", count: 6 },
+        ingredients: [{ items: ["oak_planks"] }],
+      }),
+      recipe({
+        id: "stone_slab",
+        shapeTag: "slabs",
+        result: { id: "stone_slab", count: 6 },
+        ingredients: [{ items: ["stone"] }],
+      }),
+      // Both oxidation-eligible (siblings below share its stripped id) AND
+      // tagged into the same shape as oak_slab/stone_slab above.
+      recipe({
+        id: "cut_copper_slab",
+        shapeTag: "slabs",
+        result: { id: "cut_copper_slab", count: 6 },
+        ingredients: [{ items: ["cut_copper"] }],
+      }),
+      recipe({
+        id: "exposed_cut_copper_slab",
+        shapeTag: "slabs",
+        result: { id: "exposed_cut_copper_slab", count: 6 },
+        ingredients: [{ items: ["exposed_cut_copper"] }],
+      }),
+      recipe({
+        id: "waxed_cut_copper_slab",
+        shapeTag: "slabs",
+        result: { id: "waxed_cut_copper_slab", count: 1 },
+        ingredients: [{ items: ["honeycomb"] }, { items: ["cut_copper_slab"] }],
+      }),
+    ];
+
+    const groups = groupRecipes(recipes, itemName);
+    const { variantGroups, singletons } = collapseVariantGroups(groups);
+
+    // Not stranded on its own oxidation-only key ("cut_copper_slab") --
+    // that key never appears as a real groupKey once shapeTag applies.
+    expect(variantGroups.find((vg) => vg.groupKey === "cut_copper_slab")).toBeUndefined();
+    expect(singletons.find((g) => g.resultId === "cut_copper_slab")).toBeUndefined();
+
+    const slabsGroup = variantGroups.find((vg) => vg.groupKey === "slabs");
+    expect(slabsGroup, 'expected one "slabs" VariantGroup').toBeDefined();
+    expect(slabsGroup!.variants.map((v) => v.resultId).toSorted()).toEqual(
+      [
+        "oak_slab",
+        "stone_slab",
+        "cut_copper_slab",
+        "exposed_cut_copper_slab",
+        "waxed_cut_copper_slab",
+      ].toSorted(),
+    );
   });
 });
 

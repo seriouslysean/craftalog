@@ -217,16 +217,18 @@ describe("isIconGeometryUniform", () => {
     expect(isIconGeometryUniform([base, differentYRotation])).toBe(false);
   });
 
-  it("loads the real generated data and confirms every variant group is geometry-uniform except the known wooden_trapdoor split", async () => {
-    // wooden_trapdoor: oak/dark_oak parent to vanilla's legacy
-    // template_trapdoor_bottom (non-orientable uv); the other 10 woods
-    // parent to the newer template_orientable_trapdoor_bottom -- a real
-    // vanilla data split (verified against vendor/mcmeta-summary), not a
-    // pipeline bug. variant-icons.json.ts's isIconGeometryUniform check
-    // already degrades this one group safely (empty swap textures); this
-    // test's real job is failing loudly if a FUTURE mcmeta bump introduces
-    // a similar split in some other, currently-uniform group.
-    const KNOWN_NONUNIFORM_GROUPS = new Set(["wooden_trapdoor"]);
+  it("loads the real generated data and confirms every variant group is geometry-uniform except the known trapdoors split", async () => {
+    // trapdoors (see src/utils/recipe-groups.ts's shapeTag-derived collapse --
+    // every wood + iron + copper trapdoor is one group now, not just the 12
+    // wood ones): oak/dark_oak parent to vanilla's legacy
+    // template_trapdoor_bottom (non-orientable uv); every other wood parents
+    // to the newer template_orientable_trapdoor_bottom -- a real vanilla data
+    // split (verified against vendor/mcmeta-summary), not a pipeline bug.
+    // variant-icons.json.ts's isIconGeometryUniform check already degrades
+    // this one group safely (empty swap textures); this test's real job is
+    // failing loudly if a FUTURE mcmeta bump introduces a similar split in
+    // some other, currently-uniform group.
+    const KNOWN_NONUNIFORM_GROUPS = new Set(["trapdoors"]);
 
     const recipesModule = await import("../src/data/generated/recipes.json");
     const itemsModule = await import("../src/data/generated/items.json");
@@ -255,7 +257,7 @@ describe("isIconGeometryUniform", () => {
     // The known exception must still actually be non-uniform -- if a future
     // mcmeta bump ever normalizes oak/dark_oak onto the orientable template,
     // this should fail so the exception list gets cleaned up, not left stale.
-    const trapdoorGroup = variantGroups.find((vg) => vg.groupKey === "wooden_trapdoor");
+    const trapdoorGroup = variantGroups.find((vg) => vg.groupKey === "trapdoors");
     if (trapdoorGroup) {
       const icons = trapdoorGroup.variants
         .map((v) => items[v.resultId]?.icon)

@@ -19,6 +19,19 @@ interface Props {
 }
 
 const { siblings, currentId, heading, secondary = false } = Astro.props;
+
+// Past this many variants, the equal-width chip row (designed for a
+// handful of "from X" ingredient siblings) stops scaling -- a fully tag-
+// collapsed shape like Slabs or Doors can carry 20-60+ material variants
+// (see src/utils/recipe-groups.ts's shapeTag precedence). Past the
+// threshold, switch to a compact icon-only grid instead: same markup and
+// zero extra JS, just denser cells with the label moved to a native
+// `title` tooltip + a visually-hidden accessible name rather than always-
+// visible text (see AGENTS.md's "presentation constant" -- this is a
+// display threshold, not vanilla data, so it lives here as a plain
+// constant rather than in the data pipeline).
+const VARIANT_PICKER_THRESHOLD = 20;
+const isCompact = siblings.length > VARIANT_PICKER_THRESHOLD;
 ---
 
 <nav
@@ -26,7 +39,7 @@ const { siblings, currentId, heading, secondary = false } = Astro.props;
   aria-label={heading ?? 'Other recipes for this item'}
 >
   {heading && <h2 class="recipe-variants__title">{heading}</h2>}
-  <ul class="recipe-variants__list">
+  <ul class:list={['recipe-variants__list', { 'recipe-variants__list--compact': isCompact }]}>
     {
       siblings.map((sibling) => {
         const isCurrent = sibling.recipeId === currentId;
@@ -34,18 +47,39 @@ const { siblings, currentId, heading, secondary = false } = Astro.props;
         return (
           <li>
             {isCurrent ? (
-              <span class="recipe-variant link-chip link-chip--selected" aria-current="page">
+              <span
+                class:list={[
+                  'recipe-variant',
+                  'link-chip',
+                  'link-chip--selected',
+                  { 'recipe-variant--compact': isCompact },
+                ]}
+                aria-current="page"
+                title={isCompact ? label : undefined}
+              >
                 <span class="recipe-variant__icon">
                   <ItemIcon item={sibling.iconItem} />
                 </span>
-                <span class="recipe-variant__label">{label}</span>
+                <span class:list={['recipe-variant__label', { 'visually-hidden': isCompact }]}>
+                  {label}
+                </span>
               </span>
             ) : (
-              <a href={sibling.href} class="recipe-variant link-chip">
+              <a
+                href={sibling.href}
+                class:list={[
+                  'recipe-variant',
+                  'link-chip',
+                  { 'recipe-variant--compact': isCompact },
+                ]}
+                title={isCompact ? label : undefined}
+              >
                 <span class="recipe-variant__icon">
                   <ItemIcon item={sibling.iconItem} />
                 </span>
-                <span class="recipe-variant__label">{label}</span>
+                <span class:list={['recipe-variant__label', { 'visually-hidden': isCompact }]}>
+                  {label}
+                </span>
               </a>
             )}
           </li>
@@ -75,11 +109,27 @@ const { siblings, currentId, heading, secondary = false } = Astro.props;
     gap: var(--space-2);
   }
 
+  /* Compact picker: a dense icon-only grid instead of a wrapping chip row,
+     for a fully tag-collapsed shape's 20-60+ material variants (see
+     VARIANT_PICKER_THRESHOLD above). Mobile-first: minmax(2.5rem, ...)
+     already fits several columns on a narrow screen, growing to more
+     columns on wider viewports for free via auto-fill. */
+  .recipe-variants__list--compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
+    gap: var(--space-1);
+  }
+
   .recipe-variant {
     padding: var(--space-2) var(--space-3);
     font-size: 0.8125rem;
     color: var(--color-panel-fg);
     text-transform: capitalize;
+  }
+
+  .recipe-variant--compact {
+    justify-content: center;
+    padding: var(--space-2);
   }
 
   .recipe-variant__icon {

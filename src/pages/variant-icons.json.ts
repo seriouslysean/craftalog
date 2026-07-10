@@ -28,9 +28,9 @@ import {
  * index.astro's applyTextures.
  *
  * Not every group's members are actually geometry-identical (see
- * isIconGeometryUniform's doc comment -- wooden_trapdoor's oak/dark_oak
- * members use a different uv template than its other 10 woods, a real
- * vanilla data split). For a non-uniform group, every member gets an empty
+ * isIconGeometryUniform's doc comment -- the "trapdoors" group's oak/
+ * dark_oak members use a different uv template than every other wood, a
+ * real vanilla data split). For a non-uniform group, every member gets an empty
  * `textures` array instead -- the client treats that as "no swap data" and
  * leaves the card showing its curated default, rather than risk swapping in
  * a mismatched crop.

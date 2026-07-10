@@ -38,6 +38,7 @@
       "count": 1,
       "id": "acacia_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -86,6 +87,7 @@
       "count": 3,
       "id": "acacia_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -114,6 +116,7 @@
       "count": 3,
       "id": "acacia_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -291,6 +294,7 @@
       "count": 6,
       "id": "acacia_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -315,6 +319,7 @@
       "count": 4,
       "id": "acacia_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -338,6 +343,7 @@
       "count": 2,
       "id": "acacia_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -460,6 +466,7 @@
       "count": 6,
       "id": "andesite_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -483,6 +490,7 @@
       "count": 4,
       "id": "andesite_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -505,6 +513,7 @@
       "count": 6,
       "id": "andesite_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -671,6 +680,7 @@
       "count": 1,
       "id": "bamboo_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -719,6 +729,7 @@
       "count": 3,
       "id": "bamboo_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -747,6 +758,7 @@
       "count": 3,
       "id": "bamboo_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -847,6 +859,7 @@
       "count": 6,
       "id": "bamboo_mosaic_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -870,6 +883,7 @@
       "count": 4,
       "id": "bamboo_mosaic_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -1011,6 +1025,7 @@
       "count": 6,
       "id": "bamboo_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -1035,6 +1050,7 @@
       "count": 4,
       "id": "bamboo_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -1058,6 +1074,7 @@
       "count": 2,
       "id": "bamboo_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -1273,6 +1290,7 @@
       "count": 1,
       "id": "birch_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -1321,6 +1339,7 @@
       "count": 3,
       "id": "birch_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -1349,6 +1368,7 @@
       "count": 3,
       "id": "birch_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -1526,6 +1546,7 @@
       "count": 6,
       "id": "birch_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -1550,6 +1571,7 @@
       "count": 4,
       "id": "birch_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -1573,6 +1595,7 @@
       "count": 2,
       "id": "birch_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -2067,6 +2090,7 @@
       "count": 6,
       "id": "blackstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -2090,6 +2114,7 @@
       "count": 4,
       "id": "blackstone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -2112,6 +2137,7 @@
       "count": 6,
       "id": "blackstone_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -3009,6 +3035,7 @@
       "count": 6,
       "id": "brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -3032,6 +3059,7 @@
       "count": 4,
       "id": "brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -3054,6 +3082,7 @@
       "count": 6,
       "id": "brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -3895,6 +3924,7 @@
       "count": 1,
       "id": "cherry_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -3943,6 +3973,7 @@
       "count": 3,
       "id": "cherry_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -3971,6 +4002,7 @@
       "count": 3,
       "id": "cherry_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -4148,6 +4180,7 @@
       "count": 6,
       "id": "cherry_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4172,6 +4205,7 @@
       "count": 4,
       "id": "cherry_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4195,6 +4229,7 @@
       "count": 2,
       "id": "cherry_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -4635,6 +4670,7 @@
       "count": 6,
       "id": "cinnabar_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4658,6 +4694,7 @@
       "count": 4,
       "id": "cinnabar_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4680,6 +4717,7 @@
       "count": 6,
       "id": "cinnabar_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -4723,6 +4761,7 @@
       "count": 6,
       "id": "cinnabar_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4746,6 +4785,7 @@
       "count": 4,
       "id": "cinnabar_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4768,6 +4808,7 @@
       "count": 6,
       "id": "cinnabar_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -4940,6 +4981,7 @@
       "count": 6,
       "id": "cobbled_deepslate_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4963,6 +5005,7 @@
       "count": 4,
       "id": "cobbled_deepslate_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -4985,6 +5028,7 @@
       "count": 6,
       "id": "cobbled_deepslate_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -5006,6 +5050,7 @@
       "count": 6,
       "id": "cobblestone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -5029,6 +5074,7 @@
       "count": 4,
       "id": "cobblestone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -5051,6 +5097,7 @@
       "count": 6,
       "id": "cobblestone_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -5433,6 +5480,7 @@
       "count": 3,
       "id": "copper_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -5811,6 +5859,7 @@
       "count": 1,
       "id": "copper_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -5953,6 +6002,7 @@
       "count": 1,
       "id": "crimson_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -5977,6 +6027,7 @@
       "count": 3,
       "id": "crimson_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -6005,6 +6056,7 @@
       "count": 3,
       "id": "crimson_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -6205,6 +6257,7 @@
       "count": 6,
       "id": "crimson_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -6229,6 +6282,7 @@
       "count": 4,
       "id": "crimson_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -6252,6 +6306,7 @@
       "count": 2,
       "id": "crimson_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -6333,6 +6388,7 @@
       "count": 6,
       "id": "cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -6356,6 +6412,7 @@
       "count": 4,
       "id": "cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -6399,6 +6456,7 @@
       "count": 6,
       "id": "cut_red_sandstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -6442,6 +6500,7 @@
       "count": 6,
       "id": "cut_sandstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -6939,6 +6998,7 @@
       "count": 1,
       "id": "dark_oak_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -6987,6 +7047,7 @@
       "count": 3,
       "id": "dark_oak_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -7015,6 +7076,7 @@
       "count": 3,
       "id": "dark_oak_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -7192,6 +7254,7 @@
       "count": 6,
       "id": "dark_oak_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7216,6 +7279,7 @@
       "count": 4,
       "id": "dark_oak_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7239,6 +7303,7 @@
       "count": 2,
       "id": "dark_oak_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -7311,6 +7376,7 @@
       "count": 6,
       "id": "dark_prismarine_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7334,6 +7400,7 @@
       "count": 4,
       "id": "dark_prismarine_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7436,6 +7503,7 @@
       "count": 6,
       "id": "deepslate_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7459,6 +7527,7 @@
       "count": 4,
       "id": "deepslate_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7481,6 +7550,7 @@
       "count": 6,
       "id": "deepslate_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -7524,6 +7594,7 @@
       "count": 6,
       "id": "deepslate_tile_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7547,6 +7618,7 @@
       "count": 4,
       "id": "deepslate_tile_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7569,6 +7641,7 @@
       "count": 6,
       "id": "deepslate_tile_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -7977,6 +8050,7 @@
       "count": 6,
       "id": "diorite_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -8000,6 +8074,7 @@
       "count": 4,
       "id": "diorite_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -8022,6 +8097,7 @@
       "count": 6,
       "id": "diorite_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -10795,6 +10871,7 @@
       "count": 6,
       "id": "end_stone_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -10818,6 +10895,7 @@
       "count": 4,
       "id": "end_stone_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -10840,6 +10918,7 @@
       "count": 6,
       "id": "end_stone_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -11036,6 +11115,7 @@
       "count": 6,
       "id": "exposed_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -11059,6 +11139,7 @@
       "count": 4,
       "id": "exposed_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -12045,6 +12126,7 @@
       "count": 6,
       "id": "granite_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -12068,6 +12150,7 @@
       "count": 4,
       "id": "granite_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -12090,6 +12173,7 @@
       "count": 6,
       "id": "granite_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -13416,6 +13500,7 @@
       "count": 3,
       "id": "iron_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -13689,6 +13774,7 @@
       "count": 1,
       "id": "iron_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -13826,6 +13912,7 @@
       "count": 1,
       "id": "jungle_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -13874,6 +13961,7 @@
       "count": 3,
       "id": "jungle_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -13902,6 +13990,7 @@
       "count": 3,
       "id": "jungle_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -14079,6 +14168,7 @@
       "count": 6,
       "id": "jungle_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -14103,6 +14193,7 @@
       "count": 4,
       "id": "jungle_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -14126,6 +14217,7 @@
       "count": 2,
       "id": "jungle_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -16710,6 +16802,7 @@
       "count": 1,
       "id": "mangrove_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -16758,6 +16851,7 @@
       "count": 3,
       "id": "mangrove_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -16786,6 +16880,7 @@
       "count": 3,
       "id": "mangrove_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -16963,6 +17058,7 @@
       "count": 6,
       "id": "mangrove_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -16987,6 +17083,7 @@
       "count": 4,
       "id": "mangrove_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17010,6 +17107,7 @@
       "count": 2,
       "id": "mangrove_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -17310,6 +17408,7 @@
       "count": 6,
       "id": "mossy_cobblestone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17333,6 +17432,7 @@
       "count": 4,
       "id": "mossy_cobblestone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17355,6 +17455,7 @@
       "count": 6,
       "id": "mossy_cobblestone_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -17376,6 +17477,7 @@
       "count": 6,
       "id": "mossy_stone_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17399,6 +17501,7 @@
       "count": 4,
       "id": "mossy_stone_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17421,6 +17524,7 @@
       "count": 6,
       "id": "mossy_stone_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -17490,6 +17594,7 @@
       "count": 6,
       "id": "mud_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17513,6 +17618,7 @@
       "count": 4,
       "id": "mud_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17535,6 +17641,7 @@
       "count": 6,
       "id": "mud_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -17723,6 +17830,7 @@
       "count": 6,
       "id": "nether_brick_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -17744,6 +17852,7 @@
       "count": 6,
       "id": "nether_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17767,6 +17876,7 @@
       "count": 4,
       "id": "nether_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17789,6 +17899,7 @@
       "count": 6,
       "id": "nether_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -18080,6 +18191,7 @@
       "count": 1,
       "id": "oak_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -18128,6 +18240,7 @@
       "count": 3,
       "id": "oak_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -18156,6 +18269,7 @@
       "count": 3,
       "id": "oak_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -18333,6 +18447,7 @@
       "count": 6,
       "id": "oak_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -18357,6 +18472,7 @@
       "count": 4,
       "id": "oak_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -18380,6 +18496,7 @@
       "count": 2,
       "id": "oak_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -19052,6 +19169,7 @@
       "count": 6,
       "id": "oxidized_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -19075,6 +19193,7 @@
       "count": 4,
       "id": "oxidized_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -19264,6 +19383,7 @@
       "count": 1,
       "id": "pale_oak_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -19312,6 +19432,7 @@
       "count": 3,
       "id": "pale_oak_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -19340,6 +19461,7 @@
       "count": 3,
       "id": "pale_oak_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -19517,6 +19639,7 @@
       "count": 6,
       "id": "pale_oak_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -19541,6 +19664,7 @@
       "count": 4,
       "id": "pale_oak_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -19564,6 +19688,7 @@
       "count": 2,
       "id": "pale_oak_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -20759,6 +20884,7 @@
       "count": 6,
       "id": "polished_andesite_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -20782,6 +20908,7 @@
       "count": 4,
       "id": "polished_andesite_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -20847,6 +20974,7 @@
       "count": 6,
       "id": "polished_blackstone_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -20870,6 +20998,7 @@
       "count": 4,
       "id": "polished_blackstone_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -20892,6 +21021,7 @@
       "count": 6,
       "id": "polished_blackstone_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -20932,6 +21062,7 @@
       "count": 1,
       "id": "polished_blackstone_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -20974,6 +21105,7 @@
       "count": 6,
       "id": "polished_blackstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -20997,6 +21129,7 @@
       "count": 4,
       "id": "polished_blackstone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21019,6 +21152,7 @@
       "count": 6,
       "id": "polished_blackstone_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -21062,6 +21196,7 @@
       "count": 6,
       "id": "polished_cinnabar_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21085,6 +21220,7 @@
       "count": 4,
       "id": "polished_cinnabar_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21107,6 +21243,7 @@
       "count": 6,
       "id": "polished_cinnabar_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -21150,6 +21287,7 @@
       "count": 6,
       "id": "polished_deepslate_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21173,6 +21311,7 @@
       "count": 4,
       "id": "polished_deepslate_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21195,6 +21334,7 @@
       "count": 6,
       "id": "polished_deepslate_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -21238,6 +21378,7 @@
       "count": 6,
       "id": "polished_diorite_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21261,6 +21402,7 @@
       "count": 4,
       "id": "polished_diorite_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21304,6 +21446,7 @@
       "count": 6,
       "id": "polished_granite_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21327,6 +21470,7 @@
       "count": 4,
       "id": "polished_granite_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21370,6 +21514,7 @@
       "count": 6,
       "id": "polished_sulfur_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21393,6 +21538,7 @@
       "count": 4,
       "id": "polished_sulfur_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21415,6 +21561,7 @@
       "count": 6,
       "id": "polished_sulfur_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -21458,6 +21605,7 @@
       "count": 6,
       "id": "polished_tuff_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21481,6 +21629,7 @@
       "count": 4,
       "id": "polished_tuff_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21503,6 +21652,7 @@
       "count": 6,
       "id": "polished_tuff_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -21637,6 +21787,7 @@
       "count": 6,
       "id": "prismarine_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21660,6 +21811,7 @@
       "count": 4,
       "id": "prismarine_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21739,6 +21891,7 @@
       "count": 6,
       "id": "prismarine_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21762,6 +21915,7 @@
       "count": 4,
       "id": "prismarine_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -21784,6 +21938,7 @@
       "count": 6,
       "id": "prismarine_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -22334,6 +22489,7 @@
       "count": 6,
       "id": "purpur_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -22358,6 +22514,7 @@
       "count": 4,
       "id": "purpur_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -22447,6 +22604,7 @@
       "count": 6,
       "id": "quartz_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -22472,6 +22630,7 @@
       "count": 4,
       "id": "quartz_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23120,6 +23279,7 @@
       "count": 6,
       "id": "red_nether_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23143,6 +23303,7 @@
       "count": 4,
       "id": "red_nether_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23165,6 +23326,7 @@
       "count": 6,
       "id": "red_nether_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -23236,6 +23398,7 @@
       "count": 6,
       "id": "red_sandstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23261,6 +23424,7 @@
       "count": 4,
       "id": "red_sandstone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23283,6 +23447,7 @@
       "count": 6,
       "id": "red_sandstone_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -23606,6 +23771,7 @@
       "count": 6,
       "id": "resin_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23629,6 +23795,7 @@
       "count": 4,
       "id": "resin_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23651,6 +23818,7 @@
       "count": 6,
       "id": "resin_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -23823,6 +23991,7 @@
       "count": 6,
       "id": "sandstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23848,6 +24017,7 @@
       "count": 4,
       "id": "sandstone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -23870,6 +24040,7 @@
       "count": 6,
       "id": "sandstone_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -24325,6 +24496,7 @@
       "count": 6,
       "id": "smooth_quartz_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24348,6 +24520,7 @@
       "count": 4,
       "id": "smooth_quartz_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24369,6 +24542,7 @@
       "count": 6,
       "id": "smooth_red_sandstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24392,6 +24566,7 @@
       "count": 4,
       "id": "smooth_red_sandstone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24413,6 +24588,7 @@
       "count": 6,
       "id": "smooth_sandstone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24436,6 +24612,7 @@
       "count": 4,
       "id": "smooth_sandstone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24457,6 +24634,7 @@
       "count": 6,
       "id": "smooth_stone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24779,6 +24957,7 @@
       "count": 1,
       "id": "spruce_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -24827,6 +25006,7 @@
       "count": 3,
       "id": "spruce_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -24855,6 +25035,7 @@
       "count": 3,
       "id": "spruce_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -25032,6 +25213,7 @@
       "count": 6,
       "id": "spruce_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25056,6 +25238,7 @@
       "count": 4,
       "id": "spruce_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25079,6 +25262,7 @@
       "count": 2,
       "id": "spruce_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -25267,6 +25451,7 @@
       "count": 6,
       "id": "stone_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25290,6 +25475,7 @@
       "count": 4,
       "id": "stone_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25312,6 +25498,7 @@
       "count": 6,
       "id": "stone_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -25352,6 +25539,7 @@
       "count": 1,
       "id": "stone_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -25487,6 +25675,7 @@
       "count": 6,
       "id": "stone_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25541,6 +25730,7 @@
       "count": 4,
       "id": "stone_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25911,6 +26101,7 @@
       "count": 6,
       "id": "sulfur_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25934,6 +26125,7 @@
       "count": 4,
       "id": "sulfur_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -25956,6 +26148,7 @@
       "count": 6,
       "id": "sulfur_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -26021,6 +26214,7 @@
       "count": 6,
       "id": "sulfur_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -26044,6 +26238,7 @@
       "count": 4,
       "id": "sulfur_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -26066,6 +26261,7 @@
       "count": 6,
       "id": "sulfur_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -26915,6 +27111,7 @@
       "count": 6,
       "id": "tuff_brick_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -26938,6 +27135,7 @@
       "count": 4,
       "id": "tuff_brick_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -26960,6 +27158,7 @@
       "count": 6,
       "id": "tuff_brick_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -27003,6 +27202,7 @@
       "count": 6,
       "id": "tuff_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -27026,6 +27226,7 @@
       "count": 4,
       "id": "tuff_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -27048,6 +27249,7 @@
       "count": 6,
       "id": "tuff_wall"
     },
+    "shapeTag": "walls",
     "slug": "default",
     "type": "shaped"
   },
@@ -27155,6 +27357,7 @@
       "count": 1,
       "id": "warped_button"
     },
+    "shapeTag": "buttons",
     "slug": "default",
     "type": "shapeless"
   },
@@ -27179,6 +27382,7 @@
       "count": 3,
       "id": "warped_door"
     },
+    "shapeTag": "doors",
     "slug": "default",
     "type": "shaped"
   },
@@ -27207,6 +27411,7 @@
       "count": 3,
       "id": "warped_fence"
     },
+    "shapeTag": "fences",
     "slug": "default",
     "type": "shaped"
   },
@@ -27434,6 +27639,7 @@
       "count": 6,
       "id": "warped_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -27458,6 +27664,7 @@
       "count": 4,
       "id": "warped_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -27481,6 +27688,7 @@
       "count": 2,
       "id": "warped_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "default",
     "type": "shaped"
   },
@@ -27706,6 +27914,7 @@
       "count": 1,
       "id": "waxed_copper_door"
     },
+    "shapeTag": "doors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -27826,6 +28035,7 @@
       "count": 1,
       "id": "waxed_copper_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -27895,6 +28105,7 @@
       "count": 6,
       "id": "waxed_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -27919,6 +28130,7 @@
       "count": 1,
       "id": "waxed_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -27943,6 +28155,7 @@
       "count": 4,
       "id": "waxed_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -27967,6 +28180,7 @@
       "count": 1,
       "id": "waxed_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28168,6 +28382,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_door"
     },
+    "shapeTag": "doors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28312,6 +28527,7 @@
       "count": 1,
       "id": "waxed_exposed_copper_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28381,6 +28597,7 @@
       "count": 6,
       "id": "waxed_exposed_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -28405,6 +28622,7 @@
       "count": 1,
       "id": "waxed_exposed_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28429,6 +28647,7 @@
       "count": 4,
       "id": "waxed_exposed_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -28453,6 +28672,7 @@
       "count": 1,
       "id": "waxed_exposed_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28702,6 +28922,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_door"
     },
+    "shapeTag": "doors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28846,6 +29067,7 @@
       "count": 1,
       "id": "waxed_oxidized_copper_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28915,6 +29137,7 @@
       "count": 6,
       "id": "waxed_oxidized_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -28939,6 +29162,7 @@
       "count": 1,
       "id": "waxed_oxidized_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -28963,6 +29187,7 @@
       "count": 4,
       "id": "waxed_oxidized_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -28987,6 +29212,7 @@
       "count": 1,
       "id": "waxed_oxidized_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -29212,6 +29438,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_door"
     },
+    "shapeTag": "doors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -29356,6 +29583,7 @@
       "count": 1,
       "id": "waxed_weathered_copper_trapdoor"
     },
+    "shapeTag": "trapdoors",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -29425,6 +29653,7 @@
       "count": 6,
       "id": "waxed_weathered_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -29449,6 +29678,7 @@
       "count": 1,
       "id": "waxed_weathered_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -29473,6 +29703,7 @@
       "count": 4,
       "id": "waxed_weathered_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -29497,6 +29728,7 @@
       "count": 1,
       "id": "waxed_weathered_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "from-honeycomb",
     "type": "shapeless"
   },
@@ -29677,6 +29909,7 @@
       "count": 6,
       "id": "weathered_cut_copper_slab"
     },
+    "shapeTag": "slabs",
     "slug": "default",
     "type": "shaped"
   },
@@ -29700,6 +29933,7 @@
       "count": 4,
       "id": "weathered_cut_copper_stairs"
     },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
