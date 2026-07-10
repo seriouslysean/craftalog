@@ -16,11 +16,11 @@ const DEFAULT_LEATHER_COLOR: [number, number, number] = [160, 101, 64];
 
 /**
  * Composites `overlay` on top of `base` in place using standard src-over
- * alpha blending. `layer1` overlays aren't guaranteed binary alpha (one of
- * the 5 vanilla overlay textures ships as grayscale+alpha), so this blends
- * per-pixel rather than assuming a hard opaque/transparent edge.
+ * alpha blending. Overlay textures aren't guaranteed binary alpha (one of
+ * leather armor's 5 vanilla overlay textures ships as grayscale+alpha), so
+ * this blends per-pixel rather than assuming a hard opaque/transparent edge.
  */
-function compositeOver(base: PNG, overlay: PNG): void {
+export function compositeOver(base: PNG, overlay: PNG): void {
   for (let i = 0; i < base.data.length; i += 4) {
     const overlayAlpha = overlay.data[i + 3] / 255;
     if (overlayAlpha === 0) continue;

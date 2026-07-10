@@ -63,14 +63,23 @@ const variantGroupCards: CatalogCard[] = variantGroups.map((variantGroup) => {
   // The curated default variant/name (see VARIANT_GROUP_META) -- e.g. "Boat"
   // showing the oak variant, not "Acacia Boat" from alphabetical-first.
   const defaultVariant = variantGroupDefault(variantGroup);
+  const curatedName = variantGroupDisplayName(variantGroup, itemsMap);
   return {
     href: withBase(canonicalRecipePath(groupItemSlug(defaultVariant, itemsMap))),
-    name: variantGroupDisplayName(variantGroup, itemsMap),
+    name: curatedName,
     item: itemsMap.get(defaultVariant.resultId) ?? null,
-    // Every variant's own name/labels/ingredients are searchable, not just
-    // the default one shown -- searching "blue" should still surface the
-    // Harnesses card even though its default tile shows Black Harness.
-    searchText: variantGroup.variants.map(groupSearchText).join(' '),
+    // The curated name plus every variant's own name/labels/ingredients are
+    // searchable, not just the default one shown -- searching "blue" should
+    // still surface the Harnesses card even though its default tile shows
+    // Black Harness. The curated name matters on its own: most families'
+    // vanilla item names already embed the shape word (e.g. "Oak Boat",
+    // "White Wool"), so search "boat"/"wool" works by accident even without
+    // it -- but patterned banners' names ("Black Creeper Charge") never
+    // contain "banner" at all, so without this the whole card would be
+    // unfindable by searching its own family's name.
+    searchText: [curatedName, ...variantGroup.variants.map(groupSearchText)]
+      .join(' ')
+      .toLowerCase(),
     familyId: defaultVariant.familyId,
     isShapeless: variantGroup.variants.some(isGroupShapeless),
     variantGroupKey: variantGroup.groupKey,

@@ -172,7 +172,7 @@ export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: str
 }
 
 /** Average color of a texture's opaque pixels, used as the banner's tint color. */
-function averageOpaqueColor(png: PNG): [r: number, g: number, b: number] {
+export function averageOpaqueColor(png: PNG): [r: number, g: number, b: number] {
   let r = 0;
   let g = 0;
   let b = 0;

@@ -11,7 +11,8 @@ const TOOL_TAGS = ["axes", "pickaxes", "shovels", "hoes"];
 // Vanilla has no single "melee weapons" tag covering these two alongside swords.
 const EXTRA_WEAPON_ITEM_IDS = new Set(["trident", "mace"]);
 
-function tagMembers(tagsRaw: RawTagsData, tagName: string): Set<string> {
+/** Normalizes a tag's `values` (plain string or `{id, required?}`) to bare item ids (no `minecraft:` prefix). */
+export function tagMembers(tagsRaw: RawTagsData, tagName: string): Set<string> {
   const tag = tagsRaw[tagName];
   if (!tag) return new Set();
   return new Set(

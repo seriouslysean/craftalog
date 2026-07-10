@@ -20,9 +20,11 @@ import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS, HUD_ICON_VENDOR_BASE } from "./lib/hud-icons.ts";
 import { generateLeatherArmorIcon } from "./lib/leather-armor-icon.ts";
 import { generateLightningRodIcon } from "./lib/lightning-rod-icon.ts";
+import { generatePatternedBannerIcon } from "./lib/patterned-banner-icon.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
 import { firstAnimationFrame } from "./lib/texture-frame.ts";
 import type {
+  RawBannerPatternRegistry,
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
@@ -69,6 +71,12 @@ function main(): void {
   );
   const langRaw = readJson<RawLangFile>(path.join(VENDOR_SUMMARY_DIR, "assets/lang/data.json"));
   const enUs = langRaw.en_us ?? {};
+  const bannerPatternsRaw = readJson<RawBannerPatternRegistry>(
+    path.join(VENDOR_SUMMARY_DIR, "data/banner_pattern/data.json"),
+  );
+  const bannerPatternTagsRaw = readJson<RawTagsData>(
+    path.join(VENDOR_SUMMARY_DIR, "data/tag/banner_pattern/data.json"),
+  );
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
@@ -86,6 +94,7 @@ function main(): void {
     lightningRodIconsToSynthesize,
     bedIconsToCopy,
     leatherArmorIconsToSynthesize,
+    patternedBannerIconsToSynthesize,
   } = generate({
     version,
     recipesRaw,
@@ -94,6 +103,8 @@ function main(): void {
     modelsRaw,
     componentsRaw,
     enUs,
+    bannerPatternsRaw,
+    bannerPatternTagsRaw,
     textureExists,
     bedrockBedIconExists,
   });
@@ -117,10 +128,11 @@ function main(): void {
     fs.writeFileSync(destPath, firstAnimationFrame(fs.readFileSync(sourcePath)));
   }
 
-  if (bannerIconsToSynthesize.size > 0) {
+  if (bannerIconsToSynthesize.size > 0 || patternedBannerIconsToSynthesize.size > 0) {
     const bannerBasePath = path.join(VENDOR_TEXTURES_DIR, `${BANNER_TEMPLATE_TEXTURE_REF}.png`);
     const bannerBasePng = fs.readFileSync(bannerBasePath);
-    // The untinted atlas copy every banner's pole/crossbar faces sample.
+    // The untinted atlas copy every banner's (plain or patterned) pole/
+    // crossbar faces sample.
     const baseAtlasDest = path.join(PUBLIC_TEXTURES_DIR, `${BANNER_BASE_ATLAS_REF}.png`);
     fs.mkdirSync(path.dirname(baseAtlasDest), { recursive: true });
     fs.writeFileSync(baseAtlasDest, bannerBasePng);
@@ -130,6 +142,28 @@ function main(): void {
       const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
       fs.mkdirSync(path.dirname(destPath), { recursive: true });
       fs.writeFileSync(destPath, generateBannerAtlas(bannerBasePng, fs.readFileSync(woolPath)));
+    }
+
+    if (patternedBannerIconsToSynthesize.size > 0) {
+      // Canonical example: black pattern on a white banner (see
+      // scripts/lib/patterned-banner.ts) -- both wool tints are shared
+      // across every pattern, read once.
+      const whiteWoolPng = fs.readFileSync(path.join(VENDOR_TEXTURES_DIR, "block/white_wool.png"));
+      const blackWoolPng = fs.readFileSync(path.join(VENDOR_TEXTURES_DIR, "block/black_wool.png"));
+      for (const [patternId, ref] of patternedBannerIconsToSynthesize) {
+        const patternPath = path.join(VENDOR_TEXTURES_DIR, `entity/banner/${patternId}.png`);
+        const destPath = path.join(PUBLIC_TEXTURES_DIR, `${ref}.png`);
+        fs.mkdirSync(path.dirname(destPath), { recursive: true });
+        fs.writeFileSync(
+          destPath,
+          generatePatternedBannerIcon(
+            bannerBasePng,
+            fs.readFileSync(patternPath),
+            whiteWoolPng,
+            blackWoolPng,
+          ),
+        );
+      }
     }
   }
 
@@ -190,6 +224,7 @@ function main(): void {
   console.log(`lightning rod icons: ${lightningRodIconsToSynthesize.size}`);
   console.log(`bed icons:        ${bedIconsToCopy.size}`);
   console.log(`leather armor icons: ${leatherArmorIconsToSynthesize.size}`);
+  console.log(`patterned banner icons: ${patternedBannerIconsToSynthesize.size}`);
   console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
   if (meta.unresolvedIcons.length > 0) {
     const preview = meta.unresolvedIcons.slice(0, 20).join(", ");

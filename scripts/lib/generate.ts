@@ -10,6 +10,7 @@ import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
 import type { IconCandidate } from "./model.ts";
+import { derivePatternedBanners, PATTERNED_BANNER_GROUP } from "./patterned-banner.ts";
 import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
 import { slugify } from "../../src/utils/slugify.ts";
@@ -19,6 +20,7 @@ import type {
   Item,
   ItemsOutput,
   Meta,
+  RawBannerPatternRegistry,
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawModelsData,
@@ -46,6 +48,10 @@ export interface GenerateInput {
   modelsRaw: RawModelsData;
   componentsRaw: RawItemComponentsData;
   enUs: Record<string, string>;
+  /** data/banner_pattern/data.json -- see scripts/lib/patterned-banner.ts. */
+  bannerPatternsRaw: RawBannerPatternRegistry;
+  /** data/tag/banner_pattern/data.json -- see scripts/lib/patterned-banner.ts. */
+  bannerPatternTagsRaw: RawTagsData;
   /** Whether a texture ref (e.g. "block/oak_log_top") exists on disk. Injected so this stays I/O-free. */
   textureExists: (ref: string) => boolean;
   /** Whether vendor/bedrock-samples has a bed icon PNG for this Bedrock color name (see scripts/lib/bedrock-colors.ts). Injected so this stays I/O-free. */
@@ -68,6 +74,8 @@ export interface GenerateOutput {
   bedIconsToCopy: Map<string, string>;
   /** Item id -> flat texture ref (layer0), for leather armor icons the caller must generate (see scripts/lib/leather-armor-icon.ts). */
   leatherArmorIconsToSynthesize: Map<string, string>;
+  /** Pattern id -> destination texture ref, for patterned banner icons the caller must generate (see scripts/lib/patterned-banner-icon.ts). */
+  patternedBannerIconsToSynthesize: Map<string, string>;
 }
 
 /** One resolved face of a "compound" element: a concrete `/textures/...` path plus its texture-atlas crop rect. */
@@ -153,6 +161,8 @@ export function generate(input: GenerateInput): GenerateOutput {
     modelsRaw,
     componentsRaw,
     enUs,
+    bannerPatternsRaw,
+    bannerPatternTagsRaw,
     textureExists,
     bedrockBedIconExists,
   } = input;
@@ -206,6 +216,43 @@ export function generate(input: GenerateInput): GenerateOutput {
     counts[recipe.type] += 1;
   }
 
+  // Patterned banners have no real vanilla recipe (applying a loom pattern
+  // is component-driven, not representable by a fixed result item -- see
+  // scripts/lib/patterned-banner.ts) -- injected as synthetic `special`
+  // recipes here, after the vanilla loop, so they flow through the same
+  // referencedIds -> icon resolution pass below as any real recipe's result.
+  const patternedBanners = derivePatternedBanners(
+    bannerPatternsRaw,
+    bannerPatternTagsRaw,
+    enUs,
+    textureExists,
+  );
+  const patternedBannersByItemId = new Map(patternedBanners.map((entry) => [entry.itemId, entry]));
+
+  if (patternedBanners.length > 0 && !("banners" in familiesUsed)) {
+    // Always already true in practice (16 real banner recipes share this
+    // family) -- kept so this doesn't silently depend on that.
+    const categoryId = FAMILY_CATEGORY.banners;
+    if (!categoryId) {
+      throw new Error(`Family "banners" has no entry in FAMILY_CATEGORY (scripts/lib/family.ts).`);
+    }
+    familiesUsed.banners = { id: "banners", name: "Banners", category: categoryId };
+  }
+
+  for (const entry of patternedBanners) {
+    recipes[entry.itemId] = {
+      id: entry.itemId,
+      type: "special",
+      category: "misc",
+      family: "banners",
+      group: PATTERNED_BANNER_GROUP,
+      slug: slugify(deriveRecipeSlugSource(entry.itemId, entry.itemId)),
+      note: entry.note,
+      result: { id: entry.itemId, count: 1 },
+    };
+    counts.special += 1;
+  }
+
   const categories: CategoriesOutput = {};
   for (const category of CATEGORIES) categories[category.id] = category;
 
@@ -220,18 +267,40 @@ export function generate(input: GenerateInput): GenerateOutput {
   const lightningRodIconsToSynthesize = new Map<string, string>();
   const bedIconsToCopy = new Map<string, string>();
   const leatherArmorIconsToSynthesize = new Map<string, string>();
+  const patternedBannerIconsToSynthesize = new Map<string, string>();
   const items: ItemsOutput = {};
 
   for (const itemId of Array.from(referencedIds).toSorted()) {
-    const name = getItemName(itemId, enUs);
+    const patternedBanner = patternedBannersByItemId.get(itemId);
+    const name = patternedBanner?.name ?? getItemName(itemId, enUs);
     const candidate = resolveIconCandidate(itemId, itemDefsRaw, modelsRaw);
     const resolvedCompound =
       candidate?.type === "compound"
         ? resolveCompoundElements(candidate, textureExists)
         : undefined;
 
+    if (patternedBanner && candidate) {
+      // A real vendored item would mean this synthetic id collided with an
+      // actual vanilla item -- fail loudly rather than silently misrender
+      // either one.
+      throw new Error(
+        `synthetic patterned-banner id "${itemId}" collides with a real vanilla item`,
+      );
+    }
+
     let icon: Item["icon"];
     if (
+      patternedBanner &&
+      textureExists(BANNER_TEMPLATE_TEXTURE_REF) &&
+      textureExists("block/white_wool") &&
+      textureExists("block/black_wool")
+    ) {
+      icon = bannerCompoundIcon(
+        `/textures/${patternedBanner.textureRef}.png`,
+        `/textures/${BANNER_BASE_ATLAS_REF}.png`,
+      );
+      patternedBannerIconsToSynthesize.set(patternedBanner.patternId, patternedBanner.textureRef);
+    } else if (
       candidate?.type === "banner" &&
       textureExists(BANNER_TEMPLATE_TEXTURE_REF) &&
       textureExists(`block/${candidate.colorId}_wool`)
@@ -344,5 +413,6 @@ export function generate(input: GenerateInput): GenerateOutput {
     lightningRodIconsToSynthesize,
     bedIconsToCopy,
     leatherArmorIconsToSynthesize,
+    patternedBannerIconsToSynthesize,
   };
 }

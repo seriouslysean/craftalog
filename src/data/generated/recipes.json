@@ -19589,6 +19589,552 @@
     "slug": "default",
     "type": "shaped"
   },
+  "patterned_banner_border": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_border",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_border"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_bricks": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_bricks",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_bricks"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_circle": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_circle",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_circle"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_creeper": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_creeper",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_creeper"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_cross": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_cross",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_cross"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_curly_border": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_curly_border",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_curly_border"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_diagonal_left": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_diagonal_left",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_diagonal_left"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_diagonal_right": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_diagonal_right",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_diagonal_right"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_diagonal_up_left": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_diagonal_up_left",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_diagonal_up_left"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_diagonal_up_right": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_diagonal_up_right",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_diagonal_up_right"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_flow": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_flow",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_flow"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_flower": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_flower",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_flower"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_globe": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_globe",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_globe"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_gradient": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_gradient",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_gradient"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_gradient_up": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_gradient_up",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_gradient_up"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_guster": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_guster",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_guster"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_half_horizontal": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_half_horizontal",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_half_horizontal"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_half_horizontal_bottom": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_half_horizontal_bottom",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_half_horizontal_bottom"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_half_vertical": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_half_vertical",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_half_vertical"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_half_vertical_right": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_half_vertical_right",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_half_vertical_right"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_mojang": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_mojang",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_mojang"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_piglin": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_piglin",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_piglin"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_rhombus": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_rhombus",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_rhombus"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_skull": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_skull",
+    "note": "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_skull"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_small_stripes": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_small_stripes",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_small_stripes"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_square_bottom_left": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_square_bottom_left",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_square_bottom_left"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_square_bottom_right": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_square_bottom_right",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_square_bottom_right"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_square_top_left": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_square_top_left",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_square_top_left"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_square_top_right": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_square_top_right",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_square_top_right"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_straight_cross": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_straight_cross",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_straight_cross"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_bottom": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_bottom",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_bottom"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_center": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_center",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_center"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_downleft": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_downleft",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_downleft"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_downright": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_downright",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_downright"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_left": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_left",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_left"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_middle": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_middle",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_middle"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_right": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_right",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_right"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_stripe_top": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_stripe_top",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_stripe_top"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_triangle_bottom": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_triangle_bottom",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_triangle_bottom"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_triangle_top": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_triangle_top",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_triangle_top"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_triangles_bottom": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_triangles_bottom",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_triangles_bottom"
+    },
+    "slug": "default",
+    "type": "special"
+  },
+  "patterned_banner_triangles_top": {
+    "category": "misc",
+    "family": "banners",
+    "group": "patterned_banner",
+    "id": "patterned_banner_triangles_top",
+    "note": "Apply in a loom: any banner + any dye. Shown as black on a white banner.",
+    "result": {
+      "count": 1,
+      "id": "patterned_banner_triangles_top"
+    },
+    "slug": "default",
+    "type": "special"
+  },
   "pink_banner": {
     "category": "misc",
     "family": "banners",

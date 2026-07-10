@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { generate } from "../scripts/lib/generate.ts";
 import { sortKeysDeep } from "../scripts/lib/strings.ts";
 import type {
+  RawBannerPatternRegistry,
   RawItemDefinitionsData,
   RawModelsData,
   RawRecipesData,
@@ -145,6 +146,8 @@ function run() {
     modelsRaw,
     componentsRaw: {},
     enUs,
+    bannerPatternsRaw: {},
+    bannerPatternTagsRaw: {},
     textureExists: (ref) => existingRefs.has(ref),
   });
 }
@@ -325,6 +328,8 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       modelsRaw: compoundModelsRaw,
       componentsRaw: {},
       enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
       textureExists: (ref) =>
         new Set(["item/stick", "block/widget_body", "block/unresolvable_widget_particle"]).has(ref),
     });
@@ -359,5 +364,98 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       texture: "/textures/block/unresolvable_widget_particle.png",
     });
     expect(result.meta.unresolvedIcons).not.toContain("unresolvable_widget");
+  });
+});
+
+describe("generate: patterned banners (synthetic recipes with no vanilla source)", () => {
+  const bannerPatternsRaw: RawBannerPatternRegistry = {
+    creeper: { asset_id: "minecraft:creeper", translation_key: "block.minecraft.banner.creeper" },
+    border: { asset_id: "minecraft:border", translation_key: "block.minecraft.banner.border" },
+  };
+  const bannerPatternTagsRaw: RawTagsData = {
+    no_item_required: { values: ["minecraft:border"] },
+    "pattern_item/creeper": { values: ["minecraft:creeper"] },
+  };
+  const patternedBannerEnUs = {
+    "block.minecraft.banner.creeper.black": "Black Creeper Charge",
+    "block.minecraft.banner.border.black": "Black Border",
+  };
+  const patternTextures = new Set([
+    "entity/banner/creeper",
+    "entity/banner/border",
+    "entity/banner/banner_base",
+    "block/white_wool",
+    "block/black_wool",
+  ]);
+
+  function runPatterned(
+    textureExists: (ref: string) => boolean = (ref) => patternTextures.has(ref),
+  ) {
+    return generate({
+      version: "26.2",
+      recipesRaw: {},
+      tagsRaw: {},
+      itemDefsRaw: {},
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: patternedBannerEnUs,
+      bannerPatternsRaw,
+      bannerPatternTagsRaw,
+      textureExists,
+    });
+  }
+
+  it("injects one synthetic special recipe + compound-icon item per loom-obtainable pattern, sharing the patterned_banner group", () => {
+    const result = runPatterned();
+    expect(Object.keys(result.recipes).toSorted()).toEqual([
+      "patterned_banner_border",
+      "patterned_banner_creeper",
+    ]);
+    expect(result.recipes.patterned_banner_creeper).toEqual({
+      id: "patterned_banner_creeper",
+      type: "special",
+      category: "misc",
+      family: "banners",
+      group: "patterned_banner",
+      slug: "default",
+      note: "Apply in a loom: any banner + any dye + this pattern's banner pattern item. Shown as black on a white banner.",
+      result: { id: "patterned_banner_creeper", count: 1 },
+    });
+    expect(result.items.patterned_banner_creeper.name).toBe("Black Creeper Charge");
+    expect(result.items.patterned_banner_creeper.icon.type).toBe("compound");
+    expect(result.patternedBannerIconsToSynthesize).toEqual(
+      new Map([
+        ["creeper", "item/patterned_banner_creeper"],
+        ["border", "item/patterned_banner_border"],
+      ]),
+    );
+    expect(result.meta.counts.special).toBe(2);
+  });
+
+  it("registers the 'banners' family/category even with no other recipe using it", () => {
+    const result = runPatterned();
+    expect(result.families.banners).toBeDefined();
+    expect(result.families.banners.category).toBe("colored_blocks");
+  });
+
+  it("produces byte-identical output across repeated runs", () => {
+    const first = runPatterned();
+    const second = runPatterned();
+    expect(JSON.stringify(sortKeysDeep(first.recipes))).toBe(
+      JSON.stringify(sortKeysDeep(second.recipes)),
+    );
+    expect(JSON.stringify(sortKeysDeep(first.items))).toBe(
+      JSON.stringify(sortKeysDeep(second.items)),
+    );
+  });
+
+  it("falls back to the placeholder icon when the shared banner base or wool textures are missing, rather than crashing", () => {
+    const result = runPatterned((ref) => ref.startsWith("entity/banner/"));
+    expect(result.items.patterned_banner_creeper.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.unresolvedIcons).toContain("patterned_banner_creeper");
+    expect(result.patternedBannerIconsToSynthesize.size).toBe(0);
   });
 });

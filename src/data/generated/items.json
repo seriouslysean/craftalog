@@ -15597,6 +15597,7944 @@
     "name": "Paper",
     "slug": "paper"
   },
+  "patterned_banner_border": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_border.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_border.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_border.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_border.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_border.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_border",
+    "name": "Black Bordure",
+    "slug": "patterned-banner-border"
+  },
+  "patterned_banner_bricks": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_bricks.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_bricks.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_bricks.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_bricks.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_bricks.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_bricks",
+    "name": "Black Field Masoned",
+    "slug": "patterned-banner-bricks"
+  },
+  "patterned_banner_circle": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_circle.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_circle.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_circle.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_circle.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_circle.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_circle",
+    "name": "Black Roundel",
+    "slug": "patterned-banner-circle"
+  },
+  "patterned_banner_creeper": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_creeper.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_creeper.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_creeper.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_creeper.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_creeper.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_creeper",
+    "name": "Black Creeper Charge",
+    "slug": "patterned-banner-creeper"
+  },
+  "patterned_banner_cross": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_cross.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_cross.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_cross.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_cross.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_cross.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_cross",
+    "name": "Black Saltire",
+    "slug": "patterned-banner-cross"
+  },
+  "patterned_banner_curly_border": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_curly_border.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_curly_border.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_curly_border.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_curly_border.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_curly_border.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_curly_border",
+    "name": "Black Bordure Indented",
+    "slug": "patterned-banner-curly-border"
+  },
+  "patterned_banner_diagonal_left": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_diagonal_left.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_diagonal_left.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_diagonal_left.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_diagonal_left.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_diagonal_left.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_diagonal_left",
+    "name": "Black Per Bend Sinister",
+    "slug": "patterned-banner-diagonal-left"
+  },
+  "patterned_banner_diagonal_right": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_diagonal_right.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_diagonal_right.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_diagonal_right.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_diagonal_right.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_diagonal_right.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_diagonal_right",
+    "name": "Black Per Bend",
+    "slug": "patterned-banner-diagonal-right"
+  },
+  "patterned_banner_diagonal_up_left": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_left.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_left.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_left.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_left.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_left.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_diagonal_up_left",
+    "name": "Black Per Bend Inverted",
+    "slug": "patterned-banner-diagonal-up-left"
+  },
+  "patterned_banner_diagonal_up_right": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_right.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_right.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_right.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_right.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_diagonal_up_right.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_diagonal_up_right",
+    "name": "Black Per Bend Sinister Inverted",
+    "slug": "patterned-banner-diagonal-up-right"
+  },
+  "patterned_banner_flow": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_flow.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_flow.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_flow.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_flow.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_flow.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_flow",
+    "name": "Black Flow",
+    "slug": "patterned-banner-flow"
+  },
+  "patterned_banner_flower": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_flower.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_flower.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_flower.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_flower.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_flower.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_flower",
+    "name": "Black Flower Charge",
+    "slug": "patterned-banner-flower"
+  },
+  "patterned_banner_globe": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_globe.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_globe.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_globe.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_globe.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_globe.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_globe",
+    "name": "Black Globe",
+    "slug": "patterned-banner-globe"
+  },
+  "patterned_banner_gradient": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_gradient.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_gradient.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_gradient.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_gradient.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_gradient.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_gradient",
+    "name": "Black Gradient",
+    "slug": "patterned-banner-gradient"
+  },
+  "patterned_banner_gradient_up": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_gradient_up.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_gradient_up.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_gradient_up.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_gradient_up.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_gradient_up.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_gradient_up",
+    "name": "Black Base Gradient",
+    "slug": "patterned-banner-gradient-up"
+  },
+  "patterned_banner_guster": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_guster.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_guster.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_guster.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_guster.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_guster.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_guster",
+    "name": "Black Guster",
+    "slug": "patterned-banner-guster"
+  },
+  "patterned_banner_half_horizontal": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_half_horizontal.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_half_horizontal.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_half_horizontal.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_half_horizontal.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_half_horizontal.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_half_horizontal",
+    "name": "Black Per Fess",
+    "slug": "patterned-banner-half-horizontal"
+  },
+  "patterned_banner_half_horizontal_bottom": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_half_horizontal_bottom.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_half_horizontal_bottom.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_half_horizontal_bottom.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_half_horizontal_bottom.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_half_horizontal_bottom.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_half_horizontal_bottom",
+    "name": "Black Per Fess Inverted",
+    "slug": "patterned-banner-half-horizontal-bottom"
+  },
+  "patterned_banner_half_vertical": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_half_vertical.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_half_vertical.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_half_vertical.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_half_vertical.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_half_vertical.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_half_vertical",
+    "name": "Black Per Pale",
+    "slug": "patterned-banner-half-vertical"
+  },
+  "patterned_banner_half_vertical_right": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_half_vertical_right.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_half_vertical_right.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_half_vertical_right.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_half_vertical_right.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_half_vertical_right.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_half_vertical_right",
+    "name": "Black Per Pale Inverted",
+    "slug": "patterned-banner-half-vertical-right"
+  },
+  "patterned_banner_mojang": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_mojang.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_mojang.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_mojang.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_mojang.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_mojang.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_mojang",
+    "name": "Black Thing",
+    "slug": "patterned-banner-mojang"
+  },
+  "patterned_banner_piglin": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_piglin.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_piglin.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_piglin.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_piglin.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_piglin.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_piglin",
+    "name": "Black Snout",
+    "slug": "patterned-banner-piglin"
+  },
+  "patterned_banner_rhombus": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_rhombus.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_rhombus.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_rhombus.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_rhombus.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_rhombus.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_rhombus",
+    "name": "Black Lozenge",
+    "slug": "patterned-banner-rhombus"
+  },
+  "patterned_banner_skull": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_skull.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_skull.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_skull.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_skull.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_skull.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_skull",
+    "name": "Black Skull Charge",
+    "slug": "patterned-banner-skull"
+  },
+  "patterned_banner_small_stripes": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_small_stripes.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_small_stripes.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_small_stripes.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_small_stripes.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_small_stripes.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_small_stripes",
+    "name": "Black Paly",
+    "slug": "patterned-banner-small-stripes"
+  },
+  "patterned_banner_square_bottom_left": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_square_bottom_left.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_square_bottom_left.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_square_bottom_left.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_square_bottom_left.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_square_bottom_left.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_square_bottom_left",
+    "name": "Black Base Dexter Canton",
+    "slug": "patterned-banner-square-bottom-left"
+  },
+  "patterned_banner_square_bottom_right": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_square_bottom_right.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_square_bottom_right.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_square_bottom_right.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_square_bottom_right.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_square_bottom_right.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_square_bottom_right",
+    "name": "Black Base Sinister Canton",
+    "slug": "patterned-banner-square-bottom-right"
+  },
+  "patterned_banner_square_top_left": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_square_top_left.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_square_top_left.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_square_top_left.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_square_top_left.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_square_top_left.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_square_top_left",
+    "name": "Black Chief Dexter Canton",
+    "slug": "patterned-banner-square-top-left"
+  },
+  "patterned_banner_square_top_right": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_square_top_right.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_square_top_right.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_square_top_right.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_square_top_right.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_square_top_right.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_square_top_right",
+    "name": "Black Chief Sinister Canton",
+    "slug": "patterned-banner-square-top-right"
+  },
+  "patterned_banner_straight_cross": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_straight_cross.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_straight_cross.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_straight_cross.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_straight_cross.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_straight_cross.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_straight_cross",
+    "name": "Black Cross",
+    "slug": "patterned-banner-straight-cross"
+  },
+  "patterned_banner_stripe_bottom": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_bottom.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_bottom.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_bottom.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_bottom.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_bottom.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_bottom",
+    "name": "Black Base",
+    "slug": "patterned-banner-stripe-bottom"
+  },
+  "patterned_banner_stripe_center": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_center.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_center.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_center.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_center.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_center.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_center",
+    "name": "Black Pale",
+    "slug": "patterned-banner-stripe-center"
+  },
+  "patterned_banner_stripe_downleft": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_downleft.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_downleft.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_downleft.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_downleft.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_downleft.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_downleft",
+    "name": "Black Bend Sinister",
+    "slug": "patterned-banner-stripe-downleft"
+  },
+  "patterned_banner_stripe_downright": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_downright.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_downright.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_downright.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_downright.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_downright.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_downright",
+    "name": "Black Bend",
+    "slug": "patterned-banner-stripe-downright"
+  },
+  "patterned_banner_stripe_left": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_left.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_left.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_left.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_left.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_left.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_left",
+    "name": "Black Pale Dexter",
+    "slug": "patterned-banner-stripe-left"
+  },
+  "patterned_banner_stripe_middle": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_middle.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_middle.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_middle.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_middle.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_middle.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_middle",
+    "name": "Black Fess",
+    "slug": "patterned-banner-stripe-middle"
+  },
+  "patterned_banner_stripe_right": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_right.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_right.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_right.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_right.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_right.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_right",
+    "name": "Black Pale Sinister",
+    "slug": "patterned-banner-stripe-right"
+  },
+  "patterned_banner_stripe_top": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_stripe_top.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_stripe_top.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_stripe_top.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_stripe_top.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_stripe_top.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_stripe_top",
+    "name": "Black Chief",
+    "slug": "patterned-banner-stripe-top"
+  },
+  "patterned_banner_triangle_bottom": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_triangle_bottom.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_triangle_bottom.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_triangle_bottom.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_triangle_bottom.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_triangle_bottom.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_triangle_bottom",
+    "name": "Black Chevron",
+    "slug": "patterned-banner-triangle-bottom"
+  },
+  "patterned_banner_triangle_top": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_triangle_top.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_triangle_top.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_triangle_top.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_triangle_top.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_triangle_top.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_triangle_top",
+    "name": "Black Inverted Chevron",
+    "slug": "patterned-banner-triangle-top"
+  },
+  "patterned_banner_triangles_bottom": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_triangles_bottom.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_triangles_bottom.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_triangles_bottom.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_triangles_bottom.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_triangles_bottom.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_triangles_bottom",
+    "name": "Black Base Indented",
+    "slug": "patterned-banner-triangles-bottom"
+  },
+  "patterned_banner_triangles_top": {
+    "icon": {
+      "elements": [
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0,
+                12.5,
+                0.5
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                12,
+                0.5,
+                12.5,
+                11
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11.5,
+                0.5,
+                12,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                11,
+                0.5,
+                11.5,
+                11
+              ]
+            }
+          },
+          "from": [
+            7.6364,
+            0,
+            7.6364
+          ],
+          "to": [
+            8.3636,
+            15.2727,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                10.5,
+                10.5,
+                11
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                5.5,
+                11,
+                6,
+                11.5
+              ]
+            },
+            "north": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                6,
+                11,
+                11,
+                11.5
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                11,
+                5.5,
+                11.5
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0.5,
+                10.5,
+                5.5,
+                11
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/banner_base.png",
+              "uv": [
+                0,
+                11,
+                0.5,
+                11.5
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            15.2727,
+            7.6364
+          ],
+          "to": [
+            11.6364,
+            16,
+            8.3636
+          ]
+        },
+        {
+          "faces": {
+            "down": {
+              "texture": "/textures/item/patterned_banner_triangles_top.png",
+              "uv": [
+                5.25,
+                0,
+                10.25,
+                0.25
+              ]
+            },
+            "east": {
+              "texture": "/textures/item/patterned_banner_triangles_top.png",
+              "uv": [
+                5.25,
+                0.25,
+                5.5,
+                10.25
+              ]
+            },
+            "south": {
+              "texture": "/textures/item/patterned_banner_triangles_top.png",
+              "uv": [
+                0.25,
+                0.25,
+                5.25,
+                10.25
+              ]
+            },
+            "up": {
+              "texture": "/textures/item/patterned_banner_triangles_top.png",
+              "uv": [
+                0.25,
+                0,
+                5.25,
+                0.25
+              ]
+            },
+            "west": {
+              "texture": "/textures/item/patterned_banner_triangles_top.png",
+              "uv": [
+                0,
+                0.25,
+                0.25,
+                10.25
+              ]
+            }
+          },
+          "from": [
+            4.3636,
+            0.7273,
+            8.3636
+          ],
+          "to": [
+            11.6364,
+            15.2727,
+            8.7272
+          ]
+        }
+      ],
+      "type": "compound",
+      "variant": "banner",
+      "yRotation": -205
+    },
+    "id": "patterned_banner_triangles_top",
+    "name": "Black Chief Indented",
+    "slug": "patterned-banner-triangles-top"
+  },
   "peony": {
     "icon": {
       "texture": "/textures/block/peony_top.png",

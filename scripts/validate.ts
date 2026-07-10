@@ -22,6 +22,7 @@ import type {
   FamiliesOutput,
   ItemsOutput,
   Meta,
+  RawBannerPatternRegistry,
   RawItemComponentsData,
   RawItemDefinitionsData,
   RawLangFile,
@@ -131,6 +132,12 @@ function checkDrift(committed: Committed): void {
   );
   const langRaw = readJson<RawLangFile>(path.join(VENDOR_SUMMARY_DIR, "assets/lang/data.json"));
   const enUs = langRaw.en_us ?? {};
+  const bannerPatternsRaw = readJson<RawBannerPatternRegistry>(
+    path.join(VENDOR_SUMMARY_DIR, "data/banner_pattern/data.json"),
+  );
+  const bannerPatternTagsRaw = readJson<RawTagsData>(
+    path.join(VENDOR_SUMMARY_DIR, "data/tag/banner_pattern/data.json"),
+  );
 
   const textureExists = (ref: string): boolean =>
     fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
@@ -145,6 +152,8 @@ function checkDrift(committed: Committed): void {
     modelsRaw,
     componentsRaw,
     enUs,
+    bannerPatternsRaw,
+    bannerPatternTagsRaw,
     textureExists,
     bedrockBedIconExists,
   });
