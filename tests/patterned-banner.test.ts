@@ -94,6 +94,21 @@ describe("derivePatternedBanners", () => {
     expect(unnamed?.name).toBe("Black Unnamed");
   });
 
+  it("prefers a <translation_key>.black.new rename over the plain .black key", () => {
+    const renamedEnUs = {
+      ...enUs,
+      "block.minecraft.banner.creeper.black.new": "Creeper Charge Renamed",
+    };
+    const entries = derivePatternedBanners(
+      bannerPatternsRaw,
+      bannerPatternTagsRaw,
+      renamedEnUs,
+      textureExists,
+    );
+    const creeper = entries.find((e) => e.patternId === "creeper");
+    expect(creeper?.name).toBe("Creeper Charge Renamed");
+  });
+
   it("returns entries sorted by pattern id", () => {
     const entries = derivePatternedBanners(
       bannerPatternsRaw,
