@@ -36,4 +36,15 @@ describe("normalizeIngredient", () => {
       items: ["stick"],
     });
   });
+
+  it("throws for an unknown tag reference instead of emitting an empty ingredient", () => {
+    expect(() => normalizeIngredient("#minecraft:does_not_exist", {})).toThrow(
+      /resolved to zero items/,
+    );
+  });
+
+  it("throws for a known tag that resolves to zero items", () => {
+    const tags: RawTagsData = { hollow: { values: [] } };
+    expect(() => normalizeIngredient("#minecraft:hollow", tags)).toThrow(/resolved to zero items/);
+  });
 });

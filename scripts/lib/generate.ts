@@ -23,6 +23,7 @@ import {
   headCompoundIcon,
 } from "./head-icon.ts";
 import type { HeadKind } from "./head-icon.ts";
+import { HUD_ICON_RELATIVE_PATHS } from "./hud-icons.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
 import { resolveIconCandidate } from "./model.ts";
@@ -228,10 +229,21 @@ export function generate(input: GenerateInput): GenerateOutput {
   for (const [id, raw] of Object.entries(recipesRaw)) {
     const transformed = transformRecipe(id, raw, tagsRaw);
     if (!transformed) continue;
-    // repair_item is the only recipe with no result item -- exclude any
-    // resultless recipe (not hardcoded to that id) so it never reaches the
-    // rest of this pipeline, which assumes every emitted recipe has one.
-    if (!transformed.result) continue;
+    if (!transformed.result) {
+      // crafting_special_repairitem is the only vanilla recipe legitimately
+      // shipped without a result item (it acts on two arbitrary
+      // matching-type items) -- exclude it, since the rest of this pipeline
+      // assumes every emitted recipe has one. Any OTHER resultless recipe
+      // means the vendored data changed shape: fail loudly instead of
+      // silently dropping it (same precedent as the FAMILY_CATEGORY check
+      // below).
+      if (transformed.vanillaType === "minecraft:crafting_special_repairitem") continue;
+      throw new Error(
+        `Recipe "${id}" (${raw.type}) has no result item -- only ` +
+          `minecraft:crafting_special_repairitem is expected to be resultless; a vendored data ` +
+          `bump may have changed shape (see scripts/lib/generate.ts).`,
+      );
+    }
     const resultId = transformed.result.id;
     const derivedFamily = deriveFamily(
       { itemId: resultId, group: transformed.group, category: transformed.category },
@@ -295,6 +307,14 @@ export function generate(input: GenerateInput): GenerateOutput {
   }
 
   for (const entry of patternedBanners) {
+    if (entry.itemId in recipes) {
+      // Mirrors the item-side collision guard below: a real vanilla recipe
+      // under this synthetic id would be silently overwritten (and its
+      // type double-counted) -- fail loudly instead.
+      throw new Error(
+        `synthetic patterned-banner recipe id "${entry.itemId}" collides with an existing recipe id`,
+      );
+    }
     recipes[entry.itemId] = {
       id: entry.itemId,
       type: "special",
@@ -527,12 +547,35 @@ export function generate(input: GenerateInput): GenerateOutput {
       : { id: itemId, name, slug, icon };
   }
 
+  // The honest total of texture files a parse run writes under
+  // public/textures/ -- verbatim vendor copies, every synthesized/derived
+  // icon output, and the fixed HUD sprites (each write branch in parse.ts
+  // maps 1:1 to a term here; the shared banner base atlas is written once
+  // whenever any plain or patterned banner icon is synthesized, and the
+  // decorated pot writes 2 atlases).
+  const texturesWritten =
+    texturesToCopy.size +
+    bannerIconsToSynthesize.size +
+    patternedBannerIconsToSynthesize.size +
+    (bannerIconsToSynthesize.size > 0 || patternedBannerIconsToSynthesize.size > 0 ? 1 : 0) +
+    lightningRodIconsToSynthesize.size +
+    bedIconsToCopy.size +
+    leatherArmorIconsToSynthesize.size +
+    (shieldIconToCopy ? 1 : 0) +
+    copperGolemIconsToCopy.size +
+    shulkerIconsToCopy.size +
+    headIconsToCopy.size +
+    (conduitIconToCopy ? 1 : 0) +
+    chestIconsToCopy.size +
+    (decoratedPotIconToCopy ? 2 : 0) +
+    HUD_ICON_RELATIVE_PATHS.length;
+
   const meta: Meta = {
     version,
     counts: {
       ...counts,
       items: Object.keys(items).length,
-      texturesCopied: texturesToCopy.size,
+      texturesWritten,
     },
     unresolvedIcons: unresolvedIcons.toSorted(),
     fallbackFamilyItems: fallbackFamilyItems.toSorted(),

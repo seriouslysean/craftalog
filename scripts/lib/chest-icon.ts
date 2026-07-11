@@ -1,6 +1,7 @@
 import { round4 } from "./banner-icon.ts";
 import { faceUVs } from "./bedrock-geometry.ts";
-import type { IconOutput } from "./types.ts";
+import { facesFrom } from "./compound-icon.ts";
+import type { CompoundElement, CompoundIcon } from "./types.ts";
 
 /**
  * Chests (chest, trapped_chest, ender_chest, and the 4 copper tiers x
@@ -68,9 +69,6 @@ import type { IconOutput } from "./types.ts";
  * banner/shield), this geometry already fills the engine's reference cube,
  * so the generic cube-calibrated `--icon-scale` applies unchanged.
  */
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-type CompoundElement = CompoundIcon["elements"][number];
-type CompoundFace = NonNullable<CompoundElement["faces"]["up"]>;
 
 /** Extra GUI yaw on top of the compound camera's default -- see this file's docstring. */
 const CHEST_GUI_YAW_DELTA = -180;
@@ -90,22 +88,11 @@ function boxElement(
     round4(from[2] + box.d),
   ];
   const uvs = faceUVs(box.u, box.v, box.w, box.h, box.d);
-  const face = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: atlasTexturePath,
-    uv,
-  });
 
   return {
     from,
     to,
-    faces: {
-      up: face(uvs.up),
-      down: face(uvs.down),
-      north: face(uvs.north),
-      south: face(uvs.south),
-      east: face(uvs.east),
-      west: face(uvs.west),
-    },
+    faces: facesFrom(uvs, atlasTexturePath),
   };
 }
 

@@ -14,41 +14,26 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { PNG } from "pngjs";
-
 import { generate } from "./lib/generate.ts";
 import { HUD_ICON_RELATIVE_PATHS } from "./lib/hud-icons.ts";
 import { sortKeysDeep } from "./lib/strings.ts";
+import {
+  VENDOR_BEDROCK_ITEMS_DIR,
+  VENDOR_SUMMARY_DIR,
+  VENDOR_TEXTURES_DIR,
+  loadVendorGenerateInput,
+} from "./lib/vendor-input.ts";
 import type {
   CategoriesOutput,
   FamiliesOutput,
   ItemsOutput,
   Meta,
-  RawBannerPatternRegistry,
-  RawBedrockGeometryFile,
-  RawItemComponentsData,
-  RawItemDefinitionsData,
-  RawLangFile,
-  RawLegacyBedrockGeometryFile,
-  RawModelsData,
-  RawRecipesData,
-  RawTagsData,
   RecipesOutput,
 } from "./lib/types.ts";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(scriptDir, "..");
 
-const VENDOR_SUMMARY_DIR = path.join(ROOT, "vendor/mcmeta-summary");
-const VENDOR_TEXTURES_DIR = path.join(ROOT, "vendor/mcmeta-assets/assets/minecraft/textures");
-const VENDOR_BEDROCK_ITEMS_DIR = path.join(
-  ROOT,
-  "vendor/bedrock-samples/resource_pack/textures/items",
-);
-const VENDOR_BEDROCK_MODELS_DIR = path.join(
-  ROOT,
-  "vendor/bedrock-samples/resource_pack/models/entity",
-);
 const GENERATED_DIR = path.join(ROOT, "src/data/generated");
 const PUBLIC_DIR = path.join(ROOT, "public");
 
@@ -124,62 +109,7 @@ function diffSummary(
 }
 
 function checkDrift(committed: Committed): void {
-  const version = fs.readFileSync(path.join(VENDOR_SUMMARY_DIR, "version.txt"), "utf8").trim();
-  const recipesRaw = readJson<RawRecipesData>(
-    path.join(VENDOR_SUMMARY_DIR, "data/recipe/data.json"),
-  );
-  const tagsRaw = readJson<RawTagsData>(path.join(VENDOR_SUMMARY_DIR, "data/tag/item/data.json"));
-  const itemDefsRaw = readJson<RawItemDefinitionsData>(
-    path.join(VENDOR_SUMMARY_DIR, "assets/item_definition/data.json"),
-  );
-  const modelsRaw = readJson<RawModelsData>(
-    path.join(VENDOR_SUMMARY_DIR, "assets/model/data.json"),
-  );
-  const componentsRaw = readJson<RawItemComponentsData>(
-    path.join(VENDOR_SUMMARY_DIR, "item_components/data.json"),
-  );
-  const langRaw = readJson<RawLangFile>(path.join(VENDOR_SUMMARY_DIR, "assets/lang/data.json"));
-  const enUs = langRaw.en_us ?? {};
-  const bannerPatternsRaw = readJson<RawBannerPatternRegistry>(
-    path.join(VENDOR_SUMMARY_DIR, "data/banner_pattern/data.json"),
-  );
-  const bannerPatternTagsRaw = readJson<RawTagsData>(
-    path.join(VENDOR_SUMMARY_DIR, "data/tag/banner_pattern/data.json"),
-  );
-  const copperGolemGeoRaw = readJson<RawBedrockGeometryFile>(
-    path.join(VENDOR_BEDROCK_MODELS_DIR, "copper_golem.geo.json"),
-  );
-  const shulkerGeoRaw = readJson<RawLegacyBedrockGeometryFile>(
-    path.join(VENDOR_BEDROCK_MODELS_DIR, "shulker.geo.json"),
-  );
-
-  const textureExists = (ref: string): boolean =>
-    fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
-  const textureDimensions = (ref: string): { width: number; height: number } | undefined => {
-    const filePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
-    if (!fs.existsSync(filePath)) return undefined;
-    const { width, height } = PNG.sync.read(fs.readFileSync(filePath));
-    return { width, height };
-  };
-  const bedrockBedIconExists = (bedrockColorName: string): boolean =>
-    fs.existsSync(path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`));
-
-  const fresh = generate({
-    version,
-    recipesRaw,
-    tagsRaw,
-    itemDefsRaw,
-    modelsRaw,
-    componentsRaw,
-    enUs,
-    bannerPatternsRaw,
-    bannerPatternTagsRaw,
-    copperGolemGeoRaw,
-    shulkerGeoRaw,
-    textureExists,
-    textureDimensions,
-    bedrockBedIconExists,
-  });
+  const fresh = generate(loadVendorGenerateInput());
 
   diffSummary("recipes.json", fresh.recipes, committed.recipes);
   diffSummary("items.json", fresh.items, committed.items);
@@ -198,14 +128,22 @@ function checkInternalConsistency(committed: Committed): void {
   const familyIds = new Set(Object.keys(families));
   const categoryIds = new Set(Object.keys(categories));
 
+  // /recipe/{item}/{slug}/ requires the slug to be unique within its result
+  // item's group -- deriveRecipeSlugSource's docstring claims this but the
+  // derivation isn't injective, so verify it here.
+  const recipeSlugKeys = new Set<string>();
+
   for (const [id, recipe] of Object.entries(recipes)) {
     const referencedIds: string[] = [];
+    const ingredients: { items: string[] }[] = [];
     if (recipe.result) referencedIds.push(recipe.result.id);
-    if (recipe.key) {
-      for (const ingredient of Object.values(recipe.key)) referencedIds.push(...ingredient.items);
-    }
-    if (recipe.ingredients) {
-      for (const ingredient of recipe.ingredients) referencedIds.push(...ingredient.items);
+    if (recipe.key) ingredients.push(...Object.values(recipe.key));
+    if (recipe.ingredients) ingredients.push(...recipe.ingredients);
+    for (const ingredient of ingredients) {
+      referencedIds.push(...ingredient.items);
+      if (ingredient.items.length === 0) {
+        fail(`recipe "${id}" has an ingredient with zero items`);
+      }
     }
 
     for (const itemId of referencedIds) {
@@ -218,17 +156,35 @@ function checkInternalConsistency(committed: Committed): void {
       fail(`recipe "${id}" references unknown family id "${recipe.family}" (not in families.json)`);
     }
 
+    const slugKey = `${recipe.result?.id ?? ""}::${recipe.slug}`;
+    if (recipeSlugKeys.has(slugKey)) {
+      fail(
+        `recipe "${id}" duplicates slug "${recipe.slug}" within result item "${recipe.result?.id}" -- /recipe/{item}/{slug}/ URLs would collide`,
+      );
+    }
+    recipeSlugKeys.add(slugKey);
+
+    if (recipe.type === "shapeless" || recipe.type === "transmute") {
+      const count = recipe.ingredients?.length ?? 0;
+      if (count < 1 || count > 9) {
+        fail(`recipe "${id}" has ${count} ingredients (a crafting grid holds 1-9)`);
+      }
+    }
+
     if (recipe.type === "shaped") {
       if (!recipe.pattern || !recipe.key) {
         fail(`recipe "${id}" is shaped but missing pattern/key`);
         continue;
       }
-      if (recipe.pattern.length > 3) {
-        fail(`recipe "${id}" pattern has ${recipe.pattern.length} rows (max 3)`);
+      if (recipe.pattern.length < 1 || recipe.pattern.length > 3) {
+        fail(`recipe "${id}" pattern has ${recipe.pattern.length} rows (must be 1-3)`);
+      }
+      if (new Set(recipe.pattern.map((row) => row.length)).size > 1) {
+        fail(`recipe "${id}" pattern rows have inconsistent widths`);
       }
       for (const row of recipe.pattern) {
-        if (row.length > 3) {
-          fail(`recipe "${id}" pattern row "${row}" has ${row.length} columns (max 3)`);
+        if (row.length < 1 || row.length > 3) {
+          fail(`recipe "${id}" pattern row "${row}" has ${row.length} columns (must be 1-3)`);
         }
         for (const char of row) {
           if (char !== " " && !(char in recipe.key)) {
@@ -258,6 +214,26 @@ function checkInternalConsistency(committed: Committed): void {
       `${meta.fallbackFamilyItems.length} item(s) fell through to a generic family fallback ` +
         `(meta.fallbackFamilyItems: ${meta.fallbackFamilyItems.slice(0, 10).join(", ")}${meta.fallbackFamilyItems.length > 10 ? ", ..." : ""}) -- add a real scripts/lib/family.ts rule for each.`,
     );
+  }
+
+  // unresolvedIcons must be actionable, not print-only: a nonempty list
+  // means real items are shipping the placeholder icon, which the git-diff
+  // drift gate can never catch (parse is deterministic either way).
+  if (meta.unresolvedIcons.length > 0) {
+    fail(
+      `${meta.unresolvedIcons.length} item(s) have unresolved icons and would ship the placeholder ` +
+        `(meta.unresolvedIcons: ${meta.unresolvedIcons.slice(0, 10).join(", ")}${meta.unresolvedIcons.length > 10 ? ", ..." : ""}) -- fix icon resolution for each.`,
+    );
+  }
+
+  // Item slugs are the /recipe/{slug}/ URL segment -- globally unique by
+  // contract (derived from `id`, but slugify isn't injective, so verify).
+  const itemSlugs = new Set<string>();
+  for (const [id, item] of Object.entries(items)) {
+    if (itemSlugs.has(item.slug)) {
+      fail(`item "${id}" duplicates slug "${item.slug}" -- /recipe/{slug}/ URLs would collide`);
+    }
+    itemSlugs.add(item.slug);
   }
 
   for (const [id, item] of Object.entries(items)) {
@@ -309,6 +285,10 @@ function main(): void {
   } else if (!fs.existsSync(path.join(VENDOR_SUMMARY_DIR, "version.txt"))) {
     fail(
       `vendor/mcmeta-summary is not populated (run "npm run vendor:init"), and --offline was not passed.`,
+    );
+  } else if (!fs.existsSync(VENDOR_TEXTURES_DIR)) {
+    fail(
+      `vendor/mcmeta-assets is not populated (run "npm run vendor:init"), and --offline was not passed.`,
     );
   } else if (!fs.existsSync(VENDOR_BEDROCK_ITEMS_DIR)) {
     fail(

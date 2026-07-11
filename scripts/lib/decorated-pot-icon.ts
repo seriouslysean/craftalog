@@ -1,5 +1,6 @@
 import { round4 } from "./banner-icon.ts";
-import type { IconOutput } from "./types.ts";
+import { faceWith } from "./compound-icon.ts";
+import type { CompoundElement, CompoundIcon } from "./types.ts";
 
 /**
  * The decorated pot is a `minecraft:special` entity-rendered item
@@ -105,10 +106,6 @@ const DECORATED_POT_GUI_YAW_DELTA = -180;
 /** 16 engine units / 20 native units: the real assembly's full height (body 0-16 plus the neck's own 17-20) is what fills the reference cube. */
 const SCALE = 16 / 20;
 
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-type CompoundElement = CompoundIcon["elements"][number];
-type CompoundFace = NonNullable<CompoundElement["faces"]["up"]>;
-
 /** Converts a pixel rect on the 32x32 decorated_pot_base.png atlas to the engine's 0-16 uv space (16/32 = halves). */
 function uvBase(x0: number, y0: number, x1: number, y1: number): [number, number, number, number] {
   return [x0 / 2, y0 / 2, x1 / 2, y1 / 2];
@@ -138,14 +135,8 @@ export function decoratedPotCompoundIcon(
   baseAtlasTexturePath: string,
   sideAtlasTexturePath: string,
 ): CompoundIcon {
-  const baseFace = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: baseAtlasTexturePath,
-    uv,
-  });
-  const sideFace = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: sideAtlasTexturePath,
-    uv,
-  });
+  const baseFace = faceWith(baseAtlasTexturePath);
+  const sideFace = faceWith(sideAtlasTexturePath);
 
   // All 4 body sides share the identical undecorated "brick" crop (the
   // plain crafted decorated_pot has no sherds -- see this file's docstring).

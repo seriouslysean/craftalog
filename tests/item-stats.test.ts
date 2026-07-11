@@ -7,7 +7,15 @@ const tagsRaw: RawTagsData = {
   chest_armor: { values: ["diamond_chestplate"] },
   leg_armor: { values: [] },
   foot_armor: { values: [] },
-  swords: { values: ["diamond_sword"] },
+  // Exercises resolveTag's full normalization within stat detection: a
+  // minecraft:-prefixed value, an { id } object-form value, and a nested
+  // tag reference -- the shallow tagMembers resolver this module used to
+  // carry handled none of the nested case.
+  swords: {
+    values: ["minecraft:diamond_sword", { id: "minecraft:copper_sword" }, "#minecraft:odd_swords"],
+  },
+  odd_swords: { values: ["minecraft:wooden_sword"] },
+  spears: { values: ["minecraft:iron_spear"] },
   axes: { values: ["diamond_axe"] },
   pickaxes: { values: ["diamond_pickaxe"] },
   shovels: { values: [] },
@@ -46,6 +54,21 @@ const componentsRaw: RawItemComponentsData = {
     "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 9 }],
     "minecraft:max_damage": 250,
   },
+  iron_spear: {
+    "minecraft:attribute_modifiers": [
+      { type: "minecraft:attack_damage", amount: 2 },
+      { type: "minecraft:attack_speed", amount: -2.8 },
+    ],
+    "minecraft:max_damage": 250,
+  },
+  copper_sword: {
+    "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 5 }],
+    "minecraft:max_damage": 190,
+  },
+  wooden_sword: {
+    "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 3 }],
+    "minecraft:max_damage": 59,
+  },
 };
 
 describe("resolveItemStat", () => {
@@ -82,6 +105,27 @@ describe("resolveItemStat", () => {
     expect(resolveItemStat("trident", componentsRaw, tagsRaw)).toEqual({
       type: "weapon",
       damage: 9,
+    });
+  });
+
+  it("picks weapon for a spear via the spears tag (1.21+ melee weapons outside the swords tag)", () => {
+    expect(resolveItemStat("iron_spear", componentsRaw, tagsRaw)).toEqual({
+      type: "weapon",
+      damage: 2,
+    });
+  });
+
+  it("resolves { id } object-form tag values (copper_sword) when detecting weapons", () => {
+    expect(resolveItemStat("copper_sword", componentsRaw, tagsRaw)).toEqual({
+      type: "weapon",
+      damage: 5,
+    });
+  });
+
+  it("resolves nested tag references (wooden_sword via #odd_swords) when detecting weapons", () => {
+    expect(resolveItemStat("wooden_sword", componentsRaw, tagsRaw)).toEqual({
+      type: "weapon",
+      damage: 3,
     });
   });
 

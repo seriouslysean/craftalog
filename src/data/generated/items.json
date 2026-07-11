@@ -1509,7 +1509,7 @@
   },
   "beehive": {
     "icon": {
-      "side": "/textures/block/beehive_front_honey.png",
+      "side": "/textures/block/beehive_front.png",
       "top": "/textures/block/beehive_end.png",
       "type": "block"
     },
@@ -6525,7 +6525,11 @@
     },
     "id": "copper_spear",
     "name": "Copper Spear",
-    "slug": "copper-spear"
+    "slug": "copper-spear",
+    "stat": {
+      "damage": 1,
+      "type": "weapon"
+    }
   },
   "copper_sword": {
     "icon": {
@@ -7233,7 +7237,7 @@
   },
   "crossbow": {
     "icon": {
-      "texture": "/textures/item/crossbow_arrow.png",
+      "texture": "/textures/item/crossbow_standby.png",
       "type": "flat"
     },
     "id": "crossbow",
@@ -8736,7 +8740,11 @@
     },
     "id": "diamond_spear",
     "name": "Diamond Spear",
-    "slug": "diamond-spear"
+    "slug": "diamond-spear",
+    "stat": {
+      "damage": 3,
+      "type": "weapon"
+    }
   },
   "diamond_sword": {
     "icon": {
@@ -13197,7 +13205,11 @@
     },
     "id": "iron_spear",
     "name": "Iron Spear",
-    "slug": "iron-spear"
+    "slug": "iron-spear",
+    "stat": {
+      "damage": 2,
+      "type": "weapon"
+    }
   },
   "iron_sword": {
     "icon": {
@@ -32447,7 +32459,11 @@
     },
     "id": "stone_spear",
     "name": "Stone Spear",
-    "slug": "stone-spear"
+    "slug": "stone-spear",
+    "stat": {
+      "damage": 1,
+      "type": "weapon"
+    }
   },
   "stone_stairs": {
     "icon": {
