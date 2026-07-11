@@ -1,6 +1,7 @@
 import type { IconData } from "../content.config";
 
 export interface Face {
+  /** BEM modifier of ItemIcon.astro's `.block__face` element (the renderer adds the base class). */
   className: string;
   texture: string;
 }
@@ -9,28 +10,28 @@ export interface Face {
 export function getFaces(icon: IconData): Face[] {
   if (icon.type === "stairs") {
     return [
-      { className: "top-low", texture: icon.top },
-      { className: "top-high", texture: icon.top },
-      { className: "left-lower", texture: icon.side },
-      { className: "left-upper", texture: icon.side },
-      { className: "right", texture: icon.side },
-      { className: "riser", texture: icon.side },
+      { className: "block__face--top-low", texture: icon.top },
+      { className: "block__face--top-high", texture: icon.top },
+      { className: "block__face--left-lower", texture: icon.side },
+      { className: "block__face--left-upper", texture: icon.side },
+      { className: "block__face--right", texture: icon.side },
+      { className: "block__face--riser", texture: icon.side },
     ];
   }
 
   if (icon.type === "block" || icon.type === "slab") {
     return [
-      { className: "top", texture: icon.top },
-      { className: "left", texture: icon.side },
-      { className: "right", texture: icon.side },
+      { className: "block__face--top", texture: icon.top },
+      { className: "block__face--left", texture: icon.side },
+      { className: "block__face--right", texture: icon.side },
     ];
   }
 
   if (icon.type === "pressure_plate" || icon.type === "button") {
     return [
-      { className: "top", texture: icon.texture },
-      { className: "left", texture: icon.texture },
-      { className: "right", texture: icon.texture },
+      { className: "block__face--top", texture: icon.texture },
+      { className: "block__face--left", texture: icon.texture },
+      { className: "block__face--right", texture: icon.texture },
     ];
   }
 

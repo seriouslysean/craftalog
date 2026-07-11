@@ -13,7 +13,7 @@ pass too (submodule drift aside — see below).
 
 ```bash
 npm run format          # oxfmt for .ts/.astro-adjacent files + prettier for .astro files
-npm run type-check      # astro check (strict TS)
+npm run type-check      # astro check (src) + tsc --noEmit -p tsconfig.node.json (scripts + tests)
 npm run lint            # oxlint .
 npm test                # vitest run
 npm run build           # astro build — full production build
@@ -63,9 +63,10 @@ public/textures`): this fails when the committed generated data/textures no
   running `npm run parse` and committing the result. Fix: run `npm run
 parse`, review the diff, commit it.
 - **`npm run validate` fails but `npm run parse` succeeded**: validate
-  re-derives data independently and checks invariants (unresolved textures,
-  missing recipes, schema mismatches). A failure here is a real data problem,
-  not a stale-cache issue — read the validator's report before re-running.
+  re-derives data independently and checks invariants (unresolved icons,
+  URL-slug collisions, missing texture files, empty ingredients, drift from
+  the pinned submodules). A failure here is a real data problem, not a
+  stale-cache issue — read the validator's report before re-running.
 - **Never hand-edit anything under `src/data/generated/`**: it is fully
   generated from `vendor/mcmeta-*` by `npm run parse`. Manual edits will be
   silently overwritten and will fail the CI drift check the next time parse

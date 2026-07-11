@@ -148,9 +148,44 @@ describe("transformRecipe — special", () => {
     expect(recipe?.vanillaType).toBe("minecraft:crafting_special_repairitem");
   });
 
-  it("returns undefined for out-of-scope recipe types", () => {
+  it("returns undefined for known-excluded (out-of-scope) recipe types", () => {
     expect(transformRecipe("furnace_smelt", { type: "minecraft:smelting" }, tags)).toBeUndefined();
     expect(transformRecipe("saw", { type: "minecraft:stonecutting" }, tags)).toBeUndefined();
+  });
+
+  it("throws for a recipe type that is neither included nor known-excluded (a future crafting type must not silently vanish)", () => {
+    expect(() =>
+      transformRecipe("frobnicate", { type: "minecraft:crafting_special_frobnicate" }, tags),
+    ).toThrow(/unrecognized type/);
+  });
+});
+
+describe("transformRecipe — shapeless ingredient cardinality", () => {
+  it("throws for a shapeless recipe with zero ingredients", () => {
+    const raw: RawRecipeEntry = {
+      type: "minecraft:crafting_shapeless",
+      ingredients: [],
+      result: { id: "minecraft:stick" },
+    };
+    expect(() => transformRecipe("empty", raw, tags)).toThrow(/1-9/);
+  });
+
+  it("throws for a shapeless recipe with more than 9 ingredients (a 3x3 grid)", () => {
+    const raw: RawRecipeEntry = {
+      type: "minecraft:crafting_shapeless",
+      ingredients: Array.from({ length: 10 }, () => "minecraft:stick"),
+      result: { id: "minecraft:stick" },
+    };
+    expect(() => transformRecipe("overfull", raw, tags)).toThrow(/1-9/);
+  });
+
+  it("accepts a full 9-ingredient shapeless recipe", () => {
+    const raw: RawRecipeEntry = {
+      type: "minecraft:crafting_shapeless",
+      ingredients: Array.from({ length: 9 }, () => "minecraft:stick"),
+      result: { id: "minecraft:stick" },
+    };
+    expect(transformRecipe("full_grid", raw, tags)?.ingredients).toHaveLength(9);
   });
 });
 

@@ -5,15 +5,6 @@ export function stripMcPrefix(value: string): string {
   return value.startsWith(MC_PREFIX) ? value.slice(MC_PREFIX.length) : value;
 }
 
-/** Title-cases an underscore_separated id, e.g. "oak_log" -> "Oak Log". */
-export function titleCaseFromId(id: string): string {
-  return id
-    .split("_")
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
 /**
  * Converts a display label into a stable underscore_separated id, e.g.
  * "Copper Goods" -> "copper_goods", "Rails & Minecarts" -> "rails_minecarts".

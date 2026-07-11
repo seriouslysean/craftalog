@@ -71,7 +71,7 @@ describe("resolveTag", () => {
     expect(resolveTag("a", tags)).toEqual(["item_b", "item_a"]);
   });
 
-  it("returns an empty array for an unknown tag", () => {
+  it("returns an empty array for an unknown tag (fail-loud enforcement lives at the ingredient boundary -- normalizeIngredient throws on a zero-item resolution)", () => {
     expect(resolveTag("does_not_exist", {})).toEqual([]);
   });
 

@@ -41,7 +41,7 @@ npm run dev
 
 ### Production Build
 
-Type-check and build for production:
+Build for production:
 
 ```sh
 npm run build
@@ -72,13 +72,13 @@ npm test              # Vitest unit tests
 npm run lint           # oxlint
 npm run format          # oxfmt + prettier (for .astro files)
 npm run format:check    # check formatting without writing
-npm run type-check      # astro check
+npm run type-check      # astro check (src) + tsc (scripts, tests)
 ```
 
 ## GitHub Pages Deployment
 
 This project is configured to deploy to GitHub Pages automatically via GitHub Actions.
-The workflow runs on pushes to the `main` branch.
+The deploy workflow runs after the CI workflow completes successfully on the `main` branch.
 
 ### Configuration
 
@@ -90,8 +90,8 @@ The workflow runs on pushes to the `main` branch.
 
 ```
 /
-├── vendor/             # Vendored mcmeta submodules (recipes, textures)
-├── scripts/            # parse.ts / validate.ts — the data pipeline
+├── vendor/             # Vendored mcmeta + bedrock-samples submodules (recipes, textures)
+├── scripts/            # The data pipeline — parse.ts / validate.ts / lib/
 ├── public/             # Static assets (favicon, generated textures, etc.)
 ├── src/
 │   ├── components/     # Astro components

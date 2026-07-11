@@ -1,5 +1,6 @@
 import { round4, uvPx } from "./banner-icon.ts";
-import type { IconOutput } from "./types.ts";
+import { faceWith } from "./compound-icon.ts";
+import type { CompoundIcon } from "./types.ts";
 
 /**
  * Shields render in-game via a bespoke Java renderer (`ShieldItemRenderer`),
@@ -48,8 +49,6 @@ import type { IconOutput } from "./types.ts";
  * variant -- so this samples shield_base_nopattern.png (the pre-painted
  * wood-brown atlas) verbatim, no runtime tinting step at all.
  */
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-type CompoundFace = NonNullable<CompoundIcon["elements"][number]["faces"]["up"]>;
 
 /** Vendor texture ref of the pre-painted, no-pattern shield atlas (64x64). */
 export const SHIELD_TEMPLATE_TEXTURE_REF = "entity/shield/shield_base_nopattern";
@@ -76,10 +75,7 @@ const SCALE = 16 / 22;
  * on x/z = 8.
  */
 export function shieldCompoundIcon(atlasTexturePath: string): CompoundIcon {
-  const face = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: atlasTexturePath,
-    uv,
-  });
+  const face = faceWith(atlasTexturePath);
 
   const halfWidth = round4(6 * SCALE);
   const halfDepth = round4(0.5 * SCALE);

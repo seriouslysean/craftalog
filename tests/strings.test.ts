@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { sortKeysDeep, stripMcPrefix, titleCaseFromId } from "../scripts/lib/strings.ts";
+import { sortKeysDeep, stripMcPrefix } from "../scripts/lib/strings.ts";
+import { titleCaseFromId } from "../src/utils/strings";
 
 describe("stripMcPrefix", () => {
   it("strips a leading minecraft: prefix", () => {

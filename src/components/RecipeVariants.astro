@@ -44,44 +44,31 @@ const isCompact = siblings.length > VARIANT_PICKER_THRESHOLD;
       siblings.map((sibling) => {
         const isCurrent = sibling.recipeId === currentId;
         const label = sibling.label ?? sibling.recipeId.replace(/_/g, ' ');
+        // The current variant is a non-navigable <span> marked aria-current;
+        // every other variant is a link. Same chip markup otherwise.
+        const Tag = isCurrent ? 'span' : 'a';
         return (
           <li>
-            {isCurrent ? (
-              <span
-                class:list={[
-                  'recipe-variant',
-                  'link-chip',
-                  'link-chip--selected',
-                  { 'recipe-variant--compact': isCompact },
-                ]}
-                aria-current="page"
-                title={isCompact ? label : undefined}
-              >
-                <span class="recipe-variant__icon">
-                  <ItemIcon item={sibling.iconItem} />
-                </span>
-                <span class:list={['recipe-variant__label', { 'visually-hidden': isCompact }]}>
-                  {label}
-                </span>
+            <Tag
+              href={isCurrent ? undefined : sibling.href}
+              class:list={[
+                'recipe-variant',
+                'link-chip',
+                {
+                  'link-chip--selected': isCurrent,
+                  'recipe-variant--compact': isCompact,
+                },
+              ]}
+              aria-current={isCurrent ? 'page' : undefined}
+              title={isCompact ? label : undefined}
+            >
+              <span class="recipe-variant__icon">
+                <ItemIcon item={sibling.iconItem} />
               </span>
-            ) : (
-              <a
-                href={sibling.href}
-                class:list={[
-                  'recipe-variant',
-                  'link-chip',
-                  { 'recipe-variant--compact': isCompact },
-                ]}
-                title={isCompact ? label : undefined}
-              >
-                <span class="recipe-variant__icon">
-                  <ItemIcon item={sibling.iconItem} />
-                </span>
-                <span class:list={['recipe-variant__label', { 'visually-hidden': isCompact }]}>
-                  {label}
-                </span>
-              </a>
-            )}
+              <span class:list={['recipe-variant__label', { 'visually-hidden': isCompact }]}>
+                {label}
+              </span>
+            </Tag>
           </li>
         );
       })

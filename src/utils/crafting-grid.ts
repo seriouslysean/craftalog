@@ -1,7 +1,5 @@
 import type { Ingredient } from "../content.config";
 
-export type { Ingredient };
-
 /** A 3x3 crafting grid, read left-to-right/top-to-bottom like the game. */
 const GRID_SIZE = 3;
 const CELL_COUNT = GRID_SIZE * GRID_SIZE;
@@ -43,10 +41,20 @@ export function buildShapedGrid(pattern: string[], key: Record<string, Ingredien
 /**
  * Fills a shapeless (or transmute) recipe's ingredients into the grid in
  * reading order — arrangement doesn't matter for these recipe types.
+ *
+ * Throws on more than 9 ingredients rather than silently dropping the
+ * overflow (the data pipeline enforces 1-9 on generation, so more here
+ * means corrupt input, not a display case).
  */
 export function buildShapelessGrid(ingredients: Ingredient[]): GridCell[] {
+  if (ingredients.length > CELL_COUNT) {
+    throw new Error(
+      `buildShapelessGrid: expected at most ${CELL_COUNT} ingredients, got ${ingredients.length}`,
+    );
+  }
+
   const grid: GridCell[] = Array(CELL_COUNT).fill(null);
-  ingredients.slice(0, CELL_COUNT).forEach((ingredient, index) => {
+  ingredients.forEach((ingredient, index) => {
     grid[index] = ingredient;
   });
   return grid;

@@ -8,7 +8,7 @@ Thank you for your interest in contributing to Craftalog! This document provides
 
 ### Prerequisites
 
-- Node.js 20 or higher
+- Node.js 24 or higher (see `.nvmrc`)
 - npm (comes with Node.js)
 
 ### Getting Started
@@ -49,10 +49,19 @@ git checkout -b feature/your-feature-name
 3. Test your changes thoroughly
 
 ```bash
-npm run type-check  # TypeScript checking
-npm run lint        # ESLint
+npm run type-check  # astro check + tsc (src, scripts, tests)
+npm run lint        # oxlint
+npm test            # Vitest unit tests
 npm run build       # Production build
 npm run preview     # Preview production build
+```
+
+If you changed `vendor/`, `scripts/`, or `src/data/generated/**`, also
+regenerate and check the data pipeline output:
+
+```bash
+npm run parse       # regenerate src/data/generated/* and public/textures/*
+npm run validate    # re-derive and check the committed output
 ```
 
 4. Format your code
@@ -87,7 +96,7 @@ See [@AGENTS.md](./AGENTS.md) for complete code standards. Key points:
 
 ### Code Style
 
-- Use ESLint and Prettier (configured in the project)
+- Use oxlint and oxfmt (prettier formats `.astro` files only)
 - Follow KISS, DRY, and SOLID principles
 - Keep functions small and focused
 - Write self-documenting code with clear names
@@ -97,8 +106,10 @@ See [@AGENTS.md](./AGENTS.md) for complete code standards. Key points:
 Before submitting a pull request:
 
 1. Ensure all checks pass:
+   - [ ] `npm run format:check` - No formatting issues
    - [ ] `npm run type-check` - No TypeScript errors
    - [ ] `npm run lint` - No linting errors
+   - [ ] `npm test` - All Vitest suites pass
    - [ ] `npm run build` - Build completes successfully
 
 2. Test manually:
@@ -122,14 +133,18 @@ Before submitting a pull request:
 
 ```
 craftalog/
-├── public/             # Static assets (favicon, textures, etc.)
+├── vendor/             # Vendored mcmeta + bedrock-samples submodules
+├── scripts/            # Data pipeline (parse.ts, validate.ts, lib/)
+├── public/             # Static assets (favicon, generated textures, etc.)
 ├── src/
 │   ├── components/     # Astro components
-│   ├── data/          # Data files (items, recipes)
-│   ├── layouts/       # Page layouts
-│   ├── pages/         # File-based routing
-│   └── utils/         # Utility functions
-├── .github/           # GitHub workflows
+│   ├── data/
+│   │   └── generated/  # Committed, machine-generated JSON — never hand-edit
+│   ├── layouts/        # Page layouts
+│   ├── pages/          # File-based routing
+│   └── utils/          # Utility functions
+├── tests/              # Vitest unit tests
+├── .github/            # GitHub workflows
 └── ...config files
 ```
 

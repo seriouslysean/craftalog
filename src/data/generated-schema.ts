@@ -29,16 +29,26 @@ export const familySchema = z.object({
 });
 
 export const ingredientSchema = z.object({
-  items: z.array(z.string()),
+  /** Nonempty by contract -- an ingredient with zero candidate items would render as an empty slot; generation fails loudly before ever emitting one (see scripts/lib/ingredients.ts). */
+  items: z.array(z.string()).min(1),
   tag: z.string().optional(),
 });
 
 export const recipeResultSchema = z.object({
   id: z.string(),
-  count: z.number(),
+  count: z.number().int().positive(),
 });
 
-export const recipeSchema = z.object({
+/** A shaped recipe's crafting-grid pattern: 1-3 rows of 1-3 single-char cells each, all rows the same width. */
+const recipePatternSchema = z
+  .array(z.string().min(1).max(3))
+  .min(1)
+  .max(3)
+  .refine((rows) => new Set(rows.map((row) => row.length)).size === 1, {
+    message: "pattern rows must all have the same width",
+  });
+
+const recipeObjectSchema = z.object({
   id: z.string(),
   type: z.enum(["shaped", "shapeless", "transmute", "special"]),
   category: z.string(),
@@ -49,17 +59,17 @@ export const recipeSchema = z.object({
   group: z.string().optional(),
   /** This result item's shape-family collapse key, derived from vanilla item tags (e.g. "slabs") -- see scripts/lib/shape-tag.ts's deriveShapeTag. Absent when the result isn't in any allow-listed shape tag. */
   shapeTag: z.string().optional(),
-  // Vanilla's recipe schema allows a resultless special recipe (e.g.
-  // crafting_special_repairitem) -- generate.ts excludes any recipe shaped
-  // like that from what's actually emitted, so every recipe here has one in
-  // practice, but this stays optional to match the upstream contract.
+  // Optional at the type level (special recipes may lack one upstream --
+  // crafting_special_repairitem), but the per-type refinement below requires
+  // it for every shaped/shapeless/transmute recipe, and generate.ts excludes
+  // repairitem from emission -- so every committed recipe has one in practice.
   result: recipeResultSchema.optional(),
-  // shaped only
-  pattern: z.array(z.string()).optional(),
-  key: z.record(z.string(), ingredientSchema).optional(),
-  // shapeless + transmute
-  ingredients: z.array(ingredientSchema).optional(),
-  // special only
+  // shaped only (required for that type -- see the per-type refinement below)
+  pattern: recipePatternSchema.optional(),
+  key: z.record(z.string().length(1), ingredientSchema).optional(),
+  // shapeless (1-9, a 3x3 grid) + transmute (exactly 2: input + material)
+  ingredients: z.array(ingredientSchema).min(1).max(9).optional(),
+  // special only (required for that type)
   note: z.string().optional(),
   // special only -- the raw vanilla recipe type id (e.g.
   // "minecraft:crafting_special_bannerduplicate"), preserved because the
@@ -68,8 +78,66 @@ export const recipeSchema = z.object({
   // already maps 1:1 to a single vanilla type via `type` itself. Consumed by
   // src/utils/self-referential-specials.ts to demote self-referential
   // specials (banner duplicate, shield decoration, ...) below the primary
-  // variant tabs -- see scripts/lib/recipes.ts's transformRecipe.
+  // variant tabs -- see scripts/lib/recipes.ts's transformRecipe. Optional
+  // even for specials: synthetic patterned-banner entries have no vanilla
+  // type at all (see scripts/lib/generate.ts).
   vanillaType: z.string().optional(),
+});
+
+/**
+ * Per-`type` structural requirements, enforced at validation time without
+ * changing the inferred TS shape (a z.discriminatedUnion would make required
+ * per-variant fields, but its inferred union breaks every existing consumer
+ * that reads e.g. `recipe.pattern` without narrowing -- the field-optional
+ * object shape above is the published contract).
+ */
+export const recipeSchema = recipeObjectSchema.superRefine((recipe, ctx) => {
+  const requireField = (field: "result" | "pattern" | "key" | "ingredients" | "note"): void => {
+    if (recipe[field] === undefined) {
+      ctx.addIssue({
+        code: "custom",
+        path: [field],
+        message: `a ${recipe.type} recipe requires "${field}"`,
+      });
+    }
+  };
+
+  switch (recipe.type) {
+    case "shaped": {
+      requireField("result");
+      requireField("pattern");
+      requireField("key");
+      if (recipe.key && Object.keys(recipe.key).length === 0) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["key"],
+          message: "a shaped recipe's key must define at least one ingredient",
+        });
+      }
+      break;
+    }
+    case "shapeless": {
+      requireField("result");
+      requireField("ingredients");
+      break;
+    }
+    case "transmute": {
+      requireField("result");
+      requireField("ingredients");
+      if (recipe.ingredients && recipe.ingredients.length !== 2) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["ingredients"],
+          message: "a transmute recipe has exactly 2 ingredients (input + material)",
+        });
+      }
+      break;
+    }
+    case "special": {
+      requireField("note");
+      break;
+    }
+  }
 });
 
 /**

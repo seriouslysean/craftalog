@@ -22,7 +22,7 @@ interface CompoundFaceStyle {
  * Positions one face of a "compound" icon's box element (real per-element
  * geometry from a block model, e.g. anvil's 4-element template_anvil parent
  * -- see scripts/lib/model.ts's extractCompoundElements). Formula validated
- * empirically (corner-marker probes matched the .top/.left/.right rules
+ * empirically (corner-marker probes matched the .block__face--top/--left/--right rules
  * above, pixel-for-pixel, for a full cube, a slab, and a pressure plate)
  * against this exact shared camera.
  *
@@ -414,8 +414,9 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
           title={item.name}
         >
           {faces.map((face) => (
-            <li class={face.className}>
+            <li class:list={['block__face', face.className]}>
               <img
+                class="block__img"
                 src={withBase(face.texture)}
                 alt=""
                 width="16"
@@ -604,14 +605,7 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
       rotateY(-45deg);
   }
 
-  .block .top,
-  .block .left,
-  .block .right,
-  .block .top-low,
-  .block .top-high,
-  .block .left-lower,
-  .block .left-upper,
-  .block .riser {
+  .block__face {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -620,7 +614,7 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     display: flex;
   }
 
-  .block img {
+  .block__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -633,62 +627,62 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
      gap instead, which also opaquely masked any real alpha in the source
      texture (e.g. copper_grate's cutout lattice rendered as solid white
      behind the pattern instead of see-through). */
-  .left,
-  .left-lower,
-  .left-upper {
+  .block__face--left,
+  .block__face--left-lower,
+  .block__face--left-upper {
     transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
-  .right {
+  .block__face--right {
     transform: translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
-  .top {
+  .block__face--top {
     transform: translateY(-50%) rotateX(90deg) var(--face-overlap);
   }
 
   /* Slab: half-height box — top face drops to the container's mid-line, sides keep only their bottom half. */
-  .block--slab .top {
+  .block--slab .block__face--top {
     transform: rotateX(90deg) var(--face-overlap);
   }
 
-  .block--slab .left,
-  .block--slab .right {
+  .block--slab .block__face--left,
+  .block--slab .block__face--right {
     top: 50%;
     height: 50%;
   }
 
   /* Stairs: the low tread faces the viewer (near corner), rising to a full-height back half. */
-  .block--stairs .top-low {
+  .block--stairs .block__face--top-low {
     width: 50%;
     left: 50%;
     transform: rotateX(90deg) var(--face-overlap);
   }
 
-  .block--stairs .top-high {
+  .block--stairs .block__face--top-high {
     width: 50%;
     left: 0;
     transform: translateY(-50%) rotateX(90deg) var(--face-overlap);
   }
 
-  .block--stairs .left-lower {
+  .block--stairs .block__face--left-lower {
     height: 50%;
     top: 50%;
   }
 
-  .block--stairs .left-upper {
+  .block--stairs .block__face--left-upper {
     height: 50%;
     top: 0;
     clip-path: inset(0 50% 0 0);
   }
 
-  .block--stairs .right {
+  .block--stairs .block__face--right {
     top: 50%;
     height: 50%;
   }
 
   /* The vertical wall between the low tread and the raised back, facing the viewer. */
-  .block--stairs .riser {
+  .block--stairs .block__face--riser {
     height: 50%;
     top: 0;
     transform: rotateY(90deg) var(--face-overlap);
@@ -696,7 +690,7 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
 
   /* Pressure plate: a thin plank resting on the ground, inset 1px from every
      edge (Minecraft block-space [1,0,1]->[15,1,15] of 16). */
-  .block--pressure-plate .top {
+  .block--pressure-plate .block__face--top {
     top: 50%;
     left: 6.25%;
     width: 87.5%;
@@ -704,19 +698,19 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: rotateX(90deg) var(--face-overlap);
   }
 
-  .block--pressure-plate .left,
-  .block--pressure-plate .right {
+  .block--pressure-plate .block__face--left,
+  .block--pressure-plate .block__face--right {
     top: 93.75%;
     height: 6.25%;
   }
 
-  .block--pressure-plate .right {
+  .block--pressure-plate .block__face--right {
     left: 6.25%;
     width: 87.5%;
     transform: translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
-  .block--pressure-plate .left {
+  .block--pressure-plate .block__face--left {
     left: 6.25%;
     width: 87.5%;
     transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
@@ -727,7 +721,7 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
      size it reads as a detached box. Deliberate deviation: keep the nub's
      exact proportions but rest it on the ground plane (y 0-4, like the
      pressure plate) so it reads as attached to something. */
-  .block--button .top {
+  .block--button .block__face--top {
     top: 62.5%;
     left: 31.25%;
     width: 37.5%;
@@ -735,19 +729,19 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: rotateX(90deg) var(--face-overlap);
   }
 
-  .block--button .left,
-  .block--button .right {
+  .block--button .block__face--left,
+  .block--button .block__face--right {
     top: 75%;
     height: 25%;
   }
 
-  .block--button .right {
+  .block--button .block__face--right {
     left: 43.75%;
     width: 25%;
     transform: translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
-  .block--button .left {
+  .block--button .block__face--left {
     left: 31.25%;
     width: 37.5%;
     transform: rotateY(-90deg) translateX(33.3333%) rotateY(90deg) var(--face-overlap);

@@ -133,7 +133,7 @@ describe("real generated data", () => {
 
   it("conduit no longer shows the wrong flat block/conduit fallback", async () => {
     const itemsModule = await import("../src/data/generated/items.json");
-    const items = itemsModule.default as Record<
+    const items = itemsModule.default as unknown as Record<
       string,
       { icon: { type: string; elements?: { faces: Record<string, { texture: string }> }[] } }
     >;

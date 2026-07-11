@@ -1,5 +1,6 @@
 import { boxUvFaces } from "./bedrock-geometry.ts";
-import type { IconOutput } from "./types.ts";
+import { facesFrom } from "./compound-icon.ts";
+import type { CompoundElement, CompoundIcon } from "./types.ts";
 
 /**
  * Mob heads/skulls (the `minecraft:head` special renderer -- creeper,
@@ -74,9 +75,6 @@ import type { IconOutput } from "./types.ts";
  * for -- so scripts/lib/model.ts never routes it here either, same
  * fail-open reasoning.
  */
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-type CompoundElement = CompoundIcon["elements"][number];
-type CompoundFace = NonNullable<CompoundElement["faces"]["up"]>;
 
 /** The vanilla `kind` enum values (Java's `SkullBlock.Types`) this renderer supports -- see this file's docstring for why "dragon" is excluded. */
 export type HeadKind = "creeper" | "piglin" | "skeleton" | "wither_skeleton" | "zombie";
@@ -148,22 +146,11 @@ function entityCubeIcon(
   yRotation: number,
 ): CompoundIcon {
   const uv = boxUvFaces(0, 0, size, size, size, atlasWidth, atlasHeight);
-  const face = (rect: [number, number, number, number]): CompoundFace => ({
-    texture: atlasTexturePath,
-    uv: rect,
-  });
 
   const element: CompoundElement = {
     from: [0, 0, 0],
     to: [16, 16, 16],
-    faces: {
-      up: face(uv.up),
-      down: face(uv.down),
-      north: face(uv.north),
-      south: face(uv.south),
-      east: face(uv.east),
-      west: face(uv.west),
-    },
+    faces: facesFrom(uv, atlasTexturePath),
   };
 
   return { type: "compound", yRotation, elements: [element] };

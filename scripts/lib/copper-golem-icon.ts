@@ -1,5 +1,5 @@
 import { convertBedrockCube } from "./bedrock-geometry.ts";
-import type { IconOutput, RawBedrockGeometryFile } from "./types.ts";
+import type { CompoundElement, CompoundIcon, RawBedrockGeometryFile } from "./types.ts";
 
 /**
  * The copper golem statue is a `minecraft:special` entity-rendered item
@@ -52,9 +52,6 @@ const GOLEM_YAW = -90;
 
 /** 16 model units / 24 native units: the golem's own full standing height (feet to antenna-ball top) is the assembly's full height. */
 const SCALE = 16 / 24;
-
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-type CompoundElement = CompoundIcon["elements"][number];
 
 /**
  * Builds the copper golem statue's compound icon from the real vendored

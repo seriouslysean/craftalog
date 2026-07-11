@@ -1,22 +1,12 @@
 import type { Ingredient } from "../content.config";
-
-/**
- * Title-cases a snake_case tag name, e.g. `oak_logs` -> "Oak Logs".
- */
-function tagWords(tag: string): string {
-  return tag
-    .split("_")
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
+import { titleCaseFromId } from "./strings";
 
 /**
  * Humanizes a resolved tag name into a recipe-book-style label, e.g.
  * `oak_logs` -> "Any Oak Logs", `planks` -> "Any Planks".
  */
 export function humanizeTagLabel(tag: string): string {
-  return `Any ${tagWords(tag)}`;
+  return `Any ${titleCaseFromId(tag)}`;
 }
 
 export interface IngredientOption {

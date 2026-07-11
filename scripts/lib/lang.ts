@@ -1,4 +1,4 @@
-import { titleCaseFromId } from "./strings.ts";
+import { titleCaseFromId } from "../../src/utils/strings.ts";
 
 /**
  * Resolves a single lang key, preferring Mojang's `<key>.new` variant when

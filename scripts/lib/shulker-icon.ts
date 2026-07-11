@@ -1,6 +1,7 @@
 import { convertBedrockCube } from "./bedrock-geometry.ts";
 import type {
-  IconOutput,
+  CompoundElement,
+  CompoundIcon,
   RawBedrockCube,
   RawLegacyBedrockBone,
   RawLegacyBedrockGeometryFile,
@@ -95,9 +96,6 @@ const SHULKER_GUI_YAW_DELTA = 45 - 225;
 
 /** 16 model units / 16 native units: the box's own lid+base stack already spans a full block (see this file's docstring). */
 const SCALE = 1;
-
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-type CompoundElement = CompoundIcon["elements"][number];
 
 /**
  * Looks up a named bone and returns its single cube, validating the shape
