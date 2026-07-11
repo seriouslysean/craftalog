@@ -12,21 +12,18 @@ permissions:
   issues: write
   actions: write
 
-env:
-  GH_TOKEN: ${{ github.token }}
-
 jobs:
   update-data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout with submodules
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: 24
           cache: "npm"
@@ -49,7 +46,11 @@ jobs:
       - name: Compare to current pin
         id: current
         run: |
-          current=$(cat vendor/mcmeta-summary/version.txt)
+          current=$(grep -m1 -E '^[0-9]+(\.[0-9]+)+$' vendor/mcmeta-summary/version.txt || true)
+          if [ -z "$current" ]; then
+            echo "::error::vendor/mcmeta-summary/version.txt does not contain a valid version."
+            exit 1
+          fi
           echo "version=$current" >> "$GITHUB_OUTPUT"
           echo "Current pinned version: $current"
 
@@ -70,26 +71,46 @@ jobs:
       - name: Compare bedrock-samples to current pin
         id: current-bedrock
         run: |
-          current=$(git -C vendor/bedrock-samples describe --tags --exact-match)
+          # The submodule is a shallow clone (.gitmodules sets shallow=true)
+          # that carries no tags, so `git describe` cannot name the pinned
+          # commit. Resolve the tag from the remote refs pointing at HEAD
+          # instead; the `^{}` suffix handles annotated tags.
+          head=$(git -C vendor/bedrock-samples rev-parse HEAD)
+          current=$(git ls-remote --tags https://github.com/Mojang/bedrock-samples 'refs/tags/*' \
+            | awk -v sha="$head" '$1 == sha { print $2 }' \
+            | sed -E 's#^refs/tags/##; s#\^\{\}$##' \
+            | grep -E '^v[0-9]+(\.[0-9]+)+$' \
+            | sort -V | tail -1)
+          if [ -z "$current" ]; then
+            echo "::error::Could not resolve the pinned bedrock-samples commit ${head} to a stable release tag."
+            exit 1
+          fi
           echo "version=$current" >> "$GITHUB_OUTPUT"
           echo "Current pinned bedrock-samples version: $current"
 
       - name: Determine whether anything needs bumping
         id: needs-bump
+        env:
+          LATEST: ${{ steps.latest.outputs.version }}
+          CURRENT: ${{ steps.current.outputs.version }}
+          LATEST_BEDROCK: ${{ steps.latest-bedrock.outputs.version }}
+          CURRENT_BEDROCK: ${{ steps.current-bedrock.outputs.version }}
         run: |
-          if [ "${{ steps.latest.outputs.version }}" != "${{ steps.current.outputs.version }}" ] \
-            || [ "${{ steps.latest-bedrock.outputs.version }}" != "${{ steps.current-bedrock.outputs.version }}" ]; then
+          if [ "$LATEST" != "$CURRENT" ] || [ "$LATEST_BEDROCK" != "$CURRENT_BEDROCK" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Already up to date (mcmeta ${{ steps.current.outputs.version }}, bedrock-samples ${{ steps.current-bedrock.outputs.version }})."
+            echo "Already up to date (mcmeta ${CURRENT}, bedrock-samples ${CURRENT_BEDROCK})."
           fi
 
       - name: Check for existing update branch
         if: steps.needs-bump.outputs.changed == 'true'
         id: branch-check
+        env:
+          LATEST: ${{ steps.latest.outputs.version }}
+          LATEST_BEDROCK: ${{ steps.latest-bedrock.outputs.version }}
         run: |
-          branch="data-update/mcmeta-${{ steps.latest.outputs.version }}_bedrock-${{ steps.latest-bedrock.outputs.version }}"
+          branch="data-update/mcmeta-${LATEST}_bedrock-${LATEST_BEDROCK}"
           echo "branch=$branch" >> "$GITHUB_OUTPUT"
           if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
@@ -100,23 +121,23 @@ jobs:
 
       - name: Bump submodule pins
         if: steps.needs-bump.outputs.changed == 'true' && steps.branch-check.outputs.exists != 'true'
+        env:
+          VER: ${{ steps.latest.outputs.version }}
+          BEDROCK_VER: ${{ steps.latest-bedrock.outputs.version }}
         run: |
-          ver="${{ steps.latest.outputs.version }}"
-
           cd vendor/mcmeta-summary
-          git fetch --depth 1 origin tag "${ver}-summary"
-          git checkout "${ver}-summary"
+          git fetch --depth 1 origin tag "${VER}-summary"
+          git checkout "${VER}-summary"
           cd ../..
 
           cd vendor/mcmeta-assets
-          git fetch --depth 1 origin tag "${ver}-assets"
-          git checkout "${ver}-assets"
+          git fetch --depth 1 origin tag "${VER}-assets"
+          git checkout "${VER}-assets"
           cd ../..
 
-          bedrock_ver="${{ steps.latest-bedrock.outputs.version }}"
           cd vendor/bedrock-samples
-          git fetch --depth 1 origin tag "${bedrock_ver}"
-          git checkout "${bedrock_ver}"
+          git fetch --depth 1 origin tag "${BEDROCK_VER}"
+          git checkout "${BEDROCK_VER}"
           cd ../..
 
       - name: Install dependencies from lockfile
@@ -135,13 +156,16 @@ jobs:
 
       - name: Report validation failure
         if: failure() && steps.parse-validate.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VER: ${{ steps.latest.outputs.version }}
+          BEDROCK_VER: ${{ steps.latest-bedrock.outputs.version }}
         run: |
-          ver="${{ steps.latest.outputs.version }}"
-          bedrock_ver="${{ steps.latest-bedrock.outputs.version }}"
           tail_log=$(tail -n 200 /tmp/update-data.log || echo "no log captured")
+          title="Scheduled vanilla data update failed validation"
           body=$(cat <<EOF
-          Automated update to vanilla data (mcmeta \`${ver}\`, bedrock-samples
-          \`${bedrock_ver}\`) failed during \`npm run parse\` / \`npm run validate\`.
+          Automated update to vanilla data (mcmeta \`${VER}\`, bedrock-samples
+          \`${BEDROCK_VER}\`) failed during \`npm run parse\` / \`npm run validate\`.
 
           <details>
           <summary>Log tail</summary>
@@ -157,9 +181,15 @@ jobs:
           re-run the workflow manually.
           EOF
           )
-          gh issue create \
-            --title "Vanilla data update to mcmeta ${ver} / bedrock-samples ${bedrock_ver} failed validation" \
-            --body "$body"
+          existing=$(gh issue list --state open \
+            --search "\"$title\" in:title" \
+            --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+            echo "Commented on existing open issue #$existing instead of creating a duplicate."
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
 
       - name: Check for changes
         if: steps.needs-bump.outputs.changed == 'true' && steps.branch-check.outputs.exists != 'true'
@@ -174,18 +204,21 @@ jobs:
 
       - name: Commit and open PR
         if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VER: ${{ steps.latest.outputs.version }}
+          BEDROCK_VER: ${{ steps.latest-bedrock.outputs.version }}
+          CURRENT_VER: ${{ steps.current.outputs.version }}
+          CURRENT_BEDROCK_VER: ${{ steps.current-bedrock.outputs.version }}
+          BRANCH: ${{ steps.branch-check.outputs.branch }}
         run: |
-          ver="${{ steps.latest.outputs.version }}"
-          bedrock_ver="${{ steps.latest-bedrock.outputs.version }}"
-          branch="${{ steps.branch-check.outputs.branch }}"
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git checkout -b "$branch"
+          git checkout -b "$BRANCH"
           git add vendor/mcmeta-summary vendor/mcmeta-assets vendor/bedrock-samples src/data/generated public/textures
-          git commit -m "data: update vanilla data to mcmeta ${ver}, bedrock-samples ${bedrock_ver}"
-          git push origin "$branch"
+          git commit -m "data: update vanilla data to mcmeta ${VER}, bedrock-samples ${BEDROCK_VER}"
+          git push origin "$BRANCH"
 
           counts=""
           if [ -f src/data/generated/meta.json ]; then
@@ -193,9 +226,9 @@ jobs:
           fi
 
           body=$(cat <<EOF
-          Bumps vendored mcmeta data from \`${{ steps.current.outputs.version }}\` to \`${ver}\`,
+          Bumps vendored mcmeta data from \`${CURRENT_VER}\` to \`${VER}\`,
           and vendored bedrock-samples (bed icons only) from
-          \`${{ steps.current-bedrock.outputs.version }}\` to \`${bedrock_ver}\`.
+          \`${CURRENT_BEDROCK_VER}\` to \`${BEDROCK_VER}\`.
 
           Regenerated via \`npm run parse\` and checked with \`npm run validate\`.
 
@@ -209,29 +242,24 @@ jobs:
           </details>
 
           Opened automatically by the \`update-data\` scheduled workflow.
+          Waits for manual review and merge.
           EOF
           )
 
           gh pr create \
-            --title "data: update vanilla data to mcmeta ${ver}, bedrock-samples ${bedrock_ver}" \
+            --title "data: update vanilla data to mcmeta ${VER}, bedrock-samples ${BEDROCK_VER}" \
             --body "$body" \
             --base main \
-            --head "$branch"
+            --head "$BRANCH"
 
       - name: Kick CI on the PR branch
         if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.branch-check.outputs.branch }}
         run: |
           # PRs created with GITHUB_TOKEN do not trigger pull_request
           # workflows, so run CI explicitly; its check runs attach to the
-          # head SHA and satisfy the PR's required checks.
-          gh workflow run ci.yml --ref "${{ steps.branch-check.outputs.branch }}"
-
-      - name: Enable auto-merge
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          branch="${{ steps.branch-check.outputs.branch }}"
-          if gh pr merge "$branch" --auto --squash; then
-            echo "Auto-merge enabled for $branch."
-          else
-            echo "::warning::Could not enable auto-merge for $branch (repo may not have it enabled). Leaving PR open for manual review."
-          fi
+          # head SHA and satisfy the PR's required checks. The PR is then
+          # left open for manual review and merge.
+          gh workflow run ci.yml --ref "$BRANCH"

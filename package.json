@@ -32,10 +32,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
-    "@types/pngjs": "^6.0.5",
+    "@types/pngjs": "6.0.5",
     "oxfmt": "0.57.0",
     "oxlint": "1.72.0",
-    "pngjs": "^7.0.0",
+    "pngjs": "7.0.0",
     "prettier": "3.9.4",
     "prettier-plugin-astro": "0.14.1",
     "tsx": "4.23.0",
