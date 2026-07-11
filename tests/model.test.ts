@@ -74,7 +74,7 @@ describe("findModelReference", () => {
     );
   });
 
-  it("depth-first searches nested select/condition/composite trees for the first minecraft:model node", () => {
+  it("prefers a select node's fallback (the item's default appearance) over its cases", () => {
     const node = {
       type: "minecraft:condition",
       property: "minecraft:broken",
@@ -90,7 +90,91 @@ describe("findModelReference", () => {
       },
     };
 
-    expect(findModelReference(node)).toBe("minecraft:item/diamond_hoe");
+    expect(findModelReference(node)).toBe("minecraft:item/wooden_hoe");
+  });
+
+  it("prefers a condition node's on_false (default) branch over on_true, regardless of key order", () => {
+    const node = {
+      type: "minecraft:condition",
+      property: "minecraft:using_item",
+      // on_true deliberately listed first: key-order DFS would pick it.
+      on_true: { type: "minecraft:model", model: "minecraft:item/bow_pulling_0" },
+      on_false: { type: "minecraft:model", model: "minecraft:item/bow" },
+    };
+
+    expect(findModelReference(node)).toBe("minecraft:item/bow");
+  });
+
+  it("prefers a range_dispatch node's fallback over its entries", () => {
+    const node = {
+      type: "minecraft:range_dispatch",
+      property: "minecraft:crossbow/pull",
+      entries: [
+        {
+          model: { type: "minecraft:model", model: "minecraft:item/crossbow_pulling_1" },
+          threshold: 0.58,
+        },
+      ],
+      fallback: { type: "minecraft:model", model: "minecraft:item/crossbow_pulling_0" },
+    };
+
+    expect(findModelReference(node)).toBe("minecraft:item/crossbow_pulling_0");
+  });
+
+  it("resolves the crossbow's real vendored shape to the standby model (fallback -> on_false), not the loaded-arrow case", () => {
+    // Mirrors vendor/mcmeta-summary's crossbow item definition: a select on
+    // charge_type whose CASES are the loaded (arrow/rocket) states and whose
+    // fallback is a condition on using_item, with on_false = the standby
+    // inventory model -- the item's actual at-rest icon.
+    const node = {
+      type: "minecraft:select",
+      property: "minecraft:charge_type",
+      cases: [
+        {
+          model: { type: "minecraft:model", model: "minecraft:item/crossbow_arrow" },
+          when: "arrow",
+        },
+        {
+          model: { type: "minecraft:model", model: "minecraft:item/crossbow_firework" },
+          when: "rocket",
+        },
+      ],
+      fallback: {
+        type: "minecraft:condition",
+        property: "minecraft:using_item",
+        on_false: { type: "minecraft:model", model: "minecraft:item/crossbow" },
+        on_true: {
+          type: "minecraft:range_dispatch",
+          property: "minecraft:crossbow/pull",
+          entries: [
+            {
+              model: { type: "minecraft:model", model: "minecraft:item/crossbow_pulling_1" },
+              threshold: 0.58,
+            },
+          ],
+          fallback: { type: "minecraft:model", model: "minecraft:item/crossbow_pulling_0" },
+        },
+      },
+    };
+
+    expect(findModelReference(node)).toBe("minecraft:item/crossbow");
+  });
+
+  it('prefers the case whose `when` includes "gui" for a select on display_context (spears: the gui case IS the icon; the fallback is the in-hand model)', () => {
+    // Mirrors vendor/mcmeta-summary's wooden_spear item definition.
+    const node = {
+      type: "minecraft:select",
+      property: "minecraft:display_context",
+      cases: [
+        {
+          model: { type: "minecraft:model", model: "minecraft:item/wooden_spear" },
+          when: ["gui", "ground", "fixed", "on_shelf"],
+        },
+      ],
+      fallback: { type: "minecraft:model", model: "minecraft:item/wooden_spear_in_hand" },
+    };
+
+    expect(findModelReference(node)).toBe("minecraft:item/wooden_spear");
   });
 
   it("returns undefined when no nested minecraft:model node exists (e.g. banner special renderer)", () => {
@@ -469,6 +553,88 @@ describe("resolveIconCandidate", () => {
 
   it("returns undefined when the item has no definition", () => {
     expect(resolveIconCandidate("nonexistent", itemDefinitions, models)).toBeUndefined();
+  });
+
+  it("resolves beehive's real vendored select-on-honey_level shape via the fallback (empty) model, not the honey_level=5 case", () => {
+    // Mirrors vendor/mcmeta-summary: both models share every texture except
+    // `front` (beehive_front vs beehive_front_honey) -- so fallback-first is
+    // load-bearing for which front texture ships.
+    const beehiveModels: RawModelsData = {
+      ...models,
+      "block/beehive_empty": {
+        parent: "minecraft:block/orientable_with_bottom",
+        textures: {
+          front: "minecraft:block/beehive_front",
+          side: "minecraft:block/beehive_side",
+          top: "minecraft:block/beehive_end",
+        },
+      },
+      "block/beehive_honey": {
+        parent: "minecraft:block/orientable_with_bottom",
+        textures: {
+          front: "minecraft:block/beehive_front_honey",
+          side: "minecraft:block/beehive_side",
+          top: "minecraft:block/beehive_end",
+        },
+      },
+      "block/orientable_with_bottom": { parent: "block/orientable" },
+    };
+    const beehiveDefs: RawItemDefinitionsData = {
+      beehive: {
+        model: {
+          type: "minecraft:select",
+          block_state_property: "honey_level",
+          cases: [
+            {
+              model: { type: "minecraft:model", model: "minecraft:block/beehive_honey" },
+              when: "5",
+            },
+          ],
+          fallback: { type: "minecraft:model", model: "minecraft:block/beehive_empty" },
+          property: "minecraft:block_state",
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("beehive", beehiveDefs, beehiveModels)).toEqual({
+      type: "block",
+      topRef: "block/beehive_end",
+      sideRef: "block/beehive_front",
+    });
+  });
+
+  it("resolves a spear's real vendored display_context select to its gui icon model, not the in-hand fallback", () => {
+    const spearModels: RawModelsData = {
+      ...models,
+      "item/wooden_spear": {
+        parent: "minecraft:item/generated",
+        textures: { layer0: "minecraft:item/wooden_spear" },
+      },
+      "item/wooden_spear_in_hand": {
+        parent: "minecraft:item/generated",
+        textures: { layer0: "minecraft:item/wooden_spear_in_hand" },
+      },
+    };
+    const spearDefs: RawItemDefinitionsData = {
+      wooden_spear: {
+        model: {
+          type: "minecraft:select",
+          cases: [
+            {
+              model: { type: "minecraft:model", model: "minecraft:item/wooden_spear" },
+              when: ["gui", "ground", "fixed", "on_shelf"],
+            },
+          ],
+          fallback: { type: "minecraft:model", model: "minecraft:item/wooden_spear_in_hand" },
+          property: "minecraft:display_context",
+        },
+      },
+    };
+
+    expect(resolveIconCandidate("wooden_spear", spearDefs, spearModels)).toEqual({
+      type: "flat",
+      textureRef: "item/wooden_spear",
+    });
   });
 
   it("resolves a banner candidate (colorId) for a minecraft:special banner renderer", () => {

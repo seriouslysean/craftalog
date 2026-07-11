@@ -1,6 +1,6 @@
-import { tagMembers } from "./item-stats.ts";
 import { resolveLangKey } from "./lang.ts";
-import { titleCaseFromId } from "./strings.ts";
+import { resolveTag } from "./tags.ts";
+import { titleCaseFromId } from "../../src/utils/strings.ts";
 import type { RawBannerPatternRegistry, RawTagsData } from "./types.ts";
 
 /**
@@ -66,11 +66,11 @@ export function derivePatternedBanners(
 
   const itemGatedIds = new Set<string>();
   for (const tagName of itemGatedTags) {
-    for (const id of tagMembers(bannerPatternTagsRaw, tagName)) itemGatedIds.add(id);
+    for (const id of resolveTag(tagName, bannerPatternTagsRaw)) itemGatedIds.add(id);
   }
 
   const loomObtainableIds = new Set(itemGatedIds);
-  for (const id of tagMembers(bannerPatternTagsRaw, NO_ITEM_REQUIRED_TAG))
+  for (const id of resolveTag(NO_ITEM_REQUIRED_TAG, bannerPatternTagsRaw))
     loomObtainableIds.add(id);
 
   const entries: PatternedBannerEntry[] = [];

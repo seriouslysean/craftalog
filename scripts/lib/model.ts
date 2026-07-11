@@ -166,6 +166,19 @@ function firstResolvableTexture(merged: Record<string, string>): string | undefi
  * node inside an item definition's `model` tree. Handles the common case
  * directly, and falls back to searching `select`/`condition`/`composite`/
  * `range_dispatch`/`special` trees for non-`minecraft:model` types.
+ *
+ * Default-first traversal: a dispatch node's `fallback` (select /
+ * range_dispatch) or `on_false` (condition) is the item's default,
+ * at-rest appearance; `cases`/`entries`/`on_true` are conditional
+ * overrides (crossbow's loaded-arrow/rocket states, beehive's
+ * honey_level=5 texture swap). This catalog renders exactly one static
+ * icon per item, so the default branch must win over whichever
+ * conditional child a plain key-order DFS happens to reach first --
+ * the same rule findSpecialModel already applies to `select` fallbacks
+ * (chest's Christmas case). One exception: for a `select` on
+ * `minecraft:display_context`, the case whose `when` includes "gui" IS
+ * the inventory-icon model (spears put the icon in the gui case and the
+ * in-hand model in the fallback), so a gui case wins over the fallback.
  */
 export function findModelReference(node: unknown): string | undefined {
   if (!node || typeof node !== "object") return undefined;
@@ -173,6 +186,32 @@ export function findModelReference(node: unknown): string | undefined {
   const obj = node as Record<string, unknown>;
   if (obj.type === "minecraft:model" && typeof obj.model === "string") {
     return obj.model;
+  }
+
+  if (
+    obj.type === "minecraft:select" &&
+    obj.property === "minecraft:display_context" &&
+    Array.isArray(obj.cases)
+  ) {
+    for (const caseEntry of obj.cases) {
+      if (!caseEntry || typeof caseEntry !== "object") continue;
+      const { when, model } = caseEntry as Record<string, unknown>;
+      const whenValues = Array.isArray(when) ? when : [when];
+      if (whenValues.includes("gui")) {
+        const found = findModelReference(model);
+        if (found) return found;
+      }
+    }
+  }
+
+  if (obj.type === "minecraft:select" || obj.type === "minecraft:range_dispatch") {
+    const fromFallback = findModelReference(obj.fallback);
+    if (fromFallback) return fromFallback;
+  }
+
+  if (obj.type === "minecraft:condition") {
+    const fromOnFalse = findModelReference(obj.on_false);
+    if (fromOnFalse) return fromOnFalse;
   }
 
   for (const value of Object.values(obj)) {

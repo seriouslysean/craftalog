@@ -451,17 +451,6 @@ export function variantGroupDefault(variantGroup: VariantGroup): RecipeGroup {
   return curated ?? variantGroup.variants[0];
 }
 
-/** Looks up a recipe's group by its own recipe id (not just the canonical id). */
-export function indexByRecipeId(groups: RecipeGroup[]): Map<string, RecipeGroup> {
-  const map = new Map<string, RecipeGroup>();
-  for (const group of groups) {
-    for (const sibling of group.siblings) {
-      map.set(sibling.recipeId, group);
-    }
-  }
-  return map;
-}
-
 /**
  * Maps every craftable item's id to its group's canonical /recipe/{item}/
  * path -- only items that are some group's result are craftable, so an item

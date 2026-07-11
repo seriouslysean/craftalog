@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { getFaces, iconSwapTextures, isIconGeometryUniform } from "../src/utils/icon-faces";
 import { collapseVariantGroups, groupRecipes } from "../src/utils/recipe-groups";
-import type { IconData, RecipeData } from "../src/content.config";
+import type { IconData } from "../src/content.config";
+import { loadGeneratedRecipes } from "./generated-recipes";
 
 const itemName = (id: string) => id;
 
@@ -25,30 +26,30 @@ describe("getFaces", () => {
   it("returns top/left/right for a block, mapping left+right to the side texture", () => {
     const icon: IconData = { type: "block", top: "/top.png", side: "/side.png" };
     expect(getFaces(icon)).toEqual([
-      { className: "top", texture: "/top.png" },
-      { className: "left", texture: "/side.png" },
-      { className: "right", texture: "/side.png" },
+      { className: "block__face--top", texture: "/top.png" },
+      { className: "block__face--left", texture: "/side.png" },
+      { className: "block__face--right", texture: "/side.png" },
     ]);
   });
 
   it("returns the same 3-face shape for a slab", () => {
     const icon: IconData = { type: "slab", top: "/top.png", side: "/side.png" };
     expect(getFaces(icon)).toEqual([
-      { className: "top", texture: "/top.png" },
-      { className: "left", texture: "/side.png" },
-      { className: "right", texture: "/side.png" },
+      { className: "block__face--top", texture: "/top.png" },
+      { className: "block__face--left", texture: "/side.png" },
+      { className: "block__face--right", texture: "/side.png" },
     ]);
   });
 
   it("returns 6 stepped-tread faces for stairs", () => {
     const icon: IconData = { type: "stairs", top: "/top.png", side: "/side.png" };
     expect(getFaces(icon)).toEqual([
-      { className: "top-low", texture: "/top.png" },
-      { className: "top-high", texture: "/top.png" },
-      { className: "left-lower", texture: "/side.png" },
-      { className: "left-upper", texture: "/side.png" },
-      { className: "right", texture: "/side.png" },
-      { className: "riser", texture: "/side.png" },
+      { className: "block__face--top-low", texture: "/top.png" },
+      { className: "block__face--top-high", texture: "/top.png" },
+      { className: "block__face--left-lower", texture: "/side.png" },
+      { className: "block__face--left-upper", texture: "/side.png" },
+      { className: "block__face--right", texture: "/side.png" },
+      { className: "block__face--riser", texture: "/side.png" },
     ]);
   });
 
@@ -56,14 +57,14 @@ describe("getFaces", () => {
     const plate: IconData = { type: "pressure_plate", texture: "/plate.png" };
     const button: IconData = { type: "button", texture: "/button.png" };
     expect(getFaces(plate)).toEqual([
-      { className: "top", texture: "/plate.png" },
-      { className: "left", texture: "/plate.png" },
-      { className: "right", texture: "/plate.png" },
+      { className: "block__face--top", texture: "/plate.png" },
+      { className: "block__face--left", texture: "/plate.png" },
+      { className: "block__face--right", texture: "/plate.png" },
     ]);
     expect(getFaces(button)).toEqual([
-      { className: "top", texture: "/button.png" },
-      { className: "left", texture: "/button.png" },
-      { className: "right", texture: "/button.png" },
+      { className: "block__face--top", texture: "/button.png" },
+      { className: "block__face--left", texture: "/button.png" },
+      { className: "block__face--right", texture: "/button.png" },
     ]);
   });
 
@@ -230,9 +231,8 @@ describe("isIconGeometryUniform", () => {
     // some other, currently-uniform group.
     const KNOWN_NONUNIFORM_GROUPS = new Set(["trapdoors"]);
 
-    const recipesModule = await import("../src/data/generated/recipes.json");
     const itemsModule = await import("../src/data/generated/items.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
     const items = itemsModule.default as unknown as Record<string, { icon: IconData }>;
 
     const groups = groupRecipes(allRecipes, itemName);

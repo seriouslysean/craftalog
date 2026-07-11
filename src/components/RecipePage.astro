@@ -178,6 +178,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         </svg>
         <span class="recipe__copy-link-label">Copy link</span>
       </button>
+      {
+        /* Announces the copy-link button's visual "Copied" state change to
+          assistive tech; cleared (silently) when the label reverts. */
+      }
+      <span class="visually-hidden" role="status" data-copy-status></span>
     </div>
 
     <div class="recipe__header">
@@ -293,6 +298,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   document.addEventListener('astro:page-load', () => {
     const button = document.querySelector<HTMLButtonElement>('.recipe__copy-link');
     const label = button?.querySelector<HTMLElement>('.recipe__copy-link-label');
+    const status = document.querySelector<HTMLElement>('[data-copy-status]');
 
     if (button && label) {
       const defaultLabel = label.textContent ?? 'Copy link';
@@ -305,9 +311,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         try {
           await navigator.clipboard.writeText(url);
           label.textContent = 'Copied';
+          if (status) status.textContent = 'Link copied';
           button.disabled = true;
           setTimeout(() => {
             label.textContent = defaultLabel;
+            if (status) status.textContent = '';
             button.disabled = false;
           }, 1500);
         } catch {

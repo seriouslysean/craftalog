@@ -2,8 +2,8 @@
 import { withBase } from '../utils/with-base';
 ---
 
-<header>
-  <div class="header-content">
+<header class="header">
+  <div class="header__content">
     <a href={withBase('/')} class="logo">
       <img src={withBase('/favicon.png')} alt="" width="32" height="32" class="logo__icon" />
       Craftalog
@@ -12,12 +12,12 @@ import { withBase } from '../utils/with-base';
 </header>
 
 <style>
-  header {
+  .header {
     border-bottom: var(--divider-border);
     box-shadow: var(--divider-shadow-bottom);
   }
 
-  .header-content {
+  .header__content {
     max-width: 60rem;
     margin: 0 auto;
     padding: var(--space-6) var(--space-4);
@@ -26,7 +26,7 @@ import { withBase } from '../utils/with-base';
   }
 
   @media (min-width: 640px) {
-    .header-content {
+    .header__content {
       padding-left: var(--space-8);
       padding-right: var(--space-8);
     }

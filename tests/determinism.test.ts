@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { generate } from "../scripts/lib/generate.ts";
+import { HUD_ICON_RELATIVE_PATHS } from "../scripts/lib/hud-icons.ts";
 import { sortKeysDeep } from "../scripts/lib/strings.ts";
 import type {
   RawBannerPatternRegistry,
@@ -167,6 +168,7 @@ function run() {
     shulkerGeoRaw: emptyShulkerGeoRaw,
     textureExists: (ref) => existingRefs.has(ref),
     textureDimensions: () => undefined,
+    bedrockBedIconExists: () => false,
   });
 }
 
@@ -200,13 +202,66 @@ describe("generate determinism", () => {
       transmute: 1,
       special: 0,
       items: Object.keys(result.items).length,
-      texturesCopied: result.texturesToCopy.size,
+      // Vendor copies + white_banner's tinted atlas + the shared untinted
+      // banner base atlas + the fixed HUD sprites -- the honest full total
+      // of files a parse run would write under public/textures/.
+      texturesWritten:
+        result.texturesToCopy.size +
+        result.bannerIconsToSynthesize.size +
+        1 +
+        HUD_ICON_RELATIVE_PATHS.length,
     });
   });
 
   it("excludes a resultless special recipe (repair_item) entirely, not just from item collection", () => {
     const result = run();
     expect(result.recipes.repair_item).toBeUndefined();
+  });
+
+  it("throws for a resultless recipe that is NOT crafting_special_repairitem (fail loud, don't silently drop)", () => {
+    expect(() =>
+      generate({
+        version: "26.2",
+        recipesRaw: {
+          broken: { type: "minecraft:crafting_shapeless", ingredients: ["minecraft:stick"] },
+        },
+        tagsRaw: {},
+        itemDefsRaw: {},
+        modelsRaw: {},
+        componentsRaw: {},
+        enUs: {},
+        bannerPatternsRaw: {},
+        bannerPatternTagsRaw: {},
+        copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+        shulkerGeoRaw: emptyShulkerGeoRaw,
+        textureExists: () => false,
+        textureDimensions: () => undefined,
+        bedrockBedIconExists: () => false,
+      }),
+    ).toThrow(/no result item/);
+  });
+
+  it("throws for a recipe type that is neither included nor known-excluded (a fabricated future crafting type)", () => {
+    expect(() =>
+      generate({
+        version: "26.2",
+        recipesRaw: {
+          frobnicate: { type: "minecraft:crafting_special_frobnicate" },
+        },
+        tagsRaw: {},
+        itemDefsRaw: {},
+        modelsRaw: {},
+        componentsRaw: {},
+        enUs: {},
+        bannerPatternsRaw: {},
+        bannerPatternTagsRaw: {},
+        copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+        shulkerGeoRaw: emptyShulkerGeoRaw,
+        textureExists: () => false,
+        textureDimensions: () => undefined,
+        bedrockBedIconExists: () => false,
+      }),
+    ).toThrow(/unrecognized type/);
   });
 
   it("includes only items referenced by included recipes (results + resolved ingredients)", () => {
@@ -353,6 +408,7 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       textureExists: (ref) =>
         new Set(["item/stick", "block/widget_body", "block/unresolvable_widget_particle"]).has(ref),
       textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
     });
   }
 
@@ -426,6 +482,7 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
       shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
       textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
     });
   }
 
@@ -471,6 +528,35 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
     expect(JSON.stringify(sortKeysDeep(first.items))).toBe(
       JSON.stringify(sortKeysDeep(second.items)),
     );
+  });
+
+  it("throws when a synthetic patterned-banner id collides with an existing recipe id, rather than silently overwriting it", () => {
+    expect(() =>
+      generate({
+        version: "26.2",
+        recipesRaw: {
+          patterned_banner_creeper: {
+            type: "minecraft:crafting_shapeless",
+            ingredients: ["minecraft:paper"],
+            result: { id: "minecraft:paper" },
+          },
+        },
+        tagsRaw: {},
+        itemDefsRaw: {
+          paper: { model: { type: "minecraft:model", model: "minecraft:item/paper" } },
+        },
+        modelsRaw: {},
+        componentsRaw: {},
+        enUs: patternedBannerEnUs,
+        bannerPatternsRaw,
+        bannerPatternTagsRaw,
+        copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+        shulkerGeoRaw: emptyShulkerGeoRaw,
+        textureExists: (ref) => patternTextures.has(ref),
+        textureDimensions: () => undefined,
+        bedrockBedIconExists: () => false,
+      }),
+    ).toThrow(/collides with an existing recipe id/);
   });
 
   it("falls back to the placeholder icon when the shared banner base or wool textures are missing, rather than crashing", () => {

@@ -45,6 +45,35 @@ export function isIncludedSpecialType(type: string): boolean {
   return type in SPECIAL_NOTES;
 }
 
+/**
+ * Recipe types present in the vendored data that are deliberately out of
+ * scope for this catalog (non-crafting-grid stations: furnaces, stonecutter,
+ * smithing table). Derived from the full type inventory of
+ * vendor/mcmeta-summary/data/recipe/data.json. Any type that is neither
+ * included (shaped/shapeless/transmute/curated specials) nor listed here
+ * makes transformRecipe throw -- so a future `minecraft:crafting_*` type
+ * can never silently vanish from the catalog with green CI.
+ */
+const KNOWN_EXCLUDED_TYPES = new Set([
+  "minecraft:blasting",
+  "minecraft:campfire_cooking",
+  "minecraft:smelting",
+  "minecraft:smithing_transform",
+  "minecraft:smithing_trim",
+  "minecraft:smoking",
+  "minecraft:stonecutting",
+]);
+
+/** Crafting-grid shapeless recipes hold 1-9 ingredients (a 3x3 grid) -- anything else is malformed vendored data. */
+const MAX_SHAPELESS_INGREDIENTS = 9;
+
+/**
+ * transformRecipe's output: the generated contract's recipe shape minus the
+ * fields generate.ts derives afterwards (`family` from the result item,
+ * `slug` from deriveRecipeSlugSource).
+ */
+export type TransformedRecipe = Omit<GeneratedRecipe, "family" | "slug">;
+
 function toResult(raw: RawResult | undefined): RecipeResult | undefined {
   if (!raw) return undefined;
   return { id: stripMcPrefix(raw.id), count: raw.count ?? 1 };
@@ -52,15 +81,17 @@ function toResult(raw: RawResult | undefined): RecipeResult | undefined {
 
 /**
  * Transforms a single raw recipe entry into the generated data contract's
- * `Recipe` shape. Returns undefined for out-of-scope recipe types (smelting,
- * stonecutting, smithing, uncurated specials, etc.) — the caller should skip
- * the id entirely.
+ * `Recipe` shape. Returns undefined only for KNOWN_EXCLUDED_TYPES (smelting,
+ * stonecutting, smithing, ...) — the caller should skip the id entirely.
+ * Throws for any type that is neither included nor known-excluded, so a
+ * vendored data bump introducing a new crafting type fails loudly instead
+ * of silently dropping recipes.
  */
 export function transformRecipe(
   id: string,
   raw: RawRecipeEntry,
   tags: RawTagsData,
-): Omit<GeneratedRecipe, "family"> | undefined {
+): TransformedRecipe | undefined {
   const category = raw.category ?? DEFAULT_CATEGORY;
   const group = raw.group;
 
@@ -86,6 +117,11 @@ export function transformRecipe(
   if (raw.type === "minecraft:crafting_shapeless") {
     if (!raw.ingredients) {
       throw new Error(`Recipe "${id}" is missing ingredients for crafting_shapeless`);
+    }
+    if (raw.ingredients.length < 1 || raw.ingredients.length > MAX_SHAPELESS_INGREDIENTS) {
+      throw new Error(
+        `Recipe "${id}" has ${raw.ingredients.length} ingredients -- a crafting-grid shapeless recipe must have 1-${MAX_SHAPELESS_INGREDIENTS}`,
+      );
     }
     return {
       id,
@@ -127,11 +163,17 @@ export function transformRecipe(
     };
   }
 
-  return undefined;
+  if (KNOWN_EXCLUDED_TYPES.has(raw.type)) return undefined;
+
+  throw new Error(
+    `Recipe "${id}" has unrecognized type "${raw.type}" -- either include it ` +
+      `(a structured branch above, or SPECIAL_NOTES for a curated special) or add it to ` +
+      `KNOWN_EXCLUDED_TYPES in scripts/lib/recipes.ts if it is genuinely out of scope.`,
+  );
 }
 
-/** Collects every item id referenced by a recipe (result + all resolved ingredients). */
-export function collectRecipeItemIds(recipe: GeneratedRecipe): string[] {
+/** Collects every item id referenced by a recipe (result + all resolved ingredients). Accepts a pre-`family`/`slug` transform output or a full GeneratedRecipe. */
+export function collectRecipeItemIds(recipe: TransformedRecipe): string[] {
   const ids = new Set<string>();
 
   if (recipe.result) ids.add(recipe.result.id);

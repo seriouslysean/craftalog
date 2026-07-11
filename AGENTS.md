@@ -11,7 +11,7 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 - **Styling**: BEM methodology + CSS custom properties
 - **Linting/Formatting**: oxlint + oxfmt (prettier + prettier-plugin-astro for `.astro` files only)
 - **Testing**: Vitest
-- **Data**: vendored `misode/mcmeta` submodules → `scripts/parse.ts` → committed generated JSON — see [Data Pipeline](#data-pipeline)
+- **Data**: vendored `misode/mcmeta` (+ `Mojang/bedrock-samples`) submodules → `scripts/parse.ts` → committed generated JSON — see [Data Pipeline](#data-pipeline)
 - **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run type-check`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`
 
 ---
@@ -170,7 +170,9 @@ export function generateItemIconHTML(item: any) {
 │   └── bedrock-samples/   # submodule: bed icon PNGs + copper golem statue/shulker box entity geometry (pinned tag) — Java remains authoritative for every texture
 ├── scripts/
 │   ├── parse.ts         # vendor/ → src/data/generated/* + public/textures/*
-│   └── validate.ts      # re-derives + checks committed generated data for drift
+│   ├── validate.ts      # re-derives + checks committed generated data for drift
+│   ├── generate-favicon.ts  # renders public/favicon.png/.ico (run by hand, not part of parse)
+│   └── lib/             # pipeline modules shared by parse/validate (~30 files)
 ├── src/
 │   ├── components/      # Reusable Astro components (.astro)
 │   ├── data/
@@ -186,8 +188,8 @@ export function generateItemIconHTML(item: any) {
 **Naming Conventions:**
 
 - Components: PascalCase (e.g., `ItemIcon.astro`, `SiteHeader.astro`)
-- Utilities: kebab-case (e.g., `item-utils.ts`, `item-icon-html.ts`)
-- Data files: kebab-case (e.g., `item-details.ts`, `item-recipes.ts`)
+- Utilities: kebab-case (e.g., `crafting-grid.ts`, `recipe-pager.ts`)
+- Data files: kebab-case (e.g., `generated-schema.ts`, `generated/items.json`)
 
 ---
 
@@ -199,7 +201,7 @@ Vanilla Minecraft recipe/item data is never hand-authored. It flows:
 vendor/mcmeta-summary + vendor/mcmeta-assets + vendor/bedrock-samples   (git submodules, pinned to a stable release tag)
         │  npm run parse
         ▼
-src/data/generated/{items,recipes,meta}.json + public/textures/**
+src/data/generated/{recipes,items,categories,families,meta}.json + public/textures/**
         │  npm run validate
         ▼
 Astro content collections consume the generated JSON
@@ -208,21 +210,29 @@ Astro content collections consume the generated JSON
 - **Submodules** are pinned to the latest **stable** release tag (snapshot/
   pre/rc/preview tags are excluded). `misode/mcmeta`'s pin is readable at
   `vendor/mcmeta-summary/version.txt`; `bedrock-samples` has no equivalent
-  file, so its pin is just whatever tag its submodule commit is checked out
-  at (`git -C vendor/bedrock-samples describe --tags`).
-- `bedrock-samples` is a narrowly-scoped second source used for exactly one
-  thing: the 16 pre-baked bed icon PNGs (Java has no equivalent — beds are
-  the only item rendered as two composited block models). `misode/mcmeta`
-  remains the sole source of truth for recipes, items, tags, and lang.
+  file (and its shallow submodule clone carries no tags), so its pin is
+  resolved by matching the submodule's HEAD commit against the remote's
+  tags (`git ls-remote --tags https://github.com/Mojang/bedrock-samples`).
+- `bedrock-samples` is a narrowly-scoped second source used for exactly
+  three things Java's data has no equivalent for: the 16 pre-baked bed icon
+  PNGs (beds are the only item rendered as two composited block models),
+  and the copper golem statue's and shulker box's entity geometry (Mojang
+  hardcodes those meshes in Java renderer code, not data). `misode/mcmeta`
+  remains the sole source of truth for recipes, items, tags, and lang — and
+  for every texture.
 - **Generated data is committed** so the site builds without submodules and
   data bumps are reviewable as a normal diff. `npm run validate` re-derives
-  everything and fails if committed data has drifted from the pin — CI
-  enforces this on every PR.
+  everything in memory and fails if committed data has drifted from the
+  pin, plus internal-consistency guards (unresolved icons, URL-slug
+  collisions, missing texture files, empty ingredients). CI separately runs
+  `npm run parse` and fails if `git diff` shows drift in the committed
+  output — both run on every PR.
 - **Never hand-edit anything under `src/data/generated/` or
   `public/textures/`.** Edit `scripts/parse.ts` / `scripts/validate.ts`
   instead and regenerate.
 - A weekly scheduled workflow (`update-data.yml`) checks for a newer stable
-  tag, bumps the pin, regenerates, and opens a PR automatically.
+  tag, bumps the pin, regenerates, and opens a PR automatically. The PR
+  waits for manual review and merge — there is no auto-merge.
 - Full details, the generated-data type contract, and the update workflow's
   exact behavior: `docs/PLAN.md` and `.claude/skills/vanilla-data/SKILL.md`.
 
@@ -342,7 +352,7 @@ cells.forEach((cell, index) => {
 
 ```bash
 npm run build
-# Look for: dist/_astro/hoisted.*.js  X.XX kB │ gzip: X.XX kB
+# Look for: dist/_astro/*.js  X.XX kB │ gzip: X.XX kB
 ```
 
 ### 🚫 Not Following BEM
@@ -439,7 +449,7 @@ npm run dev
 # Development server with hot reload
 npm run dev
 
-# Type checking (run frequently)
+# Type checking (run frequently) — covers src (astro check) + scripts + tests (tsc)
 npm run type-check
 
 # Linting (fix issues as you go)
@@ -460,7 +470,7 @@ npm run test:watch
 # Format all code (oxfmt + prettier for .astro)
 npm run format
 
-# Type check
+# Type check (src + scripts + tests)
 npm run type-check
 
 # Lint
@@ -514,55 +524,56 @@ for the full rundown of what "green" looks like and common failure modes.
 
 ### Key Patterns in This Codebase
 
-**1. Component Reusability**: Server-rendered Astro components with client-side utilities
-
-```astro
-<!-- ItemIcon.astro - Server rendered -->
-<div class="item-icon">
-  {/* ... */}
-</div>
-```
+**1. Component Reusability**: Server-rendered Astro components backed by pure, tested utilities
 
 ```typescript
-// item-icon-html.ts - Client-side utility
-export function generateItemIconHTML(item: ItemDetails | null): string {
-  // Same HTML structure for client-side updates
+// src/utils/crafting-grid.ts — pure grid logic, unit-tested in tests/crafting-grid.test.ts
+export function buildShapedGrid(pattern: string[], key: Record<string, Ingredient>): GridCell[] {
+  // Centers the pattern in the 3x3 grid the way vanilla's recipe book does
 }
+
+export function buildShapelessGrid(ingredients: Ingredient[]): GridCell[] {
+  // Fills ingredients in reading order; throws on more than 9
+}
+```
+
+```astro
+<!-- src/components/CraftingGrid.astro — renders the GridCell[] server-side -->
+<div class="crafting__grid">
+  {cells.map((cell, index) => <div class="crafting__cell" data-index={index}>{/* ... */}</div>)}
+</div>
 ```
 
 **2. Progressive Enhancement**: HTML first, enhance with JavaScript
 
 ```astro
-<!-- Server-rendered initial state -->
-<div class="crafting" id="crafting-area">
-  {initialItems.map((cell) => <div class="crafting__cell">{cell && <ItemIcon item={cell} />}</div>)}
-</div>
+<!-- src/components/ItemVariants.astro — first variant renders statically -->
+<span class="item-variants" data-variant-cycle={items.length > 1 ? items.length : undefined}>
+  {/* every variant server-rendered; all but the first `hidden` */}
+</span>
 
-<!-- Client-side enhancement for SPA-like navigation -->
 <script>
-  // Only runs after page load
-  // Enhances with client-side routing
+  // Only runs after page load: cycles multi-option ingredient icons on a
+  // timer. Without JS the first variant is still visible and correct.
 </script>
 ```
 
-**3. Type-Safe Data Layer**:
+**3. Type-Safe Data Layer**: zod schemas as the single source of truth
 
 ```typescript
-// Define types
-export const items = {
-  arrow: "arrow",
-  coal: "coal",
-  // ...
-} as const;
+// src/data/generated-schema.ts — the generated-data contract as zod schemas
+export const itemSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  icon: iconSchema,
+  stat: itemStatSchema.optional(),
+});
 
-export type ItemType = (typeof items)[keyof typeof items];
-
-// Use in interfaces
-export interface ItemDetails {
-  id: string;
-  name: string;
-  icon: string[];
-}
+// src/content.config.ts validates the generated JSON against these at build
+// time (Astro content collections); scripts/lib/types.ts derives the same
+// shapes for the parser/validator via `import type` + `z.infer` — no
+// hand-mirrored types anywhere.
 ```
 
 ---
@@ -659,36 +670,22 @@ const { title, description } = Astro.props;
 3. Add JSDoc comments for complex functions
 4. Write tests if it's critical logic
 
-**Example:**
+**Example** (real utility — `src/utils/with-base.ts`):
 
 ```typescript
-import type { ItemDetails } from "@/data/item-details";
-
 /**
- * Generates HTML string for an item icon
- * Used for client-side dynamic updates
+ * Joins a root-absolute path (e.g. a generated texture URL or an internal
+ * link) with the site's base path, so links and asset URLs keep working when
+ * the site is deployed under a non-root base (BASE_PATH env var, see
+ * astro.config.mjs).
  *
- * @param item - The item details or null
- * @returns HTML string ready to be set as innerHTML
+ * `base` defaults to `import.meta.env.BASE_URL` in real usage; tests pass it
+ * explicitly to keep this pure and Vite-free.
  */
-export function generateItemIconHTML(item: ItemDetails | null): string {
-  if (!item) return "";
-
-  const isBlock = item.icon?.length === 2;
-
-  if (isBlock) {
-    return `<div class="item-icon item-icon--block">
-      <ul class="block" title="${item.name}">
-        <li class="top" style="background-image: url(${item.icon[0]})"></li>
-        <li class="left" style="background-image: url(${item.icon[1]})"></li>
-        <li class="right" style="background-image: url(${item.icon[1]})"></li>
-      </ul>
-    </div>`;
-  }
-
-  return `<div class="item-icon">
-    <img class="icon" src="${item.icon[0]}" alt="${item.name}" title="${item.name}" />
-  </div>`;
+export function withBase(path: string, base: string = import.meta.env.BASE_URL): string {
+  const normalizedBase = base.endsWith("/") ? base.slice(0, -1) : base;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${normalizedBase}${normalizedPath}` || "/";
 }
 ```
 
@@ -699,19 +696,45 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 3. Test mobile-first, then desktop
 4. Ensure accessibility (contrast, focus states, etc.)
 
-**Available CSS Variables:**
+**Available CSS Variables** (see `src/layouts/Layout.astro` for the full
+definitions and the design rationale in the comments there):
 
 ```css
-/* Colors */
---color-bg: #fafafa;
---color-fg: #09090b;
---color-border: #e4e4e7;
---color-muted: #71717a;
-
 /* Minecraft colors */
 --color-gray: #8b8b8b;
 --color-gray-light: #c6c6c6;
 --color-gray-dark: #373737;
+
+/* Colors */
+--color-bg: var(--color-gray-light); /* the game's own GUI gray, not white */
+--color-fg: #09090b;
+--color-border: #e4e4e7;
+--color-muted: #3f3f46;
+--color-heading: #404040;
+--color-panel: var(--color-gray-light);
+--color-panel-fg: var(--color-gray-dark);
+--color-slot: var(--color-gray);
+--color-panel-shade: /* color-mix() tied to --color-panel */;
+
+/* Bevels (the chunky pixel-border system) */
+--bevel-width: 0.3125rem;
+--bevel-slot: /* recessed slot look */;
+--bevel-button: /* raised clickable look */;
+--bevel-button-pressed: /* pressed = recessed */;
+--bevel-panel: /* raised look for large panels */;
+--panel-border-width: var(--bevel-width);
+--panel-border-outer-width: 0.125rem;
+--panel-border-outer: /* thin dark-gray outer ring */;
+
+/* Shadows and dividers */
+--shadow-sharp: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.5);
+--divider-border: 0.0625rem solid var(--color-gray-dark);
+--divider-shadow-top: /* pairs with border-top */;
+--divider-shadow-bottom: /* pairs with border-bottom */;
+
+/* Shape */
+--radius-sm: 0.125rem;
+--radius-md: 0.125rem;
 
 /* Spacing */
 --space-1: 0.25rem;
@@ -725,6 +748,7 @@ export function generateItemIconHTML(item: ItemDetails | null): string {
 /* Typography */
 --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, ...;
 --font-mono: ui-monospace, SFMono-Regular, ...;
+--font-display: "Pixelify Sans", var(--font-mono); /* headings/wordmark only */
 ```
 
 ---

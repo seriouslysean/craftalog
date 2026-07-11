@@ -261,6 +261,15 @@ export type RecipesOutput = Record<string, GeneratedRecipe>;
 
 export type IconOutput = z.infer<typeof iconSchema>;
 
+/** The generic multi-element "compound" icon variant of IconOutput -- the shape every icon-builder module produces (see scripts/lib/compound-icon.ts for the shared construction helpers). */
+export type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
+
+/** One box element of a CompoundIcon. */
+export type CompoundElement = CompoundIcon["elements"][number];
+
+/** One resolved face of a CompoundElement: a texture path plus its uv crop rect. */
+export type CompoundFace = NonNullable<CompoundElement["faces"]["up"]>;
+
 /**
  * A single defining gameplay stat for an item, shown on its recipe page.
  * At most one per item, chosen by priority in scripts/lib/item-stats.ts:
@@ -298,7 +307,8 @@ export interface Meta {
     transmute: number;
     special: number;
     items: number;
-    texturesCopied: number;
+    /** Every texture file a parse run writes under public/textures/ (verbatim vendor copies + synthesized/derived icons + the fixed HUD sprites) -- see scripts/lib/generate.ts's countTexturesWritten. */
+    texturesWritten: number;
   };
   unresolvedIcons: string[];
   /** Result item ids whose family fell through to the category fallback (see scripts/lib/family.ts's `deriveFamily`) -- surfaces taxonomy gaps in a version-bump PR diff instead of silently bucketing them. */

@@ -18,7 +18,13 @@ const resultItem = result ? items.get(result.id) : undefined;
 ---
 
 <div class="crafting">
-  <div class="crafting__grid" role="img" aria-label={ariaLabel}>
+  {
+    /* Text summary of the grid for assistive tech -- NOT role="img"/aria-label
+      on the grid container itself, which would flatten its descendants to
+      presentation and hide the interactive per-cell tooltip links inside. */
+  }
+  <p class="visually-hidden">{ariaLabel}</p>
+  <div class="crafting__grid">
     {
       cells.map((cell, index) => (
         <div class="crafting__cell" data-index={index}>

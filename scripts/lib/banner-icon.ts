@@ -1,6 +1,7 @@
 import { PNG } from "pngjs";
 
-import type { IconOutput } from "./types.ts";
+import { faceWith } from "./compound-icon.ts";
+import type { CompoundIcon } from "./types.ts";
 
 /**
  * Banners render in-game via a 3D entity model (`BannerModel`), not a flat
@@ -39,8 +40,6 @@ import type { IconOutput } from "./types.ts";
  * copy of the atlas and the pole/crossbar faces sample an untinted shared
  * copy -- see generateBannerAtlas + scripts/parse.ts's banner loop.
  */
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-type CompoundFace = NonNullable<CompoundIcon["elements"][number]["faces"]["up"]>;
 
 /** Vendor texture ref of the shared banner template atlas (64x64, all three boxes' UV unwraps). */
 export const BANNER_TEMPLATE_TEXTURE_REF = "entity/banner/banner_base";
@@ -117,14 +116,8 @@ export function uvPx(
  * 2 native units above the ground, mirroring the in-game standing banner.
  */
 export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: string): CompoundIcon {
-  const flag = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: flagTexturePath,
-    uv,
-  });
-  const base = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: baseTexturePath,
-    uv,
-  });
+  const flag = faceWith(flagTexturePath);
+  const base = faceWith(baseTexturePath);
 
   const poleTop = round4(42 * SCALE);
   const poleHalf = round4(SCALE); // pole cross-section is 2 units wide, centered

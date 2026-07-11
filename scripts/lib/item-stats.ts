@@ -1,3 +1,4 @@
+import { resolveTag } from "./tags.ts";
 import type { ItemStat, RawItemComponents, RawItemComponentsData, RawTagsData } from "./types.ts";
 
 interface RawAttributeModifier {
@@ -8,22 +9,14 @@ interface RawAttributeModifier {
 
 const ARMOR_SLOT_TAGS = ["head_armor", "chest_armor", "leg_armor", "foot_armor"];
 const TOOL_TAGS = ["axes", "pickaxes", "shovels", "hoes"];
-// Vanilla has no single "melee weapons" tag covering these two alongside swords.
+// The two dedicated melee-weapon tags (1.21+ added spears alongside swords).
+const WEAPON_TAGS = ["swords", "spears"];
+// Vanilla has no single "melee weapons" tag covering these two alongside the tags above.
 const EXTRA_WEAPON_ITEM_IDS = new Set(["trident", "mace"]);
 
-/** Normalizes a tag's `values` (plain string or `{id, required?}`) to bare item ids (no `minecraft:` prefix). */
-export function tagMembers(tagsRaw: RawTagsData, tagName: string): Set<string> {
-  const tag = tagsRaw[tagName];
-  if (!tag) return new Set();
-  return new Set(
-    tag.values
-      .map((value) => (typeof value === "string" ? value : value.id))
-      .map((id) => id.replace(/^minecraft:/, "")),
-  );
-}
-
+/** Whether `itemId` is a member of any of the named tags (fully resolved via scripts/lib/tags.ts, including nested tag refs). */
 function isInAnyTag(itemId: string, tagsRaw: RawTagsData, tagNames: string[]): boolean {
-  return tagNames.some((tagName) => tagMembers(tagsRaw, tagName).has(itemId));
+  return tagNames.some((tagName) => resolveTag(tagName, tagsRaw).includes(itemId));
 }
 
 function sumAttribute(components: RawItemComponents, attributeType: string): number {
@@ -57,7 +50,7 @@ export function resolveItemStat(
     if (points > 0) return { type: "armor", points };
   }
 
-  if (tagMembers(tagsRaw, "swords").has(itemId) || EXTRA_WEAPON_ITEM_IDS.has(itemId)) {
+  if (isInAnyTag(itemId, tagsRaw, WEAPON_TAGS) || EXTRA_WEAPON_ITEM_IDS.has(itemId)) {
     const damage = sumAttribute(components, "minecraft:attack_damage");
     if (damage > 0) return { type: "weapon", damage };
   }

@@ -5,13 +5,13 @@ import {
   collapseVariantGroups,
   groupItemSlug,
   groupRecipes,
-  indexByRecipeId,
   recipePath,
   VARIANT_GROUP_META,
   variantGroupDefault,
   variantGroupDisplayName,
 } from "../src/utils/recipe-groups";
 import type { ItemData, RecipeData } from "../src/content.config";
+import { loadGeneratedRecipes } from "./generated-recipes";
 
 const itemName = (id: string) => id.charAt(0).toUpperCase() + id.slice(1).replace(/_/g, " ");
 
@@ -260,8 +260,7 @@ describe("groupRecipes", () => {
   });
 
   it("loads the real generated recipe data and finds every multi-recipe group's labels non-null and unique", async () => {
-    const recipesModule = await import("../src/data/generated/recipes.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
 
     const groups = groupRecipes(allRecipes, itemName);
     const multiRecipeGroups = groups.filter((g) => g.count > 1);
@@ -415,8 +414,7 @@ describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
   });
 
   it("loads the real generated recipe data and confirms copper shapes collapse without regressing dyed_armor", async () => {
-    const recipesModule = await import("../src/data/generated/recipes.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
 
     const groups = groupRecipes(allRecipes, itemName);
     const { variantGroups } = collapseVariantGroups(groups);
@@ -577,8 +575,7 @@ describe("variantGroupDisplayName / variantGroupDefault", () => {
   });
 
   it("loads the real generated recipe data and confirms VARIANT_GROUP_META covers every groupKey", async () => {
-    const recipesModule = await import("../src/data/generated/recipes.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
 
     const groups = groupRecipes(allRecipes, itemName);
     const { variantGroups } = collapseVariantGroups(groups);
@@ -638,29 +635,6 @@ describe("recipePath", () => {
     expect(
       recipePath("bone-meal", "bone_meal", "bone_meal_from_bone_block", "from-bone-block"),
     ).toBe("/recipe/bone-meal/from-bone-block/");
-  });
-});
-
-describe("indexByRecipeId", () => {
-  it("looks up a group by any sibling's recipe id, not just the canonical one", () => {
-    const recipes = [
-      recipe({
-        id: "bone_meal",
-        result: { id: "bone_meal", count: 3 },
-        ingredients: [{ items: ["bone"] }],
-      }),
-      recipe({
-        id: "bone_meal_from_bone_block",
-        result: { id: "bone_meal", count: 9 },
-        ingredients: [{ items: ["bone_block"] }],
-      }),
-    ];
-
-    const groups = groupRecipes(recipes, itemName);
-    const byRecipeId = indexByRecipeId(groups);
-
-    expect(byRecipeId.get("bone_meal")).toBe(groups[0]);
-    expect(byRecipeId.get("bone_meal_from_bone_block")).toBe(groups[0]);
   });
 });
 

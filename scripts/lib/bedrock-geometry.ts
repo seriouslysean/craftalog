@@ -1,5 +1,7 @@
 import { round4, uvPxOnAtlas } from "./banner-icon.ts";
-import type { IconOutput, RawBedrockCube } from "./types.ts";
+import { facesFrom } from "./compound-icon.ts";
+import type { FaceUVs } from "./compound-icon.ts";
+import type { CompoundElement, RawBedrockCube } from "./types.ts";
 
 /**
  * Shared Bedrock-entity-geometry-to-"compound"-icon math, used by every
@@ -13,18 +15,6 @@ import type { IconOutput, RawBedrockCube } from "./types.ts";
  * inside a predicted unwrap region, none left over) -- see each consumer's
  * own module docstring for its specific numbers.
  */
-type CompoundIcon = Extract<IconOutput, { type: "compound" }>;
-export type CompoundElement = CompoundIcon["elements"][number];
-type CompoundFace = NonNullable<CompoundElement["faces"]["up"]>;
-
-export interface FaceUVs {
-  up: [number, number, number, number];
-  down: [number, number, number, number];
-  north: [number, number, number, number];
-  south: [number, number, number, number];
-  east: [number, number, number, number];
-  west: [number, number, number, number];
-}
 
 /**
  * The Bedrock box-UV unwrap (Minecraft skin texture / Bedrock geometry
@@ -104,21 +94,10 @@ export function convertBedrockCube(
 
   const [u, v] = cube.uv;
   const uvs = faceUVs(u, v, w, h, d);
-  const face = (uv: [number, number, number, number]): CompoundFace => ({
-    texture: atlasTexturePath,
-    uv,
-  });
 
   return {
     from,
     to,
-    faces: {
-      up: face(uvs.up),
-      down: face(uvs.down),
-      north: face(uvs.north),
-      south: face(uvs.south),
-      east: face(uvs.east),
-      west: face(uvs.west),
-    },
+    faces: facesFrom(uvs, atlasTexturePath),
   };
 }
