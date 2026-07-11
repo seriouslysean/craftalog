@@ -61,11 +61,18 @@ describe("buildShapelessGrid", () => {
     expect(grid).toEqual([ing("oak_log"), ing("stick"), null, null, null, null, null, null, null]);
   });
 
-  it("truncates to 9 ingredients if somehow given more", () => {
-    const ingredients = Array.from({ length: 12 }, (_, i) => ing(`item_${i}`));
+  it("fills all 9 cells at exactly 9 ingredients", () => {
+    const ingredients = Array.from({ length: 9 }, (_, i) => ing(`item_${i}`));
     const grid = buildShapelessGrid(ingredients);
     expect(grid).toHaveLength(9);
     expect(grid.every((cell) => cell !== null)).toBe(true);
+  });
+
+  it("throws a descriptive error when given more than 9 ingredients", () => {
+    const ingredients = Array.from({ length: 12 }, (_, i) => ing(`item_${i}`));
+    expect(() => buildShapelessGrid(ingredients)).toThrow(
+      "buildShapelessGrid: expected at most 9 ingredients, got 12",
+    );
   });
 
   it("returns an all-null grid for no ingredients", () => {

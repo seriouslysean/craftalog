@@ -44,8 +44,9 @@ import meta from '../data/generated/meta.json';
   }
 
   .footer__link {
+    /* Keeps the global rest-state link underline (see Layout.astro's `a`
+       rule) -- color alone can't distinguish it from surrounding muted text. */
     color: var(--color-muted);
-    border-bottom-color: transparent;
   }
 
   .footer__link:hover {

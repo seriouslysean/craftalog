@@ -187,7 +187,7 @@ const totalCards = cards.length;
           id="category-all"
           value="all"
           checked
-          class="catalog__category-input"
+          class="catalog__category-input visually-hidden"
         />
         <label for="category-all" class="catalog__category-pill link-chip">
           All <span class="catalog__category-count">({totalCards})</span>
@@ -200,7 +200,7 @@ const totalCards = cards.length;
                 name="category"
                 id={`category-${category.categoryId}`}
                 value={category.categoryId}
-                class="catalog__category-input"
+                class="catalog__category-input visually-hidden"
               />
               <label
                 for={`category-${category.categoryId}`}
@@ -229,7 +229,7 @@ const totalCards = cards.length;
               id={`family-${category.categoryId}-all`}
               value="all"
               checked
-              class="catalog__family-input"
+              class="catalog__family-input visually-hidden"
             />
             <label for={`family-${category.categoryId}-all`} class="catalog__family-pill link-chip">
               All {category.categoryName}
@@ -241,7 +241,7 @@ const totalCards = cards.length;
                   name={`family-${category.categoryId}`}
                   id={`family-${category.categoryId}-${family.familyId}`}
                   value={family.familyId}
-                  class="catalog__family-input"
+                  class="catalog__family-input visually-hidden"
                 />
                 <label
                   for={`family-${category.categoryId}-${family.familyId}`}
@@ -256,6 +256,11 @@ const totalCards = cards.length;
         ))
       }
     </form>
+
+    {/* Announces the filtered result count to assistive tech after every
+        search/category/family/shapeless change -- the visual grid updates
+        silently otherwise. */}
+    <p id="catalog-status" class="visually-hidden" role="status"></p>
 
     <p id="catalog-empty" class="catalog__empty" hidden>No recipes match your search.</p>
 
@@ -373,15 +378,20 @@ const totalCards = cards.length;
   }
 
   function applyCardFace(card: HTMLElement, variant: VariantIconEntry) {
-    if (card.dataset.currentResultId === variant.resultId) return;
     const iconContainer = card.querySelector('.item-card__icon');
     const nameEl = card.querySelector('.item-card__name');
     const linkEl = card.querySelector<HTMLAnchorElement>('a.item-card');
     if (!iconContainer || !nameEl || !linkEl) return;
-    if (!applyTextures(iconContainer, variant.textures)) return;
+    // Idempotent: the name/href always sync to the requested variant (the
+    // same resultId can legitimately arrive under different names -- e.g.
+    // the curated "Boat" default vs the variant's own "Oak Boat"); only the
+    // texture swap is skipped when the shown variant is already current.
+    if (card.dataset.currentResultId !== variant.resultId) {
+      if (!applyTextures(iconContainer, variant.textures)) return;
+      card.dataset.currentResultId = variant.resultId;
+    }
     nameEl.textContent = variant.name;
     linkEl.href = variant.href;
-    card.dataset.currentResultId = variant.resultId;
   }
 
   document.addEventListener('astro:page-load', () => {
@@ -395,6 +405,7 @@ const totalCards = cards.length;
     const categoryInputs = document.querySelectorAll<HTMLInputElement>('input[name="category"]');
     const familyRadiogroups = document.querySelectorAll<HTMLElement>('[data-category-families]');
     const emptyState = document.getElementById('catalog-empty');
+    const statusEl = document.getElementById('catalog-status');
     const variantIconsUrl = form?.dataset.variantIconsUrl;
 
     let activeCategory = 'all';
@@ -451,7 +462,7 @@ const totalCards = cards.length;
 
     function applyFilter(query: string) {
       const needle = query.trim().toLowerCase();
-      let anyVisible = false;
+      let visibleCount = 0;
 
       items.forEach((item) => {
         const matchesText = !needle || (item.dataset.search ?? '').includes(needle);
@@ -461,7 +472,7 @@ const totalCards = cards.length;
         const matchesShapeless = !shapelessOnly || item.dataset.shapeless === 'true';
         const visible = matchesText && matchesCategory && matchesFamily && matchesShapeless;
         item.hidden = !visible;
-        if (visible) anyVisible = true;
+        if (visible) visibleCount++;
       });
 
       familyGroups.forEach((group) => {
@@ -474,7 +485,13 @@ const totalCards = cards.length;
         section.hidden = visibleItems.length === 0;
       });
 
-      if (emptyState) emptyState.hidden = anyVisible;
+      if (emptyState) emptyState.hidden = visibleCount > 0;
+      if (statusEl) {
+        statusEl.textContent =
+          visibleCount === 0
+            ? 'No recipes match your search.'
+            : `${visibleCount} ${visibleCount === 1 ? 'recipe' : 'recipes'} shown.`;
+      }
       updateVariantFaces(needle);
     }
 
@@ -669,40 +686,33 @@ const totalCards = cards.length;
     margin: 0 var(--space-1) 0 0;
   }
 
-  .catalog__shapeless-input:checked + * {
-    font-weight: 600;
-  }
-
+  /* Mobile-first: a single scrollable pill row with an end-fade mask;
+     wider screens get room to wrap instead (see the min-width query). */
   .catalog__categories,
   .catalog__families {
     margin-top: var(--space-3);
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: var(--space-2);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+    mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+  }
+
+  @media (min-width: 640px) {
+    .catalog__categories,
+    .catalog__families {
+      flex-wrap: wrap;
+      overflow-x: visible;
+      scroll-snap-type: none;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
   }
 
   .catalog__families[hidden] {
     display: none;
-  }
-
-  @media (max-width: 639px) {
-    .catalog__categories,
-    .catalog__families {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      scroll-snap-type: x proximity;
-      -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
-      mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
-    }
-  }
-
-  .catalog__category-input,
-  .catalog__family-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    opacity: 0;
   }
 
   .catalog__category-pill,

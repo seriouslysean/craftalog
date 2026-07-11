@@ -2,6 +2,7 @@
 import '@fontsource/pixelify-sans/latin-500.css';
 import '@fontsource/pixelify-sans/latin-700.css';
 import { ClientRouter } from 'astro:transitions';
+import { withBase } from '../utils/with-base';
 
 interface Props {
   title: string;
@@ -21,8 +22,8 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
+    <link rel="icon" type="image/x-icon" href={withBase('/favicon.ico')} />
     <link rel="canonical" href={canonicalUrl} />
 
     <title>{title}</title>
@@ -232,7 +233,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
   a {
     color: var(--color-fg);
     text-decoration: none;
-    border-bottom: 1px solid var(--color-border);
+    /* Rest-state underline (WCAG 1.4.1: links can't rely on color alone).
+       --color-gray, not --color-border: the border tone (#e4e4e7) predates
+       the gray GUI background and is LIGHTER than --color-bg (#c6c6c6), so
+       it disappeared against the page. */
+    border-bottom: 1px solid var(--color-gray);
     transition: border-color 0.2s;
   }
 

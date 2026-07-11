@@ -58,6 +58,11 @@ const { items, itemsMap, recipeHrefs, loading = 'lazy' } = Astro.props;
     document
       .querySelectorAll<HTMLElement>('.item-variants[data-variant-cycle]')
       .forEach((wrapper) => {
+        // WCAG 2.2.2 pause mechanism: a hovered slot (mouse, incl. its
+        // tooltip popup) or one containing keyboard focus stops cycling
+        // until the pointer/focus leaves -- the interval keeps ticking for
+        // every other slot.
+        if (wrapper.matches(':hover') || wrapper.contains(document.activeElement)) return;
         const variants = wrapper.querySelectorAll<HTMLElement>('.item-variants__variant');
         const currentIndex = Array.from(variants).findIndex((variant) => !variant.hidden);
         const nextIndex = (currentIndex + 1) % variants.length;

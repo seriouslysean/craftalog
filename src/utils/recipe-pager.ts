@@ -45,9 +45,23 @@ export interface PagerNeighbors {
   nextItem: ItemData | null;
 }
 
-/** The canonical recipe is always reachable at the bare /recipe/{item}/ path. */
+/**
+ * The canonical recipe is always reachable at the bare /recipe/{item}/ path.
+ *
+ * Throws on an empty sequence or an unknown canonical id -- both mean the
+ * caller's build-time static paths and the pager sequence have drifted, and
+ * silently wrapping from index -1 would render wrong neighbors.
+ */
 export function pagerNeighbors(sequence: PagerEntry[], canonicalId: string): PagerNeighbors {
+  if (sequence.length === 0) {
+    throw new Error("pagerNeighbors: pager sequence is empty");
+  }
+
   const index = sequence.findIndex((entry) => entry.canonicalId === canonicalId);
+  if (index === -1) {
+    throw new Error(`pagerNeighbors: canonical id "${canonicalId}" not found in pager sequence`);
+  }
+
   const prev = sequence[(index - 1 + sequence.length) % sequence.length];
   const next = sequence[(index + 1) % sequence.length];
 
