@@ -1,6 +1,6 @@
 import { resolveLangKey } from "./lang.ts";
 import { resolveTag } from "./tags.ts";
-import { titleCaseFromId } from "./strings.ts";
+import { titleCaseFromId } from "../../src/utils/strings.ts";
 import type { RawBannerPatternRegistry, RawTagsData } from "./types.ts";
 
 /**

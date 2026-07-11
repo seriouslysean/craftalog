@@ -28,7 +28,10 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(scriptDir, "../..");
 
 export const VENDOR_SUMMARY_DIR = path.join(ROOT, "vendor/mcmeta-summary");
-export const VENDOR_TEXTURES_DIR = path.join(ROOT, "vendor/mcmeta-assets/assets/minecraft/textures");
+export const VENDOR_TEXTURES_DIR = path.join(
+  ROOT,
+  "vendor/mcmeta-assets/assets/minecraft/textures",
+);
 export const VENDOR_BEDROCK_ITEMS_DIR = path.join(
   ROOT,
   "vendor/bedrock-samples/resource_pack/textures/items",

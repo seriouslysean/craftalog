@@ -67,6 +67,13 @@ const KNOWN_EXCLUDED_TYPES = new Set([
 /** Crafting-grid shapeless recipes hold 1-9 ingredients (a 3x3 grid) -- anything else is malformed vendored data. */
 const MAX_SHAPELESS_INGREDIENTS = 9;
 
+/**
+ * transformRecipe's output: the generated contract's recipe shape minus the
+ * fields generate.ts derives afterwards (`family` from the result item,
+ * `slug` from deriveRecipeSlugSource).
+ */
+export type TransformedRecipe = Omit<GeneratedRecipe, "family" | "slug">;
+
 function toResult(raw: RawResult | undefined): RecipeResult | undefined {
   if (!raw) return undefined;
   return { id: stripMcPrefix(raw.id), count: raw.count ?? 1 };
@@ -84,7 +91,7 @@ export function transformRecipe(
   id: string,
   raw: RawRecipeEntry,
   tags: RawTagsData,
-): Omit<GeneratedRecipe, "family"> | undefined {
+): TransformedRecipe | undefined {
   const category = raw.category ?? DEFAULT_CATEGORY;
   const group = raw.group;
 
@@ -165,8 +172,8 @@ export function transformRecipe(
   );
 }
 
-/** Collects every item id referenced by a recipe (result + all resolved ingredients). */
-export function collectRecipeItemIds(recipe: GeneratedRecipe): string[] {
+/** Collects every item id referenced by a recipe (result + all resolved ingredients). Accepts a pre-`family`/`slug` transform output or a full GeneratedRecipe. */
+export function collectRecipeItemIds(recipe: TransformedRecipe): string[] {
   const ids = new Set<string>();
 
   if (recipe.result) ids.add(recipe.result.id);

@@ -160,7 +160,7 @@ describe("findModelReference", () => {
     expect(findModelReference(node)).toBe("minecraft:item/crossbow");
   });
 
-  it("prefers the case whose `when` includes \"gui\" for a select on display_context (spears: the gui case IS the icon; the fallback is the in-hand model)", () => {
+  it('prefers the case whose `when` includes "gui" for a select on display_context (spears: the gui case IS the icon; the fallback is the in-hand model)', () => {
     // Mirrors vendor/mcmeta-summary's wooden_spear item definition.
     const node = {
       type: "minecraft:select",

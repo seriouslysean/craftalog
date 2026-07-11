@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { getFaces, iconSwapTextures, isIconGeometryUniform } from "../src/utils/icon-faces";
 import { collapseVariantGroups, groupRecipes } from "../src/utils/recipe-groups";
-import type { IconData, RecipeData } from "../src/content.config";
+import type { IconData } from "../src/content.config";
+import { loadGeneratedRecipes } from "./generated-recipes";
 
 const itemName = (id: string) => id;
 
@@ -230,9 +231,8 @@ describe("isIconGeometryUniform", () => {
     // some other, currently-uniform group.
     const KNOWN_NONUNIFORM_GROUPS = new Set(["trapdoors"]);
 
-    const recipesModule = await import("../src/data/generated/recipes.json");
     const itemsModule = await import("../src/data/generated/items.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
     const items = itemsModule.default as unknown as Record<string, { icon: IconData }>;
 
     const groups = groupRecipes(allRecipes, itemName);

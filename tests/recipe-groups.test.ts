@@ -11,6 +11,7 @@ import {
   variantGroupDisplayName,
 } from "../src/utils/recipe-groups";
 import type { ItemData, RecipeData } from "../src/content.config";
+import { loadGeneratedRecipes } from "./generated-recipes";
 
 const itemName = (id: string) => id.charAt(0).toUpperCase() + id.slice(1).replace(/_/g, " ");
 
@@ -259,8 +260,7 @@ describe("groupRecipes", () => {
   });
 
   it("loads the real generated recipe data and finds every multi-recipe group's labels non-null and unique", async () => {
-    const recipesModule = await import("../src/data/generated/recipes.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
 
     const groups = groupRecipes(allRecipes, itemName);
     const multiRecipeGroups = groups.filter((g) => g.count > 1);
@@ -414,8 +414,7 @@ describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
   });
 
   it("loads the real generated recipe data and confirms copper shapes collapse without regressing dyed_armor", async () => {
-    const recipesModule = await import("../src/data/generated/recipes.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
 
     const groups = groupRecipes(allRecipes, itemName);
     const { variantGroups } = collapseVariantGroups(groups);
@@ -576,8 +575,7 @@ describe("variantGroupDisplayName / variantGroupDefault", () => {
   });
 
   it("loads the real generated recipe data and confirms VARIANT_GROUP_META covers every groupKey", async () => {
-    const recipesModule = await import("../src/data/generated/recipes.json");
-    const allRecipes = Object.values(recipesModule.default) as RecipeData[];
+    const allRecipes = loadGeneratedRecipes();
 
     const groups = groupRecipes(allRecipes, itemName);
     const { variantGroups } = collapseVariantGroups(groups);

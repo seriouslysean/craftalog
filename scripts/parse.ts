@@ -299,7 +299,9 @@ function main(): void {
   console.log(`items:            ${meta.counts.items}`);
   console.log(`categories:       ${Object.keys(categories).length}`);
   console.log(`families:         ${Object.keys(families).length}`);
-  console.log(`textures written: ${meta.counts.texturesWritten} (${texturesToCopy.size} vendor copies + synthesized/derived icons + ${HUD_ICON_RELATIVE_PATHS.length} hud sprites)`);
+  console.log(
+    `textures written: ${meta.counts.texturesWritten} (${texturesToCopy.size} vendor copies + synthesized/derived icons + ${HUD_ICON_RELATIVE_PATHS.length} hud sprites)`,
+  );
   console.log(`banner icons:     ${bannerIconsToSynthesize.size}`);
   console.log(`lightning rod icons: ${lightningRodIconsToSynthesize.size}`);
   console.log(`bed icons:        ${bedIconsToCopy.size}`);

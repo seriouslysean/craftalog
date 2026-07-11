@@ -168,6 +168,7 @@ function run() {
     shulkerGeoRaw: emptyShulkerGeoRaw,
     textureExists: (ref) => existingRefs.has(ref),
     textureDimensions: () => undefined,
+    bedrockBedIconExists: () => false,
   });
 }
 
@@ -407,6 +408,7 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       textureExists: (ref) =>
         new Set(["item/stick", "block/widget_body", "block/unresolvable_widget_particle"]).has(ref),
       textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
     });
   }
 
@@ -480,6 +482,7 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
       shulkerGeoRaw: emptyShulkerGeoRaw,
       textureExists,
       textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
     });
   }
 

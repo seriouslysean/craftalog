@@ -200,7 +200,7 @@ describe("shulkerCompoundIcon", () => {
 
   it("loads the real generated data and confirms a colored + the undyed shulker box both use extracted geometry, not the old flat block-texture fallback (the literal bug this feature fixes)", async () => {
     const itemsModule = await import("../src/data/generated/items.json");
-    const items = itemsModule.default as Record<
+    const items = itemsModule.default as unknown as Record<
       string,
       { icon: { type: string; elements?: { faces: Record<string, { texture: string }> }[] } }
     >;

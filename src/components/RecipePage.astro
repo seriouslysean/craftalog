@@ -178,8 +178,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         </svg>
         <span class="recipe__copy-link-label">Copy link</span>
       </button>
-      {/* Announces the copy-link button's visual "Copied" state change to
-          assistive tech; cleared (silently) when the label reverts. */}
+      {
+        /* Announces the copy-link button's visual "Copied" state change to
+          assistive tech; cleared (silently) when the label reverts. */
+      }
       <span class="visually-hidden" role="status" data-copy-status></span>
     </div>
 

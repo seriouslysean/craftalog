@@ -42,9 +42,7 @@ describe("buildPagerSequence", () => {
       // the pager is per item, not per recipe.
       recipe({ id: "stick_from_bamboo", result: { id: "stick", count: 1 }, ingredients: [] }),
     ];
-    const itemsMap = new Map(
-      ["stick", "arrow", "melon"].map((id) => [id, item({ id })] as const),
-    );
+    const itemsMap = new Map(["stick", "arrow", "melon"].map((id) => [id, item({ id })] as const));
 
     const sequence = buildPagerSequence(groupRecipes(recipes, itemName), itemsMap);
 
