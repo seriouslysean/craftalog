@@ -3,7 +3,8 @@
 Goal: show every vanilla Minecraft crafting recipe with zero manual data upkeep.
 Vanilla data is vendored via [misode/mcmeta](https://github.com/misode/mcmeta)
 submodules, parsed into our own format by scripts in this repo, and kept fresh
-by a scheduled workflow that bumps the pin and opens an auto-merge PR.
+by a scheduled workflow that bumps the pin and opens a PR for manual review
+and merge.
 
 This document is the coordination contract for the work. If a session dies,
 resume from here plus the task list in the PR description.
@@ -43,27 +44,31 @@ resume from here plus the task list in the PR description.
    `crafting_dye` / `crafting_decorated_pot` cataloged with a curated
    explanation (they are hardcoded in the game, not data-driven).
    Furnace/stonecutter/smithing types are out of scope for now.
-3. **Toolchain**: Astro 5 + Content Layer collections, Vitest, oxlint, oxfmt.
+3. **Toolchain**: Astro 7 + Content Layer collections, Vitest, oxlint, oxfmt.
    Prettier is kept only if oxfmt cannot format `.astro` files.
-4. **Self-update**: scheduled workflow opens a PR and enables auto-merge; CI
-   must pass before it lands. Validation failure opens an issue instead.
+4. **Self-update**: scheduled workflow opens a PR and triggers CI on it; the
+   PR waits for manual review and merge (no auto-merge). Validation failure
+   opens an issue instead.
 
 ## Pipeline
 
 ```
 vendor/mcmeta-summary (recipes, tags, item defs, models, lang, registries)
 vendor/mcmeta-assets  (textures)
+vendor/bedrock-samples (bed icon PNGs + copper golem/shulker entity geometry)
         │  npm run parse  (scripts/parse.ts)
         ▼
-src/data/generated/items.json      ── committed, diffable
 src/data/generated/recipes.json    ── committed, diffable
+src/data/generated/items.json      ── committed, diffable
+src/data/generated/categories.json ── committed, diffable
+src/data/generated/families.json   ── committed, diffable
 src/data/generated/meta.json       ── mc version, counts, parse stats
-public/textures/{item,block}/*.png ── only textures actually referenced
+public/textures/{item,block,hud}/*.png ── only textures actually referenced
         │  npm run validate  (scripts/validate.ts)
         ▼
 Astro content collections (file loaders + zod schemas)
         ▼
-Static pages: / (browse by family), /recipe/[id], 404
+Static pages: / (browse by family), /recipe/[item] + /recipe/[item]/[slug], 404
 ```
 
 Generated data is **committed** so the site builds without submodules and the
@@ -119,7 +124,20 @@ type Item = {
     | { type: "wall"; texture: string }
     | { type: "button"; texture: string }
     | { type: "fence"; texture: string }
-    | { type: "fence_gate"; texture: string };
+    | { type: "fence_gate"; texture: string }
+    // generic multi-element compound: real per-element box geometry with
+    // resolved per-face textures + uv crop rects, for block models the
+    // shape classifier doesn't recognize as any of the shapes above (e.g.
+    // anvil) and for the hand-authored/extracted special-renderer icons
+    // (banner, shield, chest, heads, shulker box, ...) — see
+    // scripts/lib/model.ts's extractCompoundElements and
+    // src/data/generated-schema.ts's compoundElementSchema
+    | {
+        type: "compound";
+        elements: CompoundElement[]; // from/to boxes + up to 6 faces each
+        yRotation: number; // extra gui-display Y rotation, degrees
+        variant?: "banner" | "shield"; // opts into that shape's calibrated icon scale
+      };
   stat?:
     | { type: "food"; nutrition: number }
     | { type: "armor"; points: number }
@@ -132,8 +150,9 @@ Texture resolution: item definition → model → parent chain. Heuristics:
 `item/generated`/`item/handheld` → flat `layer0`; `block/cube_all` → block with
 top=side=`all`; `block/cube_column` → top=`end`, side=`side`;
 `block/cube_bottom_top` → `top`/`side`; other block parents → best-effort
-(`particle` or first texture) as flat. Unresolvable → flat placeholder texture
-and a line in the validator report (never a broken build).
+(`particle` or first texture) as flat. Unresolvable → flat placeholder texture,
+recorded in `meta.unresolvedIcons` (parse never breaks the build); `npm run
+validate` then **fails** while any item ships the placeholder.
 
 `block/template_lightning_rod` (shared by every oxidation variant) is a named
 exception: its "texture" is a UV atlas for its two-element geometry (a 4x4x4
@@ -187,8 +206,9 @@ share one `base` (no per-color texture exists upstream), so
 the corresponding wool texture's average color, generating a per-color icon
 at parse time (written under `public/textures/item/<color>_banner.png`);
 shields (`scripts/lib/shield-icon.ts`), chests (`scripts/lib/chest-icon.ts`),
-mob heads, and the conduit (both `scripts/lib/head-icon.ts`) hand-author box
-geometry instead, cropped from their own vendored entity-texture atlas
+the decorated pot (`scripts/lib/decorated-pot-icon.ts`), mob heads, and the
+conduit (both `scripts/lib/head-icon.ts`) hand-author box geometry instead,
+cropped from their own vendored entity-texture atlas
 (none has real shape data on the Java or Bedrock side — chest's atlas is
 selected per item via the special model's own `texture` field:
 `normal`/`trapped`/`ender`/4 copper tiers, shared across waxed/un-waxed
@@ -232,12 +252,14 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
 ## Shaped vs shapeless in the UI
 
 - **Shaped**: pattern rendered in-place, centered in the 3×3 grid.
-- **Shapeless**: ingredients filled into the grid in reading order; the grid
-  itself signals "order doesn't matter" via a shuffle icon + dashed cell
-  outlines, plus a one-line caption below the grid ("Place ingredients in any
-  order") — not a badge above the grid, which is easy to skip past.
+- **Shapeless**: ingredients filled into the grid in reading order; a
+  "Shapeless" badge (shuffle icon + label, with a visually-hidden
+  "ingredient placement in the grid doesn't matter" expansion for assistive
+  tech) sits in the recipe header's badge row — see `RecipePage.astro` and
+  `Badge.astro`.
 - **Transmute**: rendered like shapeless (input + material) with the same
-  unordered signal, plus a note that the result keeps the input's data.
+  shapeless badge plus its own "Transmute" badge, and a note that the result
+  keeps the input's data.
 - Multi-option ingredients (tag or array): cycle through variants on a timer
   (like the Minecraft wiki), with the tag label shown (e.g. "Any Planks").
   Cycling is progressive enhancement; first variant renders statically.
@@ -259,16 +281,21 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
   format check → type-check → test → build.
 - `deploy.yml`: existing Pages deploy, unchanged behavior (build now includes
   generated data).
-- `update-data.yml` (weekly cron + manual): resolve latest stable mcmeta tags →
-  if newer than pin: bump submodules, `npm run parse`, `npm run validate`,
-  commit, open PR, enable auto-merge. Validation failure → open an issue.
+- `update-data.yml` (weekly cron + manual): resolve latest stable mcmeta and
+  bedrock-samples tags (via `git ls-remote`) → if either is newer than its
+  pin: bump submodules, `npm run parse`, `npm run validate`, commit, open PR,
+  kick CI on the branch (PRs created with `GITHUB_TOKEN` don't trigger
+  `pull_request` workflows). The PR waits for manual review and merge.
+  Validation failure → open an issue.
 
 ## Testing
 
 Vitest units: tag resolution, texture/model resolution, pattern centering,
-shaped/shapeless/transmute parsing, validator failure modes, grid-state logic.
-Fixtures are small hand-copied samples from mcmeta so tests run without
-submodules. CI also does a full build as a smoke test.
+shaped/shapeless/transmute parsing, generator fail-loud paths (unknown
+crafting types, resultless recipes, synthetic-id collisions — see
+`tests/determinism.test.ts`), grid-state and pager logic. Fixtures are small
+hand-copied samples from mcmeta so tests run without submodules. CI also does
+a full build as a smoke test.
 
 ## Sequencing (one PR, atomic commits)
 

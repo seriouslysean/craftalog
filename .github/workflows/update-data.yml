@@ -227,7 +227,7 @@ jobs:
 
           body=$(cat <<EOF
           Bumps vendored mcmeta data from \`${CURRENT_VER}\` to \`${VER}\`,
-          and vendored bedrock-samples (bed icons only) from
+          and vendored bedrock-samples (bed icons + entity geometry) from
           \`${CURRENT_BEDROCK_VER}\` to \`${BEDROCK_VER}\`.
 
           Regenerated via \`npm run parse\` and checked with \`npm run validate\`.

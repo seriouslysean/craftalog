@@ -43,9 +43,15 @@ the single pinned tag's history, not the whole upstream repo.
 
 The current mcmeta pin is readable at `vendor/mcmeta-summary/version.txt`
 (currently `26.2`) and mirrored into `src/data/generated/meta.json` (key
-`"version"`) after a parse. `bedrock-samples` has no equivalent version file
-— its pin is just whatever tag its submodule commit is checked out at
-(`git -C vendor/bedrock-samples describe --tags`).
+`"version"`) after a parse. `bedrock-samples` has no equivalent version file,
+and its shallow submodule clone carries no tags (so `git describe` cannot
+name the pinned commit) — resolve the pin by matching the submodule's HEAD
+against the remote's tags instead:
+
+```bash
+head=$(git -C vendor/bedrock-samples rev-parse HEAD)
+git ls-remote --tags https://github.com/Mojang/bedrock-samples | grep "$head"
+```
 
 ## Tag scheme
 
@@ -74,10 +80,12 @@ builds:
 vendor/mcmeta-summary + vendor/mcmeta-assets + vendor/bedrock-samples (bed icons + copper golem/shulker geometry)
         │  npm run parse   (scripts/parse.ts)
         ▼
-src/data/generated/items.json      ── committed, diffable
 src/data/generated/recipes.json    ── committed, diffable
+src/data/generated/items.json      ── committed, diffable
+src/data/generated/categories.json ── committed, diffable
+src/data/generated/families.json   ── committed, diffable
 src/data/generated/meta.json       ── mc version, counts, parse stats
-public/textures/{item,block}/*.png ── only textures actually referenced
+public/textures/{item,block,hud}/*.png ── only textures actually referenced
         │  npm run validate   (scripts/validate.ts)
         ▼
 Astro content collections consume the generated JSON
@@ -105,9 +113,12 @@ npm run validate -- --offline  # same, but skip checks that need a fresh submodu
 ```
 
 `npm run validate` is the source of truth for "is this data correct" — it
-re-derives expected output independently of parse and flags unresolved
-textures, schema mismatches, or drift from the submodule pin. Read its report
-before assuming a failure is spurious.
+re-derives expected output independently of parse and **fails** (exit 1, not
+a warning) on drift from the submodule pin or on internal-consistency
+violations: unresolved icons (items that would ship the placeholder),
+recipe/item URL-slug collisions, missing texture files on disk, ingredients
+with zero items, and items falling through to a generic family fallback.
+Read its report before assuming a failure is spurious.
 
 ## Bumping to a new version manually
 
@@ -182,9 +193,10 @@ manually via workflow_dispatch). Each run:
    `bedrock-samples` independently, each via `git ls-remote` filtered by its
    own stable-tag regex.
 2. Compares each to its current pin (`vendor/mcmeta-summary/version.txt` for
-   mcmeta; `git describe --tags` on the submodule itself for
-   bedrock-samples). If _both_ are already at latest, it exits cleanly —
-   nothing to do.
+   mcmeta; for bedrock-samples, the submodule's HEAD commit matched against
+   the remote's tags via `git ls-remote` — the shallow clone carries no
+   tags, so `git describe` can't name it). If _both_ are already at latest,
+   it exits cleanly — nothing to do.
 3. If either is newer, it checks a
    `data-update/mcmeta-<version>_bedrock-<version>` branch (reflecting both
    target versions) doesn't already exist (idempotency guard against
@@ -195,10 +207,10 @@ manually via workflow_dispatch). Each run:
 5. On validation/parse failure: opens a GitHub issue with a log tail, and
    fails the run so it's visible in Actions.
 6. On success with actual changes: commits the submodule pins + regenerated
-   data + textures on that branch, pushes, opens a PR via `gh pr create`, and
-   attempts `gh pr merge --auto --squash`. If the repo doesn't have
-   auto-merge enabled, that step logs a warning and leaves the PR open for
-   manual merge instead of failing the run.
+   data + textures on that branch, pushes, opens a PR via `gh pr create`,
+   and kicks CI on the branch via `gh workflow run ci.yml` (PRs created with
+   `GITHUB_TOKEN` don't trigger `pull_request` workflows on their own). The
+   PR then waits for manual review and merge — there is no auto-merge.
 
 In practice `bedrock-samples` almost never actually changes (bed icon art is
 stable), so most runs are a normal mcmeta-only bump — the dual-source check
