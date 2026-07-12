@@ -1,27 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { resolveItemStat } from "../scripts/lib/item-stats.ts";
-import type { RawItemComponentsData, RawTagsData } from "../scripts/lib/types.ts";
+import type { RawItemComponentsData } from "../scripts/lib/types.ts";
 
-const tagsRaw: RawTagsData = {
-  head_armor: { values: ["leather_helmet", "diamond_helmet"] },
-  chest_armor: { values: ["diamond_chestplate"] },
-  leg_armor: { values: [] },
-  foot_armor: { values: [] },
-  // Exercises resolveTag's full normalization within stat detection: a
-  // minecraft:-prefixed value, an { id } object-form value, and a nested
-  // tag reference -- the shallow tagMembers resolver this module used to
-  // carry handled none of the nested case.
-  swords: {
-    values: ["minecraft:diamond_sword", { id: "minecraft:copper_sword" }, "#minecraft:odd_swords"],
-  },
-  odd_swords: { values: ["minecraft:wooden_sword"] },
-  spears: { values: ["minecraft:iron_spear"] },
-  axes: { values: ["diamond_axe"] },
-  pickaxes: { values: ["diamond_pickaxe"] },
-  shovels: { values: [] },
-  hoes: { values: [] },
-};
-
+// Component shapes mirror the real vendored item_components data: dedicated
+// weapons carry an EMPTY `minecraft:weapon` ({} -- default 1 durability per
+// attack); attack-capable tools carry `{ item_damage_per_attack: 2 }` plus
+// `minecraft:tool`; swords/trident/mace carry BOTH weapon and tool (a sword
+// can mine cobwebs), which is why component presence alone can't separate
+// the classes -- see scripts/lib/item-stats.ts's isDedicatedWeapon.
 const componentsRaw: RawItemComponentsData = {
   bread: { "minecraft:food": { nutrition: 5, saturation: 6 } },
   stone: {},
@@ -32,12 +18,21 @@ const componentsRaw: RawItemComponentsData = {
     ],
     "minecraft:max_damage": 528,
   },
+  // No armor-slot equipment tag exists for these two in vanilla -- the
+  // armor gate is attribute-only, so they still classify (the wolf/horse
+  // armor coverage the tag-gated version missed).
+  wolf_armor: {
+    "minecraft:attribute_modifiers": [{ type: "minecraft:armor", amount: 11 }],
+    "minecraft:max_damage": 64,
+  },
   diamond_sword: {
     "minecraft:attribute_modifiers": [
       { type: "minecraft:attack_damage", amount: 6 },
       { type: "minecraft:attack_speed", amount: -2.4 },
     ],
     "minecraft:max_damage": 1561,
+    "minecraft:tool": { rules: [] },
+    "minecraft:weapon": {},
   },
   diamond_axe: {
     "minecraft:attribute_modifiers": [
@@ -45,14 +40,20 @@ const componentsRaw: RawItemComponentsData = {
       { type: "minecraft:attack_speed", amount: -3.1 },
     ],
     "minecraft:max_damage": 1561,
+    "minecraft:tool": { rules: [] },
+    "minecraft:weapon": { disable_blocking_for_seconds: 5, item_damage_per_attack: 2 },
   },
   diamond_pickaxe: {
     "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 4 }],
     "minecraft:max_damage": 1561,
+    "minecraft:tool": { rules: [] },
+    "minecraft:weapon": { item_damage_per_attack: 2 },
   },
   trident: {
     "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 9 }],
     "minecraft:max_damage": 250,
+    "minecraft:tool": { rules: [] },
+    "minecraft:weapon": {},
   },
   iron_spear: {
     "minecraft:attribute_modifiers": [
@@ -60,86 +61,111 @@ const componentsRaw: RawItemComponentsData = {
       { type: "minecraft:attack_speed", amount: -2.8 },
     ],
     "minecraft:max_damage": 250,
+    "minecraft:weapon": {},
   },
-  copper_sword: {
-    "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 5 }],
-    "minecraft:max_damage": 190,
-  },
-  wooden_sword: {
-    "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 3 }],
+  // Real vendored shape: a dedicated weapon whose attack_damage sums to 0
+  // (the attribute modifiers list carries only attack_speed) -- correctly
+  // gets NO stat rather than "damage 0".
+  wooden_spear: {
+    "minecraft:attribute_modifiers": [{ type: "minecraft:attack_speed", amount: -2.8 }],
     "minecraft:max_damage": 59,
+    "minecraft:weapon": {},
+  },
+  shears: {
+    "minecraft:max_damage": 238,
+    "minecraft:tool": { rules: [] },
+  },
+  // A hypothetical FUTURE weapon: no tag, no id list, just the components a
+  // new dedicated weapon would ship with -- must classify with zero code
+  // changes (the point of the component-driven gate).
+  obsidian_glaive: {
+    "minecraft:attribute_modifiers": [{ type: "minecraft:attack_damage", amount: 11 }],
+    "minecraft:max_damage": 2031,
+    "minecraft:tool": { rules: [] },
+    "minecraft:weapon": {},
   },
 };
 
 describe("resolveItemStat", () => {
   it("returns undefined for an item with no components", () => {
-    expect(resolveItemStat("unknown_item", componentsRaw, tagsRaw)).toBeUndefined();
+    expect(resolveItemStat("unknown_item", componentsRaw)).toBeUndefined();
   });
 
   it("returns undefined for an item with components but no matching stat", () => {
-    expect(resolveItemStat("stone", componentsRaw, tagsRaw)).toBeUndefined();
+    expect(resolveItemStat("stone", componentsRaw)).toBeUndefined();
   });
 
   it("picks food first", () => {
-    expect(resolveItemStat("bread", componentsRaw, tagsRaw)).toEqual({
+    expect(resolveItemStat("bread", componentsRaw)).toEqual({
       type: "food",
       nutrition: 5,
     });
   });
 
-  it("picks armor for an armor-tagged item, summing armor attribute amounts", () => {
-    expect(resolveItemStat("diamond_chestplate", componentsRaw, tagsRaw)).toEqual({
+  it("picks armor from the armor attribute alone, summing amounts (no tag gate)", () => {
+    expect(resolveItemStat("diamond_chestplate", componentsRaw)).toEqual({
       type: "armor",
       points: 8,
     });
   });
 
-  it("picks weapon (not tool) for a sword", () => {
-    expect(resolveItemStat("diamond_sword", componentsRaw, tagsRaw)).toEqual({
+  it("picks armor for non-player-slot equipment (wolf armor) -- attribute-driven, no slot tag exists", () => {
+    expect(resolveItemStat("wolf_armor", componentsRaw)).toEqual({
+      type: "armor",
+      points: 11,
+    });
+  });
+
+  it("picks weapon (not tool) for a sword, despite it carrying minecraft:tool too", () => {
+    expect(resolveItemStat("diamond_sword", componentsRaw)).toEqual({
       type: "weapon",
       damage: 6,
     });
   });
 
-  it("picks weapon for a trident via the extra weapon id list", () => {
-    expect(resolveItemStat("trident", componentsRaw, tagsRaw)).toEqual({
+  it("picks weapon for the trident (empty weapon component = dedicated weapon)", () => {
+    expect(resolveItemStat("trident", componentsRaw)).toEqual({
       type: "weapon",
       damage: 9,
     });
   });
 
-  it("picks weapon for a spear via the spears tag (1.21+ melee weapons outside the swords tag)", () => {
-    expect(resolveItemStat("iron_spear", componentsRaw, tagsRaw)).toEqual({
+  it("picks weapon for a spear (weapon component, no tool component)", () => {
+    expect(resolveItemStat("iron_spear", componentsRaw)).toEqual({
       type: "weapon",
       damage: 2,
     });
   });
 
-  it("resolves { id } object-form tag values (copper_sword) when detecting weapons", () => {
-    expect(resolveItemStat("copper_sword", componentsRaw, tagsRaw)).toEqual({
+  it("gives a zero-damage dedicated weapon (wooden/golden spear) no stat at all", () => {
+    expect(resolveItemStat("wooden_spear", componentsRaw)).toBeUndefined();
+  });
+
+  it("auto-admits a future component-only weapon with no tag or id list involved", () => {
+    expect(resolveItemStat("obsidian_glaive", componentsRaw)).toEqual({
       type: "weapon",
-      damage: 5,
+      damage: 11,
     });
   });
 
-  it("resolves nested tag references (wooden_sword via #odd_swords) when detecting weapons", () => {
-    expect(resolveItemStat("wooden_sword", componentsRaw, tagsRaw)).toEqual({
-      type: "weapon",
-      damage: 3,
-    });
-  });
-
-  it("picks tool (durability), not weapon, for an axe despite it having attack damage", () => {
-    expect(resolveItemStat("diamond_axe", componentsRaw, tagsRaw)).toEqual({
+  it("picks tool (durability), not weapon, for an axe despite it having attack damage (non-default item_damage_per_attack)", () => {
+    expect(resolveItemStat("diamond_axe", componentsRaw)).toEqual({
       type: "tool",
       durability: 1561,
     });
   });
 
   it("picks tool for a pickaxe", () => {
-    expect(resolveItemStat("diamond_pickaxe", componentsRaw, tagsRaw)).toEqual({
+    expect(resolveItemStat("diamond_pickaxe", componentsRaw)).toEqual({
       type: "tool",
       durability: 1561,
+    });
+  });
+
+  it("picks tool for shears (tool component with no weapon component at all)", () => {
+    expect(resolveItemStat("shears", componentsRaw)).toEqual({
+      type: "tool",
+      durability: 238,
     });
   });
 });

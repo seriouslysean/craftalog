@@ -44,25 +44,53 @@ function ingredientLabel(ingredient: Ingredient, getItemName: (id: string) => st
 }
 
 /**
- * Vanilla groups that are a "re-dye an existing item" variant of a base
- * craft group targeting the exact same set of result items (confirmed
- * against the real generated data: harness/harness_dye both produce all 16
- * harness colors, bed/bed_dye all 16 bed colors, carpet/carpet_dye all 18
- * carpet variants) -- normalized to the base group name so both sides of
- * the pair collapse into one VariantGroup instead of two. Every other
- * dye-only group (bundle_dye, dyed_candle, shulker_box_dye, ...) has no
- * separate base craft group to alias to -- colors are its only recipes for
- * that shape, so it's already a complete collapse key on its own.
+ * Derives every "re-dye an existing item" group alias from the recipe data
+ * itself: a vanilla `X_dye` group normalizes to its base group `X` iff `X`
+ * exists and every result item `X_dye` produces is also a result of `X` --
+ * i.e. the dye group is purely an alternate way to obtain (a subset of) the
+ * base group's own items, so both sides of the pair collapse into one
+ * VariantGroup instead of two. Subset, not strict set equality: the base
+ * group may legitimately hold extra non-redyeable members (vanilla's
+ * `carpet` group is all 16 colors PLUS moss_carpet/pale_moss_carpet, which
+ * have no re-dye recipe -- they must still land on the same card as the
+ * colors). Against the current generated data this admits exactly
+ * harness_dye->harness, bed_dye->bed, carpet_dye->carpet (asserted in
+ * tests/recipe-groups.test.ts) and auto-admits any future X_dye/X pair a
+ * version bump introduces. Every other dye-suffixed group (bundle_dye,
+ * shulker_box_dye, the 12 `<color>_dye` dye-item groups, ...) has no base
+ * group to alias to -- colors are its only recipes for that shape, so it's
+ * already a complete collapse key on its own and stays unaliased.
  */
-const REDYE_GROUP_ALIASES: Record<string, string> = {
-  harness_dye: "harness",
-  bed_dye: "bed",
-  carpet_dye: "carpet",
-};
+export function deriveRedyeGroupAliases(recipes: RecipeData[]): Map<string, string> {
+  const resultIdsByGroup = new Map<string, Set<string>>();
+  for (const recipe of recipes) {
+    if (!recipe.group || !recipe.result) continue;
+    let resultIds = resultIdsByGroup.get(recipe.group);
+    if (!resultIds) {
+      resultIds = new Set();
+      resultIdsByGroup.set(recipe.group, resultIds);
+    }
+    resultIds.add(recipe.result.id);
+  }
 
-function normalizeVariantGroupKey(group: string | undefined): string | undefined {
+  const aliases = new Map<string, string>();
+  for (const [group, dyeResultIds] of resultIdsByGroup) {
+    if (!group.endsWith("_dye")) continue;
+    const baseResultIds = resultIdsByGroup.get(group.slice(0, -"_dye".length));
+    if (!baseResultIds) continue;
+    if ([...dyeResultIds].every((id) => baseResultIds.has(id))) {
+      aliases.set(group, group.slice(0, -"_dye".length));
+    }
+  }
+  return aliases;
+}
+
+function normalizeVariantGroupKey(
+  group: string | undefined,
+  redyeAliases: Map<string, string>,
+): string | undefined {
   if (!group) return undefined;
-  return REDYE_GROUP_ALIASES[group] ?? group;
+  return redyeAliases.get(group) ?? group;
 }
 
 /**
@@ -96,8 +124,19 @@ function stripOxidationPrefixes(resultId: string): string {
 export interface SiblingRecipe {
   recipeId: string;
   type: RecipeData["type"];
-  /** Raw vanilla recipe type id, only set when `type === "special"` -- see src/utils/self-referential-specials.ts. */
-  vanillaType: string | undefined;
+  /**
+   * True for a special recipe the data pipeline flagged as modifying an
+   * EXISTING item of the same kind (banner duplicate, shield decoration,
+   * leather re-dye, ...) rather than crafting a genuinely new one -- read
+   * straight off `recipe.selfReferential` (see `selfReferential` in
+   * src/data/generated-schema.ts for the deterministic upstream signal).
+   * Fails open to `false` whenever the flag is absent: every non-special
+   * recipe, and any special a future version bump introduces that the
+   * pipeline doesn't flag -- i.e. the equal-tab behavior. Consumed by
+   * RecipePage.astro to demote these siblings below the primary variant
+   * tabs.
+   */
+  selfReferential: boolean;
   /** e.g. "from Bone", or a truncated note for special recipes. Null for singletons. */
   label: string | null;
   /** The distinguishing ingredient's item id. Null for singletons and special recipes. */
@@ -189,6 +228,8 @@ export function groupRecipes(
     }
   }
 
+  const redyeAliases = deriveRedyeGroupAliases(recipes);
+
   // Every base id that at least one oxidation/waxing tier strips down to
   // (i.e. a shape with a tier actually present in this dataset). Computed
   // as its own pass (not inline below) since a group needs to know whether
@@ -229,7 +270,7 @@ export function groupRecipes(
         return {
           recipeId: recipe.id,
           type: recipe.type,
-          vanillaType: recipe.vanillaType,
+          selfReferential: recipe.selfReferential === true,
           label: null,
           iconItemId: null,
           ingredientItemIds,
@@ -241,7 +282,7 @@ export function groupRecipes(
         return {
           recipeId: recipe.id,
           type: recipe.type,
-          vanillaType: recipe.vanillaType,
+          selfReferential: recipe.selfReferential === true,
           label: recipe.note ? truncateNote(recipe.note) : null,
           iconItemId: null,
           ingredientItemIds,
@@ -255,7 +296,7 @@ export function groupRecipes(
       return {
         recipeId: recipe.id,
         type: recipe.type,
-        vanillaType: recipe.vanillaType,
+        selfReferential: recipe.selfReferential === true,
         label: `from ${ingredientLabel(distinguishing, getItemName)}`,
         iconItemId: distinguishing.items[0],
         ingredientItemIds,
@@ -274,7 +315,7 @@ export function groupRecipes(
     const variantKey =
       members[0].shapeTag ??
       (oxidationBases.has(strippedResultId) ? strippedResultId : undefined) ??
-      normalizeVariantGroupKey(members[0].group);
+      normalizeVariantGroupKey(members[0].group, redyeAliases);
 
     groups.push({
       resultId,
@@ -345,21 +386,27 @@ export function collapseVariantGroups(groups: RecipeGroup[]): {
 export interface VariantGroupMeta {
   /** Generic display name for the collapsed card, e.g. "Boat" not "Acacia Boat". */
   name: string;
-  /** The variant shown as the card's default/linked-to face, e.g. "oak_boat" not the alphabetically-first "acacia_boat". Falls back to variants[0] if unset or not found (shouldn't happen for a real groupKey -- see the completeness test in tests/recipe-groups.test.ts). */
+  /** The variant shown as the card's default/linked-to face, e.g. "oak_boat" not the alphabetically-first "acacia_boat". Falls back to variants[0] if unset or not found (shouldn't happen for a real groupKey -- the no-rot test in tests/recipe-groups.test.ts catches a stale/mistyped id). */
   defaultResultId?: string;
 }
 
 /**
- * Curated identity for every VariantGroup, keyed by groupKey. Without this,
- * a collapsed card's name/icon default to its alphabetically-first variant
- * (e.g. "Acacia Boat" representing the whole 10-wood-type Boats family) --
- * which reads as one specific item, not the generic shape the card actually
- * represents. Every key here must match a real groupKey collapseVariantGroups
- * can produce; tests/recipe-groups.test.ts asserts this map's keys are a
- * superset of every groupKey the real generated data currently produces (a
- * missing entry isn't a hard error -- variantGroupDisplayName/
- * variantGroupDefault both fall back gracefully -- but it silently
- * regresses to the alphabetical-default problem this map exists to fix).
+ * Curated editorial overrides for a VariantGroup's identity, keyed by
+ * groupKey. A group with no entry here is fully data-derived instead:
+ * deriveVariantGroupName below names the card from what its member item
+ * names share (e.g. "Slab" from "Oak Slab"/"Cut Copper Slab"/...), and
+ * variantGroupDefault falls back to the alphabetically-first member -- so
+ * a NEW vanilla variant group introduced by a version bump ships with a
+ * sane derived identity and zero code changes (the automated weekly data
+ * update must never be blocked on hand-curation). An entry here is purely
+ * an additive quality upgrade over that fallback: a nicer generic name
+ * ("Wood & Hyphae" where derivation can only offer a single member's name)
+ * and/or a more iconic default face (oak over acacia, red bed over black).
+ * Every key must still match a real groupKey collapseVariantGroups produces
+ * from the current generated data -- tests/recipe-groups.test.ts asserts
+ * there are no rotted entries, and separately proves the derived fallback
+ * yields a non-empty sane name for EVERY real group when this map is
+ * ignored.
  */
 export const VARIANT_GROUP_META: Record<string, VariantGroupMeta> = {
   // Color families -- default to white except where vanilla's own
@@ -433,13 +480,64 @@ export const VARIANT_GROUP_META: Record<string, VariantGroupMeta> = {
   patterned_banner: { name: "Patterned Banner", defaultResultId: "patterned_banner_creeper" },
 };
 
-/** The VariantGroup's display name -- curated (see VARIANT_GROUP_META) where one exists, else the default variant's own item name. */
+/**
+ * The longest sequence of consecutive words shared by every name, e.g.
+ * ["Oak Slab", "Cut Copper Slab", "Petrified Oak Slab"] -> "Slab". Ties on
+ * length prefer the latest-starting sequence -- in an English noun phrase
+ * the head noun sits at the end ("Exposed Copper" -> "Copper", not
+ * "Exposed"). Null when the names share no word at all (e.g. "Oak Wood" vs
+ * "Crimson Hyphae").
+ */
+function containsWordSequence(words: string[], sequence: string[]): boolean {
+  outer: for (let i = 0; i + sequence.length <= words.length; i++) {
+    for (let j = 0; j < sequence.length; j++) {
+      if (words[i + j] !== sequence[j]) continue outer;
+    }
+    return true;
+  }
+  return false;
+}
+
+function longestCommonWordSequence(names: string[]): string | null {
+  const wordLists = names.map((name) => name.split(" "));
+  const shortest = wordLists.reduce((a, b) => (b.length < a.length ? b : a));
+
+  for (let length = shortest.length; length > 0; length--) {
+    for (let start = shortest.length - length; start >= 0; start--) {
+      const sequence = shortest.slice(start, start + length);
+      if (wordLists.every((words) => containsWordSequence(words, sequence))) {
+        return sequence.join(" ");
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Purely data-derived display name for a VariantGroup -- no VARIANT_GROUP_META
+ * consulted, so an uncurated group a future version bump introduces still
+ * gets a sane generic card name: the longest word sequence its member item
+ * names share (which is exactly the part that ISN'T the per-variant
+ * material/color token -- "White Wool"/"Red Wool"/... -> "Wool"). When the
+ * members share no words at all (oak Wood vs crimson Hyphae), falls back to
+ * the alphabetically-first member's own name, matching variantGroupDefault's
+ * own uncurated fallback face.
+ */
+export function deriveVariantGroupName(
+  variantGroup: VariantGroup,
+  itemsMap: Map<string, ItemData>,
+): string {
+  const names = variantGroup.variants.map((variant) => groupDisplayName(variant, itemsMap));
+  return longestCommonWordSequence(names) ?? names[0];
+}
+
+/** The VariantGroup's display name -- curated (see VARIANT_GROUP_META) where an override exists, else derived from the member item names (see deriveVariantGroupName). */
 export function variantGroupDisplayName(
   variantGroup: VariantGroup,
   itemsMap: Map<string, ItemData>,
 ): string {
   const meta = VARIANT_GROUP_META[variantGroup.groupKey];
-  return meta?.name ?? groupDisplayName(variantGroupDefault(variantGroup), itemsMap);
+  return meta?.name ?? deriveVariantGroupName(variantGroup, itemsMap);
 }
 
 /** The VariantGroup's default/linked-to variant -- curated (see VARIANT_GROUP_META) where one exists and resolves to a real member, else variants[0] (alphabetically-first, matching RecipeGroup.canonicalId's own convention). */

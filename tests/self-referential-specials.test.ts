@@ -1,32 +1,90 @@
 import { describe, expect, it } from "vitest";
-import { isSelfReferentialSpecial } from "../src/utils/self-referential-specials";
+import { groupRecipes } from "../src/utils/recipe-groups";
+import type { RecipeData } from "../src/content.config";
+import { loadGeneratedRecipes } from "./generated-recipes";
 
-describe("isSelfReferentialSpecial", () => {
-  it("classifies every self-referential special type id as true", () => {
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_bannerduplicate")).toBe(true);
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_bookcloning")).toBe(true);
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_firework_star_fade")).toBe(true);
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_mapextending")).toBe(true);
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_repairitem")).toBe(true);
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_shielddecoration")).toBe(true);
-    expect(isSelfReferentialSpecial("minecraft:crafting_dye")).toBe(true);
+// Self-referential specials (banner duplicate, shield decoration, leather
+// re-dye, ...) are flagged by the data pipeline as `selfReferential: true`
+// on the recipe itself (see `selfReferential` in src/data/generated-schema.ts
+// for the deterministic upstream signal) -- groupRecipes carries the flag
+// onto each SiblingRecipe, and RecipePage.astro demotes flagged siblings
+// below the primary variant tabs. No hardcoded vanilla-type-id allowlist
+// exists anymore: these tests pin the flag's propagation and its fail-open
+// default, plus what the real generated data actually flags.
+
+const itemName = (id: string) => id.charAt(0).toUpperCase() + id.slice(1).replace(/_/g, " ");
+
+function recipe(overrides: Partial<RecipeData> & { id: string }): RecipeData {
+  return {
+    type: "shapeless",
+    category: "misc",
+    family: { collection: "families", id: "materials" },
+    slug: overrides.id,
+    ...overrides,
+  } as RecipeData;
+}
+
+describe("SiblingRecipe.selfReferential", () => {
+  it("carries a flagged special recipe's selfReferential onto its sibling", () => {
+    const recipes = [
+      recipe({
+        id: "black_banner",
+        type: "shaped",
+        result: { id: "black_banner", count: 1 },
+        pattern: ["###"],
+        key: { "#": { items: ["black_wool"] } },
+      }),
+      recipe({
+        id: "black_banner_duplicate",
+        type: "special",
+        result: { id: "black_banner", count: 1 },
+        note: "Combine a banner with a matching blank banner to duplicate its pattern.",
+        selfReferential: true,
+      }),
+    ];
+
+    const [group] = groupRecipes(recipes, itemName);
+    const special = group.siblings.find((s) => s.recipeId === "black_banner_duplicate");
+    const shaped = group.siblings.find((s) => s.recipeId === "black_banner");
+
+    expect(special?.selfReferential).toBe(true);
+    expect(shaped?.selfReferential).toBe(false);
   });
 
-  it("keeps genuine 'craft a new item' specials classified as false", () => {
-    // Each of these produces an item that's absent from its own ingredient
-    // list -- ground truth verified against vendor/mcmeta-summary/data/recipe
-    // (see src/utils/self-referential-specials.ts's doc comment).
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_firework_rocket")).toBe(false);
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_firework_star")).toBe(false);
-    expect(isSelfReferentialSpecial("minecraft:crafting_decorated_pot")).toBe(false);
-    expect(isSelfReferentialSpecial("minecraft:crafting_imbue")).toBe(false);
+  it("fails open (false) when the flag is absent -- an unflagged special, e.g. one a future version bump introduces", () => {
+    const recipes = [
+      recipe({
+        id: "firework_rocket",
+        type: "special",
+        result: { id: "firework_rocket", count: 3 },
+        note: "Combine paper and gunpowder.",
+      }),
+    ];
+
+    const [group] = groupRecipes(recipes, itemName);
+    expect(group.siblings[0].selfReferential).toBe(false);
   });
 
-  it("fails open (false) for undefined -- every non-special recipe", () => {
-    expect(isSelfReferentialSpecial(undefined)).toBe(false);
-  });
+  it("loads the real generated recipe data and finds the flag only on special recipes, propagated 1:1 onto siblings", () => {
+    const allRecipes = loadGeneratedRecipes();
+    const flaggedRecipes = allRecipes.filter((r) => r.selfReferential);
 
-  it("fails open (false) for an unrecognized vanilla type id -- e.g. a future version bump", () => {
-    expect(isSelfReferentialSpecial("minecraft:crafting_special_some_future_type")).toBe(false);
+    // The pipeline flags a meaningful set (banner duplicates, book cloning,
+    // firework star fade, map extending, shield decoration, leather
+    // re-dye), and only ever on `type: "special"` -- shaped/shapeless/
+    // transmute recipes always craft a new item.
+    expect(flaggedRecipes.length).toBeGreaterThan(0);
+    for (const flagged of flaggedRecipes) {
+      expect(flagged.type, `${flagged.id} is flagged but not a special`).toBe("special");
+    }
+
+    const groups = groupRecipes(allRecipes, itemName);
+    const flaggedSiblings = groups
+      .flatMap((group) => group.siblings)
+      .filter((sibling) => sibling.selfReferential);
+
+    expect(flaggedSiblings.map((s) => s.recipeId).toSorted()).toEqual(
+      flaggedRecipes.map((r) => r.id).toSorted(),
+    );
   });
 });

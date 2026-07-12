@@ -44,21 +44,33 @@ import type { CompoundIcon } from "./types.ts";
 /** Vendor texture ref of the shared banner template atlas (64x64, all three boxes' UV unwraps). */
 export const BANNER_TEMPLATE_TEXTURE_REF = "entity/banner/banner_base";
 
-/** Generated texture ref for the untinted atlas copy the pole/crossbar faces sample. */
-export const BANNER_BASE_ATLAS_REF = "item/banner_base";
+/**
+ * The atlas pixel dimensions this file's hand-authored uv crops (uvPx's
+ * 64x64 assumption) were verified against. generate.ts checks the real
+ * vendored atlas still matches and degrades the icon (placeholder +
+ * meta.audit.degradedIcons) on a mismatch, instead of silently stretching
+ * wrong crops over the geometry.
+ */
+export const BANNER_ATLAS_SIZE = { width: 64, height: 64 } as const;
 
 /**
- * Extra GUI yaw for banner icons, on top of the compound camera's default:
- * template_banner.json declares `display.gui.rotation: [30, 20, 0]` where
- * the inherited block default is [30, 225, 0], so the delta is 20 - 225 =
- * -205 -- the same guiYaw-minus-default formula scripts/lib/model.ts's
- * findGuiYawDelta applies to vendored element models. Net effect: the flag
- * shows nearly face-on (its south face), turned ~20deg, matching the
- * vanilla inventory icon's angled-flag-plus-pole look. (The gui transform's
- * translation/scale are ignored -- the engine's --icon-scale containment
- * already normalizes size, same as every other compound icon.)
+ * The banner special renderer's base model ref ("minecraft:" stripped) --
+ * every colored banner item's own definition names it as `base`, and it
+ * carries the vendored `display.gui.rotation` ([30, 20, 0] at the current
+ * pin) the icon's extra yaw is derived from (yaw 20 - default 225 = -205,
+ * via scripts/lib/model.ts's findGuiYawDelta). Exported so generate.ts can
+ * run the identical derivation for SYNTHETIC patterned-banner entries,
+ * which have no vanilla item definition of their own to read `base` from.
+ * Net effect of the derived yaw: the flag shows nearly face-on (its south
+ * face), turned ~20deg, matching the vanilla inventory icon's
+ * angled-flag-plus-pole look. (The gui transform's translation/scale are
+ * ignored -- the engine's --icon-scale containment already normalizes size,
+ * same as every other compound icon.)
  */
-const BANNER_GUI_YAW_DELTA = -205;
+export const BANNER_BASE_MODEL_REF = "item/template_banner";
+
+/** Generated texture ref for the untinted atlas copy the pole/crossbar faces sample. */
+export const BANNER_BASE_ATLAS_REF = "item/banner_base";
 
 /** 16 model units / 44 native units: pole (42) + crossbar (2) stacked is the assembly's full height. */
 const SCALE = 16 / 44;
@@ -112,10 +124,16 @@ export function uvPx(
  * atlas) + hanging flag (per-color tinted atlas). Coordinates are the
  * native entity-model units scaled by 16/44 into the engine's 0-16 cube,
  * centered on x/z = 8; the flag hangs against the pole's south face (the
- * side BANNER_GUI_YAW_DELTA turns toward the camera) with its bottom edge
+ * side `guiYawDelta` turns toward the camera) with its bottom edge
  * 2 native units above the ground, mirroring the in-game standing banner.
+ * `guiYawDelta` is derived from the item's own base model chain (see
+ * BANNER_BASE_MODEL_REF's doc comment) rather than hardcoded here.
  */
-export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: string): CompoundIcon {
+export function bannerCompoundIcon(
+  flagTexturePath: string,
+  baseTexturePath: string,
+  guiYawDelta: number,
+): CompoundIcon {
   const flag = faceWith(flagTexturePath);
   const base = faceWith(baseTexturePath);
 
@@ -125,7 +143,7 @@ export function bannerCompoundIcon(flagTexturePath: string, baseTexturePath: str
 
   return {
     type: "compound",
-    yRotation: BANNER_GUI_YAW_DELTA,
+    yRotation: guiYawDelta,
     // Tells ItemIcon.astro to use the banner-specific --icon-scale instead
     // of the generic cube-calibrated one -- this assembly's real footprint
     // (thin flag/pole, not a full 16x16x16 box) projects much smaller under

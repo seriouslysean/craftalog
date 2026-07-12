@@ -166,7 +166,7 @@ describe("real generated data — taxonomy totality and the fallbackFamilyItems 
   );
 
   it("fallbackFamilyItems is empty -- every item matches a real family rule, no generic-fallback leftovers", () => {
-    expect(meta.fallbackFamilyItems).toEqual([]);
+    expect(meta.audit.fallbackFamilyItems).toEqual([]);
   });
 
   it("every family present in the committed data has a category that exists in categories.json", () => {

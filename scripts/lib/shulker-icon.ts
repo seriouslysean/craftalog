@@ -1,4 +1,5 @@
 import { convertBedrockCube } from "./bedrock-geometry.ts";
+import { IconExtractionError } from "./compound-icon.ts";
 import type {
   CompoundElement,
   CompoundIcon,
@@ -108,19 +109,19 @@ function requireSingleCube(
   boneName: string,
 ): RawBedrockCube {
   if (!bone) {
-    throw new Error(
+    throw new IconExtractionError(
       `shulker geometry: expected a "${boneName}" bone -- vendored bedrock-samples geo.json may have changed shape`,
     );
   }
   const cubes = bone.cubes ?? [];
   if (cubes.length !== 1) {
-    throw new Error(
+    throw new IconExtractionError(
       `shulker geometry: expected bone "${boneName}" to declare exactly 1 cube, got ${cubes.length}`,
     );
   }
   const [cube] = cubes;
   if (cube.rotation || cube.mirror || bone.rotation) {
-    throw new Error(
+    throw new IconExtractionError(
       `shulker geometry: bone "${boneName}" or its cube declares rotation/mirror -- this extractor only supports plain axis-aligned bind-pose cubes (verified absent in the current vendored file; a future update may have introduced one)`,
     );
   }
@@ -169,7 +170,7 @@ function assertHeadCubeIsInterior(
     headY1 <= stackY1;
 
   if (!interior) {
-    throw new Error(
+    throw new IconExtractionError(
       `shulker geometry: "head" bone is no longer fully interior to "lid"+"base" -- the omission this file's docstring justifies needs re-verification against the new shape`,
     );
   }
@@ -188,13 +189,13 @@ export function shulkerCompoundIcon(
 ): CompoundIcon {
   const geometry = geoRaw[SHULKER_GEOMETRY_KEY];
   if (!geometry || typeof geometry === "string") {
-    throw new Error(
+    throw new IconExtractionError(
       `shulker geometry: expected key "${SHULKER_GEOMETRY_KEY}" not found -- vendored bedrock-samples geo.json may have changed shape`,
     );
   }
 
   if (geometry.texturewidth !== 64 || geometry.textureheight !== 64) {
-    throw new Error(
+    throw new IconExtractionError(
       `shulker geometry: expected a 64x64 UV space, got ${geometry.texturewidth}x${geometry.textureheight} -- the face-UV formula this depends on (scripts/lib/bedrock-geometry.ts) assumes 64x64`,
     );
   }
@@ -202,7 +203,7 @@ export function shulkerCompoundIcon(
   const knownBoneNames = new Set([LID_BONE_NAME, BASE_BONE_NAME, HEAD_BONE_NAME]);
   const unknownBone = geometry.bones.find((bone) => !knownBoneNames.has(bone.name));
   if (unknownBone) {
-    throw new Error(
+    throw new IconExtractionError(
       `shulker geometry: unexpected bone "${unknownBone.name}" -- this extractor only knows "lid"/"base" (rendered) and "head" (verified fully interior, skipped -- see this file's docstring); a future bedrock-samples update may have added geometry that needs review`,
     );
   }

@@ -46,13 +46,22 @@ export function isIncludedSpecialType(type: string): boolean {
 }
 
 /**
+ * The additive note used for a `minecraft:crafting_*` type this repo hasn't
+ * curated a SPECIAL_NOTES entry for yet -- a future vanilla crafting type
+ * is INCLUDED with this note (and surfaced in meta.audit.pendingSpecialTypes
+ * as a curation queue) rather than failing the parse: the curated note is an
+ * enhancement, never a blocking dependency (see docs/PLAN.md).
+ */
+const GENERIC_SPECIAL_NOTE = "Special crafting recipe — see the in-game recipe book.";
+
+/**
  * Recipe types present in the vendored data that are deliberately out of
  * scope for this catalog (non-crafting-grid stations: furnaces, stonecutter,
  * smithing table). Derived from the full type inventory of
- * vendor/mcmeta-summary/data/recipe/data.json. Any type that is neither
- * included (shaped/shapeless/transmute/curated specials) nor listed here
- * makes transformRecipe throw -- so a future `minecraft:crafting_*` type
- * can never silently vanish from the catalog with green CI.
+ * vendor/mcmeta-summary/data/recipe/data.json. Documentation of the KNOWN
+ * out-of-scope set: an unknown NON-crafting type is still excluded, but gets
+ * recorded in meta.audit.excludedUnknownTypes so a vendored data bump can
+ * never silently drop a genuinely novel type (see transformRecipe).
  */
 const KNOWN_EXCLUDED_TYPES = new Set([
   "minecraft:blasting",
@@ -74,23 +83,66 @@ const MAX_SHAPELESS_INGREDIENTS = 9;
  */
 export type TransformedRecipe = Omit<GeneratedRecipe, "family" | "slug">;
 
+/**
+ * Sink for the recipe-type degradations transformRecipe records instead of
+ * throwing (see docs/PLAN.md's core-vs-presentation contract): unknown
+ * crafting types that were included with the generic note, and unknown
+ * non-crafting types that were excluded. Surfaced via meta.audit.
+ */
+export interface RecipeTypeAudit {
+  pendingSpecialTypes: Set<string>;
+  excludedUnknownTypes: Set<string>;
+}
+
 function toResult(raw: RawResult | undefined): RecipeResult | undefined {
   if (!raw) return undefined;
   return { id: stripMcPrefix(raw.id), count: raw.count ?? 1 };
 }
 
 /**
+ * Whether a raw special recipe modifies an EXISTING item of the same kind
+ * rather than crafting a genuinely new one -- the deterministic signal is a
+ * raw ingredient field (`banner`, `target`, `map`, `source`, ...) whose
+ * value is the same item id as the recipe's own `result.id`. Verified
+ * against every special type in the vendored data: exactly bannerduplicate,
+ * bookcloning, firework_star_fade, mapextending, shielddecoration, and
+ * crafting_dye match; firework_rocket/firework_star/decorated_pot/imbue all
+ * produce a different item than any of their own ingredient fields. Tag
+ * refs ("#minecraft:banners") never match an item id (the "#" survives
+ * stripMcPrefix), so they can't false-positive.
+ */
+function isSelfReferentialRaw(raw: RawRecipeEntry): boolean {
+  const resultId = raw.result?.id;
+  if (typeof resultId !== "string") return false;
+  const bareResultId = stripMcPrefix(resultId);
+  return Object.entries(raw).some(
+    ([field, value]) =>
+      field !== "type" &&
+      field !== "category" &&
+      field !== "group" &&
+      typeof value === "string" &&
+      stripMcPrefix(value) === bareResultId,
+  );
+}
+
+/**
  * Transforms a single raw recipe entry into the generated data contract's
- * `Recipe` shape. Returns undefined only for KNOWN_EXCLUDED_TYPES (smelting,
- * stonecutting, smithing, ...) — the caller should skip the id entirely.
- * Throws for any type that is neither included nor known-excluded, so a
- * vendored data bump introducing a new crafting type fails loudly instead
- * of silently dropping recipes.
+ * `Recipe` shape. Returns undefined for excluded types (KNOWN_EXCLUDED_TYPES
+ * -- smelting, stonecutting, smithing, ... -- plus unknown non-crafting
+ * types, which are additionally recorded in `audit.excludedUnknownTypes`) —
+ * the caller should skip the id entirely. An unknown `minecraft:crafting_*`
+ * type is INCLUDED as a "special" recipe with a generic note and recorded in
+ * `audit.pendingSpecialTypes` -- a vendored data bump introducing a new
+ * crafting type degrades to that additive default instead of failing the
+ * automated weekly update (see docs/PLAN.md). Malformed data for a KNOWN
+ * type (missing key/pattern/ingredients/input) still throws: that's core
+ * recipe content, never shipped broken.
  */
 export function transformRecipe(
   id: string,
   raw: RawRecipeEntry,
   tags: RawTagsData,
+  audit?: RecipeTypeAudit,
 ): TransformedRecipe | undefined {
   const category = raw.category ?? DEFAULT_CATEGORY;
   const group = raw.group;
@@ -147,7 +199,9 @@ export function transformRecipe(
     };
   }
 
-  if (isIncludedSpecialType(raw.type)) {
+  if (isIncludedSpecialType(raw.type) || raw.type.startsWith("minecraft:crafting_")) {
+    const isCurated = isIncludedSpecialType(raw.type);
+    if (!isCurated) audit?.pendingSpecialTypes.add(raw.type);
     return {
       id,
       type: "special",
@@ -156,20 +210,18 @@ export function transformRecipe(
       // Optional: crafting_special_repairitem carries no result in the
       // vendored data (it acts on two arbitrary matching-type items).
       ...(raw.result ? { result: toResult(raw.result) } : {}),
-      note: SPECIAL_NOTES[raw.type],
+      note: isCurated ? SPECIAL_NOTES[raw.type] : GENERIC_SPECIAL_NOTE,
       // Raw vanilla type id, kept alongside the coarse "special" bucket above
       // -- see generated-schema.ts's recipeSchema for why.
       vanillaType: raw.type,
+      // Deterministic "modifies an existing item" signal -- see
+      // isSelfReferentialRaw and src/utils/self-referential-specials.ts.
+      ...(isSelfReferentialRaw(raw) ? { selfReferential: true } : {}),
     };
   }
 
-  if (KNOWN_EXCLUDED_TYPES.has(raw.type)) return undefined;
-
-  throw new Error(
-    `Recipe "${id}" has unrecognized type "${raw.type}" -- either include it ` +
-      `(a structured branch above, or SPECIAL_NOTES for a curated special) or add it to ` +
-      `KNOWN_EXCLUDED_TYPES in scripts/lib/recipes.ts if it is genuinely out of scope.`,
-  );
+  if (!KNOWN_EXCLUDED_TYPES.has(raw.type)) audit?.excludedUnknownTypes.add(raw.type);
+  return undefined;
 }
 
 /** Collects every item id referenced by a recipe (result + all resolved ingredients). Accepts a pre-`family`/`slug` transform output or a full GeneratedRecipe. */

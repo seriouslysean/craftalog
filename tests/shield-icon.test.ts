@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import { shieldCompoundIcon } from "../scripts/lib/shield-icon.ts";
 
 describe("shieldCompoundIcon", () => {
-  const icon = shieldCompoundIcon("/textures/item/shield_base_nopattern.png");
+  // -250 mirrors the real derived delta at the current pin: item/shield's
+  // display.gui yaw (-25) minus the block default (225), computed by
+  // scripts/lib/model.ts's findGuiYawDelta and passed through by generate.ts.
+  const icon = shieldCompoundIcon("/textures/item/shield_base_nopattern.png", -250);
 
   it("builds a single plate element that fits the 0-16 reference cube, tagged with the shield icon-scale variant", () => {
     expect(icon.type).toBe("compound");

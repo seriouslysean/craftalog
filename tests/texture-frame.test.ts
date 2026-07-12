@@ -61,4 +61,34 @@ describe("firstAnimationFrame", () => {
     const wide = buildPng(4, 2, [RED, RED, GREEN, GREEN, BLUE, BLUE, RED, RED]);
     expect(firstAnimationFrame(wide)).toBe(wide);
   });
+
+  it("passes a TALL texture through byte-identical when the animation sidecar is known absent -- tall static art is not a strip", () => {
+    const tall = buildPng(2, 6, [
+      RED,
+      RED,
+      RED,
+      RED,
+      GREEN,
+      GREEN,
+      GREEN,
+      GREEN,
+      BLUE,
+      BLUE,
+      BLUE,
+      BLUE,
+    ]);
+    expect(firstAnimationFrame(tall, false)).toBe(tall);
+  });
+
+  it("crops a tall texture when the animation sidecar is known present", () => {
+    const strip = buildPng(2, 4, [RED, RED, RED, RED, GREEN, GREEN, GREEN, GREEN]);
+    const result = PNG.sync.read(firstAnimationFrame(strip, true));
+    expect(result.width).toBe(2);
+    expect(result.height).toBe(2);
+  });
+
+  it("still passes a square texture through byte-identical even WITH a sidecar (leaves/glass carry non-animation sidecars)", () => {
+    const square = buildPng(2, 2, [RED, GREEN, BLUE, RED]);
+    expect(firstAnimationFrame(square, true)).toBe(square);
+  });
 });

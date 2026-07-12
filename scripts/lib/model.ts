@@ -1,5 +1,5 @@
-import { isHeadKind } from "./head-icon.ts";
-import type { HeadKind } from "./head-icon.ts";
+import { deriveLightningRodRegions } from "./lightning-rod-icon.ts";
+import type { AtlasRegion } from "./lightning-rod-icon.ts";
 import type {
   RawItemDefinitionsData,
   RawModel,
@@ -179,13 +179,20 @@ function firstResolvableTexture(merged: Record<string, string>): string | undefi
  * `minecraft:display_context`, the case whose `when` includes "gui" IS
  * the inventory-icon model (spears put the icon in the gui case and the
  * in-hand model in the fallback), so a gui case wins over the fallback.
+ *
+ * Returns the whole `{ type: "minecraft:model", model, tints?, ... }` node,
+ * not just the `model` string ref -- the node also carries the item's
+ * `tints` list, which resolveIconCandidate reads to detect dye-tinted
+ * layered items (leather armor) from the data itself instead of an id list
+ * (see findDyeTintDefault). Use findModelReference for the common
+ * ref-string-only case.
  */
-export function findModelReference(node: unknown): string | undefined {
+export function findModelNode(node: unknown): Record<string, unknown> | undefined {
   if (!node || typeof node !== "object") return undefined;
 
   const obj = node as Record<string, unknown>;
   if (obj.type === "minecraft:model" && typeof obj.model === "string") {
-    return obj.model;
+    return obj;
   }
 
   if (
@@ -198,34 +205,60 @@ export function findModelReference(node: unknown): string | undefined {
       const { when, model } = caseEntry as Record<string, unknown>;
       const whenValues = Array.isArray(when) ? when : [when];
       if (whenValues.includes("gui")) {
-        const found = findModelReference(model);
+        const found = findModelNode(model);
         if (found) return found;
       }
     }
   }
 
   if (obj.type === "minecraft:select" || obj.type === "minecraft:range_dispatch") {
-    const fromFallback = findModelReference(obj.fallback);
+    const fromFallback = findModelNode(obj.fallback);
     if (fromFallback) return fromFallback;
   }
 
   if (obj.type === "minecraft:condition") {
-    const fromOnFalse = findModelReference(obj.on_false);
+    const fromOnFalse = findModelNode(obj.on_false);
     if (fromOnFalse) return fromOnFalse;
   }
 
   for (const value of Object.values(obj)) {
     if (Array.isArray(value)) {
       for (const item of value) {
-        const found = findModelReference(item);
+        const found = findModelNode(item);
         if (found) return found;
       }
     } else if (value && typeof value === "object") {
-      const found = findModelReference(value);
+      const found = findModelNode(value);
       if (found) return found;
     }
   }
 
+  return undefined;
+}
+
+/** The resolved model REF (see findModelNode for the full-node variant and the default-first traversal rules). */
+export function findModelReference(node: unknown): string | undefined {
+  const found = findModelNode(node);
+  return typeof found?.model === "string" ? found.model : undefined;
+}
+
+/**
+ * Reads a resolved model node's `minecraft:dye` tint default -- the packed
+ * ARGB int the game multiplies the grayscale `layer0` base by when the item
+ * is un-dyed (e.g. leather armor's -6265536 = 0xFFA06540 = rgb(160,101,64)).
+ * Present on exactly the dye-tinted layered items (the 4 leather armor
+ * pieces + leather horse armor at the current pin) and absent everywhere
+ * else -- the data signal that replaces the old hardcoded item-id list
+ * (see scripts/lib/generate.ts's leather-armor branch).
+ */
+function findDyeTintDefault(modelNode: Record<string, unknown>): number | undefined {
+  const tints = modelNode.tints;
+  if (!Array.isArray(tints)) return undefined;
+  for (const tint of tints) {
+    if (!tint || typeof tint !== "object") continue;
+    const { type, default: defaultColor } = tint as Record<string, unknown>;
+    if (type === "minecraft:dye" && typeof defaultColor === "number") return defaultColor;
+  }
   return undefined;
 }
 
@@ -326,24 +359,25 @@ export interface CompoundElementCandidate {
 }
 
 export type IconCandidate =
-  | { type: "flat"; textureRef: string }
+  /** `dyeTintArgb` (rare -- leather armor only) is the resolved model node's `minecraft:dye` tint default: this flat texture is a grayscale dye-tint base with a `<ref>_overlay` trim layer, synthesized rather than copied verbatim (see findDyeTintDefault + scripts/lib/leather-armor-icon.ts). */
+  | { type: "flat"; textureRef: string; dyeTintArgb?: number }
   | { type: "block"; topRef: string; sideRef: string }
   | { type: "slab"; topRef: string; sideRef: string }
   | { type: "stairs"; topRef: string; sideRef: string }
-  /** A colored banner — resolved to a generated icon (see scripts/lib/banner-icon.ts), not a vendored texture. */
-  | { type: "banner"; colorId: string }
-  /** A lightning rod variant — top/side cropped from `textureRef`'s atlas (see scripts/lib/lightning-rod-icon.ts), not a vendored texture. */
-  | { type: "lightning_rod"; textureRef: string }
+  /** A colored banner — resolved to a generated icon (see scripts/lib/banner-icon.ts), not a vendored texture. `guiYawDelta` comes from the special node's own base model chain (item/template_banner's display.gui.rotation) via findGuiYawDelta. */
+  | { type: "banner"; colorId: string; guiYawDelta: number }
+  /** A lightning rod variant — its real UV regions (derived from the shared template model's own elements, see scripts/lib/lightning-rod-icon.ts's deriveLightningRodRegions) cropped out of `textureRef`'s atlas and re-placed at their model positions. */
+  | { type: "lightning_rod"; textureRef: string; regions: AtlasRegion[] }
   /** A bed color — resolved to a pre-baked Bedrock Edition sprite (see scripts/lib/bedrock-colors.ts), not a vendored Java texture. */
   | { type: "bed"; colorId: string }
-  /** The shield — resolved to a hand-authored compound icon (see scripts/lib/shield-icon.ts), not a vendored texture. Only one candidate exists (the plain `shield` item, no color/pattern variants), so this carries no further data. */
-  | { type: "shield" }
+  /** The shield — resolved to a hand-authored compound icon (see scripts/lib/shield-icon.ts), not a vendored texture. Only one candidate exists (the plain `shield` item, no color/pattern variants). `guiYawDelta` comes from the special node's own base model chain (item/shield's display.gui.rotation) via findGuiYawDelta. */
+  | { type: "shield"; guiYawDelta: number }
   /** A copper golem statue tier — resolved to a compound icon extracted from real vendored Bedrock entity geometry (see scripts/lib/copper-golem-icon.ts), not hand-authored. `textureRef` is this tier's Java texture ref (e.g. "entity/copper_golem/copper_golem_exposed"), read straight from the item definition's own `texture` field. */
   | { type: "copper_golem_statue"; textureRef: string }
   /** A shulker box color (16 dyed + undyed) — resolved to a compound icon extracted from real vendored Bedrock entity geometry (see scripts/lib/shulker-icon.ts), not hand-authored. `textureRef` is this color's Java entity texture ref (e.g. "entity/shulker/shulker_black", or "entity/shulker/shulker" for undyed), read straight from the item definition's own `texture` field — covers all 16 dye colors + undyed generically, no hand list. */
   | { type: "shulker_box"; textureRef: string }
-  /** A mob head (skull block item) — resolved to a compound icon cropped from `kind`'s own vendored entity skin texture (see scripts/lib/head-icon.ts), not a vendored block model. Only kinds in HEAD_KIND_TEXTURES reach here — "dragon" and player heads fail open to the existing base-model chain resolution instead (see resolveIconCandidate). */
-  | { type: "head"; kind: HeadKind }
+  /** A mob head (skull block item) — resolved to a compound icon cropped from `kind`'s own vendored entity skin texture (see scripts/lib/head-icon.ts), not a vendored block model. `kind` is the raw vanilla value; kinds missing from HEAD_KIND_TEXTURES (currently just "dragon", whose entity texture isn't a standard skin box-UV atlas) degrade to the placeholder + a meta.audit.unmappedHeadKinds entry in generate.ts — a visibly-wrong particle swatch is worse than the placeholder. player_head is a separate special type with no `kind` at all and never reaches here. */
+  | { type: "head"; kind: string }
   /** The conduit — resolved to a compound icon cropped from its own vendored entity texture (see scripts/lib/head-icon.ts), the same treatment as heads. Only one variant exists, so this carries no further data. */
   | { type: "conduit" }
   /** A chest-family texture variant — resolved to a hand-authored compound icon (see scripts/lib/chest-icon.ts), not a vendored texture. `textureName` is the bare entity-atlas name (e.g. "normal", "trapped", "ender", "copper", "copper_exposed") read straight from the item definition's own `texture` field, mapping to `entity/chest/<textureName>.png`. */
@@ -372,11 +406,22 @@ export type IconCandidate =
       flatFallbackRef?: string;
     };
 
-// The vanilla default `display.gui` transform every block model inherits
-// unless it overrides "gui" itself: block/block.json (the root parent of
-// nearly every block model) declares `rotation: [30, 225, 0]`. Only the yaw
-// (index 1) matters here — see findGuiYawDelta.
-const DEFAULT_GUI_YAW = 225;
+// Fallback for the vanilla default `display.gui` yaw when the vendored data
+// doesn't carry block/block (e.g. minimal test fixtures) -- see
+// defaultGuiYaw, which reads the real value from the data itself.
+const DEFAULT_GUI_YAW_FALLBACK = 225;
+
+/**
+ * The vanilla default `display.gui` yaw every block model inherits unless it
+ * overrides "gui" itself, read from the vendored data's own block/block.json
+ * (the root parent of nearly every block model, which declares
+ * `rotation: [30, 225, 0]` at the current pin). Only the yaw (index 1)
+ * matters here — see findGuiYawDelta. Falls back to the long-stable 225
+ * constant when block/block is absent from the given models data.
+ */
+function defaultGuiYaw(models: RawModelsData): number {
+  return models["block/block"]?.display?.gui?.rotation?.[1] ?? DEFAULT_GUI_YAW_FALLBACK;
+}
 
 /**
  * Walks a model's parent chain (leaf to root, same order as walkModelChain's
@@ -406,11 +451,14 @@ function findElementsInChain(
  * gets an extra rotateY(180deg) — see ItemIcon.astro). Returns 0 when no
  * model in the chain overrides "gui" (inherits the default unchanged, e.g.
  * anvil — see the "why gui, not fixed" note on extractCompoundElements).
+ * Exported for the special-renderer icon builders (banner, shield), whose
+ * base models carry a real vendored `display.gui` rotation despite having
+ * no element geometry -- see resolveIconCandidate's banner/shield branches.
  */
-function findGuiYawDelta(chainNames: string[], models: RawModelsData): number {
+export function findGuiYawDelta(chainNames: string[], models: RawModelsData): number {
   for (const name of chainNames) {
     const guiYaw = models[name]?.display?.gui?.rotation?.[1];
-    if (guiYaw !== undefined) return guiYaw - DEFAULT_GUI_YAW;
+    if (guiYaw !== undefined) return guiYaw - defaultGuiYaw(models);
   }
   return 0;
 }
@@ -562,11 +610,24 @@ export function resolveIconCandidate(
     }
   }
 
-  const modelRef = findModelReference(definition.model);
+  const modelNode = findModelNode(definition.model);
+  const modelRef = typeof modelNode?.model === "string" ? modelNode.model : undefined;
   const special = modelRef ? undefined : findSpecialModel(definition.model);
 
+  // Extra gui yaw for the hand-authored banner/shield compound icons,
+  // derived from the special node's own base model chain (item/template_banner
+  // declares [30, 20, 0], item/shield [15, -25, -5]) -- the same
+  // findGuiYawDelta formula every vendored element model already gets,
+  // instead of re-hardcoding those models' yaws in the icon builders.
+  const specialBaseGuiYawDelta = (): number =>
+    special ? findGuiYawDelta(walkModelChain(special.base, models).chainNames, models) : 0;
+
   if (special?.specialType === "banner" && typeof special.specialModel.color === "string") {
-    return { type: "banner", colorId: special.specialModel.color };
+    return {
+      type: "banner",
+      colorId: special.specialModel.color,
+      guiYawDelta: specialBaseGuiYawDelta(),
+    };
   }
 
   if (
@@ -586,7 +647,7 @@ export function resolveIconCandidate(
   }
 
   if (special?.specialType === "shield") {
-    return { type: "shield" };
+    return { type: "shield", guiYawDelta: specialBaseGuiYawDelta() };
   }
 
   if (special?.specialType === "shulker_box" && typeof special.specialModel.texture === "string") {
@@ -599,15 +660,13 @@ export function resolveIconCandidate(
   }
 
   if (special?.specialType === "head" && typeof special.specialModel.kind === "string") {
-    const { kind } = special.specialModel;
-    if (isHeadKind(kind)) {
-      return { type: "head", kind };
-    }
-    // Unsupported kind (currently just "dragon", whose entity texture isn't
-    // a standard skin box-UV atlas -- see scripts/lib/head-icon.ts) -- fall
-    // through to the base-model chain resolution below, same fail-open
-    // behavior as before this renderer existed (and as player_head, which
-    // has no `kind` at all, always did).
+    // The raw kind, mapped or not -- generate.ts decides: kinds in
+    // HEAD_KIND_TEXTURES render the real cropped-skin cube; unmapped kinds
+    // (currently just "dragon", whose entity texture isn't a standard skin
+    // box-UV atlas -- see scripts/lib/head-icon.ts) degrade to the
+    // placeholder + a meta.audit.unmappedHeadKinds entry, instead of the old
+    // silent fail-open to a flat soul_sand particle swatch.
+    return { type: "head", kind: special.specialModel.kind };
   }
 
   if (special?.specialType === "conduit") {
@@ -635,11 +694,41 @@ export function resolveIconCandidate(
   const category = classifyChain(chain.chainNames);
   const resolve = (key: string): string | undefined => resolveTextureRef(key, chain.mergedTextures);
 
+  // The generic last-resort resolution: real element geometry in the chain
+  // becomes a "compound" candidate (with the flat guess riding along as
+  // flatFallbackRef), else the flat particle/layer0 guess. Shared by the
+  // "unknown" default below and by any recognized shape whose bespoke
+  // derivation fails (e.g. a lightning_rod template whose elements no longer
+  // yield derivable atlas regions) -- degrade to the honest generic path
+  // instead of failing the parse.
+  const resolveUnknownChain = (): IconCandidate | undefined => {
+    const textureRef =
+      resolve("particle") ?? resolve("layer0") ?? firstResolvableTexture(chain.mergedTextures);
+
+    // Before committing to a flat texture, check whether some model in
+    // the chain has real element geometry (e.g. anvil's template_anvil
+    // parent) — if so, render the actual shape instead of a flat crop of
+    // its particle/layer0 texture. The flat guess still rides along as
+    // flatFallbackRef in case none of the compound's own element textures
+    // exist as files (generate.ts is the one that can check).
+    const compound = extractCompoundElements(chain.chainNames, chain.mergedTextures, models);
+    if (compound) return { type: "compound", ...compound, flatFallbackRef: textureRef };
+
+    return textureRef ? { type: "flat", textureRef } : undefined;
+  };
+
   switch (category) {
     case "flat": {
       const textureRef =
         resolve("layer0") ?? resolve("particle") ?? firstResolvableTexture(chain.mergedTextures);
-      return textureRef ? { type: "flat", textureRef } : undefined;
+      if (!textureRef) return undefined;
+      // A `minecraft:dye` tint on the resolved model node marks this flat
+      // texture as a grayscale dye-tint base (leather armor) -- see
+      // findDyeTintDefault and scripts/lib/generate.ts's leather branch.
+      const dyeTintArgb = modelNode ? findDyeTintDefault(modelNode) : undefined;
+      return dyeTintArgb === undefined
+        ? { type: "flat", textureRef }
+        : { type: "flat", textureRef, dyeTintArgb };
     }
     case "cube_all": {
       const ref = resolve("all");
@@ -676,8 +765,17 @@ export function resolveIconCandidate(
       return topRef && sideRef ? { type: "stairs", topRef, sideRef } : undefined;
     }
     case "lightning_rod": {
+      // The shared template model carries real `elements` whose per-face
+      // uv rects + block-space positions fully determine the flat icon's
+      // crop/placement math -- derived here instead of hardcoded (see
+      // deriveLightningRodRegions). If a future data bump reshapes the
+      // template such that regions can't be derived, fall through to the
+      // generic element-geometry path rather than failing.
       const textureRef = resolve("texture");
-      return textureRef ? { type: "lightning_rod", textureRef } : undefined;
+      const rawElements = findElementsInChain(chain.chainNames, models);
+      const regions = rawElements ? deriveLightningRodRegions(rawElements) : undefined;
+      if (textureRef && regions) return { type: "lightning_rod", textureRef, regions };
+      return resolveUnknownChain();
     }
     case "pressure_plate": {
       const textureRef = resolve("texture");
@@ -701,19 +799,7 @@ export function resolveIconCandidate(
     }
     case "unknown":
     default: {
-      const textureRef =
-        resolve("particle") ?? resolve("layer0") ?? firstResolvableTexture(chain.mergedTextures);
-
-      // Before committing to a flat texture, check whether some model in
-      // the chain has real element geometry (e.g. anvil's template_anvil
-      // parent) — if so, render the actual shape instead of a flat crop of
-      // its particle/layer0 texture. The flat guess still rides along as
-      // flatFallbackRef in case none of the compound's own element textures
-      // exist as files (generate.ts is the one that can check).
-      const compound = extractCompoundElements(chain.chainNames, chain.mergedTextures, models);
-      if (compound) return { type: "compound", ...compound, flatFallbackRef: textureRef };
-
-      return textureRef ? { type: "flat", textureRef } : undefined;
+      return resolveUnknownChain();
     }
   }
 }

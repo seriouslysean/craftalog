@@ -5,6 +5,11 @@ on:
     # Every Monday at 03:17 UTC - a quiet time, off the top of the hour.
     - cron: "17 3 * * 1"
   workflow_dispatch:
+    inputs:
+      force:
+        description: "Rebuild and capture changes even when pins are already current"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -95,8 +100,12 @@ jobs:
           CURRENT: ${{ steps.current.outputs.version }}
           LATEST_BEDROCK: ${{ steps.latest-bedrock.outputs.version }}
           CURRENT_BEDROCK: ${{ steps.current-bedrock.outputs.version }}
+          FORCE: ${{ inputs.force == true }}
         run: |
-          if [ "$LATEST" != "$CURRENT" ] || [ "$LATEST_BEDROCK" != "$CURRENT_BEDROCK" ]; then
+          if [ "$FORCE" = "true" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Force run: rebuilding regardless of pins (mcmeta ${CURRENT} -> ${LATEST}, bedrock-samples ${CURRENT_BEDROCK} -> ${LATEST_BEDROCK})."
+          elif [ "$LATEST" != "$CURRENT" ] || [ "$LATEST_BEDROCK" != "$CURRENT_BEDROCK" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -109,18 +118,27 @@ jobs:
         env:
           LATEST: ${{ steps.latest.outputs.version }}
           LATEST_BEDROCK: ${{ steps.latest-bedrock.outputs.version }}
+          FORCE: ${{ inputs.force == true }}
+          RUN_ID: ${{ github.run_id }}
         run: |
           branch="data-update/mcmeta-${LATEST}_bedrock-${LATEST_BEDROCK}"
+          if [ "$FORCE" = "true" ]; then
+            # Force runs may target already-current pins, so the version-based
+            # name could collide with a previous branch; a run-id suffix keeps
+            # each force run unique (delete_branch_on_merge cleans them up).
+            branch="${branch}-force-${RUN_ID}"
+          fi
           echo "branch=$branch" >> "$GITHUB_OUTPUT"
           if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
-            echo "Branch $branch already exists on origin, nothing to do."
+            echo "::warning::Branch $branch already exists on origin - a previous data update PR is stalled."
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Bump submodule pins
         if: steps.needs-bump.outputs.changed == 'true' && steps.branch-check.outputs.exists != 'true'
+        id: bump
         env:
           VER: ${{ steps.latest.outputs.version }}
           BEDROCK_VER: ${{ steps.latest-bedrock.outputs.version }}
@@ -154,43 +172,6 @@ jobs:
             npm run validate
           } 2>&1 | tee /tmp/update-data.log
 
-      - name: Report validation failure
-        if: failure() && steps.parse-validate.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VER: ${{ steps.latest.outputs.version }}
-          BEDROCK_VER: ${{ steps.latest-bedrock.outputs.version }}
-        run: |
-          tail_log=$(tail -n 200 /tmp/update-data.log || echo "no log captured")
-          title="Scheduled vanilla data update failed validation"
-          body=$(cat <<EOF
-          Automated update to vanilla data (mcmeta \`${VER}\`, bedrock-samples
-          \`${BEDROCK_VER}\`) failed during \`npm run parse\` / \`npm run validate\`.
-
-          <details>
-          <summary>Log tail</summary>
-
-          \`\`\`
-          ${tail_log}
-          \`\`\`
-
-          </details>
-
-          This was run by the \`update-data\` scheduled workflow. Fix the
-          parser/validator or investigate the upstream data change, then
-          re-run the workflow manually.
-          EOF
-          )
-          existing=$(gh issue list --state open \
-            --search "\"$title\" in:title" \
-            --json number --jq '.[0].number // empty')
-          if [ -n "$existing" ]; then
-            gh issue comment "$existing" --body "$body"
-            echo "Commented on existing open issue #$existing instead of creating a duplicate."
-          else
-            gh issue create --title "$title" --body "$body"
-          fi
-
       - name: Check for changes
         if: steps.needs-bump.outputs.changed == 'true' && steps.branch-check.outputs.exists != 'true'
         id: changes
@@ -199,11 +180,12 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Parse/validate succeeded but produced no changes; nothing to commit."
+            echo "Parse/validate succeeded but produced no changes; clean no-op, nothing to commit or deploy."
           fi
 
       - name: Commit and open PR
         if: steps.changes.outputs.changed == 'true'
+        id: pr
         env:
           GH_TOKEN: ${{ github.token }}
           VER: ${{ steps.latest.outputs.version }}
@@ -225,6 +207,24 @@ jobs:
             counts=$(cat src/data/generated/meta.json)
           fi
 
+          # Pretty-print any non-empty audit lists from meta.json's `audit`
+          # key (guarded: older parser output has no such key) so curation
+          # work surfaces directly on the PR.
+          audit_section=""
+          if [ -f src/data/generated/meta.json ] \
+            && jq -e '.audit' src/data/generated/meta.json >/dev/null 2>&1; then
+            queue=$(jq -r '
+              .audit | to_entries[]
+              | select((.value | type) == "array" and (.value | length) > 0)
+              | "**\(.key)** (\(.value | length))\n"
+                + (.value | map("- `" + tostring + "`") | join("\n"))
+                + "\n"
+            ' src/data/generated/meta.json)
+            if [ -n "$queue" ]; then
+              audit_section=$(printf '## Curation queue\n\n%s' "$queue")
+            fi
+          fi
+
           body=$(cat <<EOF
           Bumps vendored mcmeta data from \`${CURRENT_VER}\` to \`${VER}\`,
           and vendored bedrock-samples (bed icons + entity geometry) from
@@ -241,25 +241,148 @@ jobs:
 
           </details>
 
-          Opened automatically by the \`update-data\` scheduled workflow.
-          Waits for manual review and merge.
+          ${audit_section}
+
+          Opened automatically by the \`update-data\` scheduled workflow,
+          which merges it automatically once CI passes and then deploys the
+          site. A manual run with the \`force\` input rebuilds and captures
+          changes even without a version bump.
           EOF
           )
 
-          gh pr create \
+          pr_url=$(gh pr create \
             --title "data: update vanilla data to mcmeta ${VER}, bedrock-samples ${BEDROCK_VER}" \
             --body "$body" \
             --base main \
-            --head "$BRANCH"
+            --head "$BRANCH")
+          echo "url=$pr_url" >> "$GITHUB_OUTPUT"
 
-      - name: Kick CI on the PR branch
+      - name: Run CI on the PR branch and wait for it
         if: steps.changes.outputs.changed == 'true'
+        id: ci-watch
+        timeout-minutes: 15
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.branch-check.outputs.branch }}
         run: |
           # PRs created with GITHUB_TOKEN do not trigger pull_request
           # workflows, so run CI explicitly; its check runs attach to the
-          # head SHA and satisfy the PR's required checks. The PR is then
-          # left open for manual review and merge.
+          # head SHA and satisfy the PR's required `ci` check.
           gh workflow run ci.yml --ref "$BRANCH"
+
+          # The dispatched run does not exist immediately; poll for it. The
+          # branch was created by this run, so the first workflow_dispatch
+          # CI run on it is necessarily ours.
+          run_id=""
+          for _ in $(seq 1 24); do
+            sleep 5
+            run_id=$(gh run list --workflow ci.yml --branch "$BRANCH" \
+              --event workflow_dispatch --limit 1 \
+              --json databaseId --jq '.[0].databaseId // empty')
+            if [ -n "$run_id" ]; then
+              break
+            fi
+          done
+          if [ -z "$run_id" ]; then
+            echo "::error::Dispatched CI run for ${BRANCH} never appeared."
+            exit 1
+          fi
+
+          echo "Watching CI run ${run_id} on ${BRANCH}"
+          gh run watch "$run_id" --interval 15 --exit-status
+
+      - name: Merge the PR
+        if: steps.changes.outputs.changed == 'true'
+        id: merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.branch-check.outputs.branch }}
+        run: |
+          # The required `ci` status check is green on the head SHA and no
+          # reviews are required, so a direct squash merge is permitted.
+          # delete_branch_on_merge cleans up the branch.
+          gh pr merge "$BRANCH" --squash
+
+      - name: Run CI on main to trigger deploy
+        if: steps.changes.outputs.changed == 'true'
+        id: deploy-kick
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The squash-merge push above was authored by GITHUB_TOKEN, and
+          # events created with GITHUB_TOKEN do not create workflow runs -
+          # so ci.yml's push trigger will NOT fire for that merge commit,
+          # and deploy.yml (workflow_run on CI@main) would never run.
+          # workflow_dispatch is exempt from that suppression, so dispatch
+          # CI on main explicitly; its success fires the deploy workflow.
+          gh workflow run ci.yml --ref main
+
+      - name: Report failure or stalled PR
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          JOB_STATUS: ${{ job.status }}
+          STALLED: ${{ steps.branch-check.outputs.exists }}
+          TAGS_FAILED: ${{ steps.latest.outcome == 'failure' || steps.latest-bedrock.outcome == 'failure' }}
+          PINS_FAILED: ${{ steps.current.outcome == 'failure' || steps.current-bedrock.outcome == 'failure' }}
+          BUMP_OUTCOME: ${{ steps.bump.outcome }}
+          PARSE_OUTCOME: ${{ steps.parse-validate.outcome }}
+          CI_OUTCOME: ${{ steps.ci-watch.outcome }}
+          MERGE_OUTCOME: ${{ steps.merge.outcome }}
+          BRANCH: ${{ steps.branch-check.outputs.branch }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+          VER: ${{ steps.latest.outputs.version }}
+          BEDROCK_VER: ${{ steps.latest-bedrock.outputs.version }}
+        run: |
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          cause=""
+          detail=""
+
+          if [ "$TAGS_FAILED" = "true" ]; then
+            cause="resolving the latest stable upstream tag failed (git ls-remote against misode/mcmeta or Mojang/bedrock-samples)"
+          elif [ "$PINS_FAILED" = "true" ]; then
+            cause="parsing the currently pinned versions failed (version.txt or the bedrock-samples HEAD-to-tag resolution)"
+          elif [ "$BUMP_OUTCOME" = "failure" ]; then
+            cause="checking out the bumped submodule tags failed"
+          elif [ "$PARSE_OUTCOME" = "failure" ]; then
+            cause="\`npm run parse\` / \`npm run validate\` failed"
+            tail_log=$(tail -n 200 /tmp/update-data.log 2>/dev/null || echo "no log captured")
+            detail=$(printf "<details>\n<summary>Log tail</summary>\n\n\`\`\`\n%s\n\`\`\`\n\n</details>" "$tail_log")
+          elif [ "$CI_OUTCOME" = "failure" ]; then
+            cause="CI failed on the data PR (${PR_URL:-branch \`${BRANCH}\`}); the PR was left open, unmerged"
+          elif [ "$MERGE_OUTCOME" = "failure" ]; then
+            cause="merging the data PR (${PR_URL:-branch \`${BRANCH}\`}) was rejected"
+          elif [ "$JOB_STATUS" = "failure" ]; then
+            cause="an unexpected step failed (see the run log)"
+          elif [ "$STALLED" = "true" ]; then
+            pr_url=$(gh pr list --head "$BRANCH" --state open --json url --jq '.[0].url // empty' || true)
+            cause="a previous data update PR (${pr_url:-branch \`${BRANCH}\`}) is still open, so this run skipped itself; merge or close it to unblock weekly updates"
+          fi
+
+          if [ -z "$cause" ]; then
+            echo "Nothing to report."
+            exit 0
+          fi
+
+          title="Scheduled vanilla data update needs attention"
+          body=$(cat <<EOF
+          Automated vanilla data update (mcmeta \`${VER:-unknown}\`, bedrock-samples
+          \`${BEDROCK_VER:-unknown}\`) needs attention.
+
+          Cause: ${cause}.
+
+          ${detail}
+
+          Run: ${run_url}
+          EOF
+          )
+          existing=$(gh issue list --state open \
+            --search "\"$title\" in:title" \
+            --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+            echo "Commented on existing open issue #$existing instead of creating a duplicate."
+          else
+            gh issue create --title "$title" --body "$body"
+          fi

@@ -3,8 +3,8 @@
 Goal: show every vanilla Minecraft crafting recipe with zero manual data upkeep.
 Vanilla data is vendored via [misode/mcmeta](https://github.com/misode/mcmeta)
 submodules, parsed into our own format by scripts in this repo, and kept fresh
-by a scheduled workflow that bumps the pin and opens a PR for manual review
-and merge.
+by a scheduled workflow that bumps the pin, opens a PR, and — once CI passes
+— squash-merges it and triggers the deploy, end to end.
 
 This document is the coordination contract for the work. If a session dies,
 resume from here plus the task list in the PR description.
@@ -42,13 +42,21 @@ resume from here plus the task list in the PR description.
 2. **Scope**: all vanilla crafting recipes — `crafting_shaped`,
    `crafting_shapeless`, `crafting_transmute` rendered; `crafting_special_*` /
    `crafting_dye` / `crafting_decorated_pot` cataloged with a curated
-   explanation (they are hardcoded in the game, not data-driven).
-   Furnace/stonecutter/smithing types are out of scope for now.
+   explanation (they are hardcoded in the game, not data-driven). An unknown
+   `minecraft:crafting_*` type a future data bump introduces is still
+   included, with a generic note and a `meta.audit.pendingSpecialTypes`
+   entry pending curation (see scripts/lib/recipes.ts) — never a parse
+   failure. Furnace/stonecutter/smithing types are out of scope for now;
+   an unknown non-crafting type is excluded but recorded in
+   `meta.audit.excludedUnknownTypes` so it can't slip by silently.
 3. **Toolchain**: Astro 7 + Content Layer collections, Vitest, oxlint, oxfmt.
    Prettier is kept only if oxfmt cannot format `.astro` files.
-4. **Self-update**: scheduled workflow opens a PR and triggers CI on it; the
-   PR waits for manual review and merge (no auto-merge). Validation failure
-   opens an issue instead.
+4. **Self-update**: fully automated — the scheduled workflow opens a PR,
+   triggers CI on it, watches it, squash-merges on green, and dispatches CI
+   on main to fire the deploy. CI is the sole merge gate; there is no
+   manual review step. Every failure mode (and a stalled previous PR)
+   files/updates one deduped "needs attention" issue, and the previously
+   deployed site stays live on any failure.
 
 ## Pipeline
 
@@ -62,7 +70,7 @@ src/data/generated/recipes.json    ── committed, diffable
 src/data/generated/items.json      ── committed, diffable
 src/data/generated/categories.json ── committed, diffable
 src/data/generated/families.json   ── committed, diffable
-src/data/generated/meta.json       ── mc version, counts, parse stats
+src/data/generated/meta.json       ── mc version, counts, audit (curation queue)
 public/textures/{item,block,hud}/*.png ── only textures actually referenced
         │  npm run validate  (scripts/validate.ts)
         ▼
@@ -74,6 +82,19 @@ Static pages: / (browse by family), /recipe/[item] + /recipe/[item]/[slug], 404
 Generated data is **committed** so the site builds without submodules and the
 self-update PR diff is reviewable. `npm run validate` re-derives everything and
 fails CI if committed data drifts from the submodule pin.
+
+**Core vs presentation contract**: validation is two-tier. CORE data
+problems — drift from the pin, URL-slug collisions, missing texture files,
+empty ingredients, recipe/item count floors — **fail** `npm run validate`
+(exit 1). PRESENTATION gaps — unresolved or degraded icons, fallback-family
+items, uncurated special notes — are prominent **warnings**, never
+failures: icons/families/notes are additive enhancement, and the automated
+weekly update must be able to land a version bump whose only defects are
+curation work. Every degradation is collected in `meta.json`'s `audit`
+object (`degradedIcons`, `emptyDerivations`, `excludedUnknownTypes`,
+`fallbackFamilyItems`, `pendingSpecialTypes`, `unmappedHeadKinds`,
+`unresolvedIcons` — see scripts/lib/types.ts's `MetaAudit`), which the
+weekly update PR body pretty-prints as a curation queue.
 
 ## Generated data contract
 
@@ -101,8 +122,9 @@ type Recipe = {
   // shapeless + transmute — any placement:
   ingredients?: Ingredient[];
   // special only:
-  note?: string; // curated human explanation
-  vanillaType?: string; // raw vanilla recipe type id, e.g. "minecraft:crafting_special_bannerduplicate" -- see src/utils/self-referential-specials.ts
+  note?: string; // curated human explanation (or a generic fallback for an uncurated new type — see meta.audit.pendingSpecialTypes)
+  vanillaType?: string; // raw vanilla recipe type id, e.g. "minecraft:crafting_special_bannerduplicate" -- see scripts/lib/recipes.ts
+  selfReferential?: boolean; // derived: a raw ingredient field equals the recipe's own result id, i.e. the recipe modifies an existing item rather than crafting a new one -- see scripts/lib/recipes.ts's isSelfReferentialRaw; omitted (never false) when absent
 };
 ```
 
@@ -151,8 +173,13 @@ Texture resolution: item definition → model → parent chain. Heuristics:
 top=side=`all`; `block/cube_column` → top=`end`, side=`side`;
 `block/cube_bottom_top` → `top`/`side`; other block parents → best-effort
 (`particle` or first texture) as flat. Unresolvable → flat placeholder texture,
-recorded in `meta.unresolvedIcons` (parse never breaks the build); `npm run
-validate` then **fails** while any item ships the placeholder.
+recorded in `meta.audit.unresolvedIcons` (parse never breaks the build); `npm
+run validate` surfaces it as a prominent warning, never a failure — icons are
+additive enhancement (see the core-vs-presentation contract above). A bespoke
+icon extractor whose assumptions no longer hold against new vendored data
+(Bedrock geometry, atlas-dimension checks) likewise degrades just that item
+to the placeholder plus a `meta.audit.degradedIcons` entry instead of
+aborting the parse.
 
 `block/template_lightning_rod` (shared by every oxidation variant) is a named
 exception: its "texture" is a UV atlas for its two-element geometry (a 4x4x4
@@ -239,10 +266,14 @@ pattern atlas (`entity/banner/<id>.png`, the same UV layout as
 
 `stat` is derived from `vendor/mcmeta-summary/item_components/data.json`
 (scripts/lib/item-stats.ts) — at most one defining stat per item, by priority
-food > armor > weapon > tool, classified via vanilla item tags
-(`swords`/`axes`/`pickaxes`/`shovels`/`hoes`, `head_armor`/`chest_armor`/
-`leg_armor`/`foot_armor`) rather than raw attribute presence, so e.g. an axe's
-incidental attack-damage attribute doesn't make it show as a weapon. Most
+food > armor > weapon > tool, with every gate component-driven (no item-tag
+or item-id lists): food from `minecraft:food` nutrition; armor from summed
+`minecraft:armor` attribute points (which also covers non-player body armor —
+wolf armor, horse armors); weapon from the `minecraft:weapon` component's
+`item_damage_per_attack` partition (dedicated weapons take the default 1
+durability per hit, attack-capable tools pay 2 — so e.g. an axe's incidental
+attack-damage attribute doesn't make it show as a weapon); tool from
+`minecraft:tool` plus a positive `minecraft:max_damage` durability. Most
 items (building blocks, etc.) have no stat at all — deliberately, to avoid
 turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
 (hearts/armor/food, from the fixed set in `public/textures/hud/`, sourced via
@@ -264,16 +295,19 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
   (like the Minecraft wiki), with the tag label shown (e.g. "Any Planks").
   Cycling is progressive enhancement; first variant renders statically.
 - **Self-referential specials** (banner duplicate, book cloning, firework
-  star fade, map extending, item repair, shield decoration, leather/wolf
-  armor dye): modify an existing item rather than craft a new one, so they
-  don't render as an equal variant tab alongside the real craft recipe.
-  Classified by an explicit allowlist of vanilla type ids, keyed on the
-  `vanillaType` field (see "Generated data contract" above) —
-  `src/utils/self-referential-specials.ts`. Demoted siblings render in a
-  visually secondary strip below the primary tab row (`RecipeVariants.astro`'s
-  `secondary` prop) instead of an equal tab; an unrecognized vanilla type id
-  (including any a future version bump introduces) fails open to the
-  current equal-tab behavior.
+  star fade, map extending, shield decoration, leather/wolf armor dye):
+  modify an existing item rather than craft a new one, so they don't render
+  as an equal variant tab alongside the real craft recipe. Classified by
+  the pipeline's derived `selfReferential` flag (see "Generated data
+  contract" above): the deterministic signal is a raw ingredient field
+  equal to the recipe's own result id (scripts/lib/recipes.ts's
+  `isSelfReferentialRaw`), persisted on the recipe and read straight off
+  each sibling by `src/utils/recipe-groups.ts` — no hardcoded vanilla type
+  ids. Demoted siblings render in a visually secondary strip below the
+  primary tab row (`RecipeVariants.astro`'s `secondary` prop) instead of an
+  equal tab; a recipe without the flag (including any special a future
+  version bump introduces that the signal doesn't match) fails open to the
+  equal-tab behavior.
 
 ## Workflows
 
@@ -281,18 +315,28 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
   format check → type-check → test → build.
 - `deploy.yml`: existing Pages deploy, unchanged behavior (build now includes
   generated data).
-- `update-data.yml` (weekly cron + manual): resolve latest stable mcmeta and
-  bedrock-samples tags (via `git ls-remote`) → if either is newer than its
-  pin: bump submodules, `npm run parse`, `npm run validate`, commit, open PR,
-  kick CI on the branch (PRs created with `GITHUB_TOKEN` don't trigger
-  `pull_request` workflows). The PR waits for manual review and merge.
-  Validation failure → open an issue.
+- `update-data.yml` (weekly cron + manual `workflow_dispatch` with a `force`
+  boolean input that rebuilds and captures changes even when pins are
+  current): resolve latest stable mcmeta and bedrock-samples tags (via
+  `git ls-remote`) → if either is newer than its pin (or `force`): bump
+  submodules, `npm run parse`, `npm run validate`, commit, open a PR (body
+  embeds `meta.json` and pretty-prints its non-empty `audit` lists as a
+  curation queue), kick CI on the branch (PRs created with `GITHUB_TOKEN`
+  don't trigger `pull_request` workflows), watch it, squash-merge on green,
+  then dispatch CI on main (`GITHUB_TOKEN` merge pushes don't trigger
+  push-event workflows, so this is what fires the CI-gated deploy). No diff
+  after parse → clean no-op. Every failure mode (tag resolution, checkout,
+  parse/validate, PR CI red, merge rejected) and a stalled previous PR
+  file/update one deduped "needs attention" issue; the old site stays
+  deployed on any failure.
 
 ## Testing
 
 Vitest units: tag resolution, texture/model resolution, pattern centering,
-shaped/shapeless/transmute parsing, generator fail-loud paths (unknown
-crafting types, resultless recipes, synthetic-id collisions — see
+shaped/shapeless/transmute parsing, generator fail-loud paths (unexpected
+resultless recipes, synthetic-id collisions) and degrade-gracefully paths
+(unknown crafting/non-crafting types → generic note/exclusion + audit
+entry, per-item icon-extraction failures → placeholder + audit entry — see
 `tests/determinism.test.ts`), grid-state and pager logic. Fixtures are small
 hand-copied samples from mcmeta so tests run without submodules. CI also does
 a full build as a smoke test.

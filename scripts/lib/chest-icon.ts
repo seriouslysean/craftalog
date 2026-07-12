@@ -73,6 +73,15 @@ import type { CompoundElement, CompoundIcon } from "./types.ts";
 /** Extra GUI yaw on top of the compound camera's default -- see this file's docstring. */
 const CHEST_GUI_YAW_DELTA = -180;
 
+/**
+ * The atlas pixel dimensions this file's atlas-verified box-UV offsets (via
+ * the fixed-64x64 `faceUVs` shorthand) were probed against. generate.ts
+ * checks each real vendored chest texture still matches and degrades that
+ * variant's icon (placeholder + meta.audit.degradedIcons) on a mismatch,
+ * instead of silently stretching wrong crops over the boxes.
+ */
+export const CHEST_ATLAS_SIZE = { width: 64, height: 64 } as const;
+
 /** [width, height, depth, texOffsU, texOffsV] -- both atlas-verified (see this file's docstring). */
 const CHEST_LID_BOX = { w: 14, h: 5, d: 14, u: 0, v: 0 };
 const CHEST_BOTTOM_BOX = { w: 14, h: 10, d: 14, u: 0, v: 19 };

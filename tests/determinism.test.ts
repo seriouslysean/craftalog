@@ -241,27 +241,59 @@ describe("generate determinism", () => {
     ).toThrow(/no result item/);
   });
 
-  it("throws for a recipe type that is neither included nor known-excluded (a fabricated future crafting type)", () => {
-    expect(() =>
-      generate({
-        version: "26.2",
-        recipesRaw: {
-          frobnicate: { type: "minecraft:crafting_special_frobnicate" },
+  it("includes a fabricated future crafting type as a generic-note special and surfaces it in meta.audit.pendingSpecialTypes", () => {
+    const result = generate({
+      version: "26.2",
+      recipesRaw: {
+        frobnicate: {
+          type: "minecraft:crafting_special_frobnicate",
+          result: { id: "minecraft:frobnicator" },
         },
-        tagsRaw: {},
-        itemDefsRaw: {},
-        modelsRaw: {},
-        componentsRaw: {},
-        enUs: {},
-        bannerPatternsRaw: {},
-        bannerPatternTagsRaw: {},
-        copperGolemGeoRaw: emptyCopperGolemGeoRaw,
-        shulkerGeoRaw: emptyShulkerGeoRaw,
-        textureExists: () => false,
-        textureDimensions: () => undefined,
-        bedrockBedIconExists: () => false,
-      }),
-    ).toThrow(/unrecognized type/);
+      },
+      tagsRaw: {},
+      itemDefsRaw: {},
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists: () => false,
+      textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
+    });
+    expect(result.recipes.frobnicate?.type).toBe("special");
+    expect(result.recipes.frobnicate?.note).toBe(
+      "Special crafting recipe — see the in-game recipe book.",
+    );
+    expect(result.meta.counts.special).toBe(1);
+    expect(result.meta.audit.pendingSpecialTypes).toEqual([
+      "minecraft:crafting_special_frobnicate",
+    ]);
+  });
+
+  it("excludes a fabricated future non-crafting type and surfaces it in meta.audit.excludedUnknownTypes", () => {
+    const result = generate({
+      version: "26.2",
+      recipesRaw: {
+        laser_smelt: { type: "minecraft:laser_smelting" },
+      },
+      tagsRaw: {},
+      itemDefsRaw: {},
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists: () => false,
+      textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
+    });
+    expect(result.recipes.laser_smelt).toBeUndefined();
+    expect(result.meta.audit.excludedUnknownTypes).toEqual(["minecraft:laser_smelting"]);
   });
 
   it("includes only items referenced by included recipes (results + resolved ingredients)", () => {
@@ -288,7 +320,7 @@ describe("generate determinism", () => {
   it("falls back to the placeholder icon and records unresolved items whose model has no resolvable texture", () => {
     const result = run();
     // bundle/black_bundle use the minecraft:special renderer with no nested minecraft:model node.
-    expect(result.meta.unresolvedIcons).toEqual(["black_bundle", "bundle"]);
+    expect(result.meta.audit.unresolvedIcons).toEqual(["black_bundle", "bundle"]);
     expect(result.items.bundle.icon).toEqual({
       type: "flat",
       texture: "/textures/placeholder.png",
@@ -440,7 +472,7 @@ describe("generate: compound icon (real multi-element geometry)", () => {
       type: "flat",
       texture: "/textures/block/unresolvable_widget_particle.png",
     });
-    expect(result.meta.unresolvedIcons).not.toContain("unresolvable_widget");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("unresolvable_widget");
   });
 });
 
@@ -565,7 +597,7 @@ describe("generate: patterned banners (synthetic recipes with no vanilla source)
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("patterned_banner_creeper");
+    expect(result.meta.audit.unresolvedIcons).toContain("patterned_banner_creeper");
     expect(result.patternedBannerIconsToSynthesize.size).toBe(0);
   });
 });
@@ -630,7 +662,7 @@ describe("generate: shield (bespoke special renderer, no vendored geometry)", ()
       ),
     ).toBe(true);
     expect(result.shieldIconToCopy).toBe(true);
-    expect(result.meta.unresolvedIcons).not.toContain("shield");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("shield");
   });
 
   it("falls back to the placeholder icon when the shared shield atlas doesn't exist on disk, rather than crashing", () => {
@@ -639,7 +671,7 @@ describe("generate: shield (bespoke special renderer, no vendored geometry)", ()
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("shield");
+    expect(result.meta.audit.unresolvedIcons).toContain("shield");
     expect(result.shieldIconToCopy).toBe(false);
   });
 });
@@ -712,7 +744,7 @@ describe("generate: copper golem statue (real geometry extracted from vendored B
     expect(result.copperGolemIconsToCopy).toEqual(
       new Map([["entity/copper_golem/copper_golem", "item/copper_golem"]]),
     );
-    expect(result.meta.unresolvedIcons).not.toContain("waxed_copper_golem_statue");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("waxed_copper_golem_statue");
   });
 
   it("falls back to the placeholder icon when the Java texture doesn't exist on disk, rather than crashing", () => {
@@ -721,7 +753,46 @@ describe("generate: copper golem statue (real geometry extracted from vendored B
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("waxed_copper_golem_statue");
+    expect(result.meta.audit.unresolvedIcons).toContain("waxed_copper_golem_statue");
+    expect(result.copperGolemIconsToCopy.size).toBe(0);
+  });
+
+  it("degrades JUST this item (placeholder + meta.audit.degradedIcons) when the geometry extraction fails, instead of aborting the whole parse", () => {
+    const result = generate({
+      version: "26.2",
+      recipesRaw: copperGolemRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: copperGolemItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      // Geometry no longer carries the expected identifier -- the exact
+      // "vendored shape changed under us" case the typed extraction error
+      // converts from a parse abort into a per-item degradation.
+      copperGolemGeoRaw: {
+        "minecraft:geometry": [
+          {
+            description: { identifier: "geometry.renamed", texture_width: 64, texture_height: 64 },
+            bones: [],
+          },
+        ],
+      },
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists: (ref) => ref === "entity/copper_golem/copper_golem",
+      textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
+    });
+    expect(result.items.waxed_copper_golem_statue.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.audit.degradedIcons).toHaveLength(1);
+    expect(result.meta.audit.degradedIcons[0].itemId).toBe("waxed_copper_golem_statue");
+    expect(result.meta.audit.degradedIcons[0].reason).toMatch(/geometry\.copper_golem/);
+    // Degraded, not unresolved -- the two audit lists stay distinct.
+    expect(result.meta.audit.unresolvedIcons).not.toContain("waxed_copper_golem_statue");
     expect(result.copperGolemIconsToCopy.size).toBe(0);
   });
 });
@@ -794,7 +865,7 @@ describe("generate: shulker box (real geometry extracted from vendored Bedrock d
     expect(result.shulkerIconsToCopy).toEqual(
       new Map([["entity/shulker/shulker_black", "item/shulker_black"]]),
     );
-    expect(result.meta.unresolvedIcons).not.toContain("black_shulker_box");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("black_shulker_box");
   });
 
   it("falls back to the placeholder icon when the Java texture doesn't exist on disk, rather than crashing", () => {
@@ -803,7 +874,40 @@ describe("generate: shulker box (real geometry extracted from vendored Bedrock d
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("black_shulker_box");
+    expect(result.meta.audit.unresolvedIcons).toContain("black_shulker_box");
+    expect(result.shulkerIconsToCopy.size).toBe(0);
+  });
+
+  it("degrades JUST this item (placeholder + meta.audit.degradedIcons) when the geometry extraction fails, instead of aborting the whole parse", () => {
+    const result = generate({
+      version: "26.2",
+      recipesRaw: shulkerRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: shulkerItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      // A non-64x64 UV space fails the extractor's verified assumption --
+      // per-item degradation, not a parse abort.
+      shulkerGeoRaw: {
+        format_version: "1.8.0",
+        "geometry.shulker.v1.8": { texturewidth: 32, textureheight: 32, bones: [] },
+      },
+      textureExists: (ref) => ref === "entity/shulker/shulker_black",
+      textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
+    });
+    expect(result.items.black_shulker_box.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.audit.degradedIcons).toHaveLength(1);
+    expect(result.meta.audit.degradedIcons[0].itemId).toBe("black_shulker_box");
+    expect(result.meta.audit.degradedIcons[0].reason).toMatch(/64x64/);
+    expect(result.meta.audit.unresolvedIcons).not.toContain("black_shulker_box");
     expect(result.shulkerIconsToCopy.size).toBe(0);
   });
 });
@@ -882,7 +986,7 @@ describe("generate: mob heads + conduit (hand-authored cube, no vendored geometr
       ),
     ).toBe(true);
     expect(result.headIconsToCopy).toEqual(new Map([["creeper", "item/creeper"]]));
-    expect(result.meta.unresolvedIcons).not.toContain("creeper_head");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("creeper_head");
   });
 
   it("resolves the conduit candidate to a single-cube compound icon and queues its core texture for a verbatim copy", () => {
@@ -898,7 +1002,7 @@ describe("generate: mob heads + conduit (hand-authored cube, no vendored geometr
       ),
     ).toBe(true);
     expect(result.conduitIconToCopy).toBe(true);
-    expect(result.meta.unresolvedIcons).not.toContain("conduit");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("conduit");
   });
 
   it("falls back to the placeholder icon when the kind's skin texture doesn't exist on disk, rather than crashing", () => {
@@ -907,7 +1011,7 @@ describe("generate: mob heads + conduit (hand-authored cube, no vendored geometr
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("creeper_head");
+    expect(result.meta.audit.unresolvedIcons).toContain("creeper_head");
     expect(result.headIconsToCopy.size).toBe(0);
   });
 
@@ -917,8 +1021,56 @@ describe("generate: mob heads + conduit (hand-authored cube, no vendored geometr
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("conduit");
+    expect(result.meta.audit.unresolvedIcons).toContain("conduit");
     expect(result.conduitIconToCopy).toBe(false);
+  });
+
+  it("degrades an unmapped head kind to the placeholder + meta.audit.unmappedHeadKinds (never the old flat soul_sand fail-open)", () => {
+    const result = generate({
+      version: "26.2",
+      recipesRaw: {
+        dragon_head: {
+          type: "minecraft:crafting_shapeless",
+          ingredients: ["minecraft:paper"],
+          result: { id: "minecraft:dragon_head" },
+        },
+      },
+      tagsRaw: {},
+      itemDefsRaw: {
+        paper: { model: { type: "minecraft:model", model: "minecraft:item/paper" } },
+        dragon_head: {
+          model: {
+            type: "minecraft:special",
+            base: "minecraft:item/template_skull",
+            model: { type: "minecraft:head", kind: "dragon" },
+          },
+        },
+      },
+      // template_skull's own particle texture exists -- the OLD fail-open
+      // would have shipped it as a visibly-wrong flat swatch; the
+      // placeholder must win anyway.
+      modelsRaw: {
+        "item/template_skull": { textures: { particle: "minecraft:block/soul_sand" } },
+      },
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists: (ref) => ref === "block/soul_sand" || ref === "item/paper",
+      textureDimensions: () => undefined,
+      bedrockBedIconExists: () => false,
+    });
+    expect(result.items.dragon_head.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    expect(result.meta.audit.unmappedHeadKinds).toEqual(["dragon"]);
+    // Recorded as unmapped, not unresolved/degraded -- the lists stay distinct.
+    expect(result.meta.audit.unresolvedIcons).not.toContain("dragon_head");
+    expect(result.meta.audit.degradedIcons).toHaveLength(0);
+    expect(result.headIconsToCopy.size).toBe(0);
   });
 });
 
@@ -1012,7 +1164,7 @@ describe("generate: chest family (bespoke special renderer, no vendored geometry
       ),
     ).toBe(true);
     expect(result.chestIconsToCopy.get("normal")).toBe("item/chest_normal");
-    expect(result.meta.unresolvedIcons).not.toContain("chest");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("chest");
   });
 
   it("copper_chest and waxed_copper_chest share the same texture name, so chestIconsToCopy only queues one copy", () => {
@@ -1036,7 +1188,36 @@ describe("generate: chest family (bespoke special renderer, no vendored geometry
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("chest");
+    expect(result.meta.audit.unresolvedIcons).toContain("chest");
+    expect(result.chestIconsToCopy.size).toBe(0);
+  });
+
+  it("degrades to the placeholder + meta.audit.degradedIcons when the chest atlas exists but isn't the verified 64x64", () => {
+    const result = generate({
+      version: "26.2",
+      recipesRaw: chestRecipesRaw,
+      tagsRaw: {},
+      itemDefsRaw: chestItemDefsRaw,
+      modelsRaw: {},
+      componentsRaw: {},
+      enUs: {},
+      bannerPatternsRaw: {},
+      bannerPatternTagsRaw: {},
+      copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+      shulkerGeoRaw: emptyShulkerGeoRaw,
+      textureExists: (ref) => ref === "entity/chest/normal" || ref === "entity/chest/copper",
+      // A doubled-resolution atlas: the hand-verified pixel offsets no
+      // longer line up, so silently stretching them would render wrong.
+      textureDimensions: (ref) =>
+        ref.startsWith("entity/chest/") ? { width: 128, height: 128 } : undefined,
+      bedrockBedIconExists: () => false,
+    });
+    expect(result.items.chest.icon).toEqual({
+      type: "flat",
+      texture: "/textures/placeholder.png",
+    });
+    const chestEntry = result.meta.audit.degradedIcons.find((entry) => entry.itemId === "chest");
+    expect(chestEntry?.reason).toMatch(/128x128, expected 64x64/);
     expect(result.chestIconsToCopy.size).toBe(0);
   });
 });
@@ -1099,7 +1280,7 @@ describe("generate: decorated pot (bespoke special renderer, no vendored geometr
       new Set(["/textures/item/decorated_pot_base.png", "/textures/item/decorated_pot_side.png"]),
     );
     expect(result.decoratedPotIconToCopy).toBe(true);
-    expect(result.meta.unresolvedIcons).not.toContain("decorated_pot");
+    expect(result.meta.audit.unresolvedIcons).not.toContain("decorated_pot");
   });
 
   it("falls back to the placeholder icon when either shared atlas doesn't exist on disk, rather than crashing", () => {
@@ -1108,7 +1289,7 @@ describe("generate: decorated pot (bespoke special renderer, no vendored geometr
       type: "flat",
       texture: "/textures/placeholder.png",
     });
-    expect(result.meta.unresolvedIcons).toContain("decorated_pot");
+    expect(result.meta.audit.unresolvedIcons).toContain("decorated_pot");
     expect(result.decoratedPotIconToCopy).toBe(false);
   });
 

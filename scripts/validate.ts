@@ -49,6 +49,23 @@ function fail(message: string): void {
   errors.push(message);
 }
 
+// Non-blocking findings: presentation-layer degradations (meta.audit) that
+// must be VISIBLE -- printed prominently and carried in meta.json for the
+// weekly PR body -- but must never fail the automated weekly update (see
+// docs/PLAN.md's core-vs-presentation contract). Core-data corruption
+// (drift, slug collisions, missing texture files, empty ingredients, count
+// floors) still uses fail() above.
+const warnings: string[] = [];
+
+function warn(message: string): void {
+  warnings.push(message);
+}
+
+/** First 10 entries of an audit list, "..."-truncated -- keeps warning lines readable. */
+function preview(entries: string[]): string {
+  return `${entries.slice(0, 10).join(", ")}${entries.length > 10 ? ", ..." : ""}`;
+}
+
 interface Committed {
   recipes: RecipesOutput;
   items: ItemsOutput;
@@ -209,20 +226,57 @@ function checkInternalConsistency(committed: Committed): void {
     }
   }
 
-  if (meta.fallbackFamilyItems.length > 0) {
-    fail(
-      `${meta.fallbackFamilyItems.length} item(s) fell through to a generic family fallback ` +
-        `(meta.fallbackFamilyItems: ${meta.fallbackFamilyItems.slice(0, 10).join(", ")}${meta.fallbackFamilyItems.length > 10 ? ", ..." : ""}) -- add a real scripts/lib/family.ts rule for each.`,
+  // Presentation-layer degradations: prominent warnings, never failures --
+  // the weekly automated update must be able to land a version bump whose
+  // only defects are curation work (missing family rules, unresolved or
+  // degraded icons, uncurated special notes), with every instance surfaced
+  // in meta.audit for the PR body. See docs/PLAN.md.
+  if (meta.audit.fallbackFamilyItems.length > 0) {
+    warn(
+      `${meta.audit.fallbackFamilyItems.length} item(s) fell through to a generic family fallback ` +
+        `(meta.audit.fallbackFamilyItems: ${preview(meta.audit.fallbackFamilyItems)}) -- add a real scripts/lib/family.ts rule for each.`,
     );
   }
 
-  // unresolvedIcons must be actionable, not print-only: a nonempty list
-  // means real items are shipping the placeholder icon, which the git-diff
-  // drift gate can never catch (parse is deterministic either way).
-  if (meta.unresolvedIcons.length > 0) {
-    fail(
-      `${meta.unresolvedIcons.length} item(s) have unresolved icons and would ship the placeholder ` +
-        `(meta.unresolvedIcons: ${meta.unresolvedIcons.slice(0, 10).join(", ")}${meta.unresolvedIcons.length > 10 ? ", ..." : ""}) -- fix icon resolution for each.`,
+  if (meta.audit.unresolvedIcons.length > 0) {
+    warn(
+      `${meta.audit.unresolvedIcons.length} item(s) have unresolved icons and ship the placeholder ` +
+        `(meta.audit.unresolvedIcons: ${preview(meta.audit.unresolvedIcons)}) -- fix icon resolution for each.`,
+    );
+  }
+
+  if (meta.audit.degradedIcons.length > 0) {
+    warn(
+      `${meta.audit.degradedIcons.length} item(s) degraded to the placeholder after a bespoke icon extraction failure ` +
+        `(meta.audit.degradedIcons: ${preview(meta.audit.degradedIcons.map((entry) => `${entry.itemId} (${entry.reason})`))}) -- re-verify the extractor's assumptions against the new vendored data.`,
+    );
+  }
+
+  if (meta.audit.pendingSpecialTypes.length > 0) {
+    warn(
+      `${meta.audit.pendingSpecialTypes.length} unknown crafting recipe type(s) included with the generic note ` +
+        `(meta.audit.pendingSpecialTypes: ${preview(meta.audit.pendingSpecialTypes)}) -- add a curated SPECIAL_NOTES entry for each (scripts/lib/recipes.ts).`,
+    );
+  }
+
+  if (meta.audit.excludedUnknownTypes.length > 0) {
+    warn(
+      `${meta.audit.excludedUnknownTypes.length} unknown non-crafting recipe type(s) excluded from the catalog ` +
+        `(meta.audit.excludedUnknownTypes: ${preview(meta.audit.excludedUnknownTypes)}) -- add each to KNOWN_EXCLUDED_TYPES if genuinely out of scope (scripts/lib/recipes.ts).`,
+    );
+  }
+
+  if (meta.audit.unmappedHeadKinds.length > 0) {
+    warn(
+      `${meta.audit.unmappedHeadKinds.length} head kind(s) missing from HEAD_KIND_TEXTURES ship the placeholder ` +
+        `(meta.audit.unmappedHeadKinds: ${preview(meta.audit.unmappedHeadKinds)}) -- add a skin-texture mapping for each (scripts/lib/head-icon.ts).`,
+    );
+  }
+
+  if (meta.audit.emptyDerivations.length > 0) {
+    warn(
+      `${meta.audit.emptyDerivations.length} derivation(s) unexpectedly produced zero entries from non-empty vendored inputs ` +
+        `(meta.audit.emptyDerivations: ${preview(meta.audit.emptyDerivations)}) -- the sweep's assumptions no longer hold, review its module.`,
     );
   }
 
@@ -298,6 +352,15 @@ function main(): void {
     checkDrift(committed);
   }
 
+  if (warnings.length > 0) {
+    console.warn("");
+    console.warn("=".repeat(72));
+    console.warn(`Validation WARNINGS (${warnings.length}) -- non-blocking curation queue:`);
+    for (const warning of warnings) console.warn(`  ! ${warning}`);
+    console.warn("=".repeat(72));
+    console.warn("");
+  }
+
   if (errors.length > 0) {
     console.error("Validation FAILED:");
     for (const error of errors) console.error(`  ${error}`);
@@ -312,7 +375,8 @@ function main(): void {
   console.log(
     `  categories: ${Object.keys(committed.categories).length}, families: ${Object.keys(committed.families).length}`,
   );
-  console.log(`  unresolved icons: ${committed.meta.unresolvedIcons.length}`);
+  console.log(`  unresolved icons: ${committed.meta.audit.unresolvedIcons.length}`);
+  console.log(`  warnings: ${warnings.length}`);
 }
 
 main();

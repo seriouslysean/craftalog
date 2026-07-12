@@ -84,7 +84,7 @@ src/data/generated/recipes.json    ── committed, diffable
 src/data/generated/items.json      ── committed, diffable
 src/data/generated/categories.json ── committed, diffable
 src/data/generated/families.json   ── committed, diffable
-src/data/generated/meta.json       ── mc version, counts, parse stats
+src/data/generated/meta.json       ── mc version, counts, audit (curation queue)
 public/textures/{item,block,hud}/*.png ── only textures actually referenced
         │  npm run validate   (scripts/validate.ts)
         ▼
@@ -113,12 +113,17 @@ npm run validate -- --offline  # same, but skip checks that need a fresh submodu
 ```
 
 `npm run validate` is the source of truth for "is this data correct" — it
-re-derives expected output independently of parse and **fails** (exit 1, not
-a warning) on drift from the submodule pin or on internal-consistency
-violations: unresolved icons (items that would ship the placeholder),
-recipe/item URL-slug collisions, missing texture files on disk, ingredients
-with zero items, and items falling through to a generic family fallback.
-Read its report before assuming a failure is spurious.
+re-derives expected output independently of parse and applies a two-tier
+posture. **Core** data problems **fail** (exit 1): drift from the submodule
+pin, recipe/item URL-slug collisions, missing texture files on disk,
+ingredients with zero items, and recipe/item count floors. **Presentation**
+gaps only **warn** (printed prominently, exit 0): unresolved or degraded
+icons, items falling through to a generic family fallback, and the other
+audit lists — all carried in `meta.json`'s `audit` object
+(`degradedIcons`, `emptyDerivations`, `excludedUnknownTypes`,
+`fallbackFamilyItems`, `pendingSpecialTypes`, `unmappedHeadKinds`,
+`unresolvedIcons`), which the weekly update PR body surfaces as a curation
+queue. Read its report before assuming a failure is spurious.
 
 ## Bumping to a new version manually
 
@@ -186,8 +191,12 @@ Fix locally with `npm run parse`, review the diff, and commit it.
 
 ## The weekly update-data workflow
 
-`.github/workflows/update-data.yml` runs on a weekly cron (and can be run
-manually via workflow_dispatch). Each run:
+`.github/workflows/update-data.yml` runs on a weekly cron, and manually via
+workflow_dispatch — which takes a `force` boolean input that rebuilds and
+captures regeneration changes even when the pins are already current. The
+chain is fully automated end to end: on changes it opens the PR, watches CI
+on it, squash-merges on green, and triggers the deploy — no manual review or
+merge step. Each run:
 
 1. Resolves the latest stable tag from `misode/mcmeta` **and** from
    `bedrock-samples` independently, each via `git ls-remote` filtered by its
@@ -196,26 +205,42 @@ manually via workflow_dispatch). Each run:
    mcmeta; for bedrock-samples, the submodule's HEAD commit matched against
    the remote's tags via `git ls-remote` — the shallow clone carries no
    tags, so `git describe` can't name it). If _both_ are already at latest,
-   it exits cleanly — nothing to do.
-3. If either is newer, it checks a
+   it exits cleanly — nothing to do — unless `force` was passed, which
+   proceeds regardless.
+3. If proceeding, it checks a
    `data-update/mcmeta-<version>_bedrock-<version>` branch (reflecting both
-   target versions) doesn't already exist (idempotency guard against
-   re-running mid-flight).
+   target versions; force runs append a run-id suffix) doesn't already
+   exist. An existing branch means a previous data update PR is stalled:
+   the run skips itself and files/updates the "needs attention" issue
+   (see below) asking for that PR to be merged or closed.
 4. Bumps all three submodules to their respective latest stable tags (a
    submodule already at latest is just re-checked-out to the same commit —
-   harmless), runs `npm run parse` and `npm run validate`.
-5. On validation/parse failure: opens a GitHub issue with a log tail, and
-   fails the run so it's visible in Actions.
-6. On success with actual changes: commits the submodule pins + regenerated
-   data + textures on that branch, pushes, opens a PR via `gh pr create`,
-   and kicks CI on the branch via `gh workflow run ci.yml` (PRs created with
-   `GITHUB_TOKEN` don't trigger `pull_request` workflows on their own). The
-   PR then waits for manual review and merge — there is no auto-merge.
+   harmless), runs `npm run parse` and `npm run validate`. If parse/validate
+   produce no diff, the run is a clean no-op — nothing committed, merged,
+   or deployed.
+5. On actual changes: commits the submodule pins + regenerated data +
+   textures on that branch, pushes, opens a PR via `gh pr create` (the body
+   embeds `meta.json` and pretty-prints its non-empty `audit` lists as a
+   curation queue), and kicks CI on the branch via `gh workflow run ci.yml`
+   (PRs created with `GITHUB_TOKEN` don't trigger `pull_request` workflows
+   on their own).
+6. Watches that CI run, and squash-merges the PR once it's green (CI is the
+   sole merge gate — no human review). It then dispatches CI on `main` via
+   `gh workflow run ci.yml --ref main` — required because the squash-merge
+   push was authored by `GITHUB_TOKEN`, whose pushes never trigger
+   push-event workflows — and that CI run's success fires the CI-gated
+   Pages deploy.
+7. Every failure mode (tag resolution, pin parsing, submodule checkout,
+   parse/validate — with a log tail — PR CI red, merge rejected) and the
+   stalled-PR case files one deduped "Scheduled vanilla data update needs
+   attention" issue, commenting on the existing open issue instead of
+   creating a duplicate. A failed run leaves the PR (if any) open and
+   unmerged, and the previously deployed site stays live.
 
 In practice `bedrock-samples` almost never actually changes (bed icon art is
 stable), so most runs are a normal mcmeta-only bump — the dual-source check
 just means a bedrock-samples update wouldn't silently go unnoticed if Mojang
 ever did touch it.
 
-CI (`ci.yml`) still has to pass on that PR before it can merge — the workflow
-does not bypass review/CI, it just automates the mechanical bump.
+CI (`ci.yml`) still has to pass on that PR before the workflow merges it —
+automation replaces the human review step, not the CI gate.

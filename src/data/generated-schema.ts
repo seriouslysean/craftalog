@@ -75,13 +75,21 @@ const recipeObjectSchema = z.object({
   // "minecraft:crafting_special_bannerduplicate"), preserved because the
   // coarse `type: "special"` bucket above collapses ~11 distinct vanilla
   // types into one value. shaped/shapeless/transmute don't need this: each
-  // already maps 1:1 to a single vanilla type via `type` itself. Consumed by
-  // src/utils/self-referential-specials.ts to demote self-referential
-  // specials (banner duplicate, shield decoration, ...) below the primary
-  // variant tabs -- see scripts/lib/recipes.ts's transformRecipe. Optional
-  // even for specials: synthetic patterned-banner entries have no vanilla
-  // type at all (see scripts/lib/generate.ts).
+  // already maps 1:1 to a single vanilla type via `type` itself -- see
+  // scripts/lib/recipes.ts's transformRecipe. Optional even for specials:
+  // synthetic patterned-banner entries have no vanilla type at all (see
+  // scripts/lib/generate.ts).
   vanillaType: z.string().optional(),
+  // special only -- true when the raw vendored recipe has an ingredient
+  // field (`banner`, `target`, `map`, `source`, ...) equal to its own
+  // result id, the deterministic signal that the recipe MODIFIES an
+  // existing item of the same kind (banner duplicate, shield decoration,
+  // leather re-dye, ...) rather than crafting a genuinely new one -- see
+  // scripts/lib/recipes.ts's isSelfReferentialRaw. Persisted so consumers
+  // (src/utils/recipe-groups.ts sibling demotion) can demote these below
+  // the primary variant tabs without hardcoding vanilla type ids. Omitted
+  // (never `false`) when the signal is absent.
+  selfReferential: z.boolean().optional(),
 });
 
 /**

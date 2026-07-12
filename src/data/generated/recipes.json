@@ -1660,6 +1660,7 @@
       "count": 1,
       "id": "black_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -2230,6 +2231,7 @@
       "count": 1,
       "id": "blue_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -2837,6 +2839,7 @@
       "count": 1,
       "id": "written_book"
     },
+    "selfReferential": true,
     "slug": "book-cloning",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bookcloning"
@@ -3146,6 +3149,7 @@
       "count": 1,
       "id": "brown_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -6542,6 +6546,7 @@
       "count": 1,
       "id": "cyan_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -11314,6 +11319,7 @@
       "count": 1,
       "id": "firework_star"
     },
+    "selfReferential": true,
     "slug": "fade",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_firework_star_fade"
@@ -12215,6 +12221,7 @@
       "count": 1,
       "id": "gray_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -12670,6 +12677,7 @@
       "count": 1,
       "id": "green_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -14413,6 +14421,7 @@
       "count": 1,
       "id": "leather_boots"
     },
+    "selfReferential": true,
     "slug": "dyed",
     "type": "special",
     "vanillaType": "minecraft:crafting_dye"
@@ -14450,6 +14459,7 @@
       "count": 1,
       "id": "leather_chestplate"
     },
+    "selfReferential": true,
     "slug": "dyed",
     "type": "special",
     "vanillaType": "minecraft:crafting_dye"
@@ -14486,6 +14496,7 @@
       "count": 1,
       "id": "leather_helmet"
     },
+    "selfReferential": true,
     "slug": "dyed",
     "type": "special",
     "vanillaType": "minecraft:crafting_dye"
@@ -14523,6 +14534,7 @@
       "count": 1,
       "id": "leather_horse_armor"
     },
+    "selfReferential": true,
     "slug": "dyed",
     "type": "special",
     "vanillaType": "minecraft:crafting_dye"
@@ -14560,6 +14572,7 @@
       "count": 1,
       "id": "leather_leggings"
     },
+    "selfReferential": true,
     "slug": "dyed",
     "type": "special",
     "vanillaType": "minecraft:crafting_dye"
@@ -14669,6 +14682,7 @@
       "count": 1,
       "id": "light_blue_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -15124,6 +15138,7 @@
       "count": 1,
       "id": "light_gray_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -15690,6 +15705,7 @@
       "count": 1,
       "id": "lime_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -16219,6 +16235,7 @@
       "count": 1,
       "id": "magenta_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -17195,6 +17212,7 @@
       "count": 1,
       "id": "filled_map"
     },
+    "selfReferential": true,
     "slug": "map-extending",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_mapextending"
@@ -18594,6 +18612,7 @@
       "count": 1,
       "id": "orange_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -20320,6 +20339,7 @@
       "count": 1,
       "id": "pink_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -22029,6 +22049,7 @@
       "count": 1,
       "id": "purple_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -22962,6 +22983,7 @@
       "count": 1,
       "id": "red_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -24237,6 +24259,7 @@
       "count": 1,
       "id": "shield"
     },
+    "selfReferential": true,
     "slug": "decoration",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_shielddecoration"
@@ -29993,6 +30016,7 @@
       "count": 1,
       "id": "white_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"
@@ -30511,6 +30535,7 @@
       "count": 1,
       "id": "wolf_armor"
     },
+    "selfReferential": true,
     "slug": "dyed",
     "type": "special",
     "vanillaType": "minecraft:crafting_dye"
@@ -30821,6 +30846,7 @@
       "count": 1,
       "id": "yellow_banner"
     },
+    "selfReferential": true,
     "slug": "duplicate",
     "type": "special",
     "vanillaType": "minecraft:crafting_special_bannerduplicate"

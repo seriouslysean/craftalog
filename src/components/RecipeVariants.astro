@@ -14,7 +14,7 @@ interface Props {
   currentId: string;
   /** Small label rendered above the strip -- present only for the demoted secondary strip (see `secondary` below); the primary tab row stays unlabeled, matching current behavior. */
   heading?: string;
-  /** Visually de-emphasized strip for recipes that modify an existing item rather than craft a new one (self-referential specials -- see src/utils/self-referential-specials.ts), rendered below the primary variant tabs instead of as an equal tab. */
+  /** Visually de-emphasized strip for recipes that modify an existing item rather than craft a new one (self-referential specials -- see SiblingRecipe.selfReferential in src/utils/recipe-groups.ts), rendered below the primary variant tabs instead of as an equal tab. */
   secondary?: boolean;
 }
 

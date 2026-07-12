@@ -1,16 +1,21 @@
 import {
+  BANNER_ATLAS_SIZE,
   BANNER_BASE_ATLAS_REF,
+  BANNER_BASE_MODEL_REF,
   BANNER_TEMPLATE_TEXTURE_REF,
   bannerCompoundIcon,
 } from "./banner-icon.ts";
 import { toBedrockColorName } from "./bedrock-colors.ts";
 import { CATEGORIES } from "./category.ts";
-import { chestCompoundIcon } from "./chest-icon.ts";
+import { CHEST_ATLAS_SIZE, chestCompoundIcon } from "./chest-icon.ts";
+import { IconExtractionError } from "./compound-icon.ts";
 import { copperGolemCompoundIcon } from "./copper-golem-icon.ts";
 import {
   DECORATED_POT_BASE_ATLAS_REF,
+  DECORATED_POT_BASE_ATLAS_SIZE,
   DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF,
   DECORATED_POT_SIDE_ATLAS_REF,
+  DECORATED_POT_SIDE_ATLAS_SIZE,
   DECORATED_POT_SIDE_TEMPLATE_TEXTURE_REF,
   decoratedPotCompoundIcon,
 } from "./decorated-pot-icon.ts";
@@ -21,19 +26,24 @@ import {
   HEAD_KIND_TEXTURES,
   conduitCompoundIcon,
   headCompoundIcon,
+  isHeadKind,
 } from "./head-icon.ts";
 import type { HeadKind } from "./head-icon.ts";
 import { HUD_ICON_RELATIVE_PATHS } from "./hud-icons.ts";
 import { resolveItemStat } from "./item-stats.ts";
 import { getItemName } from "./lang.ts";
-import { resolveIconCandidate } from "./model.ts";
+import { argbToRgb } from "./leather-armor-icon.ts";
+import type { AtlasRegion } from "./lightning-rod-icon.ts";
+import { findGuiYawDelta, resolveIconCandidate, walkModelChain } from "./model.ts";
 import type { IconCandidate } from "./model.ts";
 import { derivePatternedBanners, PATTERNED_BANNER_GROUP } from "./patterned-banner.ts";
 import { deriveRecipeSlugSource } from "./recipe-slug.ts";
 import { collectRecipeItemIds, transformRecipe } from "./recipes.ts";
-import { deriveShapeTag } from "./shape-tag.ts";
+import type { RecipeTypeAudit } from "./recipes.ts";
+import { deriveShapeTag, deriveShapeTagIds } from "./shape-tag.ts";
 import {
   SHIELD_ATLAS_REF,
+  SHIELD_ATLAS_SIZE,
   SHIELD_TEMPLATE_TEXTURE_REF,
   shieldCompoundIcon,
 } from "./shield-icon.ts";
@@ -41,6 +51,7 @@ import { shulkerCompoundIcon } from "./shulker-icon.ts";
 import { slugify } from "../../src/utils/slugify.ts";
 import type {
   CategoriesOutput,
+  DegradedIcon,
   FamiliesOutput,
   Item,
   ItemsOutput,
@@ -55,17 +66,6 @@ import type {
   RawTagsData,
   RecipesOutput,
 } from "./types.ts";
-
-// Ships as a grayscale base layer meant to be dye-tinted at runtime plus an
-// untinted trim overlay (see scripts/lib/leather-armor-icon.ts) -- these are
-// the only 5 items using that two-layer contract.
-const LEATHER_ARMOR_ITEM_IDS = new Set([
-  "leather_boots",
-  "leather_chestplate",
-  "leather_helmet",
-  "leather_leggings",
-  "leather_horse_armor",
-]);
 
 export interface GenerateInput {
   version: string;
@@ -101,12 +101,15 @@ export interface GenerateOutput {
   texturesToCopy: Set<string>;
   /** Dye color id -> destination texture ref, for the tinted banner atlas copies the caller must generate (plus the shared untinted BANNER_BASE_ATLAS_REF copy when non-empty -- see scripts/lib/banner-icon.ts). */
   bannerIconsToSynthesize: Map<string, string>;
-  /** Source atlas texture ref -> destination texture ref, for lightning rod icons the caller must generate (see scripts/lib/lightning-rod-icon.ts). Keyed by source so oxidation variants sharing one atlas only synthesize once. */
-  lightningRodIconsToSynthesize: Map<string, string>;
+  /** Source atlas texture ref -> destination texture ref + the model-derived crop/placement regions, for lightning rod icons the caller must generate (see scripts/lib/lightning-rod-icon.ts). Keyed by source so oxidation variants sharing one atlas only synthesize once (they share the template model, so the regions are identical too). */
+  lightningRodIconsToSynthesize: Map<string, { ref: string; regions: AtlasRegion[] }>;
   /** Java colorId -> Bedrock source filename suffix, for bed icons the caller must copy from vendor/bedrock-samples (see scripts/parse.ts). */
   bedIconsToCopy: Map<string, string>;
-  /** Item id -> flat texture ref (layer0), for leather armor icons the caller must generate (see scripts/lib/leather-armor-icon.ts). */
-  leatherArmorIconsToSynthesize: Map<string, string>;
+  /** Item id -> flat texture ref (layer0) + the item definition's own un-dyed tint color, for leather armor icons the caller must generate (see scripts/lib/leather-armor-icon.ts). */
+  leatherArmorIconsToSynthesize: Map<
+    string,
+    { textureRef: string; color: [number, number, number] }
+  >;
   /** Pattern id -> destination texture ref, for patterned banner icons the caller must generate (see scripts/lib/patterned-banner-icon.ts). */
   patternedBannerIconsToSynthesize: Map<string, string>;
   /** Whether the shared shield atlas (SHIELD_TEMPLATE_TEXTURE_REF) must be copied verbatim to SHIELD_ATLAS_REF (see scripts/lib/shield-icon.ts) -- no tinting, so just a boolean, not a per-item map. */
@@ -220,14 +223,26 @@ export function generate(input: GenerateInput): GenerateOutput {
   const recipes: RecipesOutput = {};
   const counts = { shaped: 0, shapeless: 0, transmute: 0, special: 0 };
   const itemTagIndex = buildItemTagIndex(tagsRaw);
+  const shapeTagIds = deriveShapeTagIds(tagsRaw);
   const fallbackFamilyItems: string[] = [];
+  // Presentation-layer degradation sinks -- everything a run degraded on
+  // (instead of throwing) lands in meta.audit so the weekly update PR
+  // surfaces it as a curation queue (see docs/PLAN.md and types.ts's
+  // MetaAudit).
+  const recipeTypeAudit: RecipeTypeAudit = {
+    pendingSpecialTypes: new Set(),
+    excludedUnknownTypes: new Set(),
+  };
+  const emptyDerivations: string[] = [];
+  const unmappedHeadKinds = new Set<string>();
+  const degradedIcons: DegradedIcon[] = [];
   // Only families actually referenced by an emitted recipe end up in
   // families.json, same "only what's referenced" contract items.json/
   // texturesToCopy already follow.
   const familiesUsed: FamiliesOutput = {};
 
   for (const [id, raw] of Object.entries(recipesRaw)) {
-    const transformed = transformRecipe(id, raw, tagsRaw);
+    const transformed = transformRecipe(id, raw, tagsRaw, recipeTypeAudit);
     if (!transformed) continue;
     if (!transformed.result) {
       // crafting_special_repairitem is the only vanilla recipe legitimately
@@ -250,7 +265,7 @@ export function generate(input: GenerateInput): GenerateOutput {
       itemTagIndex,
     );
     if (derivedFamily.usedFallback) fallbackFamilyItems.push(resultId);
-    const shapeTag = deriveShapeTag(resultId, itemTagIndex);
+    const shapeTag = deriveShapeTag(resultId, itemTagIndex, shapeTagIds);
 
     if (!(derivedFamily.id in familiesUsed)) {
       const categoryId = FAMILY_CATEGORY[derivedFamily.id];
@@ -296,6 +311,27 @@ export function generate(input: GenerateInput): GenerateOutput {
   );
   const patternedBannersByItemId = new Map(patternedBanners.map((entry) => [entry.itemId, entry]));
 
+  // Derivation-sanity audit: non-empty vendored pattern registry + tags that
+  // still derive zero entries means the sweep's assumptions (tag naming,
+  // texture layout) no longer hold -- record it rather than shipping the
+  // silent disappearance of a whole synthetic recipe group.
+  if (
+    patternedBanners.length === 0 &&
+    Object.keys(bannerPatternsRaw).length > 0 &&
+    Object.keys(bannerPatternTagsRaw).length > 0
+  ) {
+    emptyDerivations.push("patternedBanners");
+  }
+
+  // The synthetic patterned-banner entries have no vanilla item definition
+  // to read a `base` model from -- run the same gui-yaw derivation every
+  // real banner item's candidate gets, against the same shared template
+  // model (see BANNER_BASE_MODEL_REF's doc comment).
+  const patternedBannerGuiYawDelta = findGuiYawDelta(
+    walkModelChain(BANNER_BASE_MODEL_REF, modelsRaw).chainNames,
+    modelsRaw,
+  );
+
   if (patternedBanners.length > 0 && !("banners" in familiesUsed)) {
     // Always already true in practice (16 real banner recipes share this
     // family) -- kept so this doesn't silently depend on that.
@@ -339,9 +375,12 @@ export function generate(input: GenerateInput): GenerateOutput {
   const unresolvedIcons: string[] = [];
   const texturesToCopy = new Set<string>();
   const bannerIconsToSynthesize = new Map<string, string>();
-  const lightningRodIconsToSynthesize = new Map<string, string>();
+  const lightningRodIconsToSynthesize = new Map<string, { ref: string; regions: AtlasRegion[] }>();
   const bedIconsToCopy = new Map<string, string>();
-  const leatherArmorIconsToSynthesize = new Map<string, string>();
+  const leatherArmorIconsToSynthesize = new Map<
+    string,
+    { textureRef: string; color: [number, number, number] }
+  >();
   const patternedBannerIconsToSynthesize = new Map<string, string>();
   let shieldIconToCopy = false;
   const copperGolemIconsToCopy = new Map<string, string>();
@@ -367,11 +406,37 @@ export function generate(input: GenerateInput): GenerateOutput {
     // branch condition below (same "compute once, branch on the result"
     // shape as resolvedCompound above).
     const headTextureDimensions =
-      candidate?.type === "head"
+      candidate?.type === "head" && isHeadKind(candidate.kind)
         ? textureDimensions(HEAD_KIND_TEXTURES[candidate.kind])
         : undefined;
     const conduitTextureDimensions =
       candidate?.type === "conduit" ? textureDimensions(CONDUIT_TEXTURE_REF) : undefined;
+
+    // Degrades this ONE item to the placeholder + a structured
+    // meta.audit.degradedIcons entry -- the contract for a bespoke icon
+    // renderer whose vendored input no longer matches its verified
+    // assumptions (extraction throws, atlas-dimension mismatches). Icons
+    // are presentation, never a blocking dependency (see docs/PLAN.md).
+    const degradeIcon = (reason: string): Item["icon"] => {
+      degradedIcons.push({ itemId, reason });
+      return { type: "flat", texture: "/textures/placeholder.png" };
+    };
+
+    // A reason string when the vendored atlas EXISTS with measurable
+    // dimensions that differ from what a hand-authored renderer's uv crops
+    // were verified against -- silently stretching those crops over resized
+    // art would render wrong; degrade instead. Unknown dimensions (the
+    // texture-dimension probe unavailable, e.g. minimal test fixtures) are
+    // not a mismatch.
+    const unexpectedAtlasDimensions = (
+      ref: string,
+      expected: { readonly width: number; readonly height: number },
+    ): string | undefined => {
+      const actual = textureDimensions(ref);
+      if (!actual) return undefined;
+      if (actual.width === expected.width && actual.height === expected.height) return undefined;
+      return `atlas "${ref}" is ${actual.width}x${actual.height}, expected ${expected.width}x${expected.height}`;
+    };
 
     if (patternedBanner && candidate) {
       // A real vendored item would mean this synthetic id collided with an
@@ -389,11 +454,17 @@ export function generate(input: GenerateInput): GenerateOutput {
       textureExists("block/white_wool") &&
       textureExists("block/black_wool")
     ) {
-      icon = bannerCompoundIcon(
-        `/textures/${patternedBanner.textureRef}.png`,
-        `/textures/${BANNER_BASE_ATLAS_REF}.png`,
-      );
-      patternedBannerIconsToSynthesize.set(patternedBanner.patternId, patternedBanner.textureRef);
+      const mismatch = unexpectedAtlasDimensions(BANNER_TEMPLATE_TEXTURE_REF, BANNER_ATLAS_SIZE);
+      if (mismatch) {
+        icon = degradeIcon(mismatch);
+      } else {
+        icon = bannerCompoundIcon(
+          `/textures/${patternedBanner.textureRef}.png`,
+          `/textures/${BANNER_BASE_ATLAS_REF}.png`,
+          patternedBannerGuiYawDelta,
+        );
+        patternedBannerIconsToSynthesize.set(patternedBanner.patternId, patternedBanner.textureRef);
+      }
     } else if (
       candidate?.type === "banner" &&
       textureExists(BANNER_TEMPLATE_TEXTURE_REF) &&
@@ -403,29 +474,65 @@ export function generate(input: GenerateInput): GenerateOutput {
       // rather than vendored geometry -- banners have none (see
       // scripts/lib/banner-icon.ts for the full derivation and the
       // tinted/untinted atlas split its two texture paths encode).
-      const ref = `item/${candidate.colorId}_banner`;
-      icon = bannerCompoundIcon(`/textures/${ref}.png`, `/textures/${BANNER_BASE_ATLAS_REF}.png`);
-      bannerIconsToSynthesize.set(candidate.colorId, ref);
+      const mismatch = unexpectedAtlasDimensions(BANNER_TEMPLATE_TEXTURE_REF, BANNER_ATLAS_SIZE);
+      if (mismatch) {
+        icon = degradeIcon(mismatch);
+      } else {
+        const ref = `item/${candidate.colorId}_banner`;
+        icon = bannerCompoundIcon(
+          `/textures/${ref}.png`,
+          `/textures/${BANNER_BASE_ATLAS_REF}.png`,
+          candidate.guiYawDelta,
+        );
+        bannerIconsToSynthesize.set(candidate.colorId, ref);
+      }
     } else if (candidate?.type === "shield" && textureExists(SHIELD_TEMPLATE_TEXTURE_REF)) {
       // A hand-authored single-plate compound rather than vendored geometry
       // -- shields have none (see scripts/lib/shield-icon.ts).
-      icon = shieldCompoundIcon(`/textures/${SHIELD_ATLAS_REF}.png`);
-      shieldIconToCopy = true;
+      const mismatch = unexpectedAtlasDimensions(SHIELD_TEMPLATE_TEXTURE_REF, SHIELD_ATLAS_SIZE);
+      if (mismatch) {
+        icon = degradeIcon(mismatch);
+      } else {
+        icon = shieldCompoundIcon(`/textures/${SHIELD_ATLAS_REF}.png`, candidate.guiYawDelta);
+        shieldIconToCopy = true;
+      }
     } else if (candidate?.type === "copper_golem_statue" && textureExists(candidate.textureRef)) {
       // Real geometry extracted from vendored Bedrock entity data -- see
       // scripts/lib/copper-golem-icon.ts. Only the texture (already a real
       // Java asset) needs copying; the shape comes from copperGolemGeoRaw.
+      // Extraction failures (IconExtractionError -- the vendored geometry
+      // no longer matches the extractor's verified assumptions) degrade
+      // just this item, per the contract on degradeIcon above.
       const ref = `item/${candidate.textureRef.split("/").pop()}`;
-      icon = copperGolemCompoundIcon(copperGolemGeoRaw, `/textures/${ref}.png`);
-      copperGolemIconsToCopy.set(candidate.textureRef, ref);
+      try {
+        icon = copperGolemCompoundIcon(copperGolemGeoRaw, `/textures/${ref}.png`);
+        copperGolemIconsToCopy.set(candidate.textureRef, ref);
+      } catch (error) {
+        if (!(error instanceof IconExtractionError)) throw error;
+        icon = degradeIcon(error.message);
+      }
     } else if (candidate?.type === "shulker_box" && textureExists(candidate.textureRef)) {
       // Real geometry extracted from vendored Bedrock entity data -- see
       // scripts/lib/shulker-icon.ts. Only the texture (already a real Java
-      // asset) needs copying; the shape comes from shulkerGeoRaw.
+      // asset) needs copying; the shape comes from shulkerGeoRaw. Same
+      // per-item IconExtractionError degradation as the copper golem above.
       const ref = `item/${candidate.textureRef.split("/").pop()}`;
-      icon = shulkerCompoundIcon(shulkerGeoRaw, `/textures/${ref}.png`);
-      shulkerIconsToCopy.set(candidate.textureRef, ref);
-    } else if (candidate?.type === "head" && headTextureDimensions) {
+      try {
+        icon = shulkerCompoundIcon(shulkerGeoRaw, `/textures/${ref}.png`);
+        shulkerIconsToCopy.set(candidate.textureRef, ref);
+      } catch (error) {
+        if (!(error instanceof IconExtractionError)) throw error;
+        icon = degradeIcon(error.message);
+      }
+    } else if (candidate?.type === "head" && !isHeadKind(candidate.kind)) {
+      // A head kind with no HEAD_KIND_TEXTURES mapping (currently just
+      // "dragon", never craftable) -- the old behavior fail-opened to a
+      // flat soul_sand particle swatch, which reads as wrong art rather
+      // than missing art. Placeholder + audit instead; the curated map
+      // stays the enhancement.
+      unmappedHeadKinds.add(candidate.kind);
+      icon = { type: "flat", texture: "/textures/placeholder.png" };
+    } else if (candidate?.type === "head" && headTextureDimensions && isHeadKind(candidate.kind)) {
       // A hand-authored single-cube compound rather than vendored geometry
       // -- heads have none (see scripts/lib/head-icon.ts).
       const ref = `item/${candidate.kind}`;
@@ -452,9 +559,17 @@ export function generate(input: GenerateInput): GenerateOutput {
       // geometry -- chests have none, on either the Java or Bedrock side
       // (see scripts/lib/chest-icon.ts). Keyed by texture name so the
       // waxed/un-waxed copper tier pairs sharing one texture only copy once.
-      const ref = `item/chest_${candidate.textureName}`;
-      icon = chestCompoundIcon(`/textures/${ref}.png`);
-      chestIconsToCopy.set(candidate.textureName, ref);
+      const mismatch = unexpectedAtlasDimensions(
+        `entity/chest/${candidate.textureName}`,
+        CHEST_ATLAS_SIZE,
+      );
+      if (mismatch) {
+        icon = degradeIcon(mismatch);
+      } else {
+        const ref = `item/chest_${candidate.textureName}`;
+        icon = chestCompoundIcon(`/textures/${ref}.png`);
+        chestIconsToCopy.set(candidate.textureName, ref);
+      }
     } else if (
       candidate?.type === "decorated_pot" &&
       textureExists(DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF) &&
@@ -463,16 +578,32 @@ export function generate(input: GenerateInput): GenerateOutput {
       // A hand-authored 2-element compound (body + neck) rather than
       // vendored geometry -- decorated pots have none (see
       // scripts/lib/decorated-pot-icon.ts).
-      icon = decoratedPotCompoundIcon(
-        `/textures/${DECORATED_POT_BASE_ATLAS_REF}.png`,
-        `/textures/${DECORATED_POT_SIDE_ATLAS_REF}.png`,
-      );
-      decoratedPotIconToCopy = true;
+      const mismatch =
+        unexpectedAtlasDimensions(
+          DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF,
+          DECORATED_POT_BASE_ATLAS_SIZE,
+        ) ??
+        unexpectedAtlasDimensions(
+          DECORATED_POT_SIDE_TEMPLATE_TEXTURE_REF,
+          DECORATED_POT_SIDE_ATLAS_SIZE,
+        );
+      if (mismatch) {
+        icon = degradeIcon(mismatch);
+      } else {
+        icon = decoratedPotCompoundIcon(
+          `/textures/${DECORATED_POT_BASE_ATLAS_REF}.png`,
+          `/textures/${DECORATED_POT_SIDE_ATLAS_REF}.png`,
+        );
+        decoratedPotIconToCopy = true;
+      }
     } else if (candidate?.type === "lightning_rod" && textureExists(candidate.textureRef)) {
       const baseName = candidate.textureRef.split("/").pop() ?? candidate.textureRef;
       const ref = `item/${baseName}`;
       icon = { type: "flat", texture: `/textures/${ref}.png` };
-      lightningRodIconsToSynthesize.set(candidate.textureRef, ref);
+      lightningRodIconsToSynthesize.set(candidate.textureRef, {
+        ref,
+        regions: candidate.regions,
+      });
     } else if (
       candidate?.type === "bed" &&
       bedrockBedIconExists(toBedrockColorName(candidate.colorId))
@@ -492,12 +623,21 @@ export function generate(input: GenerateInput): GenerateOutput {
       texturesToCopy.add(candidate.textureRef);
     } else if (
       candidate?.type === "flat" &&
-      LEATHER_ARMOR_ITEM_IDS.has(itemId) &&
+      candidate.dyeTintArgb !== undefined &&
       textureExists(candidate.textureRef) &&
       textureExists(`${candidate.textureRef}_overlay`)
     ) {
+      // A `minecraft:dye` tint on the item's own resolved model node marks
+      // this as a grayscale dye-tint base with a `_overlay` trim layer
+      // (leather armor, the only items using that two-layer contract) --
+      // synthesized with the tint's own default color baked in, rather than
+      // copied verbatim as raw gray bytes (see
+      // scripts/lib/leather-armor-icon.ts and model.ts's findDyeTintDefault).
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
-      leatherArmorIconsToSynthesize.set(itemId, candidate.textureRef);
+      leatherArmorIconsToSynthesize.set(itemId, {
+        textureRef: candidate.textureRef,
+        color: argbToRgb(candidate.dyeTintArgb),
+      });
     } else if (candidate?.type === "flat" && textureExists(candidate.textureRef)) {
       icon = { type: "flat", texture: `/textures/${candidate.textureRef}.png` };
       texturesToCopy.add(candidate.textureRef);
@@ -536,7 +676,7 @@ export function generate(input: GenerateInput): GenerateOutput {
       unresolvedIcons.push(itemId);
     }
 
-    const stat = resolveItemStat(itemId, componentsRaw, tagsRaw);
+    const stat = resolveItemStat(itemId, componentsRaw);
     // Derived from `id`, not `name` -- several items share a display name
     // (every smithing template is just "Smithing Template"), so only the id
     // guarantees a unique URL segment.
@@ -577,8 +717,18 @@ export function generate(input: GenerateInput): GenerateOutput {
       items: Object.keys(items).length,
       texturesWritten,
     },
-    unresolvedIcons: unresolvedIcons.toSorted(),
-    fallbackFamilyItems: fallbackFamilyItems.toSorted(),
+    // All lists sorted for deterministic output -- see types.ts's MetaAudit.
+    audit: {
+      degradedIcons: degradedIcons.toSorted((a, b) =>
+        a.itemId < b.itemId ? -1 : a.itemId > b.itemId ? 1 : 0,
+      ),
+      emptyDerivations: emptyDerivations.toSorted(),
+      excludedUnknownTypes: Array.from(recipeTypeAudit.excludedUnknownTypes).toSorted(),
+      fallbackFamilyItems: fallbackFamilyItems.toSorted(),
+      pendingSpecialTypes: Array.from(recipeTypeAudit.pendingSpecialTypes).toSorted(),
+      unmappedHeadKinds: Array.from(unmappedHeadKinds).toSorted(),
+      unresolvedIcons: unresolvedIcons.toSorted(),
+    },
   };
 
   return {
