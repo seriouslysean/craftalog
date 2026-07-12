@@ -222,17 +222,23 @@ Astro content collections consume the generated JSON
   for every texture.
 - **Generated data is committed** so the site builds without submodules and
   data bumps are reviewable as a normal diff. `npm run validate` re-derives
-  everything in memory and fails if committed data has drifted from the
-  pin, plus internal-consistency guards (unresolved icons, URL-slug
-  collisions, missing texture files, empty ingredients). CI separately runs
-  `npm run parse` and fails if `git diff` shows drift in the committed
-  output — both run on every PR.
+  everything in memory and **fails** on core data problems: drift from the
+  pin, URL-slug collisions, missing texture files, empty ingredients,
+  recipe/item count floors. Presentation gaps (unresolved/degraded icons,
+  fallback-family items, and the other `meta.json` `audit` lists) are
+  prominent **warnings**, never failures — they form a curation queue, not
+  a blocker. CI separately runs `npm run parse` and fails if `git diff`
+  shows drift in the committed output — both run on every PR.
 - **Never hand-edit anything under `src/data/generated/` or
   `public/textures/`.** Edit `scripts/parse.ts` / `scripts/validate.ts`
   instead and regenerate.
-- A weekly scheduled workflow (`update-data.yml`) checks for a newer stable
-  tag, bumps the pin, regenerates, and opens a PR automatically. The PR
-  waits for manual review and merge — there is no auto-merge.
+- A weekly scheduled workflow (`update-data.yml`, also runnable manually
+  with a `force` input that rebuilds even when pins are current) checks for
+  a newer stable tag, bumps the pin, regenerates, opens a PR, runs CI on
+  it, squash-merges once CI is green, and dispatches CI on `main` to fire
+  the deploy — fully automated, no manual review step. Any failure (or a
+  stalled previous PR) files/updates one deduped "needs attention" issue,
+  and the previously deployed site stays live.
 - Full details, the generated-data type contract, and the update workflow's
   exact behavior: `docs/PLAN.md` and `.claude/skills/vanilla-data/SKILL.md`.
 

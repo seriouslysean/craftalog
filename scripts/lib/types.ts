@@ -299,6 +299,39 @@ export type GeneratedFamily = Omit<z.infer<typeof familySchema>, "category"> & {
 
 export type FamiliesOutput = Record<string, GeneratedFamily>;
 
+/** One item whose bespoke icon extraction failed and degraded to the placeholder -- see MetaAudit.degradedIcons. */
+export interface DegradedIcon {
+  itemId: string;
+  reason: string;
+}
+
+/**
+ * The structured degradation record every parse run emits (meta.json's
+ * `audit` key). PRESENTATION-layer derivations (icons, families, notes)
+ * degrade gracefully instead of failing the run (see docs/PLAN.md's
+ * core-vs-presentation contract); everything they degraded on is collected
+ * here so the weekly update PR (which embeds meta.json in its body) surfaces
+ * it as a curation queue instead of it vanishing silently. All lists are
+ * sorted for deterministic output, and all are expected to be empty at a
+ * healthy pin.
+ */
+export interface MetaAudit {
+  /** Items whose bespoke icon extraction (Bedrock geometry, atlas-dimension checks, ...) failed and shipped the placeholder instead -- see scripts/lib/generate.ts's degrade helper. */
+  degradedIcons: DegradedIcon[];
+  /** Derivations that unexpectedly produced zero entries from non-empty vendored inputs (e.g. the patterned-banner sweep) -- see scripts/lib/generate.ts. */
+  emptyDerivations: string[];
+  /** Unknown NON-crafting recipe types excluded from the catalog (anything novel beyond scripts/lib/recipes.ts's KNOWN_EXCLUDED_TYPES) -- see transformRecipe. */
+  excludedUnknownTypes: string[];
+  /** Result item ids whose family fell through to the category fallback (see scripts/lib/family.ts's `deriveFamily`) -- surfaces taxonomy gaps needing a real family rule. */
+  fallbackFamilyItems: string[];
+  /** Unknown `minecraft:crafting_*` recipe types included with the generic note, pending a curated SPECIAL_NOTES entry -- see scripts/lib/recipes.ts's transformRecipe. */
+  pendingSpecialTypes: string[];
+  /** Head `kind`s missing from scripts/lib/head-icon.ts's HEAD_KIND_TEXTURES, degraded to the placeholder (a visibly-wrong particle swatch is worse) -- see scripts/lib/generate.ts. */
+  unmappedHeadKinds: string[];
+  /** Items whose icon resolution found no usable texture and shipped the placeholder. */
+  unresolvedIcons: string[];
+}
+
 export interface Meta {
   version: string;
   counts: {
@@ -310,7 +343,5 @@ export interface Meta {
     /** Every texture file a parse run writes under public/textures/ (verbatim vendor copies + synthesized/derived icons + the fixed HUD sprites) -- see scripts/lib/generate.ts's countTexturesWritten. */
     texturesWritten: number;
   };
-  unresolvedIcons: string[];
-  /** Result item ids whose family fell through to the category fallback (see scripts/lib/family.ts's `deriveFamily`) -- surfaces taxonomy gaps in a version-bump PR diff instead of silently bucketing them. */
-  fallbackFamilyItems: string[];
+  audit: MetaAudit;
 }

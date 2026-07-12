@@ -1,4 +1,5 @@
 import { convertBedrockCube } from "./bedrock-geometry.ts";
+import { IconExtractionError } from "./compound-icon.ts";
 import type { CompoundElement, CompoundIcon, RawBedrockGeometryFile } from "./types.ts";
 
 /**
@@ -50,9 +51,6 @@ import type { CompoundElement, CompoundIcon, RawBedrockGeometryFile } from "./ty
 const GOLEM_GEOMETRY_IDENTIFIER = "geometry.copper_golem";
 const GOLEM_YAW = -90;
 
-/** 16 model units / 24 native units: the golem's own full standing height (feet to antenna-ball top) is the assembly's full height. */
-const SCALE = 16 / 24;
-
 /**
  * Builds the copper golem statue's compound icon from the real vendored
  * Bedrock entity geometry -- see this file's docstring for the full
@@ -60,6 +58,16 @@ const SCALE = 16 / 24;
  * `/textures/...` path every cube's faces sample (one shared path per
  * tier -- geometry never varies by tier, only the texture, confirmed by
  * `copper_golem.render_controllers.json`'s single shared `Geometry.default`).
+ * The engine scale (16 engine units / native standing height) is computed
+ * from the geometry's own max bind-pose y-extent (24 native units at the
+ * current pin, feet to antenna-ball top -- inflate excluded, matching the
+ * authored cube grid rather than the antenna ball's -0.01 render shrink),
+ * so a resized future golem still fills the reference cube.
+ *
+ * All "vendored shape no longer matches" checks throw IconExtractionError:
+ * generate.ts degrades just this item to the placeholder + a
+ * meta.audit.degradedIcons entry instead of aborting the parse (icons are
+ * presentation, not core data -- see docs/PLAN.md).
  */
 export function copperGolemCompoundIcon(
   geoRaw: RawBedrockGeometryFile,
@@ -69,27 +77,40 @@ export function copperGolemCompoundIcon(
     (g) => g.description.identifier === GOLEM_GEOMETRY_IDENTIFIER,
   );
   if (!geometry) {
-    throw new Error(
+    throw new IconExtractionError(
       `copper golem geometry: expected identifier "${GOLEM_GEOMETRY_IDENTIFIER}" not found -- vendored bedrock-samples geo.json may have changed shape`,
     );
   }
 
   const { texture_width, texture_height } = geometry.description;
   if (texture_width !== 64 || texture_height !== 64) {
-    throw new Error(
+    throw new IconExtractionError(
       `copper golem geometry: expected a 64x64 UV space, got ${texture_width}x${texture_height} -- the face-UV formula in this file assumes 64x64`,
     );
   }
+
+  const maxYExtent = Math.max(
+    0,
+    ...geometry.bones.flatMap((bone) =>
+      (bone.cubes ?? []).map((cube) => cube.origin[1] + cube.size[1]),
+    ),
+  );
+  if (maxYExtent <= 0) {
+    throw new IconExtractionError(
+      `copper golem geometry: no cube with a positive y-extent found -- cannot derive the engine scale`,
+    );
+  }
+  const scale = 16 / maxYExtent;
 
   const elements: CompoundElement[] = [];
   for (const bone of geometry.bones) {
     for (const cube of bone.cubes ?? []) {
       if (cube.rotation || cube.mirror || bone.rotation) {
-        throw new Error(
+        throw new IconExtractionError(
           `copper golem geometry: bone "${bone.name}" or one of its cubes declares rotation/mirror -- this extractor only supports plain axis-aligned bind-pose cubes (verified absent in the current vendored file; a future update may have introduced one)`,
         );
       }
-      elements.push(convertBedrockCube(cube, atlasTexturePath, SCALE));
+      elements.push(convertBedrockCube(cube, atlasTexturePath, scale));
     }
   }
 

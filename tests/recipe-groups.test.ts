@@ -3,6 +3,9 @@ import {
   buildRecipeHrefMap,
   canonicalRecipePath,
   collapseVariantGroups,
+  deriveRedyeGroupAliases,
+  deriveVariantGroupName,
+  groupDisplayName,
   groupItemSlug,
   groupRecipes,
   recipePath,
@@ -11,6 +14,7 @@ import {
   variantGroupDisplayName,
 } from "../src/utils/recipe-groups";
 import type { ItemData, RecipeData } from "../src/content.config";
+import { loadGeneratedItems } from "./generated-items";
 import { loadGeneratedRecipes } from "./generated-recipes";
 
 const itemName = (id: string) => id.charAt(0).toUpperCase() + id.slice(1).replace(/_/g, " ");
@@ -121,7 +125,7 @@ describe("groupRecipes", () => {
         family: { collection: "families", id: "banners" },
         result: { id: "black_banner", count: 1 },
         note: "Combine a banner with a matching blank banner to duplicate its pattern.",
-        vanillaType: "minecraft:crafting_special_bannerduplicate",
+        selfReferential: true,
       }),
     ];
 
@@ -132,15 +136,15 @@ describe("groupRecipes", () => {
     expect(special).toMatchObject({
       label: "Combine a banner with a matching blank …",
       iconItemId: null,
-      // `vanillaType` survives onto the sibling -- consumed by
-      // src/utils/self-referential-specials.ts (via RecipePage.astro) to
-      // demote this sibling below the primary variant tabs.
-      vanillaType: "minecraft:crafting_special_bannerduplicate",
+      // The pipeline's `selfReferential` flag survives onto the sibling --
+      // consumed by RecipePage.astro to demote this sibling below the
+      // primary variant tabs (see tests/self-referential-specials.test.ts).
+      selfReferential: true,
     });
     expect(shaped).toMatchObject({
       label: "from Black wool",
       iconItemId: "black_wool",
-      vanillaType: undefined,
+      selfReferential: false,
     });
   });
 
@@ -271,6 +275,80 @@ describe("groupRecipes", () => {
       expect(labels.every((label) => label !== null)).toBe(true);
       expect(new Set(labels).size).toBe(labels.length);
     }
+  });
+});
+
+describe("deriveRedyeGroupAliases", () => {
+  // The alias rule is fully data-derived: `X_dye` normalizes to `X` iff
+  // group `X` exists and every result item `X_dye` produces is also a
+  // result of `X` (subset, not equality -- vanilla's `carpet` group holds
+  // moss_carpet/pale_moss_carpet, which have no re-dye recipe, alongside
+  // the 16 re-dyeable colors).
+  it("derives exactly the harness/bed/carpet aliases from the real generated data", () => {
+    const aliases = deriveRedyeGroupAliases(loadGeneratedRecipes());
+
+    expect(new Map(aliases)).toEqual(
+      new Map([
+        ["harness_dye", "harness"],
+        ["bed_dye", "bed"],
+        ["carpet_dye", "carpet"],
+      ]),
+    );
+  });
+
+  it("auto-admits a future X_dye/X pair whose dye results are a subset of the base group's", () => {
+    const recipes = [
+      recipe({ id: "white_sofa", group: "sofa", result: { id: "white_sofa", count: 1 } }),
+      recipe({ id: "plain_sofa", group: "sofa", result: { id: "plain_sofa", count: 1 } }),
+      recipe({
+        id: "dye_white_sofa",
+        group: "sofa_dye",
+        result: { id: "white_sofa", count: 1 },
+      }),
+    ];
+
+    expect(deriveRedyeGroupAliases(recipes).get("sofa_dye")).toBe("sofa");
+  });
+
+  it("never aliases a dye group that produces items outside its base group", () => {
+    const recipes = [
+      recipe({ id: "white_sofa", group: "sofa", result: { id: "white_sofa", count: 1 } }),
+      recipe({
+        id: "dye_white_couch",
+        group: "sofa_dye",
+        result: { id: "white_couch", count: 1 },
+      }),
+    ];
+
+    expect(deriveRedyeGroupAliases(recipes).size).toBe(0);
+  });
+
+  it("never aliases a dye-only group with no base group at all (bundle_dye, shulker_box_dye, <color>_dye, ...)", () => {
+    const aliases = deriveRedyeGroupAliases(loadGeneratedRecipes());
+
+    for (const dyeOnly of ["bundle_dye", "shulker_box_dye", "magenta_dye"]) {
+      expect(aliases.has(dyeOnly), `${dyeOnly} has no base group to alias to`).toBe(false);
+    }
+  });
+
+  it("collapses both sides of each real re-dye pair into one VariantGroup, non-dyeable members included", () => {
+    const groups = groupRecipes(loadGeneratedRecipes(), itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+    const byKey = new Map(variantGroups.map((vg) => [vg.groupKey, vg]));
+
+    // The dye-side key never surfaces as its own card ...
+    for (const dyeKey of ["harness_dye", "bed_dye", "carpet_dye"]) {
+      expect(byKey.has(dyeKey), `${dyeKey} must alias into its base group`).toBe(false);
+    }
+
+    // ... and the base card holds the full family: all 16 colors for
+    // harness/bed, plus carpet's 2 mossy non-redyeable members.
+    expect(byKey.get("harness")?.variants).toHaveLength(16);
+    expect(byKey.get("bed")?.variants).toHaveLength(16);
+    const carpetResultIds = byKey.get("carpet")?.variants.map((v) => v.resultId);
+    expect(carpetResultIds).toHaveLength(18);
+    expect(carpetResultIds).toContain("moss_carpet");
+    expect(carpetResultIds).toContain("pale_moss_carpet");
   });
 });
 
@@ -543,7 +621,31 @@ describe("variantGroupDisplayName / variantGroupDefault", () => {
     expect(variantGroupDefault(variantGroup).resultId).toBe("oak_boat");
   });
 
-  it("falls back to the alphabetically-first variant's own name when no meta entry exists", () => {
+  it("derives a name from what the member names share when no meta entry exists", () => {
+    // A future vanilla variant group with no curated entry must still get a
+    // sane generic card name: the per-variant token ("Cherry"/"Oak") drops
+    // out, leaving the shared shape name -- and the alphabetically-first
+    // member stays the default face.
+    const recipes = [
+      recipe({ id: "oak_sofa", group: "made_up_group", result: { id: "oak_sofa", count: 1 } }),
+      recipe({
+        id: "cherry_sofa",
+        group: "made_up_group",
+        result: { id: "cherry_sofa", count: 1 },
+      }),
+    ];
+    const groups = groupRecipes(recipes, itemName);
+    const [variantGroup] = collapseVariantGroups(groups).variantGroups;
+    const itemsMap = new Map([
+      ["oak_sofa", item({ id: "oak_sofa", name: "Oak Sofa" })],
+      ["cherry_sofa", item({ id: "cherry_sofa", name: "Cherry Sofa" })],
+    ]);
+
+    expect(variantGroupDisplayName(variantGroup, itemsMap)).toBe("Sofa");
+    expect(variantGroupDefault(variantGroup).resultId).toBe("cherry_sofa");
+  });
+
+  it("falls back to the alphabetically-first variant's own name when the members share no words at all", () => {
     const recipes = [
       recipe({ id: "made_up_a", group: "made_up_group", result: { id: "made_up_a", count: 1 } }),
       recipe({ id: "made_up_b", group: "made_up_group", result: { id: "made_up_b", count: 1 } }),
@@ -551,11 +653,11 @@ describe("variantGroupDisplayName / variantGroupDefault", () => {
     const groups = groupRecipes(recipes, itemName);
     const [variantGroup] = collapseVariantGroups(groups).variantGroups;
     const itemsMap = new Map([
-      ["made_up_a", item({ id: "made_up_a", name: "Made Up A" })],
-      ["made_up_b", item({ id: "made_up_b", name: "Made Up B" })],
+      ["made_up_a", item({ id: "made_up_a", name: "Something Red" })],
+      ["made_up_b", item({ id: "made_up_b", name: "Entirely Blue" })],
     ]);
 
-    expect(variantGroupDisplayName(variantGroup, itemsMap)).toBe("Made Up A");
+    expect(variantGroupDisplayName(variantGroup, itemsMap)).toBe("Something Red");
     expect(variantGroupDefault(variantGroup).resultId).toBe("made_up_a");
   });
 
@@ -574,19 +676,20 @@ describe("variantGroupDisplayName / variantGroupDefault", () => {
     expect(variantGroupDefault(variantGroup).resultId).toBe("acacia_boat");
   });
 
-  it("loads the real generated recipe data and confirms VARIANT_GROUP_META covers every groupKey", async () => {
-    const allRecipes = loadGeneratedRecipes();
-
-    const groups = groupRecipes(allRecipes, itemName);
+  // VARIANT_GROUP_META is a curated OVERRIDE layer on top of a derived
+  // fallback, not a required registry -- a new vanilla variant group must
+  // never fail this suite (that would block the automated weekly data
+  // update). The real-data contract is three-part: (i) no curated entry has
+  // rotted, (ii) the derived fallback yields a sane name for EVERY real
+  // group with the override map ignored, (iii) covered groups actually use
+  // their curated values.
+  it("real data: every VARIANT_GROUP_META entry still matches a real groupKey and a real member (no rot)", async () => {
+    const groups = groupRecipes(loadGeneratedRecipes(), itemName);
     const { variantGroups } = collapseVariantGroups(groups);
-    const missing = variantGroups
-      .map((vg) => vg.groupKey)
-      .filter((groupKey) => !(groupKey in VARIANT_GROUP_META));
+    const realKeys = new Set(variantGroups.map((vg) => vg.groupKey));
 
-    expect(
-      missing,
-      `every real groupKey needs a VARIANT_GROUP_META entry, missing: ${missing}`,
-    ).toEqual([]);
+    const rotted = Object.keys(VARIANT_GROUP_META).filter((key) => !realKeys.has(key));
+    expect(rotted, `curated entries matching no real groupKey: ${rotted}`).toEqual([]);
 
     // Every curated defaultResultId must resolve to a real member of its
     // own group -- catches a typo'd id before it silently falls back.
@@ -598,6 +701,70 @@ describe("variantGroupDisplayName / variantGroupDefault", () => {
         `VARIANT_GROUP_META["${variantGroup.groupKey}"].defaultResultId "${defaultResultId}" is not a real member`,
       ).toBe(true);
     }
+  });
+
+  it("real data: the derived fallback produces a non-empty sane name for every group, overrides ignored", async () => {
+    const itemsMap = loadGeneratedItems();
+    const groups = groupRecipes(loadGeneratedRecipes(), itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+    expect(variantGroups.length).toBeGreaterThan(0);
+
+    for (const variantGroup of variantGroups) {
+      const derived = deriveVariantGroupName(variantGroup, itemsMap);
+      expect(
+        derived.trim().length,
+        `empty derived name for "${variantGroup.groupKey}"`,
+      ).toBeGreaterThan(0);
+      // Sane = the derivation never invents text: whatever it returns is a
+      // word sequence taken from the members' own display names.
+      const memberNames = variantGroup.variants.map((v) => groupDisplayName(v, itemsMap));
+      expect(
+        memberNames.some((name) => name.includes(derived)),
+        `derived name "${derived}" for "${variantGroup.groupKey}" appears in no member name`,
+      ).toBe(true);
+    }
+  });
+
+  it("real data: derivation-quality spot checks against the current covered groups", async () => {
+    const itemsMap = loadGeneratedItems();
+    const groups = groupRecipes(loadGeneratedRecipes(), itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+    const derivedFor = (groupKey: string) => {
+      const variantGroup = variantGroups.find((vg) => vg.groupKey === groupKey);
+      expect(variantGroup, `expected a real VariantGroup for "${groupKey}"`).toBeDefined();
+      return deriveVariantGroupName(variantGroup!, itemsMap);
+    };
+
+    // Common-word-sequence path: the per-variant color/material token drops
+    // out, leaving the shared shape name (singular where the curated name
+    // chose plural -- fallback quality, not parity).
+    expect(derivedFor("wool")).toBe("Wool");
+    expect(derivedFor("bed")).toBe("Bed");
+    expect(derivedFor("slabs")).toBe("Slab");
+    expect(derivedFor("stained_glass_pane")).toBe("Stained Glass Pane");
+    expect(derivedFor("copper_golem_statue")).toBe("Copper Golem Statue");
+    // No-common-words path (Oak Wood vs Crimson Hyphae): falls back to the
+    // alphabetically-first member's own name.
+    expect(derivedFor("bark")).toBe("Acacia Wood");
+  });
+
+  it("real data: covered groups still use their curated name and default variant", async () => {
+    const itemsMap = loadGeneratedItems();
+    const groups = groupRecipes(loadGeneratedRecipes(), itemName);
+    const { variantGroups } = collapseVariantGroups(groups);
+    let covered = 0;
+
+    for (const variantGroup of variantGroups) {
+      const meta = VARIANT_GROUP_META[variantGroup.groupKey];
+      if (!meta) continue;
+      covered++;
+      expect(variantGroupDisplayName(variantGroup, itemsMap)).toBe(meta.name);
+      if (meta.defaultResultId) {
+        expect(variantGroupDefault(variantGroup).resultId).toBe(meta.defaultResultId);
+      }
+    }
+
+    expect(covered).toBeGreaterThan(0);
   });
 });
 

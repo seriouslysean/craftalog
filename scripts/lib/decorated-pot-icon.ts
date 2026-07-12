@@ -90,6 +90,16 @@ export const DECORATED_POT_SIDE_TEMPLATE_TEXTURE_REF = "entity/decorated_pot/dec
 /** Vendor texture ref of the pot's base/neck structural atlas (32x32). */
 export const DECORATED_POT_BASE_TEMPLATE_TEXTURE_REF = "entity/decorated_pot/decorated_pot_base";
 
+/**
+ * The two atlases' pixel dimensions this file's pixel-probed uv crops
+ * (uvBase's 32x32 halving, uvSide's 16x16 identity) were verified against.
+ * generate.ts checks the real vendored atlases still match and degrades the
+ * icon (placeholder + meta.audit.degradedIcons) on a mismatch, instead of
+ * silently stretching wrong crops over the body/neck.
+ */
+export const DECORATED_POT_BASE_ATLAS_SIZE = { width: 32, height: 32 } as const;
+export const DECORATED_POT_SIDE_ATLAS_SIZE = { width: 16, height: 16 } as const;
+
 /** Generated texture ref the body's side faces sample -- a verbatim copy of the template (see scripts/parse.ts). */
 export const DECORATED_POT_SIDE_ATLAS_REF = "item/decorated_pot_side";
 /** Generated texture ref the body's top/bottom + the neck's faces sample -- a verbatim copy of the template (see scripts/parse.ts). */

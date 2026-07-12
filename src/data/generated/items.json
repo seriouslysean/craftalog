@@ -13858,7 +13858,11 @@
     },
     "id": "leather_horse_armor",
     "name": "Leather Horse Armor",
-    "slug": "leather-horse-armor"
+    "slug": "leather-horse-armor",
+    "stat": {
+      "points": 3,
+      "type": "armor"
+    }
   },
   "leather_leggings": {
     "icon": {
@@ -31161,7 +31165,11 @@
     },
     "id": "shears",
     "name": "Shears",
-    "slug": "shears"
+    "slug": "shears",
+    "stat": {
+      "durability": 238,
+      "type": "tool"
+    }
   },
   "shield": {
     "icon": {
@@ -39236,7 +39244,11 @@
     },
     "id": "wolf_armor",
     "name": "Wolf Armor",
-    "slug": "wolf-armor"
+    "slug": "wolf-armor",
+    "stat": {
+      "points": 11,
+      "type": "armor"
+    }
   },
   "wooden_axe": {
     "icon": {

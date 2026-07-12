@@ -5,7 +5,7 @@ import { PNG } from "pngjs";
  *
  * Animated block textures (stonecutter_saw, sculk_sensor_tendril_*, magma,
  * sea_lantern, ...) ship as a vertical strip of square frames (a 16-wide
- * texture with N frames is 16xN*16) plus a .png.mcmeta timing file. This
+ * texture with N frames is 16xN*16) plus a .png.mcmeta timing sidecar. This
  * catalog's icons are static, and every icon renderer sizes textures
  * assuming a single square frame: ItemIcon.astro's computeUvCrop maps a
  * face's 0-16 uv space across the full image (a strip passed through
@@ -14,10 +14,19 @@ import { PNG } from "pngjs";
  * Cropping at copy time keeps that square-frame invariant pipeline-wide
  * instead of teaching every consumer about frame counts.
  *
- * Height <= width passes the source through byte-identical -- square
- * textures of any resolution (e.g. the 32x32 shelves) are never strips.
+ * `hasAnimationSidecar` is the authoritative "this is an animation strip"
+ * signal -- whether the source texture's `.png.mcmeta` sidecar exists in
+ * vendor/mcmeta-assets (the caller checks the filesystem; this stays
+ * I/O-free). `false` passes the source through byte-identical regardless of
+ * aspect (a tall texture with no sidecar is real static art, not a strip);
+ * `undefined` (sidecar couldn't be checked from the call site) falls back
+ * to the aspect heuristic alone. In every gated case, height <= width still
+ * passes through byte-identical -- square textures of any resolution (e.g.
+ * the 32x32 shelves) are never strips, and many square textures carry
+ * non-animation sidecars.
  */
-export function firstAnimationFrame(source: Buffer): Buffer {
+export function firstAnimationFrame(source: Buffer, hasAnimationSidecar?: boolean): Buffer {
+  if (hasAnimationSidecar === false) return source;
   const png = PNG.sync.read(source);
   if (png.height <= png.width) return source;
   const frame = new PNG({ width: png.width, height: png.width });
