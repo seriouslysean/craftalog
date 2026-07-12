@@ -53,16 +53,17 @@ import type { CompoundIcon } from "./types.ts";
 /** Vendor texture ref of the pre-painted, no-pattern shield atlas (64x64). */
 export const SHIELD_TEMPLATE_TEXTURE_REF = "entity/shield/shield_base_nopattern";
 
+/**
+ * The atlas pixel dimensions this file's hand-authored uv crops (uvPx's
+ * 64x64 assumption) were verified against. generate.ts checks the real
+ * vendored atlas still matches and degrades the icon (placeholder +
+ * meta.audit.degradedIcons) on a mismatch, instead of silently stretching
+ * wrong crops over the plate.
+ */
+export const SHIELD_ATLAS_SIZE = { width: 64, height: 64 } as const;
+
 /** Generated texture ref the icon's faces sample -- a verbatim copy of the template (see scripts/parse.ts). */
 export const SHIELD_ATLAS_REF = "item/shield_base_nopattern";
-
-/**
- * Extra GUI yaw for the shield icon, on top of the compound camera's default
- * -135deg (see ItemIcon.astro's `.compound` rule): item/shield.json declares
- * `display.gui.rotation: [15, -25, -5]` where the inherited block default is
- * [30, 225, 0], so the yaw delta is -25 - 225 = -250.
- */
-const SHIELD_GUI_YAW_DELTA = -250;
 
 /** 16 model units / 22 native units: the plate's own height is the assembly's full height. */
 const SCALE = 16 / 22;
@@ -72,9 +73,12 @@ const SCALE = 16 / 22;
  * (front, two rim edges, top strip -- see this file's docstring for why the
  * back face and the handle are both omitted). Coordinates are the native
  * entity-model units scaled by 16/22 into the engine's 0-16 cube, centered
- * on x/z = 8.
+ * on x/z = 8. `guiYawDelta` is derived from item/shield's own vendored
+ * `display.gui.rotation` via scripts/lib/model.ts's findGuiYawDelta (see
+ * this file's docstring point 2: [15, -25, -5], yaw -25 - default 225 =
+ * -250 at the current pin) rather than hardcoded here.
  */
-export function shieldCompoundIcon(atlasTexturePath: string): CompoundIcon {
+export function shieldCompoundIcon(atlasTexturePath: string, guiYawDelta: number): CompoundIcon {
   const face = faceWith(atlasTexturePath);
 
   const halfWidth = round4(6 * SCALE);
@@ -82,7 +86,7 @@ export function shieldCompoundIcon(atlasTexturePath: string): CompoundIcon {
 
   return {
     type: "compound",
-    yRotation: SHIELD_GUI_YAW_DELTA,
+    yRotation: guiYawDelta,
     variant: "shield",
     elements: [
       {

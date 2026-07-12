@@ -1,6 +1,6 @@
 import { PNG } from "pngjs";
 import { describe, expect, it } from "vitest";
-import { generateLeatherArmorIcon } from "../scripts/lib/leather-armor-icon.ts";
+import { argbToRgb, generateLeatherArmorIcon } from "../scripts/lib/leather-armor-icon.ts";
 
 /** Builds a PNG buffer from a row-major grid of [r, g, b, a] pixels. */
 function buildPng(
@@ -34,7 +34,10 @@ describe("generateLeatherArmorIcon", () => {
       [50, 100, 150, 128],
     ]);
 
-    const icon = PNG.sync.read(generateLeatherArmorIcon(layer0, layer1));
+    // rgb(160,101,64) = the un-dyed leather tint the pipeline derives from
+    // the item definition's own `minecraft:dye` default (-6265536) -- see
+    // argbToRgb's test below.
+    const icon = PNG.sync.read(generateLeatherArmorIcon(layer0, layer1, [160, 101, 64]));
 
     // Pixel 0: overlay fully transparent -- tinted base shows through untouched.
     // 200/255 intensity * default leather color (160,101,64):
@@ -52,5 +55,16 @@ describe("generateLeatherArmorIcon", () => {
     // B: round(150*128/255 + 50*127/255) = round(25550/255) = round(100.20) = 100
     // A: round(max(1, 128/255)*255) = 255 (base is fully opaque)
     expect([icon.data[8], icon.data[9], icon.data[10], icon.data[11]]).toEqual([87, 90, 100, 255]);
+  });
+});
+
+describe("argbToRgb", () => {
+  it("unpacks the real vendored leather tint default (-6265536 = 0xFFA06540) to rgb(160,101,64)", () => {
+    expect(argbToRgb(-6265536)).toEqual([160, 101, 64]);
+  });
+
+  it("unpacks positive packed ints too (alpha bits ignored)", () => {
+    expect(argbToRgb(0x00ff8040)).toEqual([255, 128, 64]);
+    expect(argbToRgb(0)).toEqual([0, 0, 0]);
   });
 });

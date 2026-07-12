@@ -103,14 +103,20 @@ describe("generateBannerAtlas", () => {
 });
 
 describe("bannerCompoundIcon", () => {
+  // -205 mirrors the real derived delta at the current pin:
+  // item/template_banner's display.gui yaw (20) minus the block default
+  // (225), computed by scripts/lib/model.ts's findGuiYawDelta and passed
+  // through by generate.ts -- see BANNER_BASE_MODEL_REF's doc comment.
   const icon = bannerCompoundIcon(
     "/textures/item/red_banner.png",
     "/textures/item/banner_base.png",
+    -205,
   );
 
   it("builds 3 elements (pole, crossbar, flag) that fit the 0-16 reference cube, tagged with the banner icon-scale variant", () => {
     expect(icon.type).toBe("compound");
     expect(icon.variant).toBe("banner");
+    expect(icon.yRotation).toBe(-205);
     expect(icon.elements).toHaveLength(3);
     for (const el of icon.elements) {
       for (const axis of [0, 1, 2] as const) {

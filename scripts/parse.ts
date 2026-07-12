@@ -106,8 +106,13 @@ function main(): void {
     const sourcePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
     const destPath = path.join(STAGING_TEXTURES_DIR, `${ref}.png`);
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    // Animation strips are cropped to their first frame -- see texture-frame.ts.
-    fs.writeFileSync(destPath, firstAnimationFrame(fs.readFileSync(sourcePath)));
+    // Animation strips are cropped to their first frame, gated on the
+    // authoritative signal -- the vendored `.png.mcmeta` animation sidecar's
+    // existence -- rather than aspect ratio alone (see texture-frame.ts).
+    fs.writeFileSync(
+      destPath,
+      firstAnimationFrame(fs.readFileSync(sourcePath), fs.existsSync(`${sourcePath}.mcmeta`)),
+    );
   }
 
   if (bannerIconsToSynthesize.size > 0 || patternedBannerIconsToSynthesize.size > 0) {
@@ -149,21 +154,21 @@ function main(): void {
     }
   }
 
-  for (const [textureRef, ref] of lightningRodIconsToSynthesize) {
+  for (const [textureRef, { ref, regions }] of lightningRodIconsToSynthesize) {
     const atlasPath = path.join(VENDOR_TEXTURES_DIR, `${textureRef}.png`);
     const destPath = path.join(STAGING_TEXTURES_DIR, `${ref}.png`);
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    fs.writeFileSync(destPath, generateLightningRodIcon(fs.readFileSync(atlasPath)));
+    fs.writeFileSync(destPath, generateLightningRodIcon(fs.readFileSync(atlasPath), regions));
   }
 
-  for (const [, ref] of leatherArmorIconsToSynthesize) {
-    const layer0Path = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
-    const layer1Path = path.join(VENDOR_TEXTURES_DIR, `${ref}_overlay.png`);
-    const destPath = path.join(STAGING_TEXTURES_DIR, `${ref}.png`);
+  for (const [, { textureRef, color }] of leatherArmorIconsToSynthesize) {
+    const layer0Path = path.join(VENDOR_TEXTURES_DIR, `${textureRef}.png`);
+    const layer1Path = path.join(VENDOR_TEXTURES_DIR, `${textureRef}_overlay.png`);
+    const destPath = path.join(STAGING_TEXTURES_DIR, `${textureRef}.png`);
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
     fs.writeFileSync(
       destPath,
-      generateLeatherArmorIcon(fs.readFileSync(layer0Path), fs.readFileSync(layer1Path)),
+      generateLeatherArmorIcon(fs.readFileSync(layer0Path), fs.readFileSync(layer1Path), color),
     );
   }
 
@@ -314,15 +319,29 @@ function main(): void {
   console.log(`conduit icon:     ${conduitIconToCopy ? 1 : 0}`);
   console.log(`chest icons:      ${chestIconsToCopy.size}`);
   console.log(`decorated pot icon: ${decoratedPotIconToCopy ? 1 : 0}`);
-  console.log(`unresolved icons: ${meta.unresolvedIcons.length}`);
-  if (meta.unresolvedIcons.length > 0) {
-    const preview = meta.unresolvedIcons.slice(0, 20).join(", ");
-    console.log(`  ${preview}${meta.unresolvedIcons.length > 20 ? ", ..." : ""}`);
-  }
-  console.log(`fallback family:  ${meta.fallbackFamilyItems.length}`);
-  if (meta.fallbackFamilyItems.length > 0) {
-    const preview = meta.fallbackFamilyItems.slice(0, 20).join(", ");
-    console.log(`  ${preview}${meta.fallbackFamilyItems.length > 20 ? ", ..." : ""}`);
+  // The structured degradation audit (meta.audit) -- every non-empty list
+  // here is presentation-layer curation work the run degraded around
+  // instead of failing on (see docs/PLAN.md). The weekly update workflow
+  // embeds these in its PR body.
+  const auditLabels: Record<keyof typeof meta.audit, string> = {
+    degradedIcons: "degraded icons",
+    emptyDerivations: "empty derivations",
+    excludedUnknownTypes: "excluded unknown recipe types",
+    fallbackFamilyItems: "fallback family",
+    pendingSpecialTypes: "pending special recipe types",
+    unmappedHeadKinds: "unmapped head kinds",
+    unresolvedIcons: "unresolved icons",
+  };
+  for (const [key, label] of Object.entries(auditLabels) as [keyof typeof meta.audit, string][]) {
+    const entries = meta.audit[key];
+    console.log(`${label}: ${entries.length}`);
+    if (entries.length > 0) {
+      const preview = entries
+        .slice(0, 20)
+        .map((entry) => (typeof entry === "string" ? entry : `${entry.itemId} (${entry.reason})`))
+        .join(", ");
+      console.log(`  ${preview}${entries.length > 20 ? ", ..." : ""}`);
+    }
   }
 }
 

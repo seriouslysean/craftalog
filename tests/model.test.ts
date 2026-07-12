@@ -341,7 +341,25 @@ describe("resolveIconCandidate", () => {
       parent: "minecraft:block/template_lightning_rod",
       textures: { texture: "minecraft:block/oxidized_lightning_rod" },
     },
-    "block/template_lightning_rod": { parent: "block/block" },
+    // Mirrors the real vendored template: two elements (cap + pole) whose
+    // north-face uv rects + block-space boxes drive the flat-icon
+    // crop/placement derivation (see scripts/lib/lightning-rod-icon.ts's
+    // deriveLightningRodRegions).
+    "block/template_lightning_rod": {
+      parent: "block/block",
+      elements: [
+        {
+          from: [6, 12, 6],
+          to: [10, 16, 10],
+          faces: { north: { texture: "#texture", uv: [0, 0, 4, 4] } },
+        },
+        {
+          from: [7, 0, 7],
+          to: [9, 12, 9],
+          faces: { north: { texture: "#texture", uv: [0, 4, 2, 16] } },
+        },
+      ],
+    },
     "block/black_bed_head": { parent: "minecraft:block/template_bed_head" },
     "block/template_bed_head": { parent: "block/template_bed" },
     "block/black_bed_foot": { parent: "minecraft:block/template_bed_foot" },
@@ -488,11 +506,36 @@ describe("resolveIconCandidate", () => {
     });
   });
 
-  it("resolves a lightning_rod candidate (textureRef) for a template_lightning_rod chain", () => {
+  it("resolves a lightning_rod candidate (textureRef + model-derived regions) for a template_lightning_rod chain", () => {
     expect(resolveIconCandidate("oxidized_lightning_rod", itemDefinitions, models)).toEqual({
       type: "lightning_rod",
       textureRef: "block/oxidized_lightning_rod",
+      regions: [
+        { src: { x: 0, y: 0, width: 4, height: 4 }, dest: { x: 6, y: 0 } },
+        { src: { x: 0, y: 4, width: 2, height: 12 }, dest: { x: 7, y: 4 } },
+      ],
     });
+  });
+
+  it("degrades a lightning_rod chain whose regions can't be derived to the generic element-geometry path (never throws, never guesses)", () => {
+    const brokenModels: RawModelsData = {
+      ...models,
+      // Elements present but the north face has no uv rect -- the flat-icon
+      // reconstruction can't be derived, so the generic compound extraction
+      // takes over (real geometry, honest fallback).
+      "block/template_lightning_rod": {
+        parent: "block/block",
+        elements: [
+          {
+            from: [6, 12, 6],
+            to: [10, 16, 10],
+            faces: { north: { texture: "#texture" } },
+          },
+        ],
+      },
+    };
+    const candidate = resolveIconCandidate("oxidized_lightning_rod", itemDefinitions, brokenModels);
+    expect(candidate?.type).toBe("compound");
   });
 
   it("resolves a bed's composite head+foot models to just its colorId (no Java texture resolution -- see scripts/lib/bedrock-colors.ts)", () => {
@@ -637,7 +680,33 @@ describe("resolveIconCandidate", () => {
     });
   });
 
-  it("resolves a banner candidate (colorId) for a minecraft:special banner renderer", () => {
+  it("resolves a banner candidate (colorId + base-model-derived gui yaw) for a minecraft:special banner renderer", () => {
+    const specials: RawItemDefinitionsData = {
+      white_banner: {
+        model: {
+          type: "minecraft:special",
+          base: "minecraft:item/template_banner",
+          model: { type: "minecraft:banner", color: "white" },
+        },
+      },
+    };
+    // Mirrors the real vendored shape: item/template_banner declares its
+    // own display.gui rotation ([30, 20, 0]), and block/block carries the
+    // inherited default ([30, 225, 0]) the delta is computed against.
+    const bannerModels: RawModelsData = {
+      ...models,
+      "block/block": { display: { gui: { rotation: [30, 225, 0] } } },
+      "item/template_banner": { display: { gui: { rotation: [30, 20, 0] } } },
+    };
+
+    expect(resolveIconCandidate("white_banner", specials, bannerModels)).toEqual({
+      type: "banner",
+      colorId: "white",
+      guiYawDelta: 20 - 225,
+    });
+  });
+
+  it("defaults a banner candidate's gui yaw delta to 0 when the base model carries no display data (minimal fixtures)", () => {
     const specials: RawItemDefinitionsData = {
       white_banner: {
         model: {
@@ -651,10 +720,11 @@ describe("resolveIconCandidate", () => {
     expect(resolveIconCandidate("white_banner", specials, models)).toEqual({
       type: "banner",
       colorId: "white",
+      guiYawDelta: 0,
     });
   });
 
-  it("resolves a shield candidate (no extra data) for a minecraft:special shield renderer nested in a minecraft:condition (idle vs. blocking pose)", () => {
+  it("resolves a shield candidate (base-model-derived gui yaw) for a minecraft:special shield renderer nested in a minecraft:condition (idle vs. blocking pose)", () => {
     // Mirrors the real vendored shape: item/shield.json is a
     // minecraft:condition with on_false (idle) / on_true (blocking), both
     // minecraft:special shield renderers -- findSpecialModel's DFS finds
@@ -678,12 +748,23 @@ describe("resolveIconCandidate", () => {
         },
       },
     };
+    // Mirrors the real vendored shape: item/shield declares its own
+    // display.gui rotation ([15, -25, -5]) alongside its particle texture,
+    // and block/block carries the inherited default the delta is computed
+    // against.
     const specialModels: RawModelsData = {
       ...models,
-      "item/shield": { textures: { particle: "minecraft:block/dark_oak_planks" } },
+      "block/block": { display: { gui: { rotation: [30, 225, 0] } } },
+      "item/shield": {
+        textures: { particle: "minecraft:block/dark_oak_planks" },
+        display: { gui: { rotation: [15, -25, -5] } },
+      },
     };
 
-    expect(resolveIconCandidate("shield", specials, specialModels)).toEqual({ type: "shield" });
+    expect(resolveIconCandidate("shield", specials, specialModels)).toEqual({
+      type: "shield",
+      guiYawDelta: -25 - 225,
+    });
   });
 
   it("resolves a decorated_pot candidate (no extra data) for a minecraft:special decorated_pot renderer", () => {
@@ -937,7 +1018,7 @@ describe("resolveIconCandidate", () => {
     }
   });
 
-  it("falls through to base-model chain resolution for an unsupported head kind (dragon -- non-standard atlas, see scripts/lib/head-icon.ts)", () => {
+  it("returns a head candidate for an unmapped kind too (dragon -- generate.ts degrades it to the placeholder + audit, never the old flat soul_sand fail-open)", () => {
     const specialModels: RawModelsData = {
       ...models,
       "item/dragon_head": { textures: { particle: "minecraft:block/soul_sand" } },
@@ -953,8 +1034,8 @@ describe("resolveIconCandidate", () => {
     };
 
     expect(resolveIconCandidate("dragon_head", specials, specialModels)).toEqual({
-      type: "flat",
-      textureRef: "block/soul_sand",
+      type: "head",
+      kind: "dragon",
     });
   });
 

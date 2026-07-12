@@ -82,6 +82,16 @@ const recipeObjectSchema = z.object({
   // even for specials: synthetic patterned-banner entries have no vanilla
   // type at all (see scripts/lib/generate.ts).
   vanillaType: z.string().optional(),
+  // special only -- true when the raw vendored recipe has an ingredient
+  // field (`banner`, `target`, `map`, `source`, ...) equal to its own
+  // result id, the deterministic signal that the recipe MODIFIES an
+  // existing item of the same kind (banner duplicate, shield decoration,
+  // leather re-dye, ...) rather than crafting a genuinely new one -- see
+  // scripts/lib/recipes.ts's isSelfReferentialRaw. Persisted so consumers
+  // (src/utils/self-referential-specials.ts) can demote these below the
+  // primary variant tabs without hardcoding vanilla type ids. Omitted
+  // (never `false`) when the signal is absent.
+  selfReferential: z.boolean().optional(),
 });
 
 /**
