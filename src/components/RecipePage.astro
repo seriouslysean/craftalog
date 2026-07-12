@@ -17,7 +17,6 @@ import {
   type SiblingRecipe,
   type VariantGroup,
 } from '../utils/recipe-groups';
-import { isSelfReferentialSpecial } from '../utils/self-referential-specials';
 import { ingredientOption, type IngredientOption } from '../utils/tag-label';
 import { withBase } from '../utils/with-base';
 import type { ItemData, RecipeData } from '../content.config';
@@ -73,23 +72,22 @@ const toVariant = (sibling: SiblingRecipe) => ({
 
 // Self-referential specials (banner duplicate, shield decoration, ...)
 // modify an existing item rather than craft a new one -- demoted to a
-// secondary strip below the primary tab row instead of an equal tab (see
-// src/utils/self-referential-specials.ts). Every other sibling, including
-// any special type this repo hasn't classified, stays in the primary row --
-// unchanged from current behavior. Only demotes when at least one *other*
-// sibling stays primary -- e.g. written_book's sole recipe is bookcloning
-// itself (no craft recipe exists to demote it "below"), so with nothing
-// left to demote below, it stays undivided, exactly like any other
-// singleton (no tabs at all).
-const hasPrimarySibling = siblings.some(
-  (sibling) => !isSelfReferentialSpecial(sibling.vanillaType),
-);
+// secondary strip below the primary tab row instead of an equal tab. The
+// flag is derived by the data pipeline and carried onto each sibling (see
+// SiblingRecipe.selfReferential in src/utils/recipe-groups.ts). Every other
+// sibling, including any special the pipeline doesn't flag, stays in the
+// primary row -- unchanged from current behavior. Only demotes when at
+// least one *other* sibling stays primary -- e.g. written_book's sole
+// recipe is bookcloning itself (no craft recipe exists to demote it
+// "below"), so with nothing left to demote below, it stays undivided,
+// exactly like any other singleton (no tabs at all).
+const hasPrimarySibling = siblings.some((sibling) => !sibling.selfReferential);
 
 const primarySiblings = hasPrimarySibling
-  ? siblings.filter((sibling) => !isSelfReferentialSpecial(sibling.vanillaType))
+  ? siblings.filter((sibling) => !sibling.selfReferential)
   : siblings;
 const secondarySiblings = hasPrimarySibling
-  ? siblings.filter((sibling) => isSelfReferentialSpecial(sibling.vanillaType))
+  ? siblings.filter((sibling) => sibling.selfReferential)
   : [];
 
 const variants = primarySiblings.map(toVariant);

@@ -139,8 +139,8 @@ describe("transformRecipe — special", () => {
     expect(recipe?.key).toBeUndefined();
     expect(recipe?.result).toEqual({ id: "black_banner", count: 1 });
     // The raw vanilla type id survives the transform (see generated-schema.ts's
-    // recipeSchema) -- consumed by src/utils/self-referential-specials.ts to
-    // demote self-referential specials below the primary variant tabs.
+    // recipeSchema) -- kept alongside the derived `selfReferential` flag so the
+    // coarse `type: "special"` bucket stays traceable to its vanilla source.
     expect(recipe?.vanillaType).toBe("minecraft:crafting_special_bannerduplicate");
   });
 
