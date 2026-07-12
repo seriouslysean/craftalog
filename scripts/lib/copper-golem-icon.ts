@@ -91,7 +91,9 @@ export function copperGolemCompoundIcon(
 
   const maxYExtent = Math.max(
     0,
-    ...geometry.bones.flatMap((bone) => (bone.cubes ?? []).map((cube) => cube.origin[1] + cube.size[1])),
+    ...geometry.bones.flatMap((bone) =>
+      (bone.cubes ?? []).map((cube) => cube.origin[1] + cube.size[1]),
+    ),
   );
   if (maxYExtent <= 0) {
     throw new IconExtractionError(

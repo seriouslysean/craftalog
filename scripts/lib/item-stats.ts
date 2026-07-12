@@ -29,9 +29,7 @@ function sumAttribute(components: RawItemComponents, attributeType: string): num
  * a future weapon with these components auto-classifies with no code change.
  */
 function isDedicatedWeapon(components: RawItemComponents): boolean {
-  const weapon = components["minecraft:weapon"] as
-    | { item_damage_per_attack?: number }
-    | undefined;
+  const weapon = components["minecraft:weapon"] as { item_damage_per_attack?: number } | undefined;
   return weapon !== undefined && (weapon.item_damage_per_attack ?? 1) === 1;
 }
 
