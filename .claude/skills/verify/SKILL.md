@@ -40,8 +40,11 @@ commit the result so CI's drift check (below) doesn't fail.
 - `npm test` — all suites pass, no `.only`/`.skip` left in test files.
 - `npm run build` completes and prints the `dist/_astro/*.js` bundle sizes —
   confirm total JS is still small (see AGENTS.md bundle-size guidance).
-- If you ran parse/validate: `npm run validate` prints no unresolved
-  items/errors, and `git status` shows either no changes under
+- If you ran parse/validate: `npm run validate` exits 0 and prints
+  "Validation passed". Non-blocking WARNINGS (the `meta.json` `audit`
+  curation queue — unresolved/degraded icons, fallback-family items,
+  pending special types, ...) may print prominently without failing the
+  run. `git status` shows either no changes under
   `src/data/generated`/`public/textures`, or changes you intentionally
   committed.
 
@@ -63,10 +66,13 @@ public/textures`): this fails when the committed generated data/textures no
   running `npm run parse` and committing the result. Fix: run `npm run
 parse`, review the diff, commit it.
 - **`npm run validate` fails but `npm run parse` succeeded**: validate
-  re-derives data independently and checks invariants (unresolved icons,
-  URL-slug collisions, missing texture files, empty ingredients, drift from
-  the pinned submodules). A failure here is a real data problem, not a
-  stale-cache issue — read the validator's report before re-running.
+  re-derives data independently and fails only on core invariants (drift
+  from the pinned submodules, URL-slug collisions, missing texture files,
+  empty ingredients, recipe/item count floors). A failure here is a real
+  data problem, not a stale-cache issue — read the validator's report
+  before re-running. Presentation gaps (unresolved icons, fallback-family
+  items, and the other `meta.json` `audit` lists) print as prominent
+  warnings instead and never fail the run.
 - **Never hand-edit anything under `src/data/generated/`**: it is fully
   generated from `vendor/mcmeta-*` by `npm run parse`. Manual edits will be
   silently overwritten and will fail the CI drift check the next time parse
