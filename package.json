@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@fontsource/pixelify-sans": "5.2.7",
-    "astro": "7.0.6",
+    "astro": "7.0.9",
     "modern-normalize": "3.0.1"
   },
   "devDependencies": {
