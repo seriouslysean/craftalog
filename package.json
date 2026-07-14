@@ -21,6 +21,8 @@
     "type-check": "astro check && tsc --noEmit -p tsconfig.node.json",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "parse": "tsx scripts/parse.ts",
     "validate": "tsx scripts/validate.ts",
     "vendor:init": "git submodule update --init --depth 1"
@@ -32,6 +34,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
+    "@playwright/test": "1.61.1",
     "@types/node": "24.13.3",
     "@types/pngjs": "6.0.5",
     "oxfmt": "0.58.0",

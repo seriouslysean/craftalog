@@ -17,6 +17,7 @@ npm run type-check      # astro check (src) + tsc --noEmit -p tsconfig.node.json
 npm run lint            # oxlint .
 npm test                # vitest run
 npm run build           # astro build — full production build
+npm run test:e2e        # Playwright smoke tests — runs against dist/ via astro preview, so build must come first
 ```
 
 If you touched anything under `vendor/`, `src/data/generated/`, or
@@ -40,6 +41,9 @@ commit the result so CI's drift check (below) doesn't fail.
 - `npm test` — all suites pass, no `.only`/`.skip` left in test files.
 - `npm run build` completes and prints the `dist/_astro/*.js` bundle sizes —
   confirm total JS is still small (see AGENTS.md bundle-size guidance).
+- `npm run test:e2e` — all Playwright specs pass. It serves the existing
+  `dist/` via `astro preview`, so run it after `npm run build` or it tests a
+  stale build.
 - If you ran parse/validate: `npm run validate` exits 0 and prints
   "Validation passed". Non-blocking WARNINGS (the `meta.json` `audit`
   curation queue — unresolved/degraded icons, fallback-family items,
