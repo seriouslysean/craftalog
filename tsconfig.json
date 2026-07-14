@@ -11,5 +11,7 @@
   // types (node:fs/node:path/process/...) require @types/node, which isn't
   // installed here (no new dependencies). tsx executes them without a type
   // check; correctness is covered by vitest + running parse/validate for real.
-  "exclude": ["scripts/**", "tests/**"]
+  // e2e/ and the Playwright/Vitest configs are likewise Node-side; they're
+  // type-checked via tsconfig.node.json instead.
+  "exclude": ["scripts/**", "tests/**", "e2e/**", "playwright.config.ts", "vitest.config.ts"]
 }
