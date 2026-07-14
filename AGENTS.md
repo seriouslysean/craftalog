@@ -12,7 +12,7 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 - **Linting/Formatting**: oxlint + oxfmt (prettier + prettier-plugin-astro for `.astro` files only)
 - **Testing**: Vitest
 - **Data**: vendored `misode/mcmeta` (+ `Mojang/bedrock-samples`) submodules → `scripts/parse.ts` → committed generated JSON — see [Data Pipeline](#data-pipeline)
-- **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run type-check`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`
+- **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run type-check`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`, `npm run test:e2e`
 
 ---
 
@@ -416,6 +416,7 @@ npm run build
 - [ ] **Unit tests**: Run `npm test` - all Vitest suites pass
 - [ ] **Data pipeline**: If `scripts/`, `vendor/`, or generated data changed, run `npm run parse` then `npm run validate` (or `npm run validate -- --offline`) and commit the regenerated output
 - [ ] **Build**: Run `npm run build` - must complete successfully
+- [ ] **E2E smoke**: Run `npm run test:e2e` - Playwright runs against `dist/` via `astro preview`, so `npm run build` must come first
 - [ ] **Preview**: Run `npm run preview` - manually test key functionality
 - [ ] **No Console Errors**: Check browser console - must be clean
 
@@ -491,6 +492,9 @@ npm run validate
 
 # Production build
 npm run build
+
+# E2E smoke tests (Playwright serves dist/ via astro preview — build must come first)
+npm run test:e2e
 
 # Test production build
 npm run preview
