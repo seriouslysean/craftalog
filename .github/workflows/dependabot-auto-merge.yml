@@ -1,0 +1,141 @@
+name: Dependabot auto-merge
+
+# Merges Dependabot PRs automatically once the required `ci` check passes,
+# then dispatches CI on main so deploy.yml fires — the same GITHUB_TOKEN
+# suppression workaround update-data.yml uses (see its deploy-kick step).
+#
+# Gate: every bumped dependency must be a semver patch or minor update,
+# read from the structured `update-type` metadata Dependabot embeds in its
+# commit messages. Majors — and any PR whose metadata is missing, whose
+# commits aren't all Dependabot's, or whose head moved since this CI run —
+# are left open for manual review.
+#
+# workflow_run (rather than pull_request) is deliberate: Dependabot-actor
+# pull_request events get a read-only GITHUB_TOKEN, and a merge performed
+# from one couldn't wait for CI anyway. This fires only from the workflow
+# file on main, so changes here take effect after merge.
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+# Serialize merges: when several Dependabot PRs go green together, the
+# first merge conflicts the rest; Dependabot rebases them, CI re-runs,
+# and this workflow fires again for each — eventual convergence without
+# two runs racing to merge at once.
+concurrency:
+  group: dependabot-auto-merge
+
+jobs:
+  auto-merge:
+    # CI also completes for push, merge_group, and workflow_dispatch
+    # events (including our own deploy kick below) — only successful
+    # pull_request runs on Dependabot branches matter here.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      startsWith(github.event.workflow_run.head_branch, 'dependabot/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Gate on the PR's Dependabot metadata
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          skip() {
+            echo "$1 - leaving the PR for manual review."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+
+          owner="${GH_REPO%%/*}"
+          pr=$(gh api "repos/${GH_REPO}/pulls?head=${owner}:${BRANCH}&state=open" \
+            --jq '.[0] // empty')
+          if [ -z "$pr" ]; then
+            skip "No open PR for ${BRANCH} (already merged or closed)"
+          fi
+
+          number=$(jq -r '.number' <<<"$pr")
+          author=$(jq -r '.user.login' <<<"$pr")
+          head=$(jq -r '.head.sha' <<<"$pr")
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+          if [ "$author" != "dependabot[bot]" ]; then
+            skip "PR #${number} was not opened by Dependabot (${author})"
+          fi
+          if [ "$head" != "$HEAD_SHA" ]; then
+            skip "PR #${number} head moved since this CI run (stale workflow_run)"
+          fi
+
+          commits=$(gh api "repos/${GH_REPO}/pulls/${number}/commits" --paginate \
+            --jq '.[] | {author: .author.login, message: .commit.message}')
+
+          non_bot=$(jq -rs '[.[] | select(.author != "dependabot[bot]")] | length' <<<"$commits")
+          if [ "$non_bot" != "0" ]; then
+            skip "PR #${number} contains ${non_bot} commit(s) not authored by Dependabot"
+          fi
+
+          # Dependabot embeds one `update-type: version-update:semver-*`
+          # line per bumped dependency in its commit message metadata.
+          types=$(jq -rs '.[].message' <<<"$commits" \
+            | grep -oE 'update-type: version-update:semver-(patch|minor|major)' \
+            | sed 's/.*semver-//' | sort -u)
+          if [ -z "$types" ]; then
+            skip "PR #${number} has no update-type metadata"
+          fi
+          if grep -qx 'major' <<<"$types"; then
+            skip "PR #${number} contains a semver-major bump"
+          fi
+
+          echo "PR #${number} is a Dependabot $(echo "$types" | tr '\n' '/' | sed 's#/$##') bump with green CI; merging."
+          echo "proceed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Merge the PR
+        if: steps.gate.outputs.proceed == 'true'
+        id: merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ steps.gate.outputs.number }}
+        run: |
+          # The required `ci` status check is green on the head SHA (that
+          # success is what triggered this run) and no reviews are
+          # required, so a direct squash merge is permitted.
+          # delete_branch_on_merge cleans up the branch.
+          if gh pr merge "$NUMBER" --squash; then
+            echo "merged=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          state=$(gh api "repos/${GH_REPO}/pulls/${NUMBER}" --jq '.mergeable_state')
+          if [ "$state" = "dirty" ]; then
+            # Another PR merged first; Dependabot rebases conflicted PRs
+            # on its own, CI re-runs, and this workflow gets another shot.
+            echo "PR #${NUMBER} is conflicting (mergeable_state=dirty); waiting for Dependabot's rebase."
+            echo "merged=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "::error::Merging PR #${NUMBER} failed (mergeable_state=${state})."
+          exit 1
+
+      - name: Run CI on main to trigger deploy
+        if: steps.merge.outputs.merged == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The squash-merge push above was authored by GITHUB_TOKEN, and
+          # events created with GITHUB_TOKEN do not create workflow runs -
+          # so ci.yml's push trigger will NOT fire for that merge commit,
+          # and deploy.yml (workflow_run on CI@main) would never run.
+          # workflow_dispatch is exempt from that suppression, so dispatch
+          # CI on main explicitly; its success fires the deploy workflow.
+          gh workflow run ci.yml --ref main
