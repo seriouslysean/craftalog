@@ -28,7 +28,7 @@
     "vendor:init": "git submodule update --init --depth 1"
   },
   "dependencies": {
-    "@fontsource/pixelify-sans": "5.2.7",
+    "@fontsource/pixelify-sans": "5.3.0",
     "astro": "7.0.9",
     "modern-normalize": "3.0.1"
   },
