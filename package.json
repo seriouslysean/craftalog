@@ -33,7 +33,7 @@
     "modern-normalize": "3.0.1"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.9",
+    "@astrojs/check": "0.9.10",
     "@playwright/test": "1.62.0",
     "@types/node": "24.13.3",
     "@types/pngjs": "6.0.5",
