@@ -428,6 +428,9 @@ npm run build
 - [ ] **Clear Message**: Commit message clearly describes what and why
 - [ ] **Atomic Commits**: Each commit does one thing
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
+- [ ] **Draft First**: Open every PR as draft (throwaway/verification PRs
+      included); flip to ready only after CI is green and self-reviewed, and
+      never chain create → merge without a pause for the owner to weigh in
 
 ---
 
