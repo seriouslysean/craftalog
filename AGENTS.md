@@ -219,7 +219,10 @@ Astro content collections consume the generated JSON
   and the copper golem statue's and shulker box's entity geometry (Mojang
   hardcodes those meshes in Java renderer code, not data). `misode/mcmeta`
   remains the sole source of truth for recipes, items, tags, and lang — and
-  for every texture.
+  for every texture. Before hand-authoring geometry for a new special-renderer
+  item, confirm **both** submodules lack it (mcmeta block-model `elements`,
+  then a Bedrock `.geo.json`) — hand-authoring is the fallback, not the first
+  move.
 - **Generated data is committed** so the site builds without submodules and
   data bumps are reviewable as a normal diff. `npm run validate` re-derives
   everything in memory and **fails** on core data problems: drift from the
@@ -425,6 +428,9 @@ npm run build
 - [ ] **Clear Message**: Commit message clearly describes what and why
 - [ ] **Atomic Commits**: Each commit does one thing
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
+- [ ] **Draft First**: Open every PR as draft (throwaway/verification PRs
+      included); flip to ready only after CI is green and self-reviewed, and
+      never chain create → merge without a pause for the owner to weigh in
 
 ---
 
