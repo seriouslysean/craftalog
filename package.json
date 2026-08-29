@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "@playwright/test": "1.62.0",
+    "@playwright/test": "1.62.1",
     "@types/node": "24.13.3",
     "@types/pngjs": "6.0.5",
     "oxfmt": "0.64.0",
