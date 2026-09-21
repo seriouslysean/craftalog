@@ -24,22 +24,20 @@ const { items, itemsMap, recipeHrefs, loading = 'lazy', syncKey } = Astro.props;
   data-variant-cycle={items.length > 1 ? items.length : undefined}
   data-variant-sync={syncKey}
 >
-  {
-    items.map((itemId, index) => {
-      const item = itemsMap.get(itemId);
-      return (
-        item && (
-          <span class="item-variants__variant" hidden={index !== 0}>
-            <ItemIconTooltip
-              item={item}
-              recipePath={recipeHrefs.get(item.id) ?? null}
-              loading={loading}
-            />
-          </span>
-        )
-      );
-    })
-  }
+  {items.map((itemId, index) => {
+    const item = itemsMap.get(itemId);
+    return (
+      item && (
+        <span class="item-variants__variant" hidden={index !== 0}>
+          <ItemIconTooltip
+            item={item}
+            recipePath={recipeHrefs.get(item.id) ?? null}
+            loading={loading}
+          />
+        </span>
+      )
+    );
+  })}
 </span>
 
 <style>

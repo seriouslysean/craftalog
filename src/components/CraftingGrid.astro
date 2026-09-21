@@ -28,57 +28,53 @@ const isCopiedInput = (cell: NonNullable<GridCell>) =>
 ---
 
 <div class="crafting">
-  {
-    /* Text summary of the grid for assistive tech -- NOT role="img"/aria-label
+  {/* Text summary of the grid for assistive tech -- NOT role="img"/aria-label
       on the grid container itself, which would flatten its descendants to
-      presentation and hide the interactive per-cell tooltip links inside. */
-  }
+      presentation and hide the interactive per-cell tooltip links inside. */}
   <p class="visually-hidden">{ariaLabel}</p>
   <div class="crafting__grid">
-    {
-      cells.map((cell, index) => (
-        <div class="crafting__cell" data-index={index}>
-          {cell && (
-            <ItemVariants
-              items={cell.items}
-              itemsMap={items}
-              recipeHrefs={recipeHrefs}
-              loading="eager"
-              syncKey={isCopiedInput(cell) ? COPIED_RESULT_SYNC_KEY : undefined}
-            />
-          )}
-        </div>
-      ))
-    }
+    {cells.map((cell, index) => (
+      <div class="crafting__cell" data-index={index}>
+        {cell && (
+          <ItemVariants
+            items={cell.items}
+            itemsMap={items}
+            recipeHrefs={recipeHrefs}
+            loading="eager"
+            syncKey={isCopiedInput(cell) ? COPIED_RESULT_SYNC_KEY : undefined}
+          />
+        )}
+      </div>
+    ))}
   </div>
 
   <div class="crafting__output">
-    <div class="crafting__arrow" aria-hidden="true">→</div>
+    <div class="crafting__arrow" aria-hidden="true">
+      →
+    </div>
 
     <div class="crafting__result">
       <div class="crafting__cell">
-        {
-          resultItem && (
-            <>
-              {copiedItems ? (
-                <ItemVariants
-                  items={copiedItems}
-                  itemsMap={items}
-                  recipeHrefs={recipeHrefs}
-                  loading="eager"
-                  syncKey={COPIED_RESULT_SYNC_KEY}
-                />
-              ) : (
-                <ItemIconTooltip
-                  item={resultItem}
-                  recipePath={recipeHrefs.get(resultItem.id) ?? null}
-                  loading="eager"
-                />
-              )}
-              {result && result.count > 1 && <span class="crafting__count">×{result.count}</span>}
-            </>
-          )
-        }
+        {resultItem && (
+          <>
+            {copiedItems ? (
+              <ItemVariants
+                items={copiedItems}
+                itemsMap={items}
+                recipeHrefs={recipeHrefs}
+                loading="eager"
+                syncKey={COPIED_RESULT_SYNC_KEY}
+              />
+            ) : (
+              <ItemIconTooltip
+                item={resultItem}
+                recipePath={recipeHrefs.get(resultItem.id) ?? null}
+                loading="eager"
+              />
+            )}
+            {result && result.count > 1 && <span class="crafting__count">×{result.count}</span>}
+          </>
+        )}
       </div>
     </div>
   </div>
@@ -88,10 +84,10 @@ const isCopiedInput = (cell: NonNullable<GridCell>) =>
   .crafting {
     --crafting-cell: 4rem;
     display: flex;
-    /* Mobile: grid stacked above the arrow+result, always centered -- a
-       fixed direction switch at the same breakpoint as --crafting-cell,
-       not flex-wrap, so the layout never depends on guessing whether
-       everything happens to fit on one line at a given viewport width. */
+    /* Mobile: grid stacked above the arrow+result, always centered -- a */
+    /* fixed direction switch at the same breakpoint as --crafting-cell, */
+    /* not flex-wrap, so the layout never depends on guessing whether */
+    /* everything happens to fit on one line at a given viewport width. */
     flex-direction: column;
     align-items: center;
     gap: var(--space-4);
@@ -118,8 +114,8 @@ const isCopiedInput = (cell: NonNullable<GridCell>) =>
     font-size: 1.5rem;
     color: var(--color-muted);
     flex-shrink: 0;
-    /* Points down while the output sits below the grid on mobile; flipped
-       back to pointing right once the layout goes side-by-side. */
+    /* Points down while the output sits below the grid on mobile; flipped */
+    /* back to pointing right once the layout goes side-by-side. */
     transform: rotate(90deg);
   }
 

@@ -11,11 +11,15 @@ const { code, title, message } = Astro.props;
 ---
 
 <div class="error-state">
-  <p class="error-state__code" aria-hidden="true">{code}</p>
+  <p class="error-state__code" aria-hidden="true">
+    {code}
+  </p>
   <h1 class="error-state__title">{title}</h1>
   <p class="error-state__message">{message}</p>
   <p class="error-state__action">
-    <a href={withBase('/')} class="link-chip">Browse all recipes</a>
+    <a href={withBase('/')} class="link-chip">
+      Browse all recipes
+    </a>
   </p>
 </div>
 

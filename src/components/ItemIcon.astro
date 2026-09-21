@@ -288,149 +288,147 @@ const fenceTexture = item && item.icon.type === 'fence' ? withBase(item.icon.tex
 const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item.icon.texture) : '';
 ---
 
-{
-  item && (
-    <div
-      class:list={[
-        'item-icon',
-        {
-          // Two camera families, two --icon-scale/max-width pairs (see the
-          // derivation above .item-icon--block below) -- fence_gate runs its
-          // own shallower 30deg-pitch camera, every other 3D type shares the
-          // 35deg-pitch camera. Banner and shield share that same camera but
-          // swap in their own --icon-scale (see .item-icon--banner /
-          // .item-icon--shield) since their hand-authored geometry is far
-          // thinner than a cube.
-          'item-icon--block':
-            is3d && item.icon.type !== 'fence_gate' && !isBannerCompound && !isShieldCompound,
-          'item-icon--fence-gate': item.icon.type === 'fence_gate',
-          'item-icon--banner': isBannerCompound,
-          'item-icon--shield': isShieldCompound,
-        },
-      ]}
-    >
-      {item.icon.type === 'flat' ? (
-        <img
-          class="icon"
-          src={withBase(item.icon.texture)}
-          alt={item.name}
-          title={item.name}
-          width="16"
-          height="16"
-          loading={loading}
-          decoding="async"
-        />
-      ) : item.icon.type === 'wall' ? (
-        <div class="wall" role="img" aria-label={item.name} title={item.name}>
-          {['post', 'base'].map((part) => (
-            <div class:list={['wall__group', `wall__group--${part}`]}>
-              <div class="wall__top" style={`background-image: url(${wallTexture})`} />
-              <div
-                class="wall__side wall__side--east"
-                style={`background-image: url(${wallTexture})`}
-              />
-              <div
-                class="wall__side wall__side--south"
-                style={`background-image: url(${wallTexture})`}
-              />
-            </div>
-          ))}
-        </div>
-      ) : item.icon.type === 'fence' ? (
-        <div class="fence" role="img" aria-label={item.name} title={item.name}>
-          {['left', 'right'].map((side) => (
-            <div class:list={['fence__post', `fence__post--${side}`]}>
-              <div class="fence__post-top" style={`background-image: url(${fenceTexture})`} />
-              <div
-                class="fence__post-side fence__post-side--east"
-                style={`background-image: url(${fenceTexture})`}
-              />
-              <div
-                class="fence__post-side fence__post-side--south"
-                style={`background-image: url(${fenceTexture})`}
-              />
-            </div>
-          ))}
-          {['upper', 'lower'].map((position) => (
-            <div class:list={['fence__bar', `fence__bar--${position}`]}>
-              <div class="fence__bar-top" style={`background-image: url(${fenceTexture})`} />
-              <div
-                class="fence__bar-side fence__bar-side--east"
-                style={`background-image: url(${fenceTexture})`}
-              />
-              <div
-                class="fence__bar-side fence__bar-side--south"
-                style={`background-image: url(${fenceTexture})`}
-              />
-            </div>
-          ))}
-        </div>
-      ) : item.icon.type === 'fence_gate' ? (
-        <div class="fence-gate" role="img" aria-label={item.name} title={item.name}>
-          {FENCE_GATE_PARTS.map((part) => (
-            <div class:list={['fence-gate__el', `fence-gate__el--${part}`]}>
-              <div class="fence-gate__top" style={`background-image: url(${fenceGateTexture})`} />
-              <div
-                class="fence-gate__side fence-gate__side--west"
-                style={`background-image: url(${fenceGateTexture})`}
-              />
-              <div
-                class="fence-gate__side fence-gate__side--south"
-                style={`background-image: url(${fenceGateTexture})`}
-              />
-            </div>
-          ))}
-        </div>
-      ) : item.icon.type === 'compound' ? (
-        <ul
-          class="compound"
-          style={`--compound-y-rotation: ${compoundYRotation}deg`}
-          role="img"
-          aria-label={item.name}
-          title={item.name}
-        >
-          {compoundFaces.map((face) => (
-            <li class="compound__face" style={`transform: ${face.outerTransform}`}>
-              <div
-                class="compound__face-content"
-                style={`top: ${face.content.top}; left: ${face.content.left}; width: ${face.content.width}; height: ${face.content.height}; transform: ${face.content.transform}; background-image: url(${face.texture}); background-size: ${face.background.size}; background-position: ${face.background.position};`}
-              />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <ul
-          class:list={[
-            'block',
-            {
-              'block--slab': item.icon.type === 'slab',
-              'block--stairs': item.icon.type === 'stairs',
-              'block--pressure-plate': item.icon.type === 'pressure_plate',
-              'block--button': item.icon.type === 'button',
-            },
-          ]}
-          role="img"
-          aria-label={item.name}
-          title={item.name}
-        >
-          {faces.map((face) => (
-            <li class:list={['block__face', face.className]}>
-              <img
-                class="block__img"
-                src={withBase(face.texture)}
-                alt=""
-                width="16"
-                height="16"
-                loading={loading}
-                decoding="async"
-              />
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+{item && (
+  <div
+    class:list={[
+      'item-icon',
+      {
+        // Two camera families, two --icon-scale/max-width pairs (see the
+        // derivation above .item-icon--block below) -- fence_gate runs its
+        // own shallower 30deg-pitch camera, every other 3D type shares the
+        // 35deg-pitch camera. Banner and shield share that same camera but
+        // swap in their own --icon-scale (see .item-icon--banner /
+        // .item-icon--shield) since their hand-authored geometry is far
+        // thinner than a cube.
+        'item-icon--block':
+          is3d && item.icon.type !== 'fence_gate' && !isBannerCompound && !isShieldCompound,
+        'item-icon--fence-gate': item.icon.type === 'fence_gate',
+        'item-icon--banner': isBannerCompound,
+        'item-icon--shield': isShieldCompound,
+      },
+    ]}
+  >
+    {item.icon.type === 'flat' ? (
+      <img
+        class="icon"
+        src={withBase(item.icon.texture)}
+        alt={item.name}
+        title={item.name}
+        width="16"
+        height="16"
+        loading={loading}
+        decoding="async"
+      />
+    ) : item.icon.type === 'wall' ? (
+      <div class="wall" role="img" aria-label={item.name} title={item.name}>
+        {['post', 'base'].map((part) => (
+          <div class:list={['wall__group', `wall__group--${part}`]}>
+            <div class="wall__top" style={`background-image: url(${wallTexture})`} />
+            <div
+              class="wall__side wall__side--east"
+              style={`background-image: url(${wallTexture})`}
+            />
+            <div
+              class="wall__side wall__side--south"
+              style={`background-image: url(${wallTexture})`}
+            />
+          </div>
+        ))}
+      </div>
+    ) : item.icon.type === 'fence' ? (
+      <div class="fence" role="img" aria-label={item.name} title={item.name}>
+        {['left', 'right'].map((side) => (
+          <div class:list={['fence__post', `fence__post--${side}`]}>
+            <div class="fence__post-top" style={`background-image: url(${fenceTexture})`} />
+            <div
+              class="fence__post-side fence__post-side--east"
+              style={`background-image: url(${fenceTexture})`}
+            />
+            <div
+              class="fence__post-side fence__post-side--south"
+              style={`background-image: url(${fenceTexture})`}
+            />
+          </div>
+        ))}
+        {['upper', 'lower'].map((position) => (
+          <div class:list={['fence__bar', `fence__bar--${position}`]}>
+            <div class="fence__bar-top" style={`background-image: url(${fenceTexture})`} />
+            <div
+              class="fence__bar-side fence__bar-side--east"
+              style={`background-image: url(${fenceTexture})`}
+            />
+            <div
+              class="fence__bar-side fence__bar-side--south"
+              style={`background-image: url(${fenceTexture})`}
+            />
+          </div>
+        ))}
+      </div>
+    ) : item.icon.type === 'fence_gate' ? (
+      <div class="fence-gate" role="img" aria-label={item.name} title={item.name}>
+        {FENCE_GATE_PARTS.map((part) => (
+          <div class:list={['fence-gate__el', `fence-gate__el--${part}`]}>
+            <div class="fence-gate__top" style={`background-image: url(${fenceGateTexture})`} />
+            <div
+              class="fence-gate__side fence-gate__side--west"
+              style={`background-image: url(${fenceGateTexture})`}
+            />
+            <div
+              class="fence-gate__side fence-gate__side--south"
+              style={`background-image: url(${fenceGateTexture})`}
+            />
+          </div>
+        ))}
+      </div>
+    ) : item.icon.type === 'compound' ? (
+      <ul
+        class="compound"
+        style={`--compound-y-rotation: ${compoundYRotation}deg`}
+        role="img"
+        aria-label={item.name}
+        title={item.name}
+      >
+        {compoundFaces.map((face) => (
+          <li class="compound__face" style={`transform: ${face.outerTransform}`}>
+            <div
+              class="compound__face-content"
+              style={`top: ${face.content.top}; left: ${face.content.left}; width: ${face.content.width}; height: ${face.content.height}; transform: ${face.content.transform}; background-image: url(${face.texture}); background-size: ${face.background.size}; background-position: ${face.background.position};`}
+            />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <ul
+        class:list={[
+          'block',
+          {
+            'block--slab': item.icon.type === 'slab',
+            'block--stairs': item.icon.type === 'stairs',
+            'block--pressure-plate': item.icon.type === 'pressure_plate',
+            'block--button': item.icon.type === 'button',
+          },
+        ]}
+        role="img"
+        aria-label={item.name}
+        title={item.name}
+      >
+        {faces.map((face) => (
+          <li class:list={['block__face', face.className]}>
+            <img
+              class="block__img"
+              src={withBase(face.texture)}
+              alt=""
+              width="16"
+              height="16"
+              loading={loading}
+              decoding="async"
+            />
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+)}
 
 <style>
   .item-icon {
@@ -438,70 +436,69 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     position: relative;
     aspect-ratio: 1/1;
     image-rendering: pixelated;
-    /* Every 3D engine below (.block/.wall/.fence/.fence-gate/.compound)
-       positions its faces by percentage against a local 0-100% reference
-       cube, then views it through a fixed rotateX/rotateY camera with NO
-       `perspective` set anywhere in this file -- i.e. a true orthographic
-       projection. Orthographically, a unit cube rotated by pitch φ then yaw
-       θ (`rotateX(φ) rotateY(θ)`) projects to a screen-space footprint of
-       |cosθ|+|sinθ| wide by |sinφ|(|sinθ|+|cosθ|)+|cosφ| tall, in multiples
-       of the cube's own edge (extrema land on the 8 corners for any affine
-       map of a box). At this file's 35deg/45-or-135deg camera that's
-       1.4142 x 1.6303 -- i.e. the reference cube ALWAYS overflows a 1x1 box
-       by ~63% in height, for every 3D icon type, not just compound ones.
-       This went unnoticed for cube-ish shapes (anvil, dirt, a wall) because
-       the bleed is symmetric on all 4 sides and was absorbed into the old
-       `max-width: 60%` whitespace margin below -- it only became visibly
-       broken for compound elements whose REAL geometry is flat/thin
-       (carpets height 1, snow height 2, trapdoors height 3, all out of 16):
-       the same 63% bleed concentrates entirely at the bottom edge instead of
-       spreading evenly, and pokes out of the box for real (most visibly the
-       item-hover tooltip's bordered card).
-
-       Fix: `--icon-scale` below (one constant per camera family -- see
-       `.item-icon--block`/`.item-icon--fence-gate`) is the exact reciprocal
-       of that projected height, prepended as `scale3d(...)` to each engine's
-       OWN top-level transform (`.block`/`.wall`/`.fence`/`.fence-gate`/
-       `.compound`). A uniform scale3d commutes with rotation and, applied on
-       the element that establishes a `preserve-3d` stack's shared 3D frame,
-       factors through every descendant's own transform untouched (matrix
-       algebra: parent's `kI * Rx * Ry` times any child's local matrix always
-       reduces to `k * (that child's original placement)`) -- so this needed
-       zero changes to computeFaceStyle, computeUvCrop, --face-overlap, or
-       any hand-authored per-face percentage anywhere below. `max-width`
-       grows by the same factor so already-shipped icons keep the exact same
-       on-screen size (the two changes are reciprocal by construction: old
-       content size = 0.6 * 1.6303 in cell-units; new content size =
-       (0.6 * 1.6303) * (1/1.6303), identical, just now bounded by the box's
-       own edge instead of by luck). Only now the box's edge genuinely is
-       the icon's edge, so `overflow: hidden` below is a real backstop (the
-       sub-1% fringe `--face-overlap` itself adds) rather than a crop of
-       real content. This is the single shared wrapper for every icon
-       type/context sitewide, and sits outside every engine's own
-       `preserve-3d` stack -- clipping here is a plain 2D box crop, not the
-       per-face `overflow: hidden` that caused compositor squashing (see
-       computeUvCrop's docstring); safe to contain unconditionally. */
+    /* Every 3D engine below (.block/.wall/.fence/.fence-gate/.compound) */
+    /* positions its faces by percentage against a local 0-100% reference */
+    /* cube, then views it through a fixed rotateX/rotateY camera with NO */
+    /* `perspective` set anywhere in this file -- i.e. a true orthographic */
+    /* projection. Orthographically, a unit cube rotated by pitch φ then yaw */
+    /* θ (`rotateX(φ) rotateY(θ)`) projects to a screen-space footprint of */
+    /* |cosθ|+|sinθ| wide by |sinφ|(|sinθ|+|cosθ|)+|cosφ| tall, in multiples */
+    /* of the cube's own edge (extrema land on the 8 corners for any affine */
+    /* map of a box). At this file's 35deg/45-or-135deg camera that's */
+    /* 1.4142 x 1.6303 -- i.e. the reference cube ALWAYS overflows a 1x1 box */
+    /* by ~63% in height, for every 3D icon type, not just compound ones. */
+    /* This went unnoticed for cube-ish shapes (anvil, dirt, a wall) because */
+    /* the bleed is symmetric on all 4 sides and was absorbed into the old */
+    /* `max-width: 60%` whitespace margin below -- it only became visibly */
+    /* broken for compound elements whose REAL geometry is flat/thin */
+    /* (carpets height 1, snow height 2, trapdoors height 3, all out of 16): */
+    /* the same 63% bleed concentrates entirely at the bottom edge instead of */
+    /* spreading evenly, and pokes out of the box for real (most visibly the */
+    /* item-hover tooltip's bordered card). */
+    /* Fix: `--icon-scale` below (one constant per camera family -- see */
+    /* `.item-icon--block`/`.item-icon--fence-gate`) is the exact reciprocal */
+    /* of that projected height, prepended as `scale3d(...)` to each engine's */
+    /* OWN top-level transform (`.block`/`.wall`/`.fence`/`.fence-gate`/ */
+    /* `.compound`). A uniform scale3d commutes with rotation and, applied on */
+    /* the element that establishes a `preserve-3d` stack's shared 3D frame, */
+    /* factors through every descendant's own transform untouched (matrix */
+    /* algebra: parent's `kI * Rx * Ry` times any child's local matrix always */
+    /* reduces to `k * (that child's original placement)`) -- so this needed */
+    /* zero changes to computeFaceStyle, computeUvCrop, --face-overlap, or */
+    /* any hand-authored per-face percentage anywhere below. `max-width` */
+    /* grows by the same factor so already-shipped icons keep the exact same */
+    /* on-screen size (the two changes are reciprocal by construction: old */
+    /* content size = 0.6 * 1.6303 in cell-units; new content size = */
+    /* (0.6 * 1.6303) * (1/1.6303), identical, just now bounded by the box's */
+    /* own edge instead of by luck). Only now the box's edge genuinely is */
+    /* the icon's edge, so `overflow: hidden` below is a real backstop (the */
+    /* sub-1% fringe `--face-overlap` itself adds) rather than a crop of */
+    /* real content. This is the single shared wrapper for every icon */
+    /* type/context sitewide, and sits outside every engine's own */
+    /* `preserve-3d` stack -- clipping here is a plain 2D box crop, not the */
+    /* per-face `overflow: hidden` that caused compositor squashing (see */
+    /* computeUvCrop's docstring); safe to contain unconditionally. */
     overflow: hidden;
   }
 
   .item-icon--block {
-    /* 1 / 1.6303 (see .item-icon's comment) -- the 35deg-pitch camera shared
-       by .block/.wall/.fence/.compound (45deg and 135deg yaw have identical
-       |cos|/|sin| magnitudes, so both cameras project to the same extent). */
+    /* 1 / 1.6303 (see .item-icon's comment) -- the 35deg-pitch camera shared */
+    /* by .block/.wall/.fence/.compound (45deg and 135deg yaw have identical */
+    /* |cos|/|sin| magnitudes, so both cameras project to the same extent). */
     --icon-scale: 0.6134;
     max-width: 97.8155%;
     margin-inline: auto;
-    /* Adjacent 3D faces that share a mathematically exact edge still rasterize
-       with a hairline background gap (sub-pixel anti-aliasing). Appending this
-       to a face's transform (i.e. applied first, in the face's own flat plane)
-       overgrows every edge ~1.5% so neighboring faces overlap instead of abut. */
+    /* Adjacent 3D faces that share a mathematically exact edge still rasterize */
+    /* with a hairline background gap (sub-pixel anti-aliasing). Appending this */
+    /* to a face's transform (i.e. applied first, in the face's own flat plane) */
+    /* overgrows every edge ~1.5% so neighboring faces overlap instead of abut. */
     --face-overlap: scale(1.03);
   }
 
   .item-icon--fence-gate {
-    /* 1 / 1.5731 (see .item-icon's comment) -- fence-gate's own shallower
-       30deg-pitch camera (vanilla's GUI pitch for this model) projects a
-       shorter 1.5731 height, not .item-icon--block's 1.6303. */
+    /* 1 / 1.5731 (see .item-icon's comment) -- fence-gate's own shallower */
+    /* 30deg-pitch camera (vanilla's GUI pitch for this model) projects a */
+    /* shorter 1.5731 height, not .item-icon--block's 1.6303. */
     --icon-scale: 0.6357;
     max-width: 94.3879%;
     margin-inline: auto;
@@ -509,51 +506,51 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   }
 
   .item-icon--banner {
-    /* .item-icon--block's 0.6134 is 1 / a full cube's projected height
-       (1.6303) -- a safe containment floor for ANY shape sharing that
-       camera, not a "fill efficiently" target (see .item-icon's comment).
-       Banner's hand-authored geometry (scripts/lib/banner-icon.ts: a 2-unit
-       pole + 20-unit crossbar + a 1-unit-thin flag, none of which use
-       anywhere near a cube's full 16-unit depth/width) projects a MUCH
-       smaller footprint under that same floor -- measured empirically
-       (getBoundingClientRect on the rendered .compound__face-content
-       elements vs. a neighboring cube icon's own faces, both inside an
-       identical-size .item-icon box): only 28.5% of the box's width and
-       57.3% of its height, next to a full cube's 89.4%/101.9% -- visibly
-       "tiny", matching the reported feedback.
-       First attempt used the SAME construction as the cube/fence-gate
-       scales -- 1 / (projected height span) -- computed via the shared
-       orthographic rotation matrix against banner's REAL geometry
-       (including its extra yRotation, -205deg on top of the shared
-       -135deg yaw). That gave 1.1202 and looked right (height ~104%,
-       matching neighboring icons), but it was WRONG: the cube/fence-gate
-       formula only works because a cube's projected footprint is
-       symmetric about its own center (span/2 in both directions), so
-       "fill the total span" and "keep both edges within bounds" are the
-       same constraint. Banner's 3 hand-authored boxes are NOT arranged
-       symmetrically about the shared model-space center -- their union's
-       projected midpoint sits 0.02 cube-edge-units off from 0 -- so
-       scaling by the total span alone left the crossbar's far edge at
-       0.5225 (past the box's 0.5 half-extent), clipped by .item-icon's
-       overflow: hidden. Confirmed via the same getBoundingClientRect
-       technique: the crossbar's "up"/"north" faces measured with a
-       negative top (above the container's own top edge), and the
-       screenshot showed the crossbar's end as a hard flat cut instead of
-       tapering naturally.
-       Fix: bound the WORST-CASE single-sided extent instead of the total
-       span -- scale = 0.5 / max(|minX|, |maxX|, |minY|, |maxY|) over the
-       union of all 3 boxes' projected corners, 1.0720 here (vs. the
-       over-eager 1.1202). This is the general-case version of the same
-       formula the cube/fence-gate scales use; those two just happen to be
-       symmetric, so span-based and worst-case-bound give the same answer
-       there. Resulting extents: maxY lands exactly at 0.5 (fills to the
-       edge, no clipping), width ~49% of the box (still narrower than a
-       cube -- an honest reflection of the real thin-flag shape, not a
-       containment artifact).
-       max-width stays .item-icon--block's 97.8155% on purpose -- this only
-       changes the CONTENT's internal scale, not the outer box size, so
-       banner's box stays the same size as every sibling 3D icon's; only
-       its own historically-undersized fill within that box changes. */
+    /* .item-icon--block's 0.6134 is 1 / a full cube's projected height */
+    /* (1.6303) -- a safe containment floor for ANY shape sharing that */
+    /* camera, not a "fill efficiently" target (see .item-icon's comment). */
+    /* Banner's hand-authored geometry (scripts/lib/banner-icon.ts: a 2-unit */
+    /* pole + 20-unit crossbar + a 1-unit-thin flag, none of which use */
+    /* anywhere near a cube's full 16-unit depth/width) projects a MUCH */
+    /* smaller footprint under that same floor -- measured empirically */
+    /* (getBoundingClientRect on the rendered .compound__face-content */
+    /* elements vs. a neighboring cube icon's own faces, both inside an */
+    /* identical-size .item-icon box): only 28.5% of the box's width and */
+    /* 57.3% of its height, next to a full cube's 89.4%/101.9% -- visibly */
+    /* "tiny", matching the reported feedback. */
+    /* First attempt used the SAME construction as the cube/fence-gate */
+    /* scales -- 1 / (projected height span) -- computed via the shared */
+    /* orthographic rotation matrix against banner's REAL geometry */
+    /* (including its extra yRotation, -205deg on top of the shared */
+    /* -135deg yaw). That gave 1.1202 and looked right (height ~104%, */
+    /* matching neighboring icons), but it was WRONG: the cube/fence-gate */
+    /* formula only works because a cube's projected footprint is */
+    /* symmetric about its own center (span/2 in both directions), so */
+    /* "fill the total span" and "keep both edges within bounds" are the */
+    /* same constraint. Banner's 3 hand-authored boxes are NOT arranged */
+    /* symmetrically about the shared model-space center -- their union's */
+    /* projected midpoint sits 0.02 cube-edge-units off from 0 -- so */
+    /* scaling by the total span alone left the crossbar's far edge at */
+    /* 0.5225 (past the box's 0.5 half-extent), clipped by .item-icon's */
+    /* overflow: hidden. Confirmed via the same getBoundingClientRect */
+    /* technique: the crossbar's "up"/"north" faces measured with a */
+    /* negative top (above the container's own top edge), and the */
+    /* screenshot showed the crossbar's end as a hard flat cut instead of */
+    /* tapering naturally. */
+    /* Fix: bound the WORST-CASE single-sided extent instead of the total */
+    /* span -- scale = 0.5 / max(|minX|, |maxX|, |minY|, |maxY|) over the */
+    /* union of all 3 boxes' projected corners, 1.0720 here (vs. the */
+    /* over-eager 1.1202). This is the general-case version of the same */
+    /* formula the cube/fence-gate scales use; those two just happen to be */
+    /* symmetric, so span-based and worst-case-bound give the same answer */
+    /* there. Resulting extents: maxY lands exactly at 0.5 (fills to the */
+    /* edge, no clipping), width ~49% of the box (still narrower than a */
+    /* cube -- an honest reflection of the real thin-flag shape, not a */
+    /* containment artifact). */
+    /* max-width stays .item-icon--block's 97.8155% on purpose -- this only */
+    /* changes the CONTENT's internal scale, not the outer box size, so */
+    /* banner's box stays the same size as every sibling 3D icon's; only */
+    /* its own historically-undersized fill within that box changes. */
     --icon-scale: 1.072;
     max-width: 97.8155%;
     margin-inline: auto;
@@ -561,21 +558,21 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   }
 
   .item-icon--shield {
-    /* Same worst-case single-sided-extent formula as .item-icon--banner
-       (scale = 0.5 / max(|minX|,|maxX|,|minY|,|maxY|) over the projected
-       corners), applied to shield's single hand-authored plate (see
-       scripts/lib/shield-icon.ts: 12x22x1 native, scaled to fill the
-       engine's full 0-16 height). The plate IS symmetric about the shared
-       model-space center (unlike banner's 3 off-center boxes), so the
-       worst-case-bound and total-span formulas agree here -- still using
-       the general one for consistency with banner's precedent. Computed
-       against the real geometry (halfWidth 4.3636, halfDepth 0.3636, full
-       0-16 height) through the shared camera plus shield's own -250deg
-       yRotation (net yaw -25deg, see shield-icon.ts's yaw derivation):
-       maxY lands at 0.4875 of the box (the taller extent, since the plate
-       spans the full engine height) -> scale 1.0256. Width comes out to
-       ~53% of the box -- an honest thin-shield silhouette, not a
-       containment artifact, same reasoning as banner's ~49%. */
+    /* Same worst-case single-sided-extent formula as .item-icon--banner */
+    /* (scale = 0.5 / max(|minX|,|maxX|,|minY|,|maxY|) over the projected */
+    /* corners), applied to shield's single hand-authored plate (see */
+    /* scripts/lib/shield-icon.ts: 12x22x1 native, scaled to fill the */
+    /* engine's full 0-16 height). The plate IS symmetric about the shared */
+    /* model-space center (unlike banner's 3 off-center boxes), so the */
+    /* worst-case-bound and total-span formulas agree here -- still using */
+    /* the general one for consistency with banner's precedent. Computed */
+    /* against the real geometry (halfWidth 4.3636, halfDepth 0.3636, full */
+    /* 0-16 height) through the shared camera plus shield's own -250deg */
+    /* yRotation (net yaw -25deg, see shield-icon.ts's yaw derivation): */
+    /* maxY lands at 0.4875 of the box (the taller extent, since the plate */
+    /* spans the full engine height) -> scale 1.0256. Width comes out to */
+    /* ~53% of the box -- an honest thin-shield silhouette, not a */
+    /* containment artifact, same reasoning as banner's ~49%. */
     --icon-scale: 1.0256;
     max-width: 97.8155%;
     margin-inline: auto;
@@ -585,10 +582,10 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .icon {
     width: 100%;
     height: 100%;
-    /* Every current flat texture is square, so this is a no-op -- kept as
-       the safety net that used to matter for banners' 20x40 flat crop
-       (since replaced by a 3D compound icon): any future non-square flat
-       texture scales down to fit the square slot instead of overflowing. */
+    /* Every current flat texture is square, so this is a no-op -- kept as */
+    /* the safety net that used to matter for banners' 20x40 flat crop */
+    /* (since replaced by a 3D compound icon): any future non-square flat */
+    /* texture scales down to fit the square slot instead of overflowing. */
     object-fit: contain;
   }
 
@@ -620,13 +617,13 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     object-fit: cover;
   }
 
-  /* var(--face-overlap) closes the same hairline sub-pixel seam between
-     adjacent faces that pressure_plate/button/wall/fence/fence_gate already
-     account for (see --face-overlap's definition) -- plain block/slab/
-     stairs faces used an opaque white background-color to paper over that
-     gap instead, which also opaquely masked any real alpha in the source
-     texture (e.g. copper_grate's cutout lattice rendered as solid white
-     behind the pattern instead of see-through). */
+  /* var(--face-overlap) closes the same hairline sub-pixel seam between */
+  /* adjacent faces that pressure_plate/button/wall/fence/fence_gate already */
+  /* account for (see --face-overlap's definition) -- plain block/slab/ */
+  /* stairs faces used an opaque white background-color to paper over that */
+  /* gap instead, which also opaquely masked any real alpha in the source */
+  /* texture (e.g. copper_grate's cutout lattice rendered as solid white */
+  /* behind the pattern instead of see-through). */
   .block__face--left,
   .block__face--left-lower,
   .block__face--left-upper {
@@ -688,8 +685,8 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: rotateY(90deg) var(--face-overlap);
   }
 
-  /* Pressure plate: a thin plank resting on the ground, inset 1px from every
-     edge (Minecraft block-space [1,0,1]->[15,1,15] of 16). */
+  /* Pressure plate: a thin plank resting on the ground, inset 1px from every */
+  /* edge (Minecraft block-space [1,0,1]->[15,1,15] of 16). */
   .block--pressure-plate .block__face--top {
     top: 50%;
     left: 6.25%;
@@ -716,11 +713,11 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
-  /* Button: Minecraft's inventory model is a 6x4x4 nub floating centered in
-     the block space ([5,6,6]->[11,10,10] of 16) -- faithful, but at catalog
-     size it reads as a detached box. Deliberate deviation: keep the nub's
-     exact proportions but rest it on the ground plane (y 0-4, like the
-     pressure plate) so it reads as attached to something. */
+  /* Button: Minecraft's inventory model is a 6x4x4 nub floating centered in */
+  /* the block space ([5,6,6]->[11,10,10] of 16) -- faithful, but at catalog */
+  /* size it reads as a detached box. Deliberate deviation: keep the nub's */
+  /* exact proportions but rest it on the ground plane (y 0-4, like the */
+  /* pressure plate) so it reads as attached to something. */
   .block--button .block__face--top {
     top: 62.5%;
     left: 31.25%;
@@ -747,12 +744,12 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: rotateY(-90deg) translateX(33.3333%) rotateY(90deg) var(--face-overlap);
   }
 
-  /* Wall: not one box, different faces, but two -- a full-height center post
-     (Minecraft block-space [4,0,4]->[12,16,12]) plus a wider, shorter
-     cross-brace spanning the full depth ([5,0,0]->[11,13,16]). Both share
-     the same single texture, so unlike bed there's no per-group texture --
-     just two differently-sized boxes rendered at the same origin (no
-     depth-separation trick needed, since this is one model, not a composite). */
+  /* Wall: not one box, different faces, but two -- a full-height center post */
+  /* (Minecraft block-space [4,0,4]->[12,16,12]) plus a wider, shorter */
+  /* cross-brace spanning the full depth ([5,0,0]->[11,13,16]). Both share */
+  /* the same single texture, so unlike bed there's no per-group texture -- */
+  /* just two differently-sized boxes rendered at the same origin (no */
+  /* depth-separation trick needed, since this is one model, not a composite). */
   .wall {
     position: absolute;
     inset: 0;
@@ -771,9 +768,9 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .wall__side {
     position: absolute;
     background-repeat: no-repeat;
-    /* Scale the 16px texture to the face (crop the overflow axis), matching
-       the img-based cube faces' object-fit: cover. Intrinsic sizing leaves
-       faces taller/deeper than 16px partially untextured. */
+    /* Scale the 16px texture to the face (crop the overflow axis), matching */
+    /* the img-based cube faces' object-fit: cover. Intrinsic sizing leaves */
+    /* faces taller/deeper than 16px partially untextured. */
     background-size: cover;
     background-position: center;
   }
@@ -826,12 +823,12 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: rotateY(-90deg) translateX(133.3333%) rotateY(90deg) var(--face-overlap);
   }
 
-  /* Fence: 2 corner posts (full height, at the north/south ends) + 2 bars
-     connecting them (upper near the top, lower near the middle) --
-     Minecraft block-space posts [6,0,0]->[10,16,4] / [6,0,12]->[10,16,16],
-     bars [7,12,0]->[9,15,16] / [7,6,0]->[9,9,16]. The "connector stub"
-     elements the real fence geometry also has (for neighbor-block culling
-     in-world) are dropped -- irrelevant for a standalone item icon. */
+  /* Fence: 2 corner posts (full height, at the north/south ends) + 2 bars */
+  /* connecting them (upper near the top, lower near the middle) -- */
+  /* Minecraft block-space posts [6,0,0]->[10,16,4] / [6,0,12]->[10,16,16], */
+  /* bars [7,12,0]->[9,15,16] / [7,6,0]->[9,9,16]. The "connector stub" */
+  /* elements the real fence geometry also has (for neighbor-block culling */
+  /* in-world) are dropped -- irrelevant for a standalone item icon. */
   .fence {
     position: absolute;
     inset: 0;
@@ -847,9 +844,9 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform-style: preserve-3d;
   }
 
-  /* Posts are centered (in their own depth) by construction below, then
-     shifted to the actual north/south ends via the same rotateY/translateX/
-     rotateY pure-depth-shift trick proven out for bed's head/foot groups. */
+  /* Posts are centered (in their own depth) by construction below, then */
+  /* shifted to the actual north/south ends via the same rotateY/translateX/ */
+  /* rotateY pure-depth-shift trick proven out for bed's head/foot groups. */
   .fence__post--left {
     transform: rotateY(-90deg) translateX(-37.5%) rotateY(90deg);
   }
@@ -864,15 +861,15 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .fence__bar-side {
     position: absolute;
     background-repeat: no-repeat;
-    /* Scale the 16px texture to the face (crop the overflow axis), matching
-       the img-based cube faces' object-fit: cover. Intrinsic sizing leaves
-       faces taller/deeper than 16px partially untextured. */
+    /* Scale the 16px texture to the face (crop the overflow axis), matching */
+    /* the img-based cube faces' object-fit: cover. Intrinsic sizing leaves */
+    /* faces taller/deeper than 16px partially untextured. */
     background-size: cover;
     background-position: center;
   }
 
-  /* Both posts share identical internal geometry (4x16x4) -- only the
-     group-level shift above differs between them. */
+  /* Both posts share identical internal geometry (4x16x4) -- only the */
+  /* group-level shift above differs between them. */
   .fence__post-top {
     top: 0;
     left: 37.5%;
@@ -896,8 +893,8 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: rotateY(-90deg) translateX(50%) rotateY(90deg) var(--face-overlap);
   }
 
-  /* Both bars span the full depth and share the same 2-wide footprint --
-     only their Y position (top/height, in the *-side rules below) differs. */
+  /* Both bars span the full depth and share the same 2-wide footprint -- */
+  /* only their Y position (top/height, in the *-side rules below) differs. */
   .fence__bar-top {
     left: 43.75%;
     width: 12.5%;
@@ -934,22 +931,21 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     height: 18.75%;
   }
 
-  /* Fence gate: 8 elements (2 outer posts, 2 inner door posts, 4 door bars),
-     all sharing the SAME thin Z-depth band (block-space z:7-9, centered) --
-     unlike fence's posts, none of these need the group-level depth-shift
-     trick, since they're already Z-centered by construction. Only each
-     element's own X-extent (left/width) and Y-crop (top/height) differ.
-
-     Camera: the gate's own display.gui rotation ([30, 45, 0], from
-     block/template_fence_gate.json) is 180deg around Y from the default
-     [30, 225, 0] -- in this orthographic setup that's the horizontal mirror
-     of the shared rotateY(-45deg) camera, so the gate gets rotateY(45deg)
-     and builds its X-normal caps on the WEST side (the side that faces the
-     viewer at this yaw; east caps would face away and leave hollow gaps).
-     Pitch is 30deg (Minecraft's own GUI pitch) rather than the shared 35deg:
-     at 35deg each through-hole splits in two around a sliver of the lower
-     bar's top face, while at 30deg each hole renders as the single clean
-     opening the vanilla icon shows. */
+  /* Fence gate: 8 elements (2 outer posts, 2 inner door posts, 4 door bars), */
+  /* all sharing the SAME thin Z-depth band (block-space z:7-9, centered) -- */
+  /* unlike fence's posts, none of these need the group-level depth-shift */
+  /* trick, since they're already Z-centered by construction. Only each */
+  /* element's own X-extent (left/width) and Y-crop (top/height) differ. */
+  /* Camera: the gate's own display.gui rotation ([30, 45, 0], from */
+  /* block/template_fence_gate.json) is 180deg around Y from the default */
+  /* [30, 225, 0] -- in this orthographic setup that's the horizontal mirror */
+  /* of the shared rotateY(-45deg) camera, so the gate gets rotateY(45deg) */
+  /* and builds its X-normal caps on the WEST side (the side that faces the */
+  /* viewer at this yaw; east caps would face away and leave hollow gaps). */
+  /* Pitch is 30deg (Minecraft's own GUI pitch) rather than the shared 35deg: */
+  /* at 35deg each through-hole splits in two around a sliver of the lower */
+  /* bar's top face, while at 30deg each hole renders as the single clean */
+  /* opening the vanilla icon shows. */
   .fence-gate {
     position: absolute;
     inset: 0;
@@ -968,9 +964,9 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
   .fence-gate__side {
     position: absolute;
     background-repeat: no-repeat;
-    /* Scale the 16px texture to the face (crop the overflow axis), matching
-       the img-based cube faces' object-fit: cover. Intrinsic sizing leaves
-       faces taller/deeper than 16px partially untextured. */
+    /* Scale the 16px texture to the face (crop the overflow axis), matching */
+    /* the img-based cube faces' object-fit: cover. Intrinsic sizing leaves */
+    /* faces taller/deeper than 16px partially untextured. */
     background-size: cover;
     background-position: center;
   }
@@ -984,10 +980,10 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     transform: translateX(-50%) rotateY(90deg) var(--face-overlap);
   }
 
-  /* Posts (2-wide, matching the shared 2-deep Z-band) reach their south face
-     with the same magnitude of shift as their west caps; bars (4-wide) need
-     a shallower custom translateX, since the same Z target is a smaller
-     fraction of their wider box. */
+  /* Posts (2-wide, matching the shared 2-deep Z-band) reach their south face */
+  /* with the same magnitude of shift as their west caps; bars (4-wide) need */
+  /* a shallower custom translateX, since the same Z target is a smaller */
+  /* fraction of their wider box. */
   .fence-gate__el--post-outer-left .fence-gate__side--south,
   .fence-gate__el--post-outer-right .fence-gate__side--south,
   .fence-gate__el--post-inner-left .fence-gate__side--south,
@@ -1056,8 +1052,8 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     width: 12.5%;
   }
 
-  /* Door bars: 4-wide -- left pair (x2-6) / right pair (x10-14), each with a
-     lower (y6-9) and upper (y12-15) bar. */
+  /* Door bars: 4-wide -- left pair (x2-6) / right pair (x10-14), each with a */
+  /* lower (y6-9) and upper (y12-15) bar. */
   .fence-gate__el--bar-lower-left .fence-gate__top,
   .fence-gate__el--bar-upper-left .fence-gate__top,
   .fence-gate__el--bar-lower-left .fence-gate__side,
@@ -1096,28 +1092,27 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
     height: 18.75%;
   }
 
-  /* Compound: a generic multi-element shape (e.g. anvil) built from the
-     block model's own real element geometry (see
-     scripts/lib/model.ts's extractCompoundElements + this file's
-     computeFaceStyle), rather than hand-authored per-shape rules like every
-     class above. `--compound-y-rotation` is an optional extra yaw (from the
-     model's own display.gui override, relative to vanilla's [30,225,0]
-     default -- see scripts/lib/model.ts) composed on top of the camera;
-     0deg for models that don't override "gui" (e.g. anvil itself).
-
-     The yaw is -135deg, NOT the -45deg the simpler `.block` icons use:
-     -135deg shows a box's UP, EAST (screen-left) and NORTH (screen-right)
-     faces -- the exact face placement of vanilla's own GUI camera (rotation
-     [30, 225, 0], block/block.json). Verified three independent ways:
-     (1) rotating the [30,225,0] gui transform's yaw through Minecraft's
-     axis convention (+X east, -Z north) puts north's normal screen-right
-     and east's screen-left; (2) a real in-game inventory screenshot of
-     dried_ghast (whose 4 side textures all differ) shows its east speckle
-     texture on the left face and its north eyes/mouth texture on the
-     right; (3) the wiki's game-rendered furnace invicon shows the furnace
-     mouth (its north "front" face) on the right face. At -45deg the
-     renderer showed SOUTH+EAST instead, so any north/south-asymmetric
-     compound model (dried_ghast's face) hid its front entirely. */
+  /* Compound: a generic multi-element shape (e.g. anvil) built from the */
+  /* block model's own real element geometry (see */
+  /* scripts/lib/model.ts's extractCompoundElements + this file's */
+  /* computeFaceStyle), rather than hand-authored per-shape rules like every */
+  /* class above. `--compound-y-rotation` is an optional extra yaw (from the */
+  /* model's own display.gui override, relative to vanilla's [30,225,0] */
+  /* default -- see scripts/lib/model.ts) composed on top of the camera; */
+  /* 0deg for models that don't override "gui" (e.g. anvil itself). */
+  /* The yaw is -135deg, NOT the -45deg the simpler `.block` icons use: */
+  /* -135deg shows a box's UP, EAST (screen-left) and NORTH (screen-right) */
+  /* faces -- the exact face placement of vanilla's own GUI camera (rotation */
+  /* [30, 225, 0], block/block.json). Verified three independent ways: */
+  /* (1) rotating the [30,225,0] gui transform's yaw through Minecraft's */
+  /* axis convention (+X east, -Z north) puts north's normal screen-right */
+  /* and east's screen-left; (2) a real in-game inventory screenshot of */
+  /* dried_ghast (whose 4 side textures all differ) shows its east speckle */
+  /* texture on the left face and its north eyes/mouth texture on the */
+  /* right; (3) the wiki's game-rendered furnace invicon shows the furnace */
+  /* mouth (its north "front" face) on the right face. At -45deg the */
+  /* renderer showed SOUTH+EAST instead, so any north/south-asymmetric */
+  /* compound model (dried_ghast's face) hid its front entirely. */
   .compound {
     position: absolute;
     inset: 0;
@@ -1126,16 +1121,16 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
       rotateY(-135deg) rotateY(var(--compound-y-rotation, 0deg));
   }
 
-  /* Each face is TWO nested elements on purpose: cropping a transformed
-     element's own box natively (top/left/width/height on the SAME element
-     that carries the depth transform) shifts its rotation origin and
-     silently corrupts the depth placement. `.compound__face` carries only
-     the depth (3D) transform, at the element's full, un-cropped 100%x100%
-     size (correct, unshifted origin); `.compound__face-content` is the
-     footprint crop + texture, plus (see computeUvCrop) a flat 2D
-     `scale(-1, ...)` when this face's uv is mirrored on an axis -- safe to
-     add here since this element carries no 3D transform of its own to
-     corrupt. */
+  /* Each face is TWO nested elements on purpose: cropping a transformed */
+  /* element's own box natively (top/left/width/height on the SAME element */
+  /* that carries the depth transform) shifts its rotation origin and */
+  /* silently corrupts the depth placement. `.compound__face` carries only */
+  /* the depth (3D) transform, at the element's full, un-cropped 100%x100% */
+  /* size (correct, unshifted origin); `.compound__face-content` is the */
+  /* footprint crop + texture, plus (see computeUvCrop) a flat 2D */
+  /* `scale(-1, ...)` when this face's uv is mirrored on an axis -- safe to */
+  /* add here since this element carries no 3D transform of its own to */
+  /* corrupt. */
   .compound__face {
     position: absolute;
     inset: 0;
@@ -1143,13 +1138,13 @@ const fenceGateTexture = item && item.icon.type === 'fence_gate' ? withBase(item
 
   .compound__face-content {
     position: absolute;
-    /* The crop viewport for this face's uv sub-rect -- a background-image
-       (size+position set inline per face by computeUvCrop) so only the uv
-       window shows, deliberately NOT an oversized child <img> clipped via
-       overflow: hidden (see computeUvCrop's comment for why: that clipping
-       approach silently breaks under Chromium's compositor on a real,
-       content-heavy page). Also the element a mirrored uv (u0>u1 or v0>v1)
-       applies its scale(-1, ...) to. */
+    /* The crop viewport for this face's uv sub-rect -- a background-image */
+    /* (size+position set inline per face by computeUvCrop) so only the uv */
+    /* window shows, deliberately NOT an oversized child <img> clipped via */
+    /* overflow: hidden (see computeUvCrop's comment for why: that clipping */
+    /* approach silently breaks under Chromium's compositor on a real, */
+    /* content-heavy page). Also the element a mirrored uv (u0>u1 or v0>v1) */
+    /* applies its scale(-1, ...) to. */
     background-repeat: no-repeat;
   }
 </style>

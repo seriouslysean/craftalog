@@ -82,9 +82,9 @@ const { item, recipePath, loading } = Astro.props;
   .item-icon-tooltip:focus-within .item-icon-tooltip__popup {
     opacity: 1;
     visibility: visible;
-    /* Hover-revealed content must stay up while the pointer moves over it
-       (WCAG 1.4.13): accepting pointer events keeps the container :hover
-       alive when the cursor crosses onto the popup itself. */
+    /* Hover-revealed content must stay up while the pointer moves over it */
+    /* (WCAG 1.4.13): accepting pointer events keeps the container :hover */
+    /* alive when the cursor crosses onto the popup itself. */
     pointer-events: auto;
   }
 </style>
