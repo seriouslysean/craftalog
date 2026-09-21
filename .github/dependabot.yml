@@ -9,3 +9,8 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    ignore:
+      # Node's types track the runtime CI pins (`node-version` in the
+      # workflows), not the newest Node -- bump both together.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
