@@ -41,7 +41,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'pull_request' &&
       startsWith(github.event.workflow_run.head_branch, 'dependabot/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Gate on the PR's Dependabot metadata
         id: gate
@@ -131,6 +131,8 @@ jobs:
         if: steps.merge.outputs.merged == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          # This job has no checkout, so gh can't infer the repo from git.
+          GH_REPO: ${{ github.repository }}
         run: |
           # The squash-merge push above was authored by GITHUB_TOKEN, and
           # events created with GITHUB_TOKEN do not create workflow runs -
