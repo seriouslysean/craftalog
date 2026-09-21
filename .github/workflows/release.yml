@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  # Same trigger as deploy.yml, for the same reason: merges made with
+  # GITHUB_TOKEN (the data-update and Dependabot auto-merges) never fire
+  # `push` or `pull_request: closed` workflows, but both dispatch CI on main
+  # afterwards -- so "CI completed on main" is the one event every merge
+  # path reliably produces.
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
+    branches: ['main']
+
+permissions:
+  contents: write
+
+# Releases are cut in order and never cancelled mid-way.
+concurrency:
+  group: 'release'
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # workflow_run fires on any completion; only release a commit CI passed.
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout the commit CI passed on
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Tag and release when package.json is ahead of the latest tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          # package.json is the source of truth: main is protected (required
+          # `ci` check, no PAT), so nothing can push a bump commit after a
+          # merge -- the bump always arrives inside a PR (update-data.yml
+          # adds it to the data PR; humans add it to theirs, see AGENTS.md's
+          # "Releases"). This job only notices it and cuts the release. A
+          # merge that doesn't touch the version is a no-op here.
+          version=$(jq -r '.version' package.json)
+          if ! grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$' <<<"$version"; then
+            echo "::error::package.json version \"${version}\" is not a plain MAJOR.MINOR.PATCH semver."
+            exit 1
+          fi
+
+          latest=$(git ls-remote --tags origin 'refs/tags/v*' \
+            | sed -E 's#.*refs/tags/v##; s#\^\{\}$##' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -uV | tail -n1 || true)
+
+          if [ "$version" = "$latest" ]; then
+            echo "v${version} is already released; nothing to do."
+            exit 0
+          fi
+          if [ -n "$latest" ] \
+            && [ "$(printf '%s\n%s\n' "$latest" "$version" | sort -V | tail -n1)" != "$version" ]; then
+            echo "package.json (${version}) is behind the latest release (v${latest}); an older commit's CI finished late. Nothing to do."
+            exit 0
+          fi
+
+          tag="v${version}"
+          minecraft=$(jq -r '.version' src/data/generated/meta.json)
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$tag" -m "$tag" "$HEAD_SHA"
+          git push origin "$tag"
+
+          gh release create "$tag" --verify-tag --latest --generate-notes \
+            --title "${tag} (Minecraft ${minecraft})"

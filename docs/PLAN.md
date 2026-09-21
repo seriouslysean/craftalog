@@ -53,7 +53,9 @@ resume from here plus the task list in the PR description.
    Prettier is kept only if oxfmt cannot format `.astro` files.
 4. **Self-update**: fully automated — the scheduled workflow opens a PR,
    triggers CI on it, watches it, squash-merges on green, and dispatches CI
-   on main to fire the deploy. CI is the sole merge gate; there is no
+   on main to fire the deploy. The PR carries the site's version bump, which
+   `release.yml` tags and releases once that CI run passes (AGENTS.md's
+   "Releases"). CI is the sole merge gate; there is no
    manual review step. Every failure mode (and a stalled previous PR)
    files/updates one deduped "needs attention" issue, and the previously
    deployed site stays live on any failure.

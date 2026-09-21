@@ -21,11 +21,12 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 1. [Project Goals](#project-goals)
 2. [Code Standards](#code-standards)
 3. [Data Pipeline](#data-pipeline)
-4. [Common Pitfalls](#common-pitfalls-and-anti-patterns)
-5. [Pre-Commit Checklist](#pre-commit-checklist-for-agents)
-6. [Development Workflow](#development-workflow)
-7. [Architecture Decisions](#architecture-decisions)
-8. [Common Tasks](#common-tasks)
+4. [Releases](#releases)
+5. [Common Pitfalls](#common-pitfalls-and-anti-patterns)
+6. [Pre-Commit Checklist](#pre-commit-checklist-for-agents)
+7. [Development Workflow](#development-workflow)
+8. [Architecture Decisions](#architecture-decisions)
+9. [Common Tasks](#common-tasks)
 
 ---
 
@@ -242,11 +243,36 @@ Astro content collections consume the generated JSON
   with a `force` input that rebuilds even when pins are current) checks for
   a newer stable tag, bumps the pin, regenerates, opens a PR, runs CI on
   it, squash-merges once CI is green, and dispatches CI on `main` to fire
-  the deploy — fully automated, no manual review step. Any failure (or a
+  the deploy — fully automated, no manual review step. The PR also carries
+  the site's version bump (see [Releases](#releases)). Any failure (or a
   stalled previous PR) files/updates one deduped "needs attention" issue,
   and the previously deployed site stays live.
 - Full details, the generated-data type contract, and the update workflow's
   exact behavior: `docs/PLAN.md` and `.claude/skills/vanilla-data/SKILL.md`.
+
+---
+
+## Releases
+
+`package.json`'s `version` is the source of truth, and **the bump always
+arrives inside a PR**: `main` is protected (required `ci` check) and the repo
+has no PAT, so nothing can push a bump commit after a merge.
+`.github/workflows/release.yml` runs after CI passes on `main` and, when
+`package.json` is ahead of the latest `v*` tag, creates the annotated tag and
+a GitHub release (generated notes, titled `vX.Y.Z (Minecraft <data version>)`).
+A merge that doesn't touch the version releases nothing.
+
+The site has no public API, so the SemVer buckets are defined here:
+
+| Bump  | When                                                                          | Who bumps                        |
+| ----- | ----------------------------------------------------------------------------- | -------------------------------- |
+| MAJOR | Recipe URLs/slugs break, or a redesign                                        | The PR author                    |
+| MINOR | Data for a new Minecraft feature version (26.3 → 26.4); a new site feature    | `update-data.yml`; the PR author |
+| PATCH | Game hotfix data (26.3 → 26.3.1), bedrock-only or forced rebuilds; bug fixes  | `update-data.yml`; the PR author |
+| none  | Dependency bumps, CI, docs, refactors — they ride along with the next release | —                                |
+
+To release from a PR: `npm version <patch|minor|major> --no-git-tag-version`
+and commit `package.json` + `package-lock.json` with the change.
 
 ---
 
@@ -431,6 +457,9 @@ npm run build
 - [ ] **Clear Message**: Commit message clearly describes what and why
 - [ ] **Atomic Commits**: Each commit does one thing
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
+- [ ] **Release bump**: If the change should ship as a release, the version
+      bump is in this PR (see [Releases](#releases)) — it can't be added after
+      the merge
 - [ ] **Draft First**: Open every PR as draft (throwaway/verification PRs
       included); flip to ready only after CI is green and self-reviewed, and
       never chain create → merge without a pause for the owner to weigh in
