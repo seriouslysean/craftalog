@@ -241,61 +241,76 @@ export function generate(input: GenerateInput): GenerateOutput {
   // texturesToCopy already follow.
   const familiesUsed: FamiliesOutput = {};
 
+  // Core-data failures are collected per recipe and thrown together after the
+  // loop: a version bump tends to change shape in several places at once, and
+  // stopping at the first would hide the rest behind it (26.3's empty map
+  // results masked the cushion and carpet changes until it was fixed).
+  const recipeErrors: string[] = [];
   for (const [id, raw] of Object.entries(recipesRaw)) {
-    const transformed = transformRecipe(id, raw, tagsRaw, recipeTypeAudit);
-    if (!transformed) continue;
-    if (!transformed.result) {
-      // crafting_special_repairitem is the only vanilla recipe legitimately
-      // shipped without a result item (it acts on two arbitrary
-      // matching-type items) -- exclude it, since the rest of this pipeline
-      // assumes every emitted recipe has one. Any OTHER resultless recipe
-      // means the vendored data changed shape: fail loudly instead of
-      // silently dropping it (same precedent as the FAMILY_CATEGORY check
-      // below).
-      if (transformed.vanillaType === "minecraft:crafting_special_repairitem") continue;
-      throw new Error(
-        `Recipe "${id}" (${raw.type}) has no result item -- only ` +
-          `minecraft:crafting_special_repairitem is expected to be resultless; a vendored data ` +
-          `bump may have changed shape (see scripts/lib/generate.ts).`,
-      );
-    }
-    const resultId = transformed.result.id;
-    const derivedFamily = deriveFamily(
-      { itemId: resultId, group: transformed.group, category: transformed.category },
-      itemTagIndex,
-    );
-    if (derivedFamily.usedFallback) fallbackFamilyItems.push(resultId);
-    const shapeTag = deriveShapeTag(resultId, itemTagIndex, shapeTagIds);
-
-    if (!(derivedFamily.id in familiesUsed)) {
-      const categoryId = FAMILY_CATEGORY[derivedFamily.id];
-      if (!categoryId) {
-        // Every family scripts/lib/family.ts can produce is listed in
-        // FAMILY_CATEGORY -- this can only fire if a future version bump
-        // routes a genuinely new item through CATEGORY_FAMILY_FALLBACK into
-        // a family name that was never added there. Fail immediately rather
-        // than emit a families.json entry with no valid category.
+    try {
+      const transformed = transformRecipe(id, raw, tagsRaw, recipeTypeAudit);
+      if (!transformed) continue;
+      if (!transformed.result) {
+        // crafting_special_repairitem is the only vanilla recipe legitimately
+        // shipped without a result item (it acts on two arbitrary
+        // matching-type items) -- exclude it, since the rest of this pipeline
+        // assumes every emitted recipe has one. Any OTHER resultless recipe
+        // means the vendored data changed shape: fail loudly instead of
+        // silently dropping it (same precedent as the FAMILY_CATEGORY check
+        // below).
+        if (transformed.vanillaType === "minecraft:crafting_special_repairitem") continue;
         throw new Error(
-          `Family "${derivedFamily.id}" (${derivedFamily.name}) has no entry in FAMILY_CATEGORY ` +
-            `(scripts/lib/family.ts) -- every family must map to one of the 9 top-level categories.`,
+          `Recipe "${id}" (${raw.type}) has no result item -- only ` +
+            `minecraft:crafting_special_repairitem is expected to be resultless; a vendored data ` +
+            `bump may have changed shape (see scripts/lib/generate.ts).`,
         );
       }
-      familiesUsed[derivedFamily.id] = {
-        id: derivedFamily.id,
-        name: derivedFamily.name,
-        category: categoryId,
-      };
-    }
+      const resultId = transformed.result.id;
+      const derivedFamily = deriveFamily(
+        { itemId: resultId, group: transformed.group, category: transformed.category },
+        itemTagIndex,
+      );
+      if (derivedFamily.usedFallback) fallbackFamilyItems.push(resultId);
+      const shapeTag = deriveShapeTag(resultId, itemTagIndex, shapeTagIds);
 
-    const slug = slugify(deriveRecipeSlugSource(id, resultId));
-    const recipe = {
-      ...transformed,
-      family: derivedFamily.id,
-      slug,
-      ...(shapeTag ? { shapeTag } : {}),
-    };
-    recipes[id] = recipe;
-    counts[recipe.type] += 1;
+      if (!(derivedFamily.id in familiesUsed)) {
+        const categoryId = FAMILY_CATEGORY[derivedFamily.id];
+        if (!categoryId) {
+          // Every family scripts/lib/family.ts can produce is listed in
+          // FAMILY_CATEGORY -- this can only fire if a future version bump
+          // routes a genuinely new item through CATEGORY_FAMILY_FALLBACK into
+          // a family name that was never added there. Fail immediately rather
+          // than emit a families.json entry with no valid category.
+          throw new Error(
+            `Family "${derivedFamily.id}" (${derivedFamily.name}) has no entry in FAMILY_CATEGORY ` +
+              `(scripts/lib/family.ts) -- every family must map to one of the 9 top-level categories.`,
+          );
+        }
+        familiesUsed[derivedFamily.id] = {
+          id: derivedFamily.id,
+          name: derivedFamily.name,
+          category: categoryId,
+        };
+      }
+
+      const slug = slugify(deriveRecipeSlugSource(id, resultId));
+      const recipe = {
+        ...transformed,
+        family: derivedFamily.id,
+        slug,
+        ...(shapeTag ? { shapeTag } : {}),
+      };
+      recipes[id] = recipe;
+      counts[recipe.type] += 1;
+    } catch (error) {
+      recipeErrors.push(`${id}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  if (recipeErrors.length > 0) {
+    throw new Error(
+      `${recipeErrors.length} recipe(s) failed to transform:\n` +
+        recipeErrors.map((message) => `  - ${message}`).join("\n"),
+    );
   }
 
   // Patterned banners have no real vanilla recipe (applying a loom pattern

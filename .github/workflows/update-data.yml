@@ -197,8 +197,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Every data update is a site release (see AGENTS.md's "Releases"):
+          # a new Minecraft feature version (26.3 -> 26.4) is a MINOR, anything
+          # else this workflow lands (a game hotfix like 26.3.1, a
+          # bedrock-samples-only bump, a forced rebuild) is a PATCH. The bump
+          # rides in this PR because nothing can push to protected main after
+          # the merge; release.yml tags it once CI passes on main.
+          if [ "$(cut -d. -f1-2 <<<"$VER")" != "$(cut -d. -f1-2 <<<"$CURRENT_VER")" ]; then
+            bump="minor"
+          else
+            bump="patch"
+          fi
+          old_site_version=$(jq -r '.version' package.json)
+          npm version "$bump" --no-git-tag-version
+          site_version=$(jq -r '.version' package.json)
+
           git checkout -b "$BRANCH"
-          git add vendor/mcmeta-summary vendor/mcmeta-assets vendor/bedrock-samples src/data/generated public/textures
+          git add vendor/mcmeta-summary vendor/mcmeta-assets vendor/bedrock-samples src/data/generated public/textures package.json package-lock.json
           git commit -m "data: update vanilla data to mcmeta ${VER}, bedrock-samples ${BEDROCK_VER}"
           git push origin "$BRANCH"
 
@@ -231,6 +246,9 @@ jobs:
           \`${CURRENT_BEDROCK_VER}\` to \`${BEDROCK_VER}\`.
 
           Regenerated via \`npm run parse\` and checked with \`npm run validate\`.
+
+          Site version: \`${old_site_version}\` -> \`${site_version}\` (${bump}); released
+          automatically once CI passes on main.
 
           <details>
           <summary>src/data/generated/meta.json</summary>

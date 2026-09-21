@@ -241,6 +241,37 @@ describe("generate determinism", () => {
     ).toThrow(/no result item/);
   });
 
+  it("reports every failing recipe in one throw instead of stopping at the first", () => {
+    expect(() =>
+      generate({
+        version: "26.2",
+        recipesRaw: {
+          broken: { type: "minecraft:crafting_shapeless", ingredients: ["minecraft:stick"] },
+          also_broken: { type: "minecraft:crafting_shaped", result: { id: "minecraft:stick" } },
+          copies_unknown_input: {
+            type: "minecraft:crafting_shapeless",
+            ingredients: ["minecraft:stick"],
+            result: {},
+          },
+        },
+        tagsRaw: {},
+        itemDefsRaw: {},
+        modelsRaw: {},
+        componentsRaw: {},
+        enUs: {},
+        bannerPatternsRaw: {},
+        bannerPatternTagsRaw: {},
+        copperGolemGeoRaw: emptyCopperGolemGeoRaw,
+        shulkerGeoRaw: emptyShulkerGeoRaw,
+        textureExists: () => false,
+        textureDimensions: () => undefined,
+        bedrockBedIconExists: () => false,
+      }),
+    ).toThrow(
+      /3 recipe\(s\) failed to transform:\n.*broken: .*\n.*also_broken: .*\n.*copies_unknown_input: /s,
+    );
+  });
+
   it("includes a fabricated future crafting type as a generic-note special and surfaces it in meta.audit.pendingSpecialTypes", () => {
     const result = generate({
       version: "26.2",

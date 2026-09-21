@@ -221,8 +221,10 @@ merge step. Each run:
    harmless), runs `npm run parse` and `npm run validate`. If parse/validate
    produce no diff, the run is a clean no-op — nothing committed, merged,
    or deployed.
-5. On actual changes: commits the submodule pins + regenerated data +
-   textures on that branch, pushes, opens a PR via `gh pr create` (the body
+5. On actual changes: bumps `package.json` (MINOR for a new Minecraft
+   feature version such as 26.3 → 26.4, PATCH for anything else — see
+   AGENTS.md's "Releases"), commits it with the submodule pins + regenerated
+   data + textures on that branch, pushes, opens a PR via `gh pr create` (the body
    embeds `meta.json` and pretty-prints its non-empty `audit` lists as a
    curation queue), and kicks CI on the branch via `gh workflow run ci.yml`
    (PRs created with `GITHUB_TOKEN` don't trigger `pull_request` workflows
@@ -232,7 +234,8 @@ merge step. Each run:
    `gh workflow run ci.yml --ref main` — required because the squash-merge
    push was authored by `GITHUB_TOKEN`, whose pushes never trigger
    push-event workflows — and that CI run's success fires the CI-gated
-   Pages deploy.
+   Pages deploy and `release.yml`, which tags and releases the bumped
+   version.
 7. Every failure mode (tag resolution, pin parsing, submodule checkout,
    parse/validate — with a log tail — PR CI red, merge rejected) and the
    stalled-PR case files one deduped "Scheduled vanilla data update needs
