@@ -9,12 +9,12 @@
     "unresolvedIcons": []
   },
   "counts": {
-    "items": 1157,
-    "shaped": 733,
-    "shapeless": 323,
+    "items": 1289,
+    "shaped": 827,
+    "shapeless": 375,
     "special": 72,
-    "texturesWritten": 937,
+    "texturesWritten": 999,
     "transmute": 33
   },
-  "version": "26.2"
+  "version": "26.3"
 }

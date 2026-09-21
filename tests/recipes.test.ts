@@ -356,3 +356,66 @@ describe("collectRecipeItemIds", () => {
     expect(collectRecipeItemIds(recipe)).toEqual([]);
   });
 });
+
+describe("transformRecipe — copied results (empty vendored result object)", () => {
+  const mapTags: RawTagsData = {
+    clonable_maps: { values: ["minecraft:filled_map", "minecraft:ocean_monument_map"] },
+    extendable_maps: { values: ["minecraft:filled_map"] },
+  };
+  const mapCloning: RawRecipeEntry = {
+    type: "minecraft:crafting_transmute",
+    group: "map_cloning",
+    input: "#minecraft:clonable_maps",
+    material: "minecraft:map",
+    result: {},
+  };
+
+  it("files map_cloning under filled_map and carries the whole input as copiedFrom", () => {
+    const recipe = transformRecipe("map_cloning", mapCloning, mapTags);
+    const copiedFrom = { items: ["filled_map", "ocean_monument_map"], tag: "clonable_maps" };
+
+    expect(recipe?.result).toEqual({ id: "filled_map", count: 1, copiedFrom });
+    expect(recipe?.ingredients?.[0]).toEqual(copiedFrom);
+  });
+
+  it("keeps map_extending self-referential now that its map input is a tag", () => {
+    const recipe = transformRecipe(
+      "map_extending",
+      {
+        type: "minecraft:crafting_special_mapextending",
+        map: "#minecraft:extendable_maps",
+        material: "minecraft:paper",
+        result: {},
+      },
+      mapTags,
+    );
+
+    expect(recipe?.result).toEqual({
+      id: "filled_map",
+      count: 1,
+      copiedFrom: { items: ["filled_map"], tag: "extendable_maps" },
+    });
+    expect(recipe?.selfReferential).toBe(true);
+  });
+
+  it("collects a copied result's candidate items", () => {
+    const recipe = transformRecipe("map_cloning", mapCloning, mapTags);
+    expect(recipe && collectRecipeItemIds(recipe)).toEqual(
+      expect.arrayContaining(["filled_map", "ocean_monument_map", "map"]),
+    );
+  });
+
+  it("throws for an empty result on a recipe not known to copy its input", () => {
+    expect(() => transformRecipe("mystery", { ...mapCloning, group: undefined }, mapTags)).toThrow(
+      /empty result object/,
+    );
+  });
+
+  it("throws when the canonical item is no longer part of the copied input", () => {
+    expect(() =>
+      transformRecipe("map_cloning", mapCloning, {
+        clonable_maps: { values: ["minecraft:ocean_monument_map"] },
+      }),
+    ).toThrow(/canonical result item "filled_map"/);
+  });
+});

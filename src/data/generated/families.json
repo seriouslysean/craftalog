@@ -54,6 +54,11 @@
     "id": "copper_goods",
     "name": "Copper Goods"
   },
+  "cushions": {
+    "category": "colored_blocks",
+    "id": "cushions",
+    "name": "Cushions"
+  },
   "decoration": {
     "category": "functional_blocks",
     "id": "decoration",

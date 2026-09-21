@@ -146,6 +146,7 @@ const TAG_FAMILY_PRIORITY: Array<[tag: string, family: string]> = [
   ["hanging_signs", "Hanging Signs"],
   ["signs", "Signs"],
   ["beds", "Beds"],
+  ["cushions", "Cushions"],
   ["banners", "Banners"],
   ["candles", "Candles"],
   ["wool_carpets", "Carpets"],
@@ -206,6 +207,9 @@ const ITEM_FAMILY_OVERRIDES: Record<string, string> = {
     ].map((id) => [id, "Smithing Templates"]),
   ),
   ...Object.fromEntries(["leather_horse_armor", "wolf_armor"].map((id) => [id, "Armor"])),
+  // Deliberately outside vanilla's #beds tag (single-use, ignored by
+  // villagers) and ungrouped, so neither the tag nor the group rule sees it.
+  straw_bed: "Beds",
   ...Object.fromEntries(
     [
       "comparator",
@@ -594,7 +598,7 @@ export const FAMILY_CATEGORY: Record<string, string> = {
   // 0 items use this today (that's the point of the family fixes above).
   other_blocks: "building_blocks",
 
-  // Colored Blocks (10)
+  // Colored Blocks (11)
   glass: "colored_blocks",
   banners: "colored_blocks",
   carpets: "colored_blocks",
@@ -602,6 +606,7 @@ export const FAMILY_CATEGORY: Record<string, string> = {
   bundles: "colored_blocks",
   wool: "colored_blocks",
   beds: "colored_blocks",
+  cushions: "colored_blocks",
   candles: "colored_blocks",
   concrete: "colored_blocks",
   terracotta: "colored_blocks",

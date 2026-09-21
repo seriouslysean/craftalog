@@ -123,7 +123,10 @@ audit lists — all carried in `meta.json`'s `audit` object
 (`degradedIcons`, `emptyDerivations`, `excludedUnknownTypes`,
 `fallbackFamilyItems`, `pendingSpecialTypes`, `unmappedHeadKinds`,
 `unresolvedIcons`), which the weekly update PR body surfaces as a curation
-queue. Read its report before assuming a failure is spurious.
+queue. Read its report before assuming a failure is spurious. The exception
+is `fallbackFamilyItems`: `tests/family.test.ts` asserts it is empty, so an
+update PR whose new items have no `scripts/lib/family.ts` rule fails CI and
+stays open until one is added.
 
 ## Bumping to a new version manually
 
