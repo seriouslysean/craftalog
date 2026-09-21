@@ -2,7 +2,6 @@ import type {
   GeneratedRecipe,
   Ingredient,
   RawRecipeEntry,
-  RawResult,
   RawTagsData,
   RecipeResult,
 } from "./types.ts";
@@ -57,7 +56,7 @@ const GENERIC_SPECIAL_NOTE = "Special crafting recipe — see the in-game recipe
 /**
  * Recipe types present in the vendored data that are deliberately out of
  * scope for this catalog (non-crafting-grid stations: furnaces, stonecutter,
- * smithing table). Derived from the full type inventory of
+ * smithing table, brewing stand). Derived from the full type inventory of
  * vendor/mcmeta-summary/data/recipe/data.json. Documentation of the KNOWN
  * out-of-scope set: an unknown NON-crafting type is still excluded, but gets
  * recorded in meta.audit.excludedUnknownTypes so a vendored data bump can
@@ -65,6 +64,7 @@ const GENERIC_SPECIAL_NOTE = "Special crafting recipe — see the in-game recipe
  */
 const KNOWN_EXCLUDED_TYPES = new Set([
   "minecraft:blasting",
+  "minecraft:brewing",
   "minecraft:campfire_cooking",
   "minecraft:smelting",
   "minecraft:smithing_transform",
@@ -94,9 +94,75 @@ export interface RecipeTypeAudit {
   excludedUnknownTypes: Set<string>;
 }
 
-function toResult(raw: RawResult | undefined): RecipeResult | undefined {
-  if (!raw) return undefined;
-  return { id: stripMcPrefix(raw.id), count: raw.count ?? 1 };
+/**
+ * Recipes whose vendored `result` is an empty object because the crafted item
+ * is copied from the recipe's own input rather than being a fixed item. 26.3
+ * generalized both map recipes over item tags -- `map_cloning`'s `input`
+ * became `#minecraft:clonable_maps` and `map_extending`'s `map` became
+ * `#minecraft:extendable_maps` -- so the data no longer names a result item
+ * at all. The generated result carries that whole input as `copiedFrom` (the
+ * site shows the result mirroring whichever item went in); `canonical` is the
+ * single member the recipe is filed under -- family, slug, and grouping all
+ * key off one result id -- and `filled_map` is what both recipes produced
+ * before 26.3.
+ *
+ * `canonical` is asserted to be a member of the resolved input in
+ * toCopiedResult. Tag order is datapack JSON order and Mojang may reorder it
+ * freely, so this must never degrade into "whichever item happens to be first".
+ */
+const COPIED_RESULT_RECIPES: Record<string, { inputField: string; canonical: string }> = {
+  map_cloning: { inputField: "input", canonical: "filled_map" },
+  map_extending: { inputField: "map", canonical: "filled_map" },
+};
+
+/**
+ * Resolves the result of a recipe whose vendored `result` object carries no
+ * `id` (see COPIED_RESULT_RECIPES). Throws when the recipe isn't a known
+ * copied-result recipe, or when its canonical item is no longer part of the
+ * input it copies -- both mean the vendored data changed shape again, and a
+ * recipe's result is core content that never ships silently degraded.
+ */
+function toCopiedResult(id: string, raw: RawRecipeEntry, tags: RawTagsData): RecipeResult {
+  const copied = COPIED_RESULT_RECIPES[id];
+  if (!copied) {
+    throw new Error(
+      `Recipe "${id}" (${raw.type}) has an empty result object -- only ` +
+        `${Object.keys(COPIED_RESULT_RECIPES).join(", ")} are known to copy their result from ` +
+        `their own input; a vendored data bump may have changed shape ` +
+        `(see scripts/lib/recipes.ts).`,
+    );
+  }
+
+  const rawInput = raw[copied.inputField];
+  if (typeof rawInput !== "string" && !Array.isArray(rawInput)) {
+    throw new Error(
+      `Recipe "${id}" is missing the "${copied.inputField}" input its result is copied from`,
+    );
+  }
+
+  const copiedFrom = normalizeIngredient(rawInput, tags);
+  if (!copiedFrom.items.includes(copied.canonical)) {
+    throw new Error(
+      `Recipe "${id}" copies its result from "${copied.inputField}", but its canonical result ` +
+        `item "${copied.canonical}" is no longer one of that input's items ` +
+        `(${copiedFrom.items.join(", ")}) -- pick a new canonical item in COPIED_RESULT_RECIPES.`,
+    );
+  }
+
+  return { id: copied.canonical, count: raw.result?.count ?? 1, copiedFrom };
+}
+
+/**
+ * Normalizes a recipe's raw result into the generated contract's shape.
+ * Returns undefined only when the recipe carries no `result` field at all
+ * (crafting_special_repairitem); an empty result object routes to
+ * toCopiedResult.
+ */
+function toResult(id: string, raw: RawRecipeEntry, tags: RawTagsData): RecipeResult | undefined {
+  const result = raw.result;
+  if (!result) return undefined;
+  if (typeof result.id !== "string") return toCopiedResult(id, raw, tags);
+  return { id: stripMcPrefix(result.id), count: result.count ?? 1 };
 }
 
 /**
@@ -105,13 +171,20 @@ function toResult(raw: RawResult | undefined): RecipeResult | undefined {
  * raw ingredient field (`banner`, `target`, `map`, `source`, ...) whose
  * value is the same item id as the recipe's own `result.id`. Verified
  * against every special type in the vendored data: exactly bannerduplicate,
- * bookcloning, firework_star_fade, mapextending, shielddecoration, and
- * crafting_dye match; firework_rocket/firework_star/decorated_pot/imbue all
- * produce a different item than any of their own ingredient fields. Tag
- * refs ("#minecraft:banners") never match an item id (the "#" survives
+ * bookcloning, firework_star_fade, shielddecoration, and crafting_dye match
+ * that way; firework_rocket/firework_star/decorated_pot/imbue all produce a
+ * different item than any of their own ingredient fields. Tag refs
+ * ("#minecraft:banners") never match an item id (the "#" survives
  * stripMcPrefix), so they can't false-positive.
+ *
+ * An empty `result` object is the second, stronger signal: the recipe hands
+ * back the very item that went in (see COPIED_RESULT_RECIPES). mapextending
+ * matched by id equality until 26.3 moved it onto a tag-valued input, which
+ * the equality check below could never satisfy.
  */
 function isSelfReferentialRaw(raw: RawRecipeEntry): boolean {
+  if (raw.result && typeof raw.result.id !== "string") return true;
+
   const resultId = raw.result?.id;
   if (typeof resultId !== "string") return false;
   const bareResultId = stripMcPrefix(resultId);
@@ -160,7 +233,7 @@ export function transformRecipe(
       type: "shaped",
       category,
       ...(group ? { group } : {}),
-      result: toResult(raw.result),
+      result: toResult(id, raw, tags),
       pattern: raw.pattern,
       key,
     };
@@ -180,7 +253,7 @@ export function transformRecipe(
       type: "shapeless",
       category,
       ...(group ? { group } : {}),
-      result: toResult(raw.result),
+      result: toResult(id, raw, tags),
       ingredients: raw.ingredients.map((ingredient) => normalizeIngredient(ingredient, tags)),
     };
   }
@@ -194,7 +267,7 @@ export function transformRecipe(
       type: "transmute",
       category,
       ...(group ? { group } : {}),
-      result: toResult(raw.result),
+      result: toResult(id, raw, tags),
       ingredients: [normalizeIngredient(raw.input, tags), normalizeIngredient(raw.material, tags)],
     };
   }
@@ -209,7 +282,7 @@ export function transformRecipe(
       ...(group ? { group } : {}),
       // Optional: crafting_special_repairitem carries no result in the
       // vendored data (it acts on two arbitrary matching-type items).
-      ...(raw.result ? { result: toResult(raw.result) } : {}),
+      ...(raw.result ? { result: toResult(id, raw, tags) } : {}),
       note: isCurated ? SPECIAL_NOTES[raw.type] : GENERIC_SPECIAL_NOTE,
       // Raw vanilla type id, kept alongside the coarse "special" bucket above
       // -- see generated-schema.ts's recipeSchema for why.
@@ -228,7 +301,12 @@ export function transformRecipe(
 export function collectRecipeItemIds(recipe: TransformedRecipe): string[] {
   const ids = new Set<string>();
 
-  if (recipe.result) ids.add(recipe.result.id);
+  if (recipe.result) {
+    ids.add(recipe.result.id);
+    // A special recipe has no ingredient list, so a copied result's candidate
+    // items reach items.json only through here.
+    for (const item of recipe.result.copiedFrom?.items ?? []) ids.add(item);
+  }
 
   if (recipe.key) {
     for (const ingredient of Object.values(recipe.key)) {

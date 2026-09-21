@@ -45,21 +45,23 @@ function ingredientLabel(ingredient: Ingredient, getItemName: (id: string) => st
 
 /**
  * Derives every "re-dye an existing item" group alias from the recipe data
- * itself: a vanilla `X_dye` group normalizes to its base group `X` iff `X`
- * exists and every result item `X_dye` produces is also a result of `X` --
- * i.e. the dye group is purely an alternate way to obtain (a subset of) the
- * base group's own items, so both sides of the pair collapse into one
- * VariantGroup instead of two. Subset, not strict set equality: the base
- * group may legitimately hold extra non-redyeable members (vanilla's
- * `carpet` group is all 16 colors PLUS moss_carpet/pale_moss_carpet, which
- * have no re-dye recipe -- they must still land on the same card as the
- * colors). Against the current generated data this admits exactly
- * harness_dye->harness, bed_dye->bed, carpet_dye->carpet (asserted in
- * tests/recipe-groups.test.ts) and auto-admits any future X_dye/X pair a
- * version bump introduces. Every other dye-suffixed group (bundle_dye,
- * shulker_box_dye, the 12 `<color>_dye` dye-item groups, ...) has no base
- * group to alias to -- colors are its only recipes for that shape, so it's
- * already a complete collapse key on its own and stays unaliased.
+ * itself: a vanilla `X_dye` group normalizes to its base group iff every
+ * result item `X_dye` produces is also a result of that base -- i.e. the dye
+ * group is purely an alternate way to obtain (a subset of) the base group's
+ * own items, so both sides of the pair collapse into one VariantGroup instead
+ * of two. The base is found by result coverage, not by name: `X` itself when
+ * it covers the dye results, otherwise the single other group that does
+ * (26.3 renamed the 16 wool carpets' group to `woolen_carpet` while their
+ * re-dye group stayed `carpet_dye`, and left `carpet` holding only the two
+ * moss carpets). Subset, not strict set equality: a base group may hold extra
+ * non-redyeable members. Against the current generated data this admits
+ * exactly harness_dye->harness, bed_dye->bed, cushion_dye->cushion,
+ * carpet_dye->woolen_carpet (asserted in tests/recipe-groups.test.ts) and
+ * auto-admits any future pair a version bump introduces. Every other
+ * dye-suffixed group (bundle_dye, shulker_box_dye, the 12 `<color>_dye`
+ * dye-item groups, ...) has no base group to alias to -- colors are its only
+ * recipes for that shape, so it's already a complete collapse key on its own
+ * and stays unaliased.
  */
 export function deriveRedyeGroupAliases(recipes: RecipeData[]): Map<string, string> {
   const resultIdsByGroup = new Map<string, Set<string>>();
@@ -76,11 +78,15 @@ export function deriveRedyeGroupAliases(recipes: RecipeData[]): Map<string, stri
   const aliases = new Map<string, string>();
   for (const [group, dyeResultIds] of resultIdsByGroup) {
     if (!group.endsWith("_dye")) continue;
-    const baseResultIds = resultIdsByGroup.get(group.slice(0, -"_dye".length));
-    if (!baseResultIds) continue;
-    if ([...dyeResultIds].every((id) => baseResultIds.has(id))) {
-      aliases.set(group, group.slice(0, -"_dye".length));
-    }
+    const bases = [...resultIdsByGroup]
+      .filter(
+        ([candidate, resultIds]) =>
+          candidate !== group && [...dyeResultIds].every((id) => resultIds.has(id)),
+      )
+      .map(([candidate]) => candidate);
+    const namedBase = group.slice(0, -"_dye".length);
+    const base = bases.includes(namedBase) ? namedBase : bases.length === 1 ? bases[0] : undefined;
+    if (base) aliases.set(group, base);
   }
   return aliases;
 }
@@ -416,7 +422,7 @@ export const VARIANT_GROUP_META: Record<string, VariantGroupMeta> = {
   banner: { name: "Banner", defaultResultId: "white_banner" },
   bed: { name: "Bed", defaultResultId: "red_bed" },
   bundle_dye: { name: "Dyed Bundle", defaultResultId: "white_bundle" },
-  carpet: { name: "Carpet", defaultResultId: "white_carpet" },
+  cushion: { name: "Cushion", defaultResultId: "white_cushion" },
   concrete_powder: { name: "Concrete Powder", defaultResultId: "white_concrete_powder" },
   dyed_candle: { name: "Dyed Candle", defaultResultId: "white_candle" },
   harness: { name: "Harness", defaultResultId: "white_harness" },
@@ -425,6 +431,7 @@ export const VARIANT_GROUP_META: Record<string, VariantGroupMeta> = {
   stained_glass_pane: { name: "Stained Glass Pane", defaultResultId: "white_stained_glass_pane" },
   stained_terracotta: { name: "Dyed Terracotta", defaultResultId: "white_terracotta" },
   wool: { name: "Wool", defaultResultId: "white_wool" },
+  woolen_carpet: { name: "Carpet", defaultResultId: "white_carpet" },
   // Wood-only families -- default to oak, the wood type most players
   // picture first. Each of these stays keyed by vanilla's own `group`
   // field: no non-wood sibling exists in vanilla for any of them today

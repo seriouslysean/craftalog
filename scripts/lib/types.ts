@@ -30,7 +30,12 @@ import type {
 export type RawIngredient = string | string[];
 
 export interface RawResult {
-  id: string;
+  /**
+   * Optional: a recipe that copies its result from its own input ships an
+   * empty result object instead of naming an item (26.3's map cloning and
+   * extending) -- see scripts/lib/recipes.ts's COPIED_RESULT_RECIPES.
+   */
+  id?: string;
   count?: number;
   [key: string]: unknown;
 }

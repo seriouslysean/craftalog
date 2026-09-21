@@ -46,3 +46,28 @@ test("prefers-reduced-motion disables cycling entirely", async ({ page }) => {
   await page.clock.fastForward(10_000);
   expect(await visibleVariantIndex(slot)).toBe(before);
 });
+
+test("a copied result mirrors its input slot and pauses with it", async ({ page }) => {
+  // Map cloning hands back whichever map went in: the result slot lists the
+  // same items as the input cell and shares its sync key (CraftingGrid.astro).
+  await page.clock.install({ time: new Date("2026-01-01T00:00:00") });
+  await page.goto("/recipe/filled-map/");
+  await page.clock.pauseAt(new Date("2026-01-01T00:01:00"));
+
+  const input = page.locator(`${CYCLING_SLOT}[data-variant-sync]`);
+  const result = page.locator(".crafting__result .item-variants[data-variant-sync]");
+  await expect(input).toHaveCount(1);
+  await expect(result).toBeVisible();
+
+  const before = await visibleVariantIndex(input);
+  await page.clock.fastForward(1600);
+  const after = await visibleVariantIndex(input);
+  expect(after).not.toBe(before);
+  expect(await visibleVariantIndex(result)).toBe(after);
+
+  // Hovering either slot pauses the whole sync group, or they'd drift apart.
+  await result.hover();
+  await page.clock.fastForward(1600);
+  expect(await visibleVariantIndex(input)).toBe(after);
+  expect(await visibleVariantIndex(result)).toBe(after);
+});

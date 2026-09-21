@@ -9,12 +9,21 @@ interface Props {
   /** Maps a craftable item's id to its recipe path -- see buildRecipeHrefMap. */
   recipeHrefs: Map<string, string>;
   loading?: 'lazy' | 'eager';
+  /**
+   * Slots sharing a sync key advance (and pause) as one, so slots listing the
+   * same items always show the same one -- a copied result mirroring its input.
+   */
+  syncKey?: string;
 }
 
-const { items, itemsMap, recipeHrefs, loading = 'lazy' } = Astro.props;
+const { items, itemsMap, recipeHrefs, loading = 'lazy', syncKey } = Astro.props;
 ---
 
-<span class="item-variants" data-variant-cycle={items.length > 1 ? items.length : undefined}>
+<span
+  class="item-variants"
+  data-variant-cycle={items.length > 1 ? items.length : undefined}
+  data-variant-sync={syncKey}
+>
   {
     items.map((itemId, index) => {
       const item = itemsMap.get(itemId);
@@ -54,23 +63,33 @@ const { items, itemsMap, recipeHrefs, loading = 'lazy' } = Astro.props;
   const TICK_MS = 1500;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function cycleVariants() {
-    document
-      .querySelectorAll<HTMLElement>('.item-variants[data-variant-cycle]')
-      .forEach((wrapper) => {
-        // WCAG 2.2.2 pause mechanism: a hovered slot (mouse, incl. its
-        // tooltip popup) or one containing keyboard focus stops cycling
-        // until the pointer/focus leaves -- the interval keeps ticking for
-        // every other slot.
-        if (wrapper.matches(':hover') || wrapper.contains(document.activeElement)) return;
-        const variants = wrapper.querySelectorAll<HTMLElement>('.item-variants__variant');
-        const currentIndex = Array.from(variants).findIndex((variant) => !variant.hidden);
-        const nextIndex = (currentIndex + 1) % variants.length;
+  // WCAG 2.2.2 pause mechanism: a hovered slot (mouse, incl. its tooltip
+  // popup) or one containing keyboard focus stops cycling until the
+  // pointer/focus leaves -- the interval keeps ticking for every other slot.
+  const isPaused = (wrapper: HTMLElement) =>
+    wrapper.matches(':hover') || wrapper.contains(document.activeElement);
 
-        variants.forEach((variant, index) => {
-          variant.hidden = index !== nextIndex;
-        });
+  function cycleVariants() {
+    const wrappers = Array.from(
+      document.querySelectorAll<HTMLElement>('.item-variants[data-variant-cycle]'),
+    );
+    // Pausing one slot of a sync group pauses the whole group, or its
+    // members would drift apart.
+    const pausedSyncKeys = new Set(
+      wrappers.filter(isPaused).map((wrapper) => wrapper.dataset.variantSync),
+    );
+
+    wrappers.forEach((wrapper) => {
+      const syncKey = wrapper.dataset.variantSync;
+      if (isPaused(wrapper) || (syncKey && pausedSyncKeys.has(syncKey))) return;
+      const variants = wrapper.querySelectorAll<HTMLElement>('.item-variants__variant');
+      const currentIndex = Array.from(variants).findIndex((variant) => !variant.hidden);
+      const nextIndex = (currentIndex + 1) % variants.length;
+
+      variants.forEach((variant, index) => {
+        variant.hidden = index !== nextIndex;
       });
+    });
   }
 
   // Module scope persists across View Transitions navigations (the script
