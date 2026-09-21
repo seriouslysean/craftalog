@@ -46,18 +46,16 @@ if (stat.type === 'food') {
 }
 ---
 
-{
-  pipStat && (
-    <div class="item-stat" role="img" aria-label={pipStat.label}>
-      {Array.from({ length: pipStat.full }).map(() => (
-        <img class="item-stat__pip" src={withBase(pipStat.fullIcon)} alt="" aria-hidden="true" />
-      ))}
-      {pipStat.half === 1 && (
-        <img class="item-stat__pip" src={withBase(pipStat.halfIcon)} alt="" aria-hidden="true" />
-      )}
-    </div>
-  )
-}
+{pipStat && (
+  <div class="item-stat" role="img" aria-label={pipStat.label}>
+    {Array.from({ length: pipStat.full }).map(() => (
+      <img class="item-stat__pip" src={withBase(pipStat.fullIcon)} alt="" aria-hidden="true" />
+    ))}
+    {pipStat.half === 1 && (
+      <img class="item-stat__pip" src={withBase(pipStat.halfIcon)} alt="" aria-hidden="true" />
+    )}
+  </div>
+)}
 {textStat && <p class="item-stat item-stat--text">{textStat}</p>}
 
 <style>

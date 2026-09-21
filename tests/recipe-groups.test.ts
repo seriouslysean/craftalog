@@ -367,6 +367,16 @@ describe("deriveRedyeGroupAliases", () => {
   });
 });
 
+function copperShapeRecipes(shape: string, tiers: string[]): RecipeData[] {
+  return tiers.map((tier) =>
+    recipe({
+      id: `${tier}${shape}`,
+      result: { id: `${tier}${shape}`, count: 1 },
+      ingredients: [{ items: ["copper_ingot"] }],
+    }),
+  );
+}
+
 describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
   // Vanilla's own `group` field doesn't reliably tie a copper shape's tiers
   // together (only some shapes group their 4 waxed tiers; the un-waxed base
@@ -374,14 +384,6 @@ describe("collapseVariantGroups: copper oxidation-tier grouping", () => {
   // groupRecipes derives an id-based collapse key from stripping copper's
   // oxidation/waxing prefixes as a fallback/supplement, tested here directly
   // against synthetic fixtures rather than only via the real generated data.
-  const copperShapeRecipes = (shape: string, tiers: string[]): RecipeData[] =>
-    tiers.map((tier) =>
-      recipe({
-        id: `${tier}${shape}`,
-        result: { id: `${tier}${shape}`, count: 1 },
-        ingredients: [{ items: ["copper_ingot"] }],
-      }),
-    );
 
   it("unifies a shape's un-waxed base + oxidized tiers + waxed tiers into one VariantGroup", () => {
     const recipes = copperShapeRecipes("cut_copper", [

@@ -160,7 +160,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 >
   <div class="recipe">
     <div class="recipe__toolbar">
-      <a href={withBase('/')} class="recipe__back link-chip">&larr; Back to all recipes</a>
+      <a href={withBase('/')} class="recipe__back link-chip">
+        &larr; Back to all recipes
+      </a>
       <button type="button" class="recipe__copy-link link-chip" data-url={canonicalUrl} hidden>
         <svg
           width="16"
@@ -178,96 +180,83 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         </svg>
         <span class="recipe__copy-link-label">Copy link</span>
       </button>
-      {
-        /* Announces the copy-link button's visual "Copied" state change to
-          assistive tech; cleared (silently) when the label reverts. */
-      }
+      {/* Announces the copy-link button's visual "Copied" state change to
+          assistive tech; cleared (silently) when the label reverts. */}
       <span class="visually-hidden" role="status" data-copy-status></span>
     </div>
 
     <div class="recipe__header">
       <h1 class="recipe__title">{displayName}</h1>
       <div class="recipe__badges">
-        {
-          isShapeless && (
-            <Badge variant="gui" title="Ingredient placement in the grid doesn't matter">
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M16 3h5v5" />
-                <path d="M4 20 21 3" />
-                <path d="M21 16v5h-5" />
-                <path d="M15 15l6 6" />
-                <path d="M4 4l5 5" />
-              </svg>
-              Shapeless
-              <span class="visually-hidden">
-                {' '}
-                — ingredient placement in the grid doesn't matter
-              </span>
-            </Badge>
-          )
-        }
+        {isShapeless && (
+          <Badge variant="gui" title="Ingredient placement in the grid doesn't matter">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M16 3h5v5" />
+              <path d="M4 20 21 3" />
+              <path d="M21 16v5h-5" />
+              <path d="M15 15l6 6" />
+              <path d="M4 4l5 5" />
+            </svg>
+            Shapeless
+            <span class="visually-hidden"> — ingredient placement in the grid doesn't matter</span>
+          </Badge>
+        )}
         <Badge>{familyDisplayName(recipe.family)}</Badge>
         {recipe.type === 'transmute' && <Badge variant="gui">Transmute</Badge>}
       </div>
       {resultItem?.stat && <ItemStat stat={resultItem.stat} />}
     </div>
 
-    {
-      variantTabs && recipe.result && (
-        <RecipeVariants siblings={variantTabs} currentId={recipe.result.id} />
-      )
-    }
+    {variantTabs && recipe.result && (
+      <RecipeVariants siblings={variantTabs} currentId={recipe.result.id} />
+    )}
 
     {showPrimaryVariants && <RecipeVariants siblings={variants} currentId={recipe.id} />}
 
-    {
-      secondaryVariants.length > 0 && (
-        <RecipeVariants
-          siblings={secondaryVariants}
-          currentId={recipe.id}
-          heading="Modifies an existing item"
-          secondary
+    {secondaryVariants.length > 0 && (
+      <RecipeVariants
+        siblings={secondaryVariants}
+        currentId={recipe.id}
+        heading="Modifies an existing item"
+        secondary
+      />
+    )}
+
+    {hasGrid ? (
+      <>
+        <CraftingGrid
+          cells={cells}
+          result={recipe.result}
+          items={itemsMap}
+          recipeHrefs={recipeHrefs}
+          ariaLabel={ariaLabel}
         />
-      )
-    }
 
-    {
-      hasGrid ? (
-        <>
-          <CraftingGrid
-            cells={cells}
-            result={recipe.result}
-            items={itemsMap}
-            recipeHrefs={recipeHrefs}
-            ariaLabel={ariaLabel}
-          />
-
-          <IngredientOptions
-            entries={ingredientOptions}
-            itemsMap={itemsMap}
-            recipeHrefs={recipeHrefs}
-            note={transmuteNote}
-          />
-        </>
-      ) : (
-        <div class="recipe__special">
-          <div class="recipe__special-icon">
-            <ItemIcon item={resultItem ?? null} loading="eager" />
-          </div>
-          <p class="recipe__note">{recipe.note}</p>
+        <IngredientOptions
+          entries={ingredientOptions}
+          itemsMap={itemsMap}
+          recipeHrefs={recipeHrefs}
+          note={transmuteNote}
+        />
+      </>
+    ) : (
+      <div class="recipe__special">
+        <div class="recipe__special-icon">
+          <ItemIcon item={resultItem ?? null} loading="eager" />
         </div>
-      )
-    }
+        <p class="recipe__note">{recipe.note}</p>
+      </div>
+    )}
 
     <nav class="recipe__pager" aria-label="Recipe navigation">
       <ItemCard
@@ -278,7 +267,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
         subtitleFirst
         class="recipe__pager-link recipe__pager-link--prev"
       />
-      <a href={withBase('/')} class="recipe__pager-home link-chip">All recipes</a>
+      <a href={withBase('/')} class="recipe__pager-home link-chip">
+        All recipes
+      </a>
       <ItemCard
         href={nextHref}
         item={nextItem}
@@ -395,10 +386,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     color: var(--color-panel-fg);
   }
 
-  /* Mobile: prev/next share a row, "All recipes" sits centered below on its
-     own row. Desktop (see media query): all three on one row, "All recipes"
-     centered between prev and next. A fixed grid-template-areas switch, not
-     flex-wrap, so this never depends on guessing what fits at a given width. */
+  /* Mobile: prev/next share a row, "All recipes" sits centered below on its */
+  /* own row. Desktop (see media query): all three on one row, "All recipes" */
+  /* centered between prev and next. A fixed grid-template-areas switch, not */
+  /* flex-wrap, so this never depends on guessing what fits at a given width. */
   .recipe__pager {
     margin-top: var(--space-12);
     display: grid;
@@ -414,10 +405,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
     font-size: 0.875rem;
   }
 
-  /* ItemCard renders its own <a> inside its own scoped style boundary, so a
-     plain selector here would never match it -- :global() escapes that
-     scoping to size/pad/place the card from the page that lays out the
-     pager grid. */
+  /* ItemCard renders its own <a> inside its own scoped style boundary, so a */
+  /* plain selector here would never match it -- :global() escapes that */
+  /* scoping to size/pad/place the card from the page that lays out the */
+  /* pager grid. */
   :global(.recipe__pager-link) {
     min-width: 0;
     max-width: 14rem;
