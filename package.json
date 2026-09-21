@@ -15,7 +15,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "oxlint .",
+    "lint": "oxlint --deny-warnings . && tsx scripts/lint-astro-styles.ts",
     "format": "oxfmt . && prettier --write \"**/*.astro\" --log-level warn",
     "format:check": "oxfmt --check . && prettier --check \"**/*.astro\" --log-level warn",
     "type-check": "astro check && tsc --noEmit -p tsconfig.node.json",

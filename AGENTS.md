@@ -100,6 +100,10 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 - Keep CSS organized by block/component
 - Use CSS custom properties (variables) for theming
 - Mobile-first responsive design with `min-width` media queries
+- In `.astro` `<style>` blocks, keep every CSS comment on one line and stack
+  several for a longer note: prettier-plugin-astro re-indents a multi-line
+  comment on every pass, so `npm run format` would never settle.
+  `npm run lint` enforces this (`scripts/lint-astro-styles.ts`)
 
 **Example:**
 
@@ -432,7 +436,7 @@ npm run build
 - [ ] **Comments**: Ensure comments are accurate and add value
 - [ ] **Bundle Size**: Check if JS bundle size increased (it shouldn't!)
 - [ ] **Type Safety**: Run `npm run type-check` - must be 0 errors
-- [ ] **Linting**: Run `npm run lint` - must be 0 errors/warnings
+- [ ] **Linting**: Run `npm run lint` - must be 0 errors/warnings (oxlint runs with `--deny-warnings`, so either fails it; it also checks `.astro` style comments)
 - [ ] **Formatting**: Run `npm run format` - auto-fix all formatting (oxfmt + prettier for `.astro`)
 - [ ] **Data untouched by hand**: If `src/data/generated/**` changed, it must be the output of `npm run parse` — never edited directly
 
