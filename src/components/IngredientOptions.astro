@@ -15,37 +15,35 @@ interface Props {
 const { entries, itemsMap, recipeHrefs, note } = Astro.props;
 ---
 
-{
-  (entries.length > 0 || note) && (
-    <section
-      class="ingredient-options"
-      aria-label={entries.length > 0 ? undefined : 'Ingredient options'}
-      aria-labelledby={entries.length > 0 ? 'ingredient-options-title' : undefined}
-    >
-      {entries.length > 0 && (
-        <>
-          <h2 class="ingredient-options__title" id="ingredient-options-title">
-            Ingredient slot options
-          </h2>
-          <ul class="ingredient-options__list">
-            {entries.map((entry) => (
-              <li class="ingredient-options__row">
-                <span class="ingredient-options__slot">
-                  <ItemVariants items={entry.items} itemsMap={itemsMap} recipeHrefs={recipeHrefs} />
-                </span>
-                <span class="ingredient-options__detail">
-                  <h3 class="ingredient-options__label">{entry.label}</h3>
-                  <span class="ingredient-options__count">{entry.items.length} options</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-      {note && <p class="ingredient-options__note">{note}</p>}
-    </section>
-  )
-}
+{(entries.length > 0 || note) && (
+  <section
+    class="ingredient-options"
+    aria-label={entries.length > 0 ? undefined : 'Ingredient options'}
+    aria-labelledby={entries.length > 0 ? 'ingredient-options-title' : undefined}
+  >
+    {entries.length > 0 && (
+      <>
+        <h2 class="ingredient-options__title" id="ingredient-options-title">
+          Ingredient slot options
+        </h2>
+        <ul class="ingredient-options__list">
+          {entries.map((entry) => (
+            <li class="ingredient-options__row">
+              <span class="ingredient-options__slot">
+                <ItemVariants items={entry.items} itemsMap={itemsMap} recipeHrefs={recipeHrefs} />
+              </span>
+              <span class="ingredient-options__detail">
+                <h3 class="ingredient-options__label">{entry.label}</h3>
+                <span class="ingredient-options__count">{entry.items.length} options</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+    {note && <p class="ingredient-options__note">{note}</p>}
+  </section>
+)}
 
 <style>
   .ingredient-options {

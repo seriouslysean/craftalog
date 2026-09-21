@@ -45,6 +45,21 @@ function readJson<T>(filePath: string): T {
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
 }
 
+function textureExists(ref: string): boolean {
+  return fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
+}
+
+function textureDimensions(ref: string): { width: number; height: number } | undefined {
+  const filePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
+  if (!fs.existsSync(filePath)) return undefined;
+  const { width, height } = PNG.sync.read(fs.readFileSync(filePath));
+  return { width, height };
+}
+
+function bedrockBedIconExists(bedrockColorName: string): boolean {
+  return fs.existsSync(path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`));
+}
+
 /**
  * Reads every vendored input file (mcmeta-summary JSON, bedrock-samples
  * geometry) and builds the I/O closures (texture existence/dimension checks
@@ -81,17 +96,6 @@ export function loadVendorGenerateInput(): GenerateInput {
   const shulkerGeoRaw = readJson<RawLegacyBedrockGeometryFile>(
     path.join(VENDOR_BEDROCK_MODELS_DIR, "shulker.geo.json"),
   );
-
-  const textureExists = (ref: string): boolean =>
-    fs.existsSync(path.join(VENDOR_TEXTURES_DIR, `${ref}.png`));
-  const textureDimensions = (ref: string): { width: number; height: number } | undefined => {
-    const filePath = path.join(VENDOR_TEXTURES_DIR, `${ref}.png`);
-    if (!fs.existsSync(filePath)) return undefined;
-    const { width, height } = PNG.sync.read(fs.readFileSync(filePath));
-    return { width, height };
-  };
-  const bedrockBedIconExists = (bedrockColorName: string): boolean =>
-    fs.existsSync(path.join(VENDOR_BEDROCK_ITEMS_DIR, `bed_${bedrockColorName}.png`));
 
   return {
     version,

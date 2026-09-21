@@ -5,10 +5,18 @@ import meta from '../data/generated/meta.json';
 <footer>
   <p class="footer__text">
     <span>Minecraft {meta.version} data</span>
-    <span class="footer__separator" aria-hidden="true">&middot;</span>
-    <span>Made with <span aria-hidden="true">&hearts;</span></span>
-    <span class="footer__separator" aria-hidden="true">&middot;</span>
-    <a href="https://github.com/seriouslysean/craftalog" class="footer__link">GitHub</a>
+    <span class="footer__separator" aria-hidden="true">
+      &middot;
+    </span>
+    <span>
+      Made with <span aria-hidden="true">&hearts;</span>
+    </span>
+    <span class="footer__separator" aria-hidden="true">
+      &middot;
+    </span>
+    <a href="https://github.com/seriouslysean/craftalog" class="footer__link">
+      GitHub
+    </a>
   </p>
 </footer>
 
@@ -44,8 +52,8 @@ import meta from '../data/generated/meta.json';
   }
 
   .footer__link {
-    /* Keeps the global rest-state link underline (see Layout.astro's `a`
-       rule) -- color alone can't distinguish it from surrounding muted text. */
+    /* Keeps the global rest-state link underline (see Layout.astro's `a` */
+    /* rule) -- color alone can't distinguish it from surrounding muted text. */
     color: var(--color-muted);
   }
 

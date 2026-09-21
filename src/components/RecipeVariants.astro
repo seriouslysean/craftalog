@@ -40,39 +40,37 @@ const isCompact = siblings.length > VARIANT_PICKER_THRESHOLD;
 >
   {heading && <h2 class="recipe-variants__title">{heading}</h2>}
   <ul class:list={['recipe-variants__list', { 'recipe-variants__list--compact': isCompact }]}>
-    {
-      siblings.map((sibling) => {
-        const isCurrent = sibling.recipeId === currentId;
-        const label = sibling.label ?? sibling.recipeId.replace(/_/g, ' ');
-        // The current variant is a non-navigable <span> marked aria-current;
-        // every other variant is a link. Same chip markup otherwise.
-        const Tag = isCurrent ? 'span' : 'a';
-        return (
-          <li>
-            <Tag
-              href={isCurrent ? undefined : sibling.href}
-              class:list={[
-                'recipe-variant',
-                'link-chip',
-                {
-                  'link-chip--selected': isCurrent,
-                  'recipe-variant--compact': isCompact,
-                },
-              ]}
-              aria-current={isCurrent ? 'page' : undefined}
-              title={isCompact ? label : undefined}
-            >
-              <span class="recipe-variant__icon">
-                <ItemIcon item={sibling.iconItem} />
-              </span>
-              <span class:list={['recipe-variant__label', { 'visually-hidden': isCompact }]}>
-                {label}
-              </span>
-            </Tag>
-          </li>
-        );
-      })
-    }
+    {siblings.map((sibling) => {
+      const isCurrent = sibling.recipeId === currentId;
+      const label = sibling.label ?? sibling.recipeId.replace(/_/g, ' ');
+      // The current variant is a non-navigable <span> marked aria-current;
+      // every other variant is a link. Same chip markup otherwise.
+      const Tag = isCurrent ? 'span' : 'a';
+      return (
+        <li>
+          <Tag
+            href={isCurrent ? undefined : sibling.href}
+            class:list={[
+              'recipe-variant',
+              'link-chip',
+              {
+                'link-chip--selected': isCurrent,
+                'recipe-variant--compact': isCompact,
+              },
+            ]}
+            aria-current={isCurrent ? 'page' : undefined}
+            title={isCompact ? label : undefined}
+          >
+            <span class="recipe-variant__icon">
+              <ItemIcon item={sibling.iconItem} />
+            </span>
+            <span class:list={['recipe-variant__label', { 'visually-hidden': isCompact }]}>
+              {label}
+            </span>
+          </Tag>
+        </li>
+      );
+    })}
   </ul>
 </nav>
 
@@ -96,11 +94,11 @@ const isCompact = siblings.length > VARIANT_PICKER_THRESHOLD;
     gap: var(--space-2);
   }
 
-  /* Compact picker: a dense icon-only grid instead of a wrapping chip row,
-     for a fully tag-collapsed shape's 20-60+ material variants (see
-     VARIANT_PICKER_THRESHOLD above). Mobile-first: minmax(2.5rem, ...)
-     already fits several columns on a narrow screen, growing to more
-     columns on wider viewports for free via auto-fill. */
+  /* Compact picker: a dense icon-only grid instead of a wrapping chip row, */
+  /* for a fully tag-collapsed shape's 20-60+ material variants (see */
+  /* VARIANT_PICKER_THRESHOLD above). Mobile-first: minmax(2.5rem, ...) */
+  /* already fits several columns on a narrow screen, growing to more */
+  /* columns on wider viewports for free via auto-fill. */
   .recipe-variants__list--compact {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
@@ -126,10 +124,10 @@ const isCompact = siblings.length > VARIANT_PICKER_THRESHOLD;
     image-rendering: pixelated;
   }
 
-  /* Demoted self-referential specials (banner duplicate, shield decoration,
-     ...) -- same chip shape as the primary tab row, just visually quieter
-     and set apart by a divider, so it reads as a secondary action rather
-     than an equal alternative. */
+  /* Demoted self-referential specials (banner duplicate, shield decoration, */
+  /* ...) -- same chip shape as the primary tab row, just visually quieter */
+  /* and set apart by a divider, so it reads as a secondary action rather */
+  /* than an equal alternative. */
   .recipe-variants--secondary {
     margin-top: calc(-1 * var(--space-3));
     padding-top: var(--space-4);
