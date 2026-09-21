@@ -230,8 +230,11 @@ Astro content collections consume the generated JSON
   recipe/item count floors. Presentation gaps (unresolved/degraded icons,
   fallback-family items, and the other `meta.json` `audit` lists) are
   prominent **warnings**, never failures — they form a curation queue, not
-  a blocker. CI separately runs `npm run parse` and fails if `git diff`
-  shows drift in the committed output — both run on every PR.
+  a blocker. The one exception: `tests/family.test.ts` asserts
+  `fallbackFamilyItems` is empty, so new items with no `scripts/lib/family.ts`
+  rule fail CI and hold the update PR open. CI separately runs
+  `npm run parse` and fails if `git diff` shows drift in the committed
+  output — both run on every PR.
 - **Never hand-edit anything under `src/data/generated/` or
   `public/textures/`.** Edit `scripts/parse.ts` / `scripts/validate.ts`
   instead and regenerate.

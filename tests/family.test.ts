@@ -109,6 +109,21 @@ describe("deriveFamily — proposal fixes", () => {
     expect(result).toEqual({ id: "decoration", name: "Decoration", usedFallback: false });
   });
 
+  it("groups cushions by vanilla's #cushions tag, across both the craft and re-dye groups", () => {
+    const tagIndex = buildItemTagIndex({ cushions: { values: ["minecraft:red_cushion"] } });
+    for (const group of ["cushion", "cushion_dye"]) {
+      const family = deriveFamily({ itemId: "red_cushion", group, category: "misc" }, tagIndex);
+      expect(family).toMatchObject({ name: "Cushions", usedFallback: false });
+    }
+    expect(FAMILY_CATEGORY.cushions).toBe("colored_blocks");
+  });
+
+  it("files straw_bed under Beds even though vanilla keeps it out of #beds", () => {
+    expect(
+      deriveFamily({ itemId: "straw_bed", category: "misc" }, buildItemTagIndex({})),
+    ).toMatchObject({ name: "Beds", usedFallback: false });
+  });
+
   it("falls back an unrecognized misc-category item to the dormant 'Other' family", () => {
     const result = deriveFamily(
       { itemId: "some_unrecognized_future_item", category: "misc" },

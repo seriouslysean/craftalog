@@ -1096,7 +1096,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -1113,7 +1114,8 @@
           "warped_slab",
           "mangrove_slab",
           "bamboo_slab",
-          "cherry_slab"
+          "cherry_slab",
+          "poplar_slab"
         ],
         "tag": "wooden_slabs"
       }
@@ -1186,7 +1188,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -1689,7 +1692,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -1773,7 +1777,7 @@
   "black_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "black_carpet",
     "key": {
       "#": {
@@ -1850,6 +1854,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "black_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "black_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "black_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "black_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "black_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "black_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "black_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "black_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "black_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "black_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "black_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "black_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "black_dye": {
     "category": "misc",
@@ -2073,6 +2147,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "black_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "black_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "black_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "black_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "black_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "black_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "black_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "black_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "blackstone_slab": {
     "category": "building",
     "family": "slabs",
@@ -2260,7 +2382,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -2344,7 +2467,7 @@
   "blue_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "blue_carpet",
     "key": {
       "#": {
@@ -2421,6 +2544,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "blue_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "blue_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "blue_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "blue_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "blue_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "blue_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "blue_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "blue_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "blue_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "blue_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "blue_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "blue_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "blue_dye": {
     "category": "misc",
@@ -2702,6 +2895,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "blue_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "blue_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "blue_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "blue_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "blue_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "blue_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "blue_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "blue_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "bolt_armor_trim_smithing_template": {
     "category": "misc",
     "family": "smithing_templates",
@@ -2862,7 +3103,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -2953,7 +3195,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -3178,7 +3421,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -3262,7 +3506,7 @@
   "brown_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "brown_carpet",
     "key": {
       "#": {
@@ -3339,6 +3583,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "brown_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "brown_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "brown_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "brown_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "brown_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "brown_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "brown_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "brown_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "brown_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "brown_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "brown_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "brown_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "brown_dye": {
     "category": "misc",
@@ -3543,6 +3857,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "brown_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "brown_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "brown_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "brown_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "brown_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "brown_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "brown_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "brown_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "brush": {
     "category": "equipment",
     "family": "utilities",
@@ -3743,6 +4105,10 @@
           "cherry_wood",
           "stripped_cherry_log",
           "stripped_cherry_wood",
+          "poplar_log",
+          "poplar_wood",
+          "stripped_poplar_log",
+          "stripped_poplar_wood",
           "crimson_stem",
           "stripped_crimson_stem",
           "crimson_hyphae",
@@ -3849,7 +4215,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -4278,7 +4645,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -4336,7 +4704,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -4353,7 +4722,8 @@
           "warped_slab",
           "mangrove_slab",
           "bamboo_slab",
-          "cherry_slab"
+          "cherry_slab",
+          "poplar_slab"
         ],
         "tag": "wooden_slabs"
       }
@@ -5184,7 +5554,8 @@
           "warped_slab",
           "mangrove_slab",
           "bamboo_slab",
-          "cherry_slab"
+          "cherry_slab",
+          "poplar_slab"
         ],
         "tag": "wooden_slabs"
       }
@@ -5923,7 +6294,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -6575,7 +6947,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -6659,7 +7032,7 @@
   "cyan_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "cyan_carpet",
     "key": {
       "#": {
@@ -6736,6 +7109,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "cyan_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "cyan_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "cyan_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "cyan_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "cyan_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "cyan_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "cyan_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "cyan_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "cyan_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "cyan_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "cyan_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "cyan_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "cyan_dye": {
     "category": "misc",
@@ -6961,6 +7404,54 @@
       "count": 8,
       "id": "cyan_terracotta"
     },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "cyan_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "cyan_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "cyan_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "cyan_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "cyan_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "cyan_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "cyan_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "cyan_wool_stairs"
+    },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -7437,7 +7928,8 @@
           "warped_slab",
           "mangrove_slab",
           "bamboo_slab",
-          "cherry_slab"
+          "cherry_slab",
+          "poplar_slab"
         ],
         "tag": "wooden_slabs"
       }
@@ -8368,6 +8860,44 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_black_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_black_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "black_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "black_cushion"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_black_harness": {
     "category": "equipment",
     "family": "harnesses",
@@ -8444,6 +8974,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_black_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_black_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "black_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "black_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_black_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_black_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "black_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "black_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_blue_bed": {
     "category": "misc",
     "family": "beds",
@@ -8516,6 +9124,44 @@
     "result": {
       "count": 1,
       "id": "blue_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_blue_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_blue_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "blue_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "blue_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -8596,6 +9242,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_blue_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_blue_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "blue_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "blue_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_blue_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_blue_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "blue_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "blue_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_brown_bed": {
     "category": "misc",
     "family": "beds",
@@ -8668,6 +9392,44 @@
     "result": {
       "count": 1,
       "id": "brown_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_brown_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_brown_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "brown_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "brown_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -8748,6 +9510,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_brown_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_brown_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "brown_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "brown_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_brown_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_brown_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "brown_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "brown_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_cyan_bed": {
     "category": "misc",
     "family": "beds",
@@ -8820,6 +9660,44 @@
     "result": {
       "count": 1,
       "id": "cyan_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_cyan_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_cyan_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "cyan_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "cyan_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -8900,6 +9778,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_cyan_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_cyan_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "cyan_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "cyan_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_cyan_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_cyan_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "cyan_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "cyan_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_gray_bed": {
     "category": "misc",
     "family": "beds",
@@ -8972,6 +9928,44 @@
     "result": {
       "count": 1,
       "id": "gray_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_gray_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_gray_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "gray_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "gray_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -9052,6 +10046,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_gray_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_gray_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "gray_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "gray_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_gray_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_gray_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "gray_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "gray_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_green_bed": {
     "category": "misc",
     "family": "beds",
@@ -9124,6 +10196,44 @@
     "result": {
       "count": 1,
       "id": "green_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_green_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_green_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "green_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "green_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -9204,6 +10314,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_green_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_green_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "green_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "green_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_green_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_green_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "green_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "green_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_light_blue_bed": {
     "category": "misc",
     "family": "beds",
@@ -9276,6 +10464,44 @@
     "result": {
       "count": 1,
       "id": "light_blue_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_light_blue_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_light_blue_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "light_blue_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_blue_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -9356,6 +10582,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_light_blue_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_light_blue_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "light_blue_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_blue_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_light_blue_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_light_blue_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "light_blue_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_blue_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_light_gray_bed": {
     "category": "misc",
     "family": "beds",
@@ -9428,6 +10732,44 @@
     "result": {
       "count": 1,
       "id": "light_gray_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_light_gray_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_light_gray_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "light_gray_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_gray_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -9508,6 +10850,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_light_gray_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_light_gray_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "light_gray_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_gray_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_light_gray_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_light_gray_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "light_gray_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_gray_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_lime_bed": {
     "category": "misc",
     "family": "beds",
@@ -9580,6 +11000,44 @@
     "result": {
       "count": 1,
       "id": "lime_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_lime_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_lime_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "lime_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "lime_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -9660,6 +11118,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_lime_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_lime_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "lime_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "lime_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_lime_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_lime_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "lime_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "lime_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_magenta_bed": {
     "category": "misc",
     "family": "beds",
@@ -9732,6 +11268,44 @@
     "result": {
       "count": 1,
       "id": "magenta_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_magenta_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_magenta_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "magenta_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "magenta_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -9812,6 +11386,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_magenta_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_magenta_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "magenta_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "magenta_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_magenta_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_magenta_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "magenta_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "magenta_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_orange_bed": {
     "category": "misc",
     "family": "beds",
@@ -9884,6 +11536,44 @@
     "result": {
       "count": 1,
       "id": "orange_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_orange_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_orange_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "orange_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "orange_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -9964,6 +11654,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_orange_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_orange_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "orange_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "orange_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_orange_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_orange_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "orange_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "orange_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_pink_bed": {
     "category": "misc",
     "family": "beds",
@@ -10036,6 +11804,44 @@
     "result": {
       "count": 1,
       "id": "pink_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_pink_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_pink_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "pink_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "pink_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -10116,6 +11922,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_pink_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_pink_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "pink_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "pink_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_pink_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_pink_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "pink_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "pink_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_purple_bed": {
     "category": "misc",
     "family": "beds",
@@ -10188,6 +12072,44 @@
     "result": {
       "count": 1,
       "id": "purple_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_purple_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_purple_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "purple_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "purple_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -10268,6 +12190,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_purple_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_purple_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "purple_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "purple_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_purple_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_purple_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "purple_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "purple_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_red_bed": {
     "category": "misc",
     "family": "beds",
@@ -10340,6 +12340,44 @@
     "result": {
       "count": 1,
       "id": "red_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_red_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_red_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "red_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "red_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -10420,6 +12458,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_red_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_red_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "red_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "red_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_red_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_red_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "red_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "red_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_white_bed": {
     "category": "misc",
     "family": "beds",
@@ -10492,6 +12608,44 @@
     "result": {
       "count": 1,
       "id": "white_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_white_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_white_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "white_dye"
+        ]
+      },
+      {
+        "items": [
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "yellow_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "white_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -10572,6 +12726,84 @@
     "slug": "dye",
     "type": "shapeless"
   },
+  "dye_white_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_white_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "white_dye"
+        ]
+      },
+      {
+        "items": [
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "yellow_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "white_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_white_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_white_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "white_dye"
+        ]
+      },
+      {
+        "items": [
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "yellow_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "white_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
   "dye_yellow_bed": {
     "category": "misc",
     "family": "beds",
@@ -10644,6 +12876,44 @@
     "result": {
       "count": 1,
       "id": "yellow_carpet"
+    },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_yellow_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion_dye",
+    "id": "dye_yellow_cushion",
+    "ingredients": [
+      {
+        "items": [
+          "yellow_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_cushion",
+          "orange_cushion",
+          "magenta_cushion",
+          "light_blue_cushion",
+          "lime_cushion",
+          "pink_cushion",
+          "gray_cushion",
+          "light_gray_cushion",
+          "cyan_cushion",
+          "purple_cushion",
+          "blue_cushion",
+          "brown_cushion",
+          "green_cushion",
+          "red_cushion",
+          "black_cushion"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "yellow_cushion"
     },
     "slug": "dye",
     "type": "shapeless"
@@ -10721,6 +12991,84 @@
       "count": 1,
       "id": "yellow_wool"
     },
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_yellow_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wool_slabs",
+    "id": "dye_yellow_wool_slab",
+    "ingredients": [
+      {
+        "items": [
+          "yellow_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_slab",
+          "orange_wool_slab",
+          "magenta_wool_slab",
+          "light_blue_wool_slab",
+          "lime_wool_slab",
+          "pink_wool_slab",
+          "gray_wool_slab",
+          "light_gray_wool_slab",
+          "cyan_wool_slab",
+          "purple_wool_slab",
+          "blue_wool_slab",
+          "brown_wool_slab",
+          "green_wool_slab",
+          "red_wool_slab",
+          "black_wool_slab"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "yellow_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "dye",
+    "type": "shapeless"
+  },
+  "dye_yellow_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wool_stairs",
+    "id": "dye_yellow_wool_stairs",
+    "ingredients": [
+      {
+        "items": [
+          "yellow_dye"
+        ]
+      },
+      {
+        "items": [
+          "white_wool_stairs",
+          "orange_wool_stairs",
+          "magenta_wool_stairs",
+          "light_blue_wool_stairs",
+          "lime_wool_stairs",
+          "pink_wool_stairs",
+          "gray_wool_stairs",
+          "light_gray_wool_stairs",
+          "cyan_wool_stairs",
+          "purple_wool_stairs",
+          "blue_wool_stairs",
+          "brown_wool_stairs",
+          "green_wool_stairs",
+          "red_wool_stairs",
+          "black_wool_stairs"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "yellow_wool_stairs"
+    },
+    "shapeTag": "stairs",
     "slug": "dye",
     "type": "shapeless"
   },
@@ -11375,7 +13723,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -12250,7 +14599,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -12334,7 +14684,7 @@
   "gray_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "gray_carpet",
     "key": {
       "#": {
@@ -12411,6 +14761,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "gray_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "gray_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "gray_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "gray_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "gray_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "gray_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "gray_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "gray_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "gray_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "gray_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "gray_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "gray_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "gray_dye": {
     "category": "misc",
@@ -12639,6 +15059,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "gray_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "gray_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "gray_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "gray_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "gray_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "gray_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "gray_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "gray_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "green_banner": {
     "category": "misc",
     "family": "banners",
@@ -12706,7 +15174,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -12790,7 +15259,7 @@
   "green_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "green_carpet",
     "key": {
       "#": {
@@ -12867,6 +15336,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "green_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "green_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "green_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "green_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "green_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "green_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "green_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "green_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "green_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "green_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "green_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "green_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "green_harness": {
     "category": "equipment",
@@ -13052,6 +15591,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "green_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "green_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "green_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "green_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "green_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "green_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "green_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "green_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "grindstone": {
     "category": "misc",
     "family": "workstations",
@@ -13075,7 +15662,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -13859,7 +16447,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -14600,7 +17189,8 @@
           "warped_slab",
           "mangrove_slab",
           "bamboo_slab",
-          "cherry_slab"
+          "cherry_slab",
+          "poplar_slab"
         ],
         "tag": "wooden_slabs"
       }
@@ -14711,7 +17301,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -14795,7 +17386,7 @@
   "light_blue_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "light_blue_carpet",
     "key": {
       "#": {
@@ -14872,6 +17463,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "light_blue_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "light_blue_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "light_blue_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "light_blue_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "light_blue_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "light_blue_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "light_blue_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "light_blue_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "light_blue_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "light_blue_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "light_blue_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_blue_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "light_blue_dye_from_blue_orchid": {
     "category": "misc",
@@ -15100,6 +17761,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "light_blue_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "light_blue_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "light_blue_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "light_blue_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "light_blue_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "light_blue_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "light_blue_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "light_blue_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "light_gray_banner": {
     "category": "misc",
     "family": "banners",
@@ -15167,7 +17876,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -15251,7 +17961,7 @@
   "light_gray_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "light_gray_carpet",
     "key": {
       "#": {
@@ -15328,6 +18038,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "light_gray_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "light_gray_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "light_gray_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "light_gray_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "light_gray_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "light_gray_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "light_gray_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "light_gray_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "light_gray_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "light_gray_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "light_gray_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "light_gray_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "light_gray_dye_from_azure_bluet": {
     "category": "misc",
@@ -15623,6 +18403,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "light_gray_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "light_gray_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "light_gray_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "light_gray_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "light_gray_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "light_gray_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "light_gray_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "light_gray_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "light_weighted_pressure_plate": {
     "category": "redstone",
     "family": "pressure_plates",
@@ -15734,7 +18562,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -15818,7 +18647,7 @@
   "lime_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "lime_carpet",
     "key": {
       "#": {
@@ -15895,6 +18724,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "lime_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "lime_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "lime_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "lime_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "lime_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "lime_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "lime_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "lime_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "lime_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "lime_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "lime_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "lime_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "lime_dye": {
     "category": "misc",
@@ -16103,6 +19002,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "lime_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "lime_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "lime_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "lime_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "lime_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "lime_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "lime_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "lime_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "lodestone": {
     "category": "misc",
     "family": "utilities",
@@ -16154,7 +19101,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -16264,7 +19212,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -16348,7 +19297,7 @@
   "magenta_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "magenta_carpet",
     "key": {
       "#": {
@@ -16425,6 +19374,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "magenta_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "magenta_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "magenta_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "magenta_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "magenta_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "magenta_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "magenta_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "magenta_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "magenta_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "magenta_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "magenta_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "magenta_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "magenta_dye_from_allium": {
     "category": "misc",
@@ -16732,6 +19751,54 @@
       "count": 8,
       "id": "magenta_terracotta"
     },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "magenta_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "magenta_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "magenta_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "magenta_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "magenta_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "magenta_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "magenta_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "magenta_wool_stairs"
+    },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -17187,8 +20254,25 @@
     "ingredients": [
       {
         "items": [
-          "filled_map"
-        ]
+          "filled_map",
+          "ocean_monument_map",
+          "woodland_mansion_map",
+          "buried_trial_chambers_map",
+          "jungle_pyramid_map",
+          "swamp_hut_map",
+          "desert_village_map",
+          "plains_village_map",
+          "savanna_village_map",
+          "snowy_village_map",
+          "taiga_village_map",
+          "buried_treasure_map",
+          "buried_ancient_city_map",
+          "buried_mineshaft_map",
+          "desert_pyramid_map",
+          "abandoned_camp_map",
+          "warm_ocean_ruins_map"
+        ],
+        "tag": "clonable_maps"
       },
       {
         "items": [
@@ -17197,6 +20281,28 @@
       }
     ],
     "result": {
+      "copiedFrom": {
+        "items": [
+          "filled_map",
+          "ocean_monument_map",
+          "woodland_mansion_map",
+          "buried_trial_chambers_map",
+          "jungle_pyramid_map",
+          "swamp_hut_map",
+          "desert_village_map",
+          "plains_village_map",
+          "savanna_village_map",
+          "snowy_village_map",
+          "taiga_village_map",
+          "buried_treasure_map",
+          "buried_ancient_city_map",
+          "buried_mineshaft_map",
+          "desert_pyramid_map",
+          "abandoned_camp_map",
+          "warm_ocean_ruins_map"
+        ],
+        "tag": "clonable_maps"
+      },
       "count": 1,
       "id": "filled_map"
     },
@@ -17209,6 +20315,12 @@
     "id": "map_extending",
     "note": "Combine a filled map with paper to extend it to the next zoom level.",
     "result": {
+      "copiedFrom": {
+        "items": [
+          "filled_map"
+        ],
+        "tag": "extendable_maps"
+      },
       "count": 1,
       "id": "filled_map"
     },
@@ -17711,17 +20823,24 @@
   "mushroom_stew": {
     "category": "misc",
     "family": "food",
+    "group": "mushroom_stew",
     "id": "mushroom_stew",
     "ingredients": [
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -18148,7 +21267,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -18641,7 +21761,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -18725,7 +21846,7 @@
   "orange_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "orange_carpet",
     "key": {
       "#": {
@@ -18802,6 +21923,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "orange_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "orange_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "orange_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "orange_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "orange_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "orange_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "orange_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "orange_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "orange_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "orange_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "orange_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "orange_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "orange_dye_from_open_eyeblossom": {
     "category": "misc",
@@ -19065,6 +22256,54 @@
       "count": 8,
       "id": "orange_terracotta"
     },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "orange_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "orange_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "orange_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "orange_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "orange_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "orange_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "orange_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "orange_wool_stairs"
+    },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -20368,7 +23607,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -20452,7 +23692,7 @@
   "pink_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "pink_carpet",
     "key": {
       "#": {
@@ -20529,6 +23769,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "pink_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "pink_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "pink_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "pink_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "pink_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "pink_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "pink_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "pink_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "pink_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "pink_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "pink_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "pink_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "pink_dye_from_cactus_flower": {
     "category": "misc",
@@ -20814,6 +24124,54 @@
     "slug": "default",
     "type": "shaped"
   },
+  "pink_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "pink_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "pink_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "pink_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "pink_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "pink_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "pink_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "pink_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "piston": {
     "category": "redstone",
     "family": "redstone_components",
@@ -20842,7 +24200,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -21676,6 +25035,377 @@
     "slug": "default",
     "type": "shaped"
   },
+  "poplar_boat": {
+    "category": "misc",
+    "family": "boats",
+    "group": "boat",
+    "id": "poplar_boat",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "# #",
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "poplar_boat"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_button": {
+    "category": "redstone",
+    "family": "buttons",
+    "group": "wooden_button",
+    "id": "poplar_button",
+    "ingredients": [
+      {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "poplar_button"
+    },
+    "shapeTag": "buttons",
+    "slug": "default",
+    "type": "shapeless"
+  },
+  "poplar_chest_boat": {
+    "category": "misc",
+    "family": "boats",
+    "group": "chest_boat",
+    "id": "poplar_chest_boat",
+    "ingredients": [
+      {
+        "items": [
+          "chest"
+        ]
+      },
+      {
+        "items": [
+          "poplar_boat"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "poplar_chest_boat"
+    },
+    "slug": "default",
+    "type": "shapeless"
+  },
+  "poplar_door": {
+    "category": "redstone",
+    "family": "doors",
+    "group": "wooden_door",
+    "id": "poplar_door",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "##",
+      "##",
+      "##"
+    ],
+    "result": {
+      "count": 3,
+      "id": "poplar_door"
+    },
+    "shapeTag": "doors",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_fence": {
+    "category": "misc",
+    "family": "fences",
+    "group": "wooden_fence",
+    "id": "poplar_fence",
+    "key": {
+      "#": {
+        "items": [
+          "stick"
+        ]
+      },
+      "W": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "W#W",
+      "W#W"
+    ],
+    "result": {
+      "count": 3,
+      "id": "poplar_fence"
+    },
+    "shapeTag": "fences",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_fence_gate": {
+    "category": "redstone",
+    "family": "fence_gates",
+    "group": "wooden_fence_gate",
+    "id": "poplar_fence_gate",
+    "key": {
+      "#": {
+        "items": [
+          "stick"
+        ]
+      },
+      "W": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "#W#",
+      "#W#"
+    ],
+    "result": {
+      "count": 1,
+      "id": "poplar_fence_gate"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_hanging_sign": {
+    "category": "misc",
+    "family": "hanging_signs",
+    "group": "wooden_hanging_sign",
+    "id": "poplar_hanging_sign",
+    "key": {
+      "#": {
+        "items": [
+          "stripped_poplar_log"
+        ]
+      },
+      "X": {
+        "items": [
+          "iron_chain"
+        ]
+      }
+    },
+    "pattern": [
+      "X X",
+      "###",
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "poplar_hanging_sign"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_planks": {
+    "category": "building",
+    "family": "planks",
+    "group": "planks",
+    "id": "poplar_planks",
+    "ingredients": [
+      {
+        "items": [
+          "poplar_log",
+          "poplar_wood",
+          "stripped_poplar_log",
+          "stripped_poplar_wood"
+        ],
+        "tag": "poplar_logs"
+      }
+    ],
+    "result": {
+      "count": 4,
+      "id": "poplar_planks"
+    },
+    "slug": "default",
+    "type": "shapeless"
+  },
+  "poplar_pressure_plate": {
+    "category": "redstone",
+    "family": "pressure_plates",
+    "group": "wooden_pressure_plate",
+    "id": "poplar_pressure_plate",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "##"
+    ],
+    "result": {
+      "count": 1,
+      "id": "poplar_pressure_plate"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_shelf": {
+    "category": "misc",
+    "family": "shelves",
+    "group": "shelf",
+    "id": "poplar_shelf",
+    "key": {
+      "#": {
+        "items": [
+          "stripped_poplar_log"
+        ]
+      }
+    },
+    "pattern": [
+      "###",
+      "   ",
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "poplar_shelf"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_sign": {
+    "category": "misc",
+    "family": "signs",
+    "group": "wooden_sign",
+    "id": "poplar_sign",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_planks"
+        ]
+      },
+      "X": {
+        "items": [
+          "stick"
+        ]
+      }
+    },
+    "pattern": [
+      "###",
+      "###",
+      " X "
+    ],
+    "result": {
+      "count": 3,
+      "id": "poplar_sign"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "wooden_slab",
+    "id": "poplar_slab",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "poplar_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "wooden_stairs",
+    "id": "poplar_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "poplar_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_trapdoor": {
+    "category": "redstone",
+    "family": "trapdoors",
+    "group": "wooden_trapdoor",
+    "id": "poplar_trapdoor",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_planks"
+        ]
+      }
+    },
+    "pattern": [
+      "###",
+      "###"
+    ],
+    "result": {
+      "count": 2,
+      "id": "poplar_trapdoor"
+    },
+    "shapeTag": "trapdoors",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "poplar_wood": {
+    "category": "building",
+    "family": "logs_wood",
+    "group": "bark",
+    "id": "poplar_wood",
+    "key": {
+      "#": {
+        "items": [
+          "poplar_log"
+        ]
+      }
+    },
+    "pattern": [
+      "##",
+      "##"
+    ],
+    "result": {
+      "count": 3,
+      "id": "poplar_wood"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
   "potent_sulfur": {
     "category": "building",
     "family": "compact_blocks",
@@ -22078,7 +25808,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -22162,7 +25893,7 @@
   "purple_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "purple_carpet",
     "key": {
       "#": {
@@ -22239,6 +25970,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "purple_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "purple_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "purple_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "purple_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "purple_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "purple_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "purple_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "purple_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "purple_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "purple_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "purple_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "purple_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "purple_dye": {
     "category": "misc",
@@ -22444,6 +26245,54 @@
       "count": 8,
       "id": "purple_terracotta"
     },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "purple_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "purple_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "purple_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "purple_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "purple_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "purple_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "purple_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "purple_wool_stairs"
+    },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -22733,6 +26582,45 @@
     "slug": "from-red-mushroom",
     "type": "shapeless"
   },
+  "rabbit_stew_from_shelf_mushroom": {
+    "category": "misc",
+    "family": "food",
+    "group": "rabbit_stew",
+    "id": "rabbit_stew_from_shelf_mushroom",
+    "ingredients": [
+      {
+        "items": [
+          "baked_potato"
+        ]
+      },
+      {
+        "items": [
+          "cooked_rabbit"
+        ]
+      },
+      {
+        "items": [
+          "bowl"
+        ]
+      },
+      {
+        "items": [
+          "carrot"
+        ]
+      },
+      {
+        "items": [
+          "shelf_mushroom"
+        ]
+      }
+    ],
+    "result": {
+      "count": 1,
+      "id": "rabbit_stew"
+    },
+    "slug": "from-shelf-mushroom",
+    "type": "shapeless"
+  },
   "rail": {
     "category": "misc",
     "family": "rails_minecarts",
@@ -23012,7 +26900,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -23096,7 +26985,7 @@
   "red_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "red_carpet",
     "key": {
       "#": {
@@ -23173,6 +27062,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "red_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "red_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "red_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "red_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "red_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "red_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "red_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "red_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "red_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "red_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "red_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "red_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "red_dye_from_beetroot": {
     "category": "misc",
@@ -23621,6 +27580,54 @@
       "count": 8,
       "id": "red_terracotta"
     },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "red_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "red_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "red_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "red_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "red_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "red_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "red_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "red_wool_stairs"
+    },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   },
@@ -24233,7 +28240,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "wooden_tool_materials"
       }
@@ -24412,7 +28420,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -24472,6 +28481,10 @@
           "cherry_wood",
           "stripped_cherry_log",
           "stripped_cherry_wood",
+          "poplar_log",
+          "poplar_wood",
+          "stripped_poplar_log",
+          "stripped_poplar_wood",
           "crimson_stem",
           "stripped_crimson_stem",
           "crimson_hyphae",
@@ -24787,6 +28800,10 @@
           "cherry_wood",
           "stripped_cherry_log",
           "stripped_cherry_wood",
+          "poplar_log",
+          "poplar_wood",
+          "stripped_poplar_log",
+          "stripped_poplar_wood",
           "crimson_stem",
           "stripped_crimson_stem",
           "crimson_hyphae",
@@ -25359,7 +29376,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -25815,6 +29833,27 @@
     "slug": "default",
     "type": "shaped"
   },
+  "straw_bed": {
+    "category": "misc",
+    "family": "beds",
+    "id": "straw_bed",
+    "key": {
+      "X": {
+        "items": [
+          "hay_block"
+        ]
+      }
+    },
+    "pattern": [
+      "XXX"
+    ],
+    "result": {
+      "count": 4,
+      "id": "straw_bed"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
   "stripped_acacia_wood": {
     "category": "building",
     "family": "logs_wood",
@@ -26018,6 +30057,29 @@
     "result": {
       "count": 3,
       "id": "stripped_pale_oak_wood"
+    },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "stripped_poplar_wood": {
+    "category": "building",
+    "family": "logs_wood",
+    "group": "bark",
+    "id": "stripped_poplar_wood",
+    "key": {
+      "#": {
+        "items": [
+          "stripped_poplar_log"
+        ]
+      }
+    },
+    "pattern": [
+      "##",
+      "##"
+    ],
+    "result": {
+      "count": 3,
+      "id": "stripped_poplar_wood"
     },
     "slug": "default",
     "type": "shaped"
@@ -26301,13 +30363,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26335,13 +30403,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26369,13 +30443,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26403,13 +30483,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26437,13 +30523,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26471,13 +30563,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26505,13 +30603,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26539,13 +30643,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26573,13 +30683,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26607,13 +30723,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26641,13 +30763,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26675,13 +30803,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26709,13 +30843,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26743,13 +30883,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26777,13 +30923,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26811,13 +30963,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -26845,13 +31003,19 @@
       },
       {
         "items": [
-          "brown_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
-          "red_mushroom"
-        ]
+          "brown_mushroom",
+          "red_mushroom",
+          "shelf_mushroom"
+        ],
+        "tag": "mushrooms"
       },
       {
         "items": [
@@ -27089,7 +31253,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       },
@@ -30045,7 +34210,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -30129,7 +34295,7 @@
   "white_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "white_carpet",
     "key": {
       "#": {
@@ -30206,6 +34372,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "white_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "white_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "white_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "white_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "white_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "white_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "white_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "white_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "white_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "white_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "white_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "white_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "white_dye": {
     "category": "misc",
@@ -30451,6 +34687,54 @@
     "slug": "from-string",
     "type": "shaped"
   },
+  "white_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "white_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "white_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "white_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "white_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "white_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "white_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "white_wool_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
   "wild_armor_trim_smithing_template": {
     "category": "misc",
     "family": "smithing_templates",
@@ -30563,7 +34847,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "wooden_tool_materials"
       }
@@ -30603,7 +34888,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "wooden_tool_materials"
       }
@@ -30643,7 +34929,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "wooden_tool_materials"
       }
@@ -30683,7 +34970,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "wooden_tool_materials"
       }
@@ -30723,7 +35011,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "wooden_tool_materials"
       }
@@ -30763,7 +35052,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "wooden_tool_materials"
       }
@@ -30875,7 +35165,8 @@
           "warped_planks",
           "mangrove_planks",
           "bamboo_planks",
-          "cherry_planks"
+          "cherry_planks",
+          "poplar_planks"
         ],
         "tag": "planks"
       }
@@ -30959,7 +35250,7 @@
   "yellow_carpet": {
     "category": "misc",
     "family": "carpets",
-    "group": "carpet",
+    "group": "woolen_carpet",
     "id": "yellow_carpet",
     "key": {
       "#": {
@@ -31036,6 +35327,76 @@
     },
     "slug": "default",
     "type": "shapeless"
+  },
+  "yellow_concrete_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "concrete_slab",
+    "id": "yellow_concrete_slab",
+    "key": {
+      "#": {
+        "items": [
+          "yellow_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "yellow_concrete_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "yellow_concrete_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "concrete_stairs",
+    "id": "yellow_concrete_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "yellow_concrete"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "yellow_concrete_stairs"
+    },
+    "shapeTag": "stairs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "yellow_cushion": {
+    "category": "misc",
+    "family": "cushions",
+    "group": "cushion",
+    "id": "yellow_cushion",
+    "key": {
+      "#": {
+        "items": [
+          "yellow_wool_slab"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 1,
+      "id": "yellow_cushion"
+    },
+    "slug": "default",
+    "type": "shaped"
   },
   "yellow_dye_from_dandelion": {
     "category": "misc",
@@ -31294,6 +35655,54 @@
       "count": 8,
       "id": "yellow_terracotta"
     },
+    "slug": "default",
+    "type": "shaped"
+  },
+  "yellow_wool_slab": {
+    "category": "building",
+    "family": "slabs",
+    "group": "woolen_slab",
+    "id": "yellow_wool_slab",
+    "key": {
+      "#": {
+        "items": [
+          "yellow_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "###"
+    ],
+    "result": {
+      "count": 6,
+      "id": "yellow_wool_slab"
+    },
+    "shapeTag": "slabs",
+    "slug": "default",
+    "type": "shaped"
+  },
+  "yellow_wool_stairs": {
+    "category": "building",
+    "family": "stairs",
+    "group": "woolen_stairs",
+    "id": "yellow_wool_stairs",
+    "key": {
+      "#": {
+        "items": [
+          "yellow_wool"
+        ]
+      }
+    },
+    "pattern": [
+      "#  ",
+      "## ",
+      "###"
+    ],
+    "result": {
+      "count": 4,
+      "id": "yellow_wool_stairs"
+    },
+    "shapeTag": "stairs",
     "slug": "default",
     "type": "shaped"
   }

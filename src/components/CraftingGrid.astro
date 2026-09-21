@@ -15,6 +15,16 @@ interface Props {
 
 const { cells, result, items, recipeHrefs, ariaLabel } = Astro.props;
 const resultItem = result ? items.get(result.id) : undefined;
+
+// A copied result (see recipeResultSchema's `copiedFrom`) mirrors whichever
+// item went in: the result slot lists the same items as the input cell it
+// copies, and the shared sync key keeps the two cycling in step.
+const COPIED_RESULT_SYNC_KEY = 'copied-result';
+const copiedItems = result?.copiedFrom?.items;
+const isCopiedInput = (cell: NonNullable<GridCell>) =>
+  copiedItems !== undefined &&
+  cell.items.length === copiedItems.length &&
+  cell.items.every((item, index) => item === copiedItems[index]);
 ---
 
 <div class="crafting">
@@ -34,6 +44,7 @@ const resultItem = result ? items.get(result.id) : undefined;
               itemsMap={items}
               recipeHrefs={recipeHrefs}
               loading="eager"
+              syncKey={isCopiedInput(cell) ? COPIED_RESULT_SYNC_KEY : undefined}
             />
           )}
         </div>
@@ -49,11 +60,21 @@ const resultItem = result ? items.get(result.id) : undefined;
         {
           resultItem && (
             <>
-              <ItemIconTooltip
-                item={resultItem}
-                recipePath={recipeHrefs.get(resultItem.id) ?? null}
-                loading="eager"
-              />
+              {copiedItems ? (
+                <ItemVariants
+                  items={copiedItems}
+                  itemsMap={items}
+                  recipeHrefs={recipeHrefs}
+                  loading="eager"
+                  syncKey={COPIED_RESULT_SYNC_KEY}
+                />
+              ) : (
+                <ItemIconTooltip
+                  item={resultItem}
+                  recipePath={recipeHrefs.get(resultItem.id) ?? null}
+                  loading="eager"
+                />
+              )}
               {result && result.count > 1 && <span class="crafting__count">×{result.count}</span>}
             </>
           )

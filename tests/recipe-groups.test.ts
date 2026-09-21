@@ -279,19 +279,19 @@ describe("groupRecipes", () => {
 });
 
 describe("deriveRedyeGroupAliases", () => {
-  // The alias rule is fully data-derived: `X_dye` normalizes to `X` iff
-  // group `X` exists and every result item `X_dye` produces is also a
-  // result of `X` (subset, not equality -- vanilla's `carpet` group holds
-  // moss_carpet/pale_moss_carpet, which have no re-dye recipe, alongside
-  // the 16 re-dyeable colors).
-  it("derives exactly the harness/bed/carpet aliases from the real generated data", () => {
+  // The alias rule is fully data-derived: `X_dye` normalizes to the group
+  // whose results cover every item `X_dye` produces -- `X` when it does,
+  // otherwise the single other group that does (26.3 moved the wool carpets
+  // to `woolen_carpet` while their re-dye group stayed `carpet_dye`).
+  it("derives exactly the harness/bed/cushion/carpet aliases from the real generated data", () => {
     const aliases = deriveRedyeGroupAliases(loadGeneratedRecipes());
 
     expect(new Map(aliases)).toEqual(
       new Map([
         ["harness_dye", "harness"],
         ["bed_dye", "bed"],
-        ["carpet_dye", "carpet"],
+        ["cushion_dye", "cushion"],
+        ["carpet_dye", "woolen_carpet"],
       ]),
     );
   });
@@ -308,6 +308,20 @@ describe("deriveRedyeGroupAliases", () => {
     ];
 
     expect(deriveRedyeGroupAliases(recipes).get("sofa_dye")).toBe("sofa");
+  });
+
+  it("aliases to a differently-named base group when it alone covers the dye results", () => {
+    const recipes = [
+      recipe({ id: "moss_sofa", group: "sofa", result: { id: "moss_sofa", count: 1 } }),
+      recipe({ id: "white_sofa", group: "woolen_sofa", result: { id: "white_sofa", count: 1 } }),
+      recipe({
+        id: "dye_white_sofa",
+        group: "sofa_dye",
+        result: { id: "white_sofa", count: 1 },
+      }),
+    ];
+
+    expect(deriveRedyeGroupAliases(recipes).get("sofa_dye")).toBe("woolen_sofa");
   });
 
   it("never aliases a dye group that produces items outside its base group", () => {
@@ -337,18 +351,19 @@ describe("deriveRedyeGroupAliases", () => {
     const byKey = new Map(variantGroups.map((vg) => [vg.groupKey, vg]));
 
     // The dye-side key never surfaces as its own card ...
-    for (const dyeKey of ["harness_dye", "bed_dye", "carpet_dye"]) {
+    for (const dyeKey of ["harness_dye", "bed_dye", "cushion_dye", "carpet_dye"]) {
       expect(byKey.has(dyeKey), `${dyeKey} must alias into its base group`).toBe(false);
     }
 
-    // ... and the base card holds the full family: all 16 colors for
-    // harness/bed, plus carpet's 2 mossy non-redyeable members.
-    expect(byKey.get("harness")?.variants).toHaveLength(16);
-    expect(byKey.get("bed")?.variants).toHaveLength(16);
-    const carpetResultIds = byKey.get("carpet")?.variants.map((v) => v.resultId);
-    expect(carpetResultIds).toHaveLength(18);
-    expect(carpetResultIds).toContain("moss_carpet");
-    expect(carpetResultIds).toContain("pale_moss_carpet");
+    // ... and the base card holds the full family: all 16 colors each.
+    // Vanilla's own `carpet` group is just the two moss carpets since 26.3.
+    for (const baseKey of ["harness", "bed", "cushion", "woolen_carpet"]) {
+      expect(byKey.get(baseKey)?.variants, baseKey).toHaveLength(16);
+    }
+    expect(byKey.get("carpet")?.variants.map((v) => v.resultId)).toEqual([
+      "moss_carpet",
+      "pale_moss_carpet",
+    ]);
   });
 });
 

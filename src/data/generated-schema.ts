@@ -34,10 +34,22 @@ export const ingredientSchema = z.object({
   tag: z.string().optional(),
 });
 
-export const recipeResultSchema = z.object({
-  id: z.string(),
-  count: z.number().int().positive(),
-});
+export const recipeResultSchema = z
+  .object({
+    id: z.string(),
+    count: z.number().int().positive(),
+    /**
+     * Present when vanilla names no fixed result item: the recipe hands back
+     * whichever of these items went in (26.3's map cloning/extending, whose
+     * input is an item tag). `id` is then the canonical member the recipe is
+     * filed under (family, slug, grouping) -- see scripts/lib/recipes.ts's
+     * COPIED_RESULT_RECIPES. Omitted for every fixed-result recipe.
+     */
+    copiedFrom: ingredientSchema.optional(),
+  })
+  .refine((result) => !result.copiedFrom || result.copiedFrom.items.includes(result.id), {
+    message: "result.id must be one of result.copiedFrom.items",
+  });
 
 /** A shaped recipe's crafting-grid pattern: 1-3 rows of 1-3 single-char cells each, all rows the same width. */
 const recipePatternSchema = z

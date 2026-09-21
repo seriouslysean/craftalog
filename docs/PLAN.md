@@ -96,6 +96,12 @@ object (`degradedIcons`, `emptyDerivations`, `excludedUnknownTypes`,
 `unresolvedIcons` — see scripts/lib/types.ts's `MetaAudit`), which the
 weekly update PR body pretty-prints as a curation queue.
 
+One audit list is held to a stricter bar outside the validator:
+`tests/family.test.ts` asserts the committed `fallbackFamilyItems` is empty,
+so a bump introducing an item class with no family rule fails CI on the
+update PR, which stays open (with the "needs attention" issue filed) until a
+real `scripts/lib/family.ts` rule lands -- new items never ship into "Other".
+
 ## Generated data contract
 
 `src/data/generated/recipes.json` — `Record<string, Recipe>` keyed by recipe id
@@ -115,7 +121,7 @@ type Recipe = {
   slug: string; // URL-safe /recipe/{item}/{slug}/ segment, unique within its result-item group — see scripts/lib/recipe-slug.ts
   group?: string; // vanilla group, e.g. "planks", "wooden_door"
   shapeTag?: string; // shape-family collapse key from vanilla item tags, e.g. "slabs" — see scripts/lib/shape-tag.ts
-  result: { id: string; count: number };
+  result: { id: string; count: number; copiedFrom?: Ingredient }; // copiedFrom: vanilla names no fixed result — the recipe returns whichever of these items went in (map cloning/extending); `id` is the canonical member it's filed under
   // shaped only — placement matters:
   pattern?: string[]; // e.g. ["X", "#"]; keys index into `key`
   key?: Record<string, Ingredient>;

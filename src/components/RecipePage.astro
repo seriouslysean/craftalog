@@ -137,9 +137,11 @@ if (recipe.type === 'shaped' && recipe.key) {
 }
 
 const transmuteNote =
-  recipe.type === 'transmute'
-    ? "The result keeps the input item's contents/appearance."
-    : undefined;
+  recipe.type !== 'transmute'
+    ? undefined
+    : recipe.result?.copiedFrom
+      ? 'The result is a copy of whichever input item you use.'
+      : "The result keeps the input item's contents/appearance.";
 
 const ingredientNames = cells
   .filter((cell): cell is NonNullable<GridCell> => cell !== null)
