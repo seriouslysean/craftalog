@@ -38,7 +38,7 @@
     "@types/node": "24.13.6",
     "@types/pngjs": "6.0.5",
     "oxfmt": "0.69.0",
-    "oxlint": "1.84.0",
+    "oxlint": "1.85.0",
     "pngjs": "7.0.0",
     "prettier": "3.9.8",
     "prettier-plugin-astro": "1.0.1",
