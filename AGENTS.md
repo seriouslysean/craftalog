@@ -238,8 +238,8 @@ Astro content collections consume the generated JSON
   a blocker. The one exception: `tests/family.test.ts` asserts
   `fallbackFamilyItems` is empty, so new items with no `scripts/lib/family.ts`
   rule fail CI and hold the update PR open. CI separately runs
-  `npm run parse` and fails if `git diff` shows drift in the committed
-  output — both run on every PR.
+  `npm run parse` and fails if `git status` shows drift in the committed
+  output (uncommitted new files included) — both run on every PR.
 - **Never hand-edit anything under `src/data/generated/` or
   `public/textures/`.** Edit `scripts/parse.ts` / `scripts/validate.ts`
   instead and regenerate.
