@@ -12,7 +12,8 @@ resume from here plus the task list in the PR description.
 ## Decisions (agreed with owner)
 
 1. **Data source**: `misode/mcmeta` submodules, pinned to the latest **stable**
-   release tag (snapshots/pre/rc excluded). Current pin: `26.2`. This is the
+   release tag (snapshots/pre/rc excluded); the current pin is readable at
+   `vendor/mcmeta-summary/version.txt`. This is the
    sole source of truth for recipes, items, tags, and lang — nothing below
    changes that.
    - `vendor/mcmeta-summary` → tag `<version>-summary` (condensed JSON: all
@@ -319,13 +320,14 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
 
 ## Workflows
 
-- `ci.yml` (PRs + main): install → parse → validate (fails on drift) → lint →
-  format check → type-check → test → build.
+- `ci.yml` (PRs + main): install → parse → drift check → validate → format
+  check → type-check → lint → test → build → Playwright e2e.
 - `deploy.yml`: existing Pages deploy, unchanged behavior (build now includes
   generated data).
 - `update-data.yml` (weekly cron + manual `workflow_dispatch` with a `force`
   boolean input that rebuilds and captures changes even when pins are
-  current): resolve latest stable mcmeta and bedrock-samples tags (via
+  current): resolve latest stable mcmeta (newest version with both its
+  `-summary` and `-assets` tags published) and bedrock-samples tags (via
   `git ls-remote`) → if either is newer than its pin (or `force`): bump
   submodules, `npm run parse`, `npm run validate`, commit, open a PR (body
   embeds `meta.json` and pretty-prints its non-empty `audit` lists as a
