@@ -11,11 +11,4 @@ export default defineConfig({
   build: {
     format: "directory",
   },
-  vite: {
-    resolve: {
-      alias: {
-        "@": "/src",
-      },
-    },
-  },
 });

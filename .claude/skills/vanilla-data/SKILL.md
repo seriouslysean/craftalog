@@ -42,7 +42,7 @@ the single pinned tag's history, not the whole upstream repo.
   `resource_pack/models/entity/shulker.geo.json` are used from it.
 
 The current mcmeta pin is readable at `vendor/mcmeta-summary/version.txt`
-(currently `26.2`) and mirrored into `src/data/generated/meta.json` (key
+and mirrored into `src/data/generated/meta.json` (key
 `"version"`) after a parse. `bedrock-samples` has no equivalent version file,
 and its shallow submodule clone carries no tags (so `git describe` cannot
 name the pinned commit) — resolve the pin by matching the submodule's HEAD
@@ -143,7 +143,11 @@ npm ci
 npm run parse
 npm run validate
 
-git add vendor/mcmeta-summary vendor/mcmeta-assets src/data/generated public/textures
+# Every data bump is a site release (AGENTS.md "Releases"): minor for a new
+# Minecraft feature version, patch otherwise.
+npm version <minor|patch> --no-git-tag-version
+
+git add vendor/mcmeta-summary vendor/mcmeta-assets src/data/generated public/textures package.json package-lock.json
 git commit -m "data: update vanilla data to <new-version>"
 ```
 
@@ -164,7 +168,9 @@ npm ci
 npm run parse
 npm run validate
 
-git add vendor/bedrock-samples src/data/generated public/textures
+npm version patch --no-git-tag-version   # bedrock-only bumps are a PATCH release
+
+git add vendor/bedrock-samples src/data/generated public/textures package.json package-lock.json
 git commit -m "data: update bedrock-samples to <new-bedrock-version>"
 ```
 
@@ -179,16 +185,17 @@ if unsure what's current.
 submodules, then:
 
 ```bash
-git diff --exit-code -- src/data/generated public/textures
+git status --porcelain --untracked-files=all -- src/data/generated public/textures
 ```
 
-If this fails, the generated data committed to the branch does not match what
+If this prints anything (untracked files included), the generated data committed to the branch does not match what
 `npm run parse` produces from the currently pinned submodules. Causes:
 
 - Someone hand-edited a file under `src/data/generated/`.
 - `scripts/parse.ts` changed but the generated output wasn't regenerated.
 - A submodule pin was bumped without re-running `npm run parse` and
   committing the result.
+- A regenerated file (typically a new texture PNG) was never `git add`ed.
 
 Fix locally with `npm run parse`, review the diff, and commit it.
 
@@ -203,7 +210,9 @@ merge step. Each run:
 
 1. Resolves the latest stable tag from `misode/mcmeta` **and** from
    `bedrock-samples` independently, each via `git ls-remote` filtered by its
-   own stable-tag regex.
+   own stable-tag regex. For mcmeta, only a version whose `-summary` and
+   `-assets` tags both exist counts (they are independent refs, and both
+   submodules move to the same version).
 2. Compares each to its current pin (`vendor/mcmeta-summary/version.txt` for
    mcmeta; for bedrock-samples, the submodule's HEAD commit matched against
    the remote's tags via `git ls-remote` — the shallow clone carries no

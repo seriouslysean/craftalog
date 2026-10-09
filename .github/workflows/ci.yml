@@ -38,13 +38,22 @@ jobs:
 
       - name: Check committed generated data matches submodule pin
         id: drift
-        run: git diff --exit-code -- src/data/generated public/textures
+        run: |
+          # `git status`, not `git diff`: a generated file the branch forgot
+          # to commit is untracked, which `git diff` never reports -- and
+          # deploy.yml builds without parsing, so it would ship missing.
+          drift=$(git status --porcelain --untracked-files=all -- src/data/generated public/textures)
+          if [ -n "$drift" ]; then
+            echo "$drift"
+            git diff -- src/data/generated
+            exit 1
+          fi
 
       - name: Explain drift failure
         if: failure() && steps.drift.outcome == 'failure'
         run: |
           echo "::error::src/data/generated and/or public/textures are out of date with the pinned mcmeta submodules."
-          echo "Run 'npm run parse' locally after updating vendor/mcmeta-summary and vendor/mcmeta-assets, then commit the regenerated files."
+          echo "Run 'npm run parse' locally and commit every regenerated file, new (untracked) ones included."
 
       - name: Validate generated data
         run: npm run validate
