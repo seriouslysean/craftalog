@@ -465,8 +465,11 @@ npm run build
       bump is in this PR (see [Releases](#releases)) — it can't be added after
       the merge
 - [ ] **Draft First**: Open every PR as draft (throwaway/verification PRs
-      included); flip to ready only after CI is green and self-reviewed, and
-      never chain create → merge without a pause for the owner to weigh in
+      included); flip to ready only after CI is green and self-reviewed.
+      Without an owner request to ship, stop there and never chain create →
+      merge. When the owner asked for the work to be sent, merged, tagged or
+      released, that request is the go-ahead: once CI is green, flip to
+      ready, merge, and confirm the release landed — no second confirmation
 
 ---
 

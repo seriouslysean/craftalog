@@ -32,3 +32,6 @@ test-results/
 *.sw?
 
 *.tsbuildinfo
+
+# Claude Code per-user project settings
+.claude/settings.local.json
