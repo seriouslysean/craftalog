@@ -57,18 +57,19 @@ commit the result so CI's drift check (below) doesn't fail.
 - **oxfmt vs prettier scope confusion**: `npm run format` runs oxfmt over the
   whole repo, then prettier _only_ over `**/*.astro` (oxfmt cannot format
   `.astro` files yet). If `.astro` files look unformatted after `npm run
-format`, check that prettier-plugin-astro is picking them up — don't try to
+  format`, check that prettier-plugin-astro is picking them up — don't try to
   make oxfmt handle them.
 - **`format:check` fails but `format` reports nothing to do**: the two
   commands must use the same globs (oxfmt over `.` + prettier over
   `**/*.astro`) — if you edit the scripts, keep them in sync.
-- **Drift check meaning** (CI step `git diff --exit-code -- src/data/generated
-public/textures`): this fails when the committed generated data/textures no
+- **Drift check meaning** (CI step `git status --porcelain
+  --untracked-files=all -- src/data/generated public/textures`, which must
+  print nothing): this fails when the committed generated data/textures no
   longer match what `npm run parse` produces from the currently pinned
   submodules. It means someone edited `src/data/generated/**` by hand, changed
   `scripts/parse.ts` without regenerating, or bumped a submodule pin without
   running `npm run parse` and committing the result. Fix: run `npm run
-parse`, review the diff, commit it.
+  parse`, review the diff, commit it.
 - **`npm run validate` fails but `npm run parse` succeeded**: validate
   re-derives data independently and fails only on core invariants (drift
   from the pinned submodules, URL-slug collisions, missing texture files,

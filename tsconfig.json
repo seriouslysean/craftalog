@@ -1,17 +1,17 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  // scripts/ and tests/ are plain Node (via tsx/vitest), not Astro site code.
-  // They're excluded from `astro check`'s TS surface because Node ambient
-  // types (node:fs/node:path/process/...) require @types/node, which isn't
-  // installed here (no new dependencies). tsx executes them without a type
-  // check; correctness is covered by vitest + running parse/validate for real.
-  // e2e/ and the Playwright/Vitest configs are likewise Node-side; they're
-  // type-checked via tsconfig.node.json instead.
-  "exclude": ["scripts/**", "tests/**", "e2e/**", "playwright.config.ts", "vitest.config.ts"]
+  "include": [".astro/types.d.ts", "**/*"],
+  // scripts/, tests/, e2e/ and the Playwright/Vitest configs are plain Node
+  // (run via tsx/Vitest/Playwright), not Astro site code, so they stay out
+  // of `astro check`'s surface and are type-checked with Node's ambient
+  // types via tsconfig.node.json instead (see `npm run type-check`).
+  "exclude": [
+    "dist",
+    "vendor",
+    "scripts/**",
+    "tests/**",
+    "e2e/**",
+    "playwright.config.ts",
+    "vitest.config.ts"
+  ]
 }
