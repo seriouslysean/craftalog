@@ -36,11 +36,16 @@ jobs:
       - name: Determine latest stable mcmeta version
         id: latest
         run: |
-          latest=$(git ls-remote --tags https://github.com/misode/mcmeta 'refs/tags/*-summary' \
+          # Both submodules are bumped to the same version, so only a
+          # version whose -summary AND -assets tags are both published
+          # counts: the two tags are independent refs, so requiring both
+          # means a partially published release can't fail the bump.
+          latest=$(git ls-remote --tags https://github.com/misode/mcmeta \
+              'refs/tags/*-summary' 'refs/tags/*-assets' \
             | sed -E 's#.*refs/tags/##' \
-            | grep -E '^[0-9]+(\.[0-9]+)+-summary$' \
-            | sed -E 's/-summary$//' \
-            | sort -V | tail -1)
+            | grep -E '^[0-9]+(\.[0-9]+)+-(summary|assets)$' \
+            | sed -E 's/-(summary|assets)$//' \
+            | sort -V | uniq -d | tail -1)
           if [ -z "$latest" ]; then
             echo "::error::Could not determine latest stable mcmeta version from remote tags."
             exit 1
