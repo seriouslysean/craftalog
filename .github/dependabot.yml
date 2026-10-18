@@ -27,3 +27,7 @@ updates:
       # workflows), not the newest Node -- bump both together.
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
+      # Held at TypeScript 6: astro check refuses TypeScript 7.0; Astro's TypeScript 7 support needs
+      # 7.1+ with @astrojs/ts-content-mapper. Remove this once that's supported.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
