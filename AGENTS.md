@@ -460,6 +460,9 @@ npm run build
 
 - [ ] **Clear Message**: Commit message clearly describes what and why
 - [ ] **Atomic Commits**: Each commit does one thing
+- [ ] **Squash merge**: Merge with `gh pr merge <n> --squash --delete-branch`.
+      The PR title becomes the commit subject and the description the commit
+      message, so write both for `main`
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
 - [ ] **Release bump**: If the change should ship as a release, the version
       bump is in this PR (see [Releases](#releases)) — it can't be added after
