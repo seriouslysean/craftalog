@@ -4,11 +4,24 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      github_actions:
+        patterns: ["*"]
+        update-types: [minor, patch]
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: weekly
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      npm:
+        patterns: ["*"]
+        update-types: [minor, patch]
     ignore:
       # Node's types track the runtime CI pins (`node-version` in the
       # workflows), not the newest Node -- bump both together.
