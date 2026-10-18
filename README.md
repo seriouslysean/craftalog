@@ -117,4 +117,6 @@ The deploy workflow runs after the CI workflow completes successfully on the `ma
 
 ## License
 
-MIT
+The code is MIT licensed; see [LICENSE](LICENSE). Minecraft game assets in `vendor/` and `public/textures/` belong to Mojang and aren't covered by that license.
+
+Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.
