@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to Craftalog! This document provides guidelines and instructions for contributing.
 
-> **Important**: Please read [@AGENTS.md](./AGENTS.md) first for comprehensive code standards, common pitfalls, and project patterns.
+> **Important**: Please read [@AGENTS.md](../AGENTS.md) first for comprehensive code standards, common pitfalls, and project patterns.
 
 ## Development Setup
 
@@ -79,7 +79,7 @@ git commit -m "feat: add new feature"
 
 ## Code Standards
 
-See [@AGENTS.md](./AGENTS.md) for complete code standards. Key points:
+See [@AGENTS.md](../AGENTS.md) for complete code standards. Key points:
 
 ### TypeScript
 
@@ -128,6 +128,8 @@ Before submitting a pull request:
    - Detailed description of what and why
    - Screenshots for UI changes
    - Reference to any related issues
+5. PRs are squash-merged (`gh pr merge <n> --squash --delete-branch`): the PR
+   title becomes the commit subject and the description the commit message
 
 ## Project Structure
 
@@ -150,7 +152,7 @@ craftalog/
 
 ## Need Help?
 
-- Check the [AGENTS.md](./AGENTS.md) file for project goals and standards
+- Check the [AGENTS.md](../AGENTS.md) file for project goals and standards
 - Review existing code for patterns and examples
 - Open an issue for discussion before making large changes
 
