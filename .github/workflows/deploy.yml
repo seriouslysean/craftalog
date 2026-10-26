@@ -25,8 +25,15 @@ concurrency:
 
 jobs:
   build:
-    # workflow_run fires on any completion; only deploy when CI succeeded.
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    # workflow_run fires on any completion; only deploy when CI succeeded on
+    # this repository's main. `branches` matches the head branch name only, so
+    # a fork pull request from a branch named main would pass it; the event
+    # and repository checks rule that out.
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || (github.event.workflow_run.conclusion == 'success'
+          && github.event.workflow_run.head_repository.full_name == github.repository
+          && contains(fromJSON('["push", "workflow_dispatch"]'), github.event.workflow_run.event))
     runs-on: ubuntu-24.04
     env:
       BASE_PATH: ${{ vars.BASE_PATH }}

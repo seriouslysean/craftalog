@@ -82,7 +82,10 @@ jobs:
             --jq '.check_runs[] | {status, conclusion}')
           pending=$(jq -rs '[.[] | select(.status != "completed")] | length' <<<"$checks")
           if [ "$pending" != "0" ]; then
-            skip "PR #${number} still has ${pending} check(s) running; the last one to finish fires this again"
+            # Only CI completions fire this workflow, so a check still running
+            # here waits for the next CI run on this PR (a Dependabot rebase or
+            # recreate), not for its own completion.
+            skip "PR #${number} still has ${pending} check(s) running; the next CI run on this PR retries"
           fi
           bad=$(jq -rs '[.[] | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")] | length' <<<"$checks")
           if [ "$bad" != "0" ]; then

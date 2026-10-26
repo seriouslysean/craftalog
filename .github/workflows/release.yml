@@ -21,8 +21,13 @@ concurrency:
 
 jobs:
   release:
-    # workflow_run fires on any completion; only release a commit CI passed.
-    if: github.event.workflow_run.conclusion == 'success'
+    # workflow_run fires on any completion; only release a commit CI passed
+    # on this repository's main (not a fork pull request from a branch named
+    # main, which the `branches` filter alone lets through).
+    if: >-
+      github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.head_repository.full_name == github.repository
+      && contains(fromJSON('["push", "workflow_dispatch"]'), github.event.workflow_run.event)
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout the commit CI passed on
@@ -59,10 +64,11 @@ jobs:
           fi
 
           tag="v${version}"
-          minecraft=$(jq -r '.version' src/data/generated/meta.json)
 
           # Tag and release are checked separately, so a run that failed
-          # between them is finished by the next one.
+          # between them is finished by a later run on the same version.
+          # A version superseded by a newer tag is not revisited (the check
+          # above exits first); release it by hand.
           if [ "$version" != "$latest" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -74,6 +80,11 @@ jobs:
             echo "${tag} is already released; nothing to do."
             exit 0
           fi
+
+          # The tag may sit on an earlier commit than this run's, so read the
+          # release metadata at the tag, not from this checkout.
+          minecraft=$(gh api -H 'Accept: application/vnd.github.raw' \
+            "repos/${GITHUB_REPOSITORY}/contents/src/data/generated/meta.json?ref=${tag}" | jq -r '.version')
 
           gh release create "$tag" --verify-tag --latest --generate-notes \
             --title "${tag} (Minecraft ${minecraft})"
