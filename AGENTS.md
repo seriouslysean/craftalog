@@ -482,7 +482,7 @@ npm run build
 
 ```bash
 # Ensure dependencies are current
-npm install
+npm ci
 
 # First time only: fetch the vendored mcmeta submodules (not needed to build —
 # only needed if you're touching the data pipeline)

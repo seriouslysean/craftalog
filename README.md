@@ -15,12 +15,12 @@ A modern Minecraft recipe catalog built with Astro and TypeScript.
 ## Project Setup
 
 ```sh
-npm install
+npm ci
 ```
 
 Vanilla Minecraft recipe/item data is generated from vendored
 [misode/mcmeta](https://github.com/misode/mcmeta) submodules and is committed
-to the repo, so `npm install` + `npm run build` work without fetching them.
+to the repo, so `npm ci` + `npm run build` work without fetching them.
 Only run the following if you need to regenerate that data:
 
 ```sh

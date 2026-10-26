@@ -23,7 +23,7 @@ cd craftalog
 2. Install dependencies
 
 ```bash
-npm install
+npm ci
 ```
 
 3. Start the development server
