@@ -33,6 +33,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The commit CI passed on, not the newest main. A manual dispatch
+          # has no workflow_run, so it builds the commit it was run on.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:

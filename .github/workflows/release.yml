@@ -52,10 +52,6 @@ jobs:
             | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
             | sort -uV | tail -n1 || true)
 
-          if [ "$version" = "$latest" ]; then
-            echo "v${version} is already released; nothing to do."
-            exit 0
-          fi
           if [ -n "$latest" ] \
             && [ "$(printf '%s\n%s\n' "$latest" "$version" | sort -V | tail -n1)" != "$version" ]; then
             echo "package.json (${version}) is behind the latest release (v${latest}); an older commit's CI finished late. Nothing to do."
@@ -65,10 +61,19 @@ jobs:
           tag="v${version}"
           minecraft=$(jq -r '.version' src/data/generated/meta.json)
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "$tag" -m "$tag" "$HEAD_SHA"
-          git push origin "$tag"
+          # Tag and release are checked separately, so a run that failed
+          # between them is finished by the next one.
+          if [ "$version" != "$latest" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag -a "$tag" -m "$tag" "$HEAD_SHA"
+            git push origin "$tag"
+          fi
+
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "${tag} is already released; nothing to do."
+            exit 0
+          fi
 
           gh release create "$tag" --verify-tag --latest --generate-notes \
             --title "${tag} (Minecraft ${minecraft})"

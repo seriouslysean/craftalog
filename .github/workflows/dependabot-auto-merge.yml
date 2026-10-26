@@ -1,6 +1,6 @@
 name: Dependabot auto-merge
 
-# Merges Dependabot PRs automatically once the required `ci` check passes,
+# Merges Dependabot PRs automatically once every check on the head commit passes,
 # then dispatches CI on main so deploy.yml fires — the same GITHUB_TOKEN
 # suppression workaround update-data.yml uses (see its deploy-kick step).
 #
@@ -76,6 +76,19 @@ jobs:
             skip "PR #${number} head moved since this CI run (stale workflow_run)"
           fi
 
+          # Every check run on the head commit must be finished and green, not
+          # just the workflow that fired this run.
+          checks=$(gh api "repos/${GH_REPO}/commits/${HEAD_SHA}/check-runs" --paginate \
+            --jq '.check_runs[] | {status, conclusion}')
+          pending=$(jq -rs '[.[] | select(.status != "completed")] | length' <<<"$checks")
+          if [ "$pending" != "0" ]; then
+            skip "PR #${number} still has ${pending} check(s) running; the last one to finish fires this again"
+          fi
+          bad=$(jq -rs '[.[] | select(.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral")] | length' <<<"$checks")
+          if [ "$bad" != "0" ]; then
+            skip "PR #${number} has ${bad} check(s) that didn't pass"
+          fi
+
           commits=$(gh api "repos/${GH_REPO}/pulls/${number}/commits" --paginate \
             --jq '.[] | {author: .author.login, message: .commit.message}')
 
@@ -96,7 +109,7 @@ jobs:
             skip "PR #${number} contains a semver-major bump"
           fi
 
-          echo "PR #${number} is a Dependabot $(echo "$types" | tr '\n' '/' | sed 's#/$##') bump with green CI; merging."
+          echo "PR #${number} is a Dependabot $(echo "$types" | tr '\n' '/' | sed 's#/$##') bump with every check green; merging."
           echo "proceed=true" >> "$GITHUB_OUTPUT"
 
       - name: Merge the PR
@@ -106,16 +119,23 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           NUMBER: ${{ steps.gate.outputs.number }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          # The required `ci` status check is green on the head SHA (that
-          # success is what triggered this run) and no reviews are
-          # required, so a direct squash merge is permitted.
+          # Every check run on the head SHA is green (the gate read them) and
+          # no reviews are required, so a direct squash merge is permitted.
+          # --match-head-commit refuses a head pushed after the gate.
           # delete_branch_on_merge cleans up the branch.
-          if gh pr merge "$NUMBER" --squash; then
+          if gh pr merge "$NUMBER" --squash --match-head-commit "$HEAD_SHA"; then
             echo "merged=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
+          head=$(gh api "repos/${GH_REPO}/pulls/${NUMBER}" --jq '.head.sha')
+          if [ "$head" != "$HEAD_SHA" ]; then
+            echo "PR #${NUMBER} head moved after the gate; not merging an untested commit."
+            echo "merged=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           state=$(gh api "repos/${GH_REPO}/pulls/${NUMBER}" --jq '.mergeable_state')
           if [ "$state" = "dirty" ]; then
             # Another PR merged first; Dependabot rebases conflicted PRs
