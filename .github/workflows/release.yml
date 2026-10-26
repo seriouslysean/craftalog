@@ -83,8 +83,13 @@ jobs:
 
           # The tag may sit on an earlier commit than this run's, so read the
           # release metadata at the tag, not from this checkout.
+          set -o pipefail
           minecraft=$(gh api -H 'Accept: application/vnd.github.raw' \
-            "repos/${GITHUB_REPOSITORY}/contents/src/data/generated/meta.json?ref=${tag}" | jq -r '.version')
+            "repos/${GITHUB_REPOSITORY}/contents/src/data/generated/meta.json?ref=${tag}" | jq -r '.version // empty')
+          if [ -z "$minecraft" ]; then
+            echo "::error::No Minecraft version in src/data/generated/meta.json at ${tag}."
+            exit 1
+          fi
 
           gh release create "$tag" --verify-tag --latest --generate-notes \
             --title "${tag} (Minecraft ${minecraft})"
