@@ -12,6 +12,9 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 - **Linting/Formatting**: oxlint + oxfmt (prettier + prettier-plugin-astro for `.astro` files only)
 - **Testing**: Vitest
 - **Data**: vendored `misode/mcmeta` (+ `Mojang/bedrock-samples`) submodules → `scripts/parse.ts` → committed generated JSON — see [Data Pipeline](#data-pipeline)
+- **Install**: `npm ci` (Node version in `.nvmrc`)
+- **Gate before a PR**: `npm run format:check && npm run type-check && npm run lint && npm test && npm run build`, the same steps `.github/workflows/ci.yml` runs. If `vendor/`, `scripts/` or `src/data/generated/**` changed, also run `npm run parse && npm run validate` and commit the regenerated output. CI also runs `npm run test:e2e` after the build.
+- **Where things live**: `src/` site code, `scripts/` data pipeline, `vendor/` pinned submodules, `tests/` unit tests, `e2e/` Playwright tests, `docs/` guides ([CONTRIBUTING](docs/CONTRIBUTING.md))
 - **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run type-check`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`, `npm run test:e2e`
 
 ---
