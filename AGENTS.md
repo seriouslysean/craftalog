@@ -449,6 +449,7 @@ npm run build
 
 ### Testing
 
+- [ ] **Test rules**: Before writing or changing a test, read https://github.com/splitleafhq/.github/blob/main/docs/testing.md.
 - [ ] **Unit tests**: Run `npm test` - all Vitest suites pass
 - [ ] **Data pipeline**: If `scripts/`, `vendor/`, or generated data changed, run `npm run parse` then `npm run validate` (or `npm run validate -- --offline`) and commit the regenerated output
 - [ ] **Build**: Run `npm run build` - must complete successfully
@@ -726,7 +727,7 @@ const { title, description } = Astro.props;
 1. Create file in `src/utils/` (e.g., `new-utility.ts`)
 2. Export typed functions
 3. Add JSDoc comments for complex functions
-4. Write tests if it's critical logic
+4. If a bug in it would break something users see, add a test that calls it the way its callers do.
 
 **Example** (real utility — `src/utils/with-base.ts`):
 

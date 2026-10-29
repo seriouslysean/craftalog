@@ -46,7 +46,7 @@ git checkout -b feature/your-feature-name
 
 2. Make your changes following our code standards (see AGENTS.md)
 
-3. Test your changes thoroughly
+3. Run the checks below.
 
 ```bash
 npm run type-check  # astro check + tsc (src, scripts, tests)
