@@ -449,6 +449,7 @@ npm run build
 
 ### Testing
 
+- [ ] **Test rules**: Before writing or changing a test, read https://github.com/splitleafhq/.github/blob/main/docs/testing.md.
 - [ ] **Unit tests**: Run `npm test` - all Vitest suites pass
 - [ ] **Data pipeline**: If `scripts/`, `vendor/`, or generated data changed, run `npm run parse` then `npm run validate` (or `npm run validate -- --offline`) and commit the regenerated output
 - [ ] **Build**: Run `npm run build` - must complete successfully
