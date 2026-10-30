@@ -291,7 +291,7 @@ jobs:
         run: |
           # PRs created with GITHUB_TOKEN do not trigger pull_request
           # workflows, so run CI explicitly; its check runs attach to the
-          # head SHA and satisfy the PR's required `ci` check.
+          # head SHA and satisfy the PR's required CI checks.
           gh workflow run ci.yml --ref "$BRANCH"
 
           # The dispatched run does not exist immediately; poll for it. The
@@ -322,7 +322,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.branch-check.outputs.branch }}
         run: |
-          # The required `ci` status check is green on the head SHA and no
+          # The CI checks are green on the head SHA and no
           # reviews are required, so a direct squash merge is permitted.
           # delete_branch_on_merge cleans up the branch.
           gh pr merge "$BRANCH" --squash

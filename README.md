@@ -72,7 +72,7 @@ npm test              # Vitest unit tests
 npm run lint           # oxlint
 npm run format          # oxfmt + prettier (for .astro files)
 npm run format:check    # check formatting without writing
-npm run type-check      # astro check (src) + tsc (scripts, tests)
+npm run typecheck      # astro check (src) + tsc (scripts, tests)
 ```
 
 ## GitHub Pages Deployment

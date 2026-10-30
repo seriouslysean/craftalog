@@ -12,7 +12,7 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 - **Linting/Formatting**: oxlint + oxfmt (prettier + prettier-plugin-astro for `.astro` files only)
 - **Testing**: Vitest
 - **Data**: vendored `misode/mcmeta` (+ `Mojang/bedrock-samples`) submodules → `scripts/parse.ts` → committed generated JSON — see [Data Pipeline](#data-pipeline)
-- **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run type-check`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`, `npm run test:e2e`
+- **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run typecheck`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`, `npm run test:e2e`
 
 ---
 
@@ -259,7 +259,7 @@ Astro content collections consume the generated JSON
 ## Releases
 
 `package.json`'s `version` is the source of truth, and **the bump always
-arrives inside a PR**: `main` is protected (required `ci` check) and the repo
+arrives inside a PR**: `main` is protected (required CI checks) and the repo
 has no PAT, so nothing can push a bump commit after a merge.
 `.github/workflows/release.yml` runs after CI passes on `main` and, when
 `package.json` is ahead of the latest `v*` tag, creates the annotated tag and
@@ -435,7 +435,7 @@ npm run build
 - [ ] **Debug Code**: Remove all console.logs, debug colors, test data
 - [ ] **Comments**: Ensure comments are accurate and add value
 - [ ] **Bundle Size**: Check if JS bundle size increased (it shouldn't!)
-- [ ] **Type Safety**: Run `npm run type-check` - must be 0 errors
+- [ ] **Type Safety**: Run `npm run typecheck` - must be 0 errors
 - [ ] **Linting**: Run `npm run lint` - must be 0 errors/warnings (oxlint runs with `--deny-warnings`, so either fails it; it also checks `.astro` style comments)
 - [ ] **Formatting**: Run `npm run format` - auto-fix all formatting (oxfmt + prettier for `.astro`)
 - [ ] **Data untouched by hand**: If `src/data/generated/**` changed, it must be the output of `npm run parse` — never edited directly
@@ -506,7 +506,7 @@ npm run dev
 npm run dev
 
 # Type checking (run frequently) — covers src (astro check) + scripts + tests (tsc)
-npm run type-check
+npm run typecheck
 
 # Linting (fix issues as you go)
 npm run lint
@@ -527,7 +527,7 @@ npm run test:watch
 npm run format
 
 # Type check (src + scripts + tests)
-npm run type-check
+npm run typecheck
 
 # Lint
 npm run lint

@@ -321,7 +321,7 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
 ## Workflows
 
 - `ci.yml` (PRs + main): install → parse → drift check → validate → format
-  check → type-check → lint → test → build → Playwright e2e.
+  check → typecheck → lint → test → build → Playwright e2e.
 - `deploy.yml`: existing Pages deploy, unchanged behavior (build now includes
   generated data).
 - `update-data.yml` (weekly cron + manual `workflow_dispatch` with a `force`
