@@ -30,7 +30,7 @@ From the "Common Pitfalls and Anti-Patterns" section in @AGENTS.md:
 ## Quick Commands
 
 ```bash
-npm run format && npm run type-check && npm run lint && npm test && npm run build
+npm run format && npm run typecheck && npm run lint && npm test && npm run build
 ```
 
 If `vendor/`, `scripts/`, or `src/data/generated/**` changed, also run
