@@ -465,6 +465,8 @@ npm run build
       The PR title becomes the commit subject and the description the commit
       message, so write both for `main`
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
+- [ ] **Pre-push gate**: `npm install` installs a Lefthook `pre-push` hook (`lefthook.yml`)
+      that runs the CI checks before every push. Never skip it
 - [ ] **Release bump**: If the change should ship as a release, the version
       bump is in this PR (see [Releases](#releases)) — it can't be added after
       the merge
