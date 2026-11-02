@@ -57,8 +57,9 @@ resume from here plus the task list in the PR description.
    on main to fire the deploy. The PR carries the site's version bump, which
    `release.yml` tags and releases once that CI run passes (AGENTS.md's
    "Releases"). CI is the sole merge gate; there is no
-   manual review step. Every failure mode (and a stalled previous PR)
-   files/updates one deduped "needs attention" issue, and the previously
+   manual review step. Every failure mode (and a stranded previous branch,
+   which also fails the run) files/updates one deduped "needs attention"
+   issue, and the previously
    deployed site stays live on any failure.
 
 ## Pipeline
@@ -336,9 +337,9 @@ turning the recipe page into a stat sheet. Rendered as HUD-style icon pips
   then dispatch CI on main (`GITHUB_TOKEN` merge pushes don't trigger
   push-event workflows, so this is what fires the CI-gated deploy). No diff
   after parse → clean no-op. Every failure mode (tag resolution, checkout,
-  parse/validate, PR CI red, merge rejected) and a stalled previous PR
-  file/update one deduped "needs attention" issue; the old site stays
-  deployed on any failure.
+  parse/validate, PR CI red, merge rejected) and a stranded previous branch
+  file/update one deduped "needs attention" issue (a stranded branch also
+  fails the run); the old site stays deployed on any failure.
 
 ## Testing
 

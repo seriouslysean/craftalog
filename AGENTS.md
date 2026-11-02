@@ -249,8 +249,9 @@ Astro content collections consume the generated JSON
   it, squash-merges once CI is green, and dispatches CI on `main` to fire
   the deploy — fully automated, no manual review step. The PR also carries
   the site's version bump (see [Releases](#releases)). Any failure (or a
-  stalled previous PR) files/updates one deduped "needs attention" issue,
-  and the previously deployed site stays live.
+  stranded previous branch) files/updates one deduped "needs attention"
+  issue, and the previously deployed site stays live. A stranded branch also
+  fails the run, so the skip does not show as green.
 - Full details, the generated-data type contract, and the update workflow's
   exact behavior: `docs/PLAN.md` and `.claude/skills/vanilla-data/SKILL.md`.
 
