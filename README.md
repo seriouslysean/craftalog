@@ -18,6 +18,8 @@ A modern Minecraft recipe catalog built with Astro and TypeScript.
 npm install
 ```
 
+`npm install` also installs a Git `pre-push` hook (Lefthook) that runs the checks CI runs.
+
 Vanilla Minecraft recipe/item data is generated from vendored
 [misode/mcmeta](https://github.com/misode/mcmeta) submodules and is committed
 to the repo, so `npm install` + `npm run build` work without fetching them.
