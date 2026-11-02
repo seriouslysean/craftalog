@@ -18,7 +18,7 @@ A modern Minecraft recipe catalog built with Astro and TypeScript.
 npm install
 ```
 
-`npm install` also installs a Git `pre-push` hook (Lefthook) that runs the checks CI runs.
+`npm ci` also installs a Git `pre-push` hook (Lefthook) that runs the checks CI runs. The hook is installed when Lefthook is installed, so if it is missing (an existing `node_modules`, a deleted `.git/hooks/pre-push`), run `npx lefthook install`.
 
 Vanilla Minecraft recipe/item data is generated from vendored
 [misode/mcmeta](https://github.com/misode/mcmeta) submodules and is committed
@@ -74,7 +74,7 @@ npm test              # Vitest unit tests
 npm run lint           # oxlint
 npm run format          # oxfmt + prettier (for .astro files)
 npm run format:check    # check formatting without writing
-npm run type-check      # astro check (src) + tsc (scripts, tests)
+npm run typecheck      # astro check (src) + tsc (scripts, tests)
 ```
 
 ## GitHub Pages Deployment

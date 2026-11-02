@@ -49,7 +49,7 @@ git checkout -b feature/your-feature-name
 3. Run the checks below.
 
 ```bash
-npm run type-check  # astro check + tsc (src, scripts, tests)
+npm run typecheck  # astro check + tsc (src, scripts, tests)
 npm run lint        # oxlint
 npm test            # Vitest unit tests
 npm run build       # Production build
@@ -107,7 +107,7 @@ Before submitting a pull request:
 
 1. Ensure all checks pass:
    - [ ] `npm run format:check` - No formatting issues
-   - [ ] `npm run type-check` - No TypeScript errors
+   - [ ] `npm run typecheck` - No TypeScript errors
    - [ ] `npm run lint` - No linting errors
    - [ ] `npm test` - All Vitest suites pass
    - [ ] `npm run build` - Build completes successfully

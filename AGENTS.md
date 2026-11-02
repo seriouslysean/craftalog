@@ -12,7 +12,7 @@ This file contains goals, guidelines, and common patterns for AI agents working 
 - **Linting/Formatting**: oxlint + oxfmt (prettier + prettier-plugin-astro for `.astro` files only)
 - **Testing**: Vitest
 - **Data**: vendored `misode/mcmeta` (+ `Mojang/bedrock-samples`) submodules → `scripts/parse.ts` → committed generated JSON — see [Data Pipeline](#data-pipeline)
-- **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run type-check`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`, `npm run test:e2e`
+- **Commands**: `npm run lint`, `npm run format` / `format:check`, `npm run typecheck`, `npm test`, `npm run parse`, `npm run validate`, `npm run build`, `npm run test:e2e`
 
 ---
 
@@ -249,8 +249,9 @@ Astro content collections consume the generated JSON
   it, squash-merges once CI is green, and dispatches CI on `main` to fire
   the deploy — fully automated, no manual review step. The PR also carries
   the site's version bump (see [Releases](#releases)). Any failure (or a
-  stalled previous PR) files/updates one deduped "needs attention" issue,
-  and the previously deployed site stays live.
+  stranded previous branch) files/updates one deduped "needs attention"
+  issue, and the previously deployed site stays live. A stranded branch also
+  fails the run, so the skip does not show as green.
 - Full details, the generated-data type contract, and the update workflow's
   exact behavior: `docs/PLAN.md` and `.claude/skills/vanilla-data/SKILL.md`.
 
@@ -259,12 +260,13 @@ Astro content collections consume the generated JSON
 ## Releases
 
 `package.json`'s `version` is the source of truth, and **the bump always
-arrives inside a PR**: `main` is protected (required `ci` check) and the repo
+arrives inside a PR**: `main` is protected (required CI checks) and the repo
 has no PAT, so nothing can push a bump commit after a merge.
 `.github/workflows/release.yml` runs after CI passes on `main` and, when
 `package.json` is ahead of the latest `v*` tag, creates the annotated tag and
 a GitHub release (generated notes, titled `vX.Y.Z (Minecraft <data version>)`).
 A merge that doesn't touch the version releases nothing.
+The tag and the release are checked separately, so a re-run of the job creates a release that is missing for an existing tag.
 
 The site has no public API, so the SemVer buckets are defined here:
 
@@ -435,7 +437,7 @@ npm run build
 - [ ] **Debug Code**: Remove all console.logs, debug colors, test data
 - [ ] **Comments**: Ensure comments are accurate and add value
 - [ ] **Bundle Size**: Check if JS bundle size increased (it shouldn't!)
-- [ ] **Type Safety**: Run `npm run type-check` - must be 0 errors
+- [ ] **Type Safety**: Run `npm run typecheck` - must be 0 errors
 - [ ] **Linting**: Run `npm run lint` - must be 0 errors/warnings (oxlint runs with `--deny-warnings`, so either fails it; it also checks `.astro` style comments)
 - [ ] **Formatting**: Run `npm run format` - auto-fix all formatting (oxfmt + prettier for `.astro`)
 - [ ] **Data untouched by hand**: If `src/data/generated/**` changed, it must be the output of `npm run parse` — never edited directly
@@ -465,8 +467,9 @@ npm run build
       The PR title becomes the commit subject and the description the commit
       message, so write both for `main`
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
-- [ ] **Pre-push gate**: `npm install` installs a Lefthook `pre-push` hook (`lefthook.yml`)
-      that runs the CI checks before every push. Never skip it
+- [ ] **Pre-push gate**: `npm ci` installs a Lefthook `pre-push` hook (`lefthook.yml`)
+      that runs the CI checks before every push; if it is missing, run
+      `npx lefthook install`. Never skip it
 - [ ] **Release bump**: If the change should ship as a release, the version
       bump is in this PR (see [Releases](#releases)) — it can't be added after
       the merge
@@ -506,7 +509,7 @@ npm run dev
 npm run dev
 
 # Type checking (run frequently) — covers src (astro check) + scripts + tests (tsc)
-npm run type-check
+npm run typecheck
 
 # Linting (fix issues as you go)
 npm run lint
@@ -527,7 +530,7 @@ npm run test:watch
 npm run format
 
 # Type check (src + scripts + tests)
-npm run type-check
+npm run typecheck
 
 # Lint
 npm run lint

@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
+          node-version-file: .nvmrc
           check-latest: true
           cache: "npm"
 
@@ -291,7 +291,7 @@ jobs:
         run: |
           # PRs created with GITHUB_TOKEN do not trigger pull_request
           # workflows, so run CI explicitly; its check runs attach to the
-          # head SHA and satisfy the PR's required `ci` check.
+          # head SHA and satisfy the PR's required CI checks.
           gh workflow run ci.yml --ref "$BRANCH"
 
           # The dispatched run does not exist immediately; poll for it. The
@@ -322,7 +322,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.branch-check.outputs.branch }}
         run: |
-          # The required `ci` status check is green on the head SHA and no
+          # The CI checks are green on the head SHA and no
           # reviews are required, so a direct squash merge is permitted.
           # delete_branch_on_merge cleans up the branch.
           gh pr merge "$BRANCH" --squash
@@ -381,7 +381,8 @@ jobs:
             cause="an unexpected step failed (see the run log)"
           elif [ "$STALLED" = "true" ]; then
             pr_url=$(gh pr list --head "$BRANCH" --state open --json url --jq '.[0].url // empty' || true)
-            cause="a previous data update PR (${pr_url:-branch \`${BRANCH}\`}) is still open, so this run skipped itself; merge or close it to unblock weekly updates"
+            cause="a previous data update branch (\`${BRANCH}\`, PR: ${pr_url:-none open}) is still on origin, so this run skipped itself; merge the PR or delete the branch to unblock weekly updates"
+            stranded=true
           fi
 
           if [ -z "$cause" ]; then
@@ -409,4 +410,11 @@ jobs:
             echo "Commented on existing open issue #$existing instead of creating a duplicate."
           else
             gh issue create --title "$title" --body "$body"
+          fi
+
+          # A stranded branch means this run did nothing: fail it, so the
+          # skip is not reported as a green run.
+          if [ "${stranded:-}" = "true" ]; then
+            echo "::error::${cause}."
+            exit 1
           fi

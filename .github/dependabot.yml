@@ -23,7 +23,7 @@ updates:
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
-      # Node's types track the runtime CI pins (`node-version` in the
+      # Node's types track the runtime CI pins (`.nvmrc`, read by the
       # workflows), not the newest Node -- bump both together.
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
