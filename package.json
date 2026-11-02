@@ -25,8 +25,7 @@
     "test:e2e:ui": "playwright test --ui",
     "parse": "tsx scripts/parse.ts",
     "validate": "tsx scripts/validate.ts",
-    "vendor:init": "git submodule update --init --depth 1",
-    "prepare": "lefthook install"
+    "vendor:init": "git submodule update --init --depth 1"
   },
   "dependencies": {
     "@fontsource/pixelify-sans": "5.3.0",
