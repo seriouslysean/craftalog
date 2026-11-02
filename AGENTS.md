@@ -265,6 +265,7 @@ has no PAT, so nothing can push a bump commit after a merge.
 `package.json` is ahead of the latest `v*` tag, creates the annotated tag and
 a GitHub release (generated notes, titled `vX.Y.Z (Minecraft <data version>)`).
 A merge that doesn't touch the version releases nothing.
+The tag and the release are checked separately, so a re-run of the job creates a release that is missing for an existing tag.
 
 The site has no public API, so the SemVer buckets are defined here:
 
