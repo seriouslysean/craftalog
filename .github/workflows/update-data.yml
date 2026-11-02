@@ -1,9 +1,6 @@
 name: Update vanilla data
 
 on:
-  schedule:
-    # Every Monday at 03:17 UTC - a quiet time, off the top of the hour.
-    - cron: "17 3 * * 1"
   workflow_dispatch:
     inputs:
       force:
@@ -267,7 +264,7 @@ jobs:
 
           ${audit_section}
 
-          Opened automatically by the \`update-data\` scheduled workflow,
+          Opened automatically by the \`update-data\` workflow,
           which merges it automatically once CI passes and then deploys the
           site. A manual run with the \`force\` input rebuilds and captures
           changes even without a version bump.

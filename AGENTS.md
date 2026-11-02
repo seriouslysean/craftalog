@@ -243,8 +243,7 @@ Astro content collections consume the generated JSON
 - **Never hand-edit anything under `src/data/generated/` or
   `public/textures/`.** Edit `scripts/parse.ts` / `scripts/validate.ts`
   instead and regenerate.
-- A weekly scheduled workflow (`update-data.yml`, also runnable manually
-  with a `force` input that rebuilds even when pins are current) checks for
+- A manually run workflow (`update-data.yml`, with a `force` input that rebuilds even when pins are current) checks for
   a newer stable tag, bumps the pin, regenerates, opens a PR, runs CI on
   it, squash-merges once CI is green, and dispatches CI on `main` to fire
   the deploy — fully automated, no manual review step. The PR also carries

@@ -115,7 +115,7 @@ The deploy workflow runs after the CI workflow completes successfully on the `ma
 - **Linting/Formatting**: oxlint, oxfmt, prettier (for `.astro` files)
 - **Testing**: Vitest
 - **Deployment**: GitHub Pages
-- **CI/CD**: GitHub Actions (`ci.yml` on every PR, `update-data.yml` weekly)
+- **CI/CD**: GitHub Actions (`ci.yml` on every PR, `update-data.yml` run by hand)
 
 ## License
 
