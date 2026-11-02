@@ -381,7 +381,8 @@ jobs:
             cause="an unexpected step failed (see the run log)"
           elif [ "$STALLED" = "true" ]; then
             pr_url=$(gh pr list --head "$BRANCH" --state open --json url --jq '.[0].url // empty' || true)
-            cause="a previous data update PR (${pr_url:-branch \`${BRANCH}\`}) is still open, so this run skipped itself; merge or close it to unblock weekly updates"
+            cause="a previous data update branch (\`${BRANCH}\`, PR: ${pr_url:-none open}) is still on origin, so this run skipped itself; merge the PR or delete the branch to unblock weekly updates"
+            stranded=true
           fi
 
           if [ -z "$cause" ]; then
@@ -409,4 +410,11 @@ jobs:
             echo "Commented on existing open issue #$existing instead of creating a duplicate."
           else
             gh issue create --title "$title" --body "$body"
+          fi
+
+          # A stranded branch means this run did nothing: fail it, so the
+          # skip is not reported as a green run.
+          if [ "${stranded:-}" = "true" ]; then
+            echo "::error::${cause}."
+            exit 1
           fi
