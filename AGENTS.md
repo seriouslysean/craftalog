@@ -465,15 +465,15 @@ npm run build
       The PR title becomes the commit subject and the description the commit
       message, so write both for `main`
 - [ ] **No Secrets**: No API keys, tokens, or sensitive data committed
+- [ ] **Pre-push gate**: `npm install` installs a Lefthook `pre-push` hook (`lefthook.yml`)
+      that runs the CI checks before every push. Never skip it
 - [ ] **Release bump**: If the change should ship as a release, the version
       bump is in this PR (see [Releases](#releases)) — it can't be added after
       the merge
 - [ ] **Draft First**: Open every PR as draft (throwaway/verification PRs
       included); flip to ready only after CI is green and self-reviewed.
-      Without an owner request to ship, stop there and never chain create →
-      merge. When the owner asked for the work to be sent, merged, tagged or
-      released, that request is the go-ahead: once CI is green, flip to
-      ready, merge, and confirm the release landed — no second confirmation
+      Stop there and never chain create → merge: a merge needs the owner's
+      approval of that PR, as its own step.
 
 ---
 
