@@ -11,7 +11,7 @@ pre-push:
         test -z "$(git status --porcelain --untracked-files=all -- src/data/generated public/textures)"
         npm run validate
         npm run format:check
-        npm run type-check
+        npm run typecheck
         npm run lint
         npm test
         npm run build

@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Project verify skill for Craftalog. Use before considering any change done — runs the exact format/lint/type-check/test/parse/validate/build sequence this repo's CI enforces, and explains what "green" looks like and the common failure modes (oxfmt vs prettier scope, drift check meaning).
+description: Project verify skill for Craftalog. Use before considering any change done — runs the exact format/lint/typecheck/test/parse/validate/build sequence this repo's CI enforces, and explains what "green" looks like and the common failure modes (oxfmt vs prettier scope, drift check meaning).
 ---
 
 # Craftalog verify
@@ -13,7 +13,7 @@ pass too (submodule drift aside — see below).
 
 ```bash
 npm run format          # oxfmt for .ts/.astro-adjacent files + prettier for .astro files
-npm run type-check      # astro check (src) + tsc --noEmit -p tsconfig.node.json (scripts + tests)
+npm run typecheck      # astro check (src) + tsc --noEmit -p tsconfig.node.json (scripts + tests)
 npm run lint            # oxlint .
 npm test                # vitest run
 npm run build           # astro build — full production build
@@ -36,7 +36,7 @@ commit the result so CI's drift check (below) doesn't fail.
 
 - `npm run format` exits 0 and reports no files needed changes (or only the
   files you expected to change).
-- `npm run type-check` prints `0 errors`.
+- `npm run typecheck` prints `0 errors`.
 - `npm run lint` prints no errors or warnings.
 - `npm test` — all suites pass, no `.only`/`.skip` left in test files.
 - `npm run build` completes and prints the `dist/_astro/*.js` bundle sizes —
