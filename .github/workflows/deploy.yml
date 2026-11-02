@@ -24,9 +24,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  check:
     # workflow_run fires on any completion; only deploy when CI succeeded.
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      current: ${{ steps.tip.outputs.current }}
+    steps:
+      - name: Skip a commit that is no longer main's tip
+        id: tip
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          # An older commit's CI can finish after a newer one's; deploying its
+          # head_sha would put the older site live. The newer commit's own CI
+          # completion deploys it. A manual dispatch has no head_sha and
+          # always deploys.
+          if [ -z "$HEAD_SHA" ]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          tip=$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)
+          if [ "$tip" = "$HEAD_SHA" ]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "${HEAD_SHA} is not main's tip (${tip}); its deploy is left to the newer commit's CI run."
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.current == 'true'
     runs-on: ubuntu-24.04
     env:
       BASE_PATH: ${{ vars.BASE_PATH }}
