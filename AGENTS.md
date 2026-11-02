@@ -470,10 +470,8 @@ npm run build
       the merge
 - [ ] **Draft First**: Open every PR as draft (throwaway/verification PRs
       included); flip to ready only after CI is green and self-reviewed.
-      Without an owner request to ship, stop there and never chain create →
-      merge. When the owner asked for the work to be sent, merged, tagged or
-      released, that request is the go-ahead: once CI is green, flip to
-      ready, merge, and confirm the release landed — no second confirmation
+      Stop there and never chain create → merge: a merge needs the owner's
+      approval of that PR, as its own step.
 
 ---
 
